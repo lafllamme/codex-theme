@@ -8,41 +8,41 @@ interface DsHeroProps {
 
 withDefaults(defineProps<DsHeroProps>(), {
   headline: 'Codex Theme Generator',
-  body: 'Build, preview and export dark-first Codex themes with live tokens, mint accents, and production-ready output.',
+  body: 'Create, preview, and export Codex themes with live tokens, instant contrast checks, and ready-to-share presets.',
   mainCtaText: 'Get Started',
   secondCtaText: 'Learn More',
 })
 </script>
 
 <template>
-  <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center select-none">
-    <div class="pointer-events-auto absolute top-[2em] left-0 z-1 w-full h-[60px]">
+  <div class="pointer-events-none absolute inset-0 select-none">
+    <div class="pointer-events-auto absolute left-0 top-5 z-1 h-[60px] w-full sm:top-6">
       <DsHeader />
     </div>
 
-    <div class="flex flex-col items-center px-4 text-center">
+    <div class="mx-auto flex h-full w-full max-w-[1180px] flex-col items-center justify-center px-4 pt-28 pb-8 text-center sm:pt-30 sm:pb-10">
       <h1
-        class="mt-4 max-w-4xl font-geist-700 text-[clamp(2.8rem,6vw,6.3rem)] text-white leading-[0.98]"
+        class="font-geist-700 text-white max-w-4xl text-[clamp(2.9rem,6.1vw,6.35rem)] leading-[0.96]"
       >
         Codex Theme
         <br>
         Generator
       </h1>
 
-      <p class="mt-7 max-w-2xl font-geist-400 text-[15px] text-white/76 leading-relaxed sm:text-[18px]">
+      <p class="font-geist-400 text-white/76 mt-7 max-w-[64ch] text-[15px] leading-relaxed sm:text-[18px]">
         {{ body }}
       </p>
 
-      <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
         <NuxtLink
           to="/themes"
-          class="pointer-events-auto border border-white/90 rounded-[50px] bg-[rgba(255,255,255,0.98)] px-6 py-2 font-geist-500 text-[12px] !text-[rgba(0,0,0,0.92)] no-underline shadow-[0_8px_22px_rgba(0,0,0,0.24)] transition-all duration-200 ease-in-out hover:translate-y-[-1px] hover:bg-[rgba(255,255,255,0.92)] md:px-10 md:py-3 md:text-[14px]"
+          class="border-white/90 font-geist-500 pointer-events-auto border rounded-[50px] bg-[rgba(255,255,255,0.98)] px-6 py-2 text-[12px] no-underline shadow-[0_8px_22px_rgba(0,0,0,0.24)] transition-all duration-200 ease-in-out hover:translate-y-[-1px] hover:bg-[rgba(255,255,255,0.92)] md:px-10 md:py-3 md:text-[14px] !text-[rgba(0,0,0,0.92)]"
         >
           {{ mainCtaText }}
         </NuxtLink>
         <NuxtLink
           to="/old.view"
-          class="pointer-events-auto border border-white/20 rounded-full bg-[rgba(255,255,255,0.05)] px-6 py-2 font-geist-500 text-[12px] !text-white/50 no-underline shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[10px] backdrop-saturate-[65%] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[rgba(255,255,255,0.1)] md:px-10 md:py-3 md:text-[14px]"
+          class="font-geist-500 !text-white/50 pointer-events-auto border-[1px] border-[rgba(255,255,255,0.2)] rounded-full border-solid bg-[rgba(255,255,255,0.05)] px-6 py-2 text-[12px] no-underline shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[10px] transition-all duration-200 hover:bg-[rgba(255,255,255,0.1)] md:px-10 md:py-3 md:text-[14px] hover:-translate-y-0.5"
         >
           {{ secondCtaText }}
         </NuxtLink>
