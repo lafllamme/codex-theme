@@ -29,7 +29,6 @@ const defaultCodeFont = '\'Geist Mono\', ui-monospace, \'SFMono-Regular\', Menlo
 const modelOptions = ['GPT-5.3-Codex', 'GPT-5.2-Codex', 'o3']
 const thinkingOptions = ['Low', 'Medium', 'High']
 
-const runEnabled = ref(false)
 const selectedModel = ref(modelOptions[0])
 const selectedThinking = ref(thinkingOptions[1])
 const composeValue = ref('Tune accent + semantic colors')
@@ -40,13 +39,8 @@ const {
   isSidebarOpenMobile,
   isTerminalOpen,
   isDiffOpen,
-  isPipEnabled,
   toggleSidebar,
-  openSidebarMobile,
   closeSidebarMobile,
-  toggleTerminal,
-  toggleDiff,
-  togglePip,
 } = useWorkbenchPanels()
 
 const defaultThread: ThreadItem = { id: 'thread-1', title: 'Make DsRing mobile friendly', repo: 'codex-theme', time: '54 Min.' }
@@ -83,7 +77,6 @@ const messagesByThread: Record<string, ChatMessage[]> = {
   ],
 }
 
-const activeThread = computed<ThreadItem>(() => threadItems.find(thread => thread.id === activeThreadId.value) ?? defaultThread)
 const activeMessages = computed(() => messagesByThread[activeThreadId.value] || [])
 
 const shellStyle = computed(() => ({
@@ -109,17 +102,6 @@ function selectThread(id: string) {
   activeThreadId.value = id
   closeSidebarMobile()
 }
-
-function toggleRun() {
-  runEnabled.value = !runEnabled.value
-}
-
-function toggleSidebarMobile() {
-  if (isSidebarOpenMobile.value)
-    closeSidebarMobile()
-  else
-    openSidebarMobile()
-}
 </script>
 
 <template>
@@ -142,24 +124,8 @@ function toggleSidebarMobile() {
     </header>
 
     <section class="rounded-b-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
-      <WorkbenchTopbar
-        :title="activeThread.title"
-        :repo="activeThread.repo"
-        :run-enabled="runEnabled"
-        :pip-enabled="isPipEnabled"
-        :is-terminal-open="isTerminalOpen"
-        :is-diff-open="isDiffOpen"
-        :mobile-sidebar-open="isSidebarOpenMobile"
-        @toggle-sidebar="toggleSidebar"
-        @toggle-sidebar-mobile="toggleSidebarMobile"
-        @toggle-run="toggleRun"
-        @toggle-terminal="toggleTerminal"
-        @toggle-diff="toggleDiff"
-        @toggle-pip="togglePip"
-      />
-
-      <section class="mt-2 flex">
-        <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
+      <section class="flex">
+        <div class="sidebar-column">
           <WorkbenchSidebar
             :threads="threadItems"
             :active-thread-id="activeThreadId"
@@ -205,21 +171,11 @@ function toggleSidebarMobile() {
 .sidebar-column {
   width: 286px;
   margin-right: 8px;
-  overflow: hidden;
-  transition:
-    width 260ms ease,
-    margin-right 220ms ease;
-  will-change: width, margin-right;
-}
-
-.sidebar-column--collapsed {
-  width: 0;
-  margin-right: 0;
+  flex-shrink: 0;
 }
 
 @media (max-width: 1180px) {
-  .sidebar-column,
-  .sidebar-column--collapsed {
+  .sidebar-column {
     width: 0;
     margin-right: 0;
   }

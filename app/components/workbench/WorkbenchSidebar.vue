@@ -25,57 +25,67 @@ const emit = defineEmits<{
 
 <template>
   <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-  <aside class="sidebar flex w-full flex-col gap-[7px] overflow-hidden rounded-[var(--wb-r-lg)] border border-white/[0.09] bg-[var(--sidebar-bg)] p-[7px]" :class="[collapsed ? 'sidebar--collapsed' : '', mobileOpen ? 'sidebar--mobile-open' : '']">
-    <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]" @click="emit('newThread')">
-      <Icon name="ph:pencil-simple-line-bold" class="h-[14px] w-[14px]" />
-      <span class="sidebar-label truncate">New Thread</span>
-    </button>
-
-    <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
-      <Icon name="ph:clock-counter-clockwise-bold" class="h-[14px] w-[14px]" />
-      <span class="sidebar-label truncate">Automations</span>
-    </button>
-
-    <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
-      <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
-      <span class="sidebar-label truncate">Skills</span>
-    </button>
-
-    <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-white/[0.52] uppercase tracking-[0.12em]">
-      <span class="sidebar-label">Threads</span>
-      <div class="inline-flex items-center gap-1">
-        <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
-          <Icon name="ph:folder-plus-bold" class="h-3 w-3" />
-        </button>
-        <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
-          <Icon name="ph:funnel-simple-bold" class="h-3 w-3" />
-        </button>
-        <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]" @click="emit('toggleCollapsed')">
-          <Icon :name="collapsed ? 'ph:caret-right-bold' : 'ph:caret-left-bold'" class="h-3 w-3" />
-        </button>
+  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-white/[0.09] bg-[rgba(10,12,16,0.48)] p-[7px] backdrop-blur-[14px]" :class="mobileOpen ? 'sidebar--mobile-open' : ''">
+    <div class="mb-[2px] flex items-center justify-between px-[2px]">
+      <div class="inline-flex items-center gap-[7px]">
+        <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
+      <button class="inline-flex h-6 w-6 items-center justify-center rounded-[7px] text-white/[0.5] transition-colors hover:text-white/[0.82]" @click="emit('toggleCollapsed')">
+        <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
+      </button>
     </div>
 
-    <button
-      v-for="thread in threads"
-      :key="thread.id"
-      class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-white/[0.07] bg-black/[0.2] px-[10px] text-left text-[12.5px] text-white/[0.88] transition-colors hover:bg-white/[0.08]"
-      :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
-      @click="emit('selectThread', thread.id)"
-    >
-      <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
-      <span v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'" class="sidebar-label inline-flex items-center gap-1 font-[var(--font-code)] text-[11px]">
-        <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
-        <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
-      </span>
-      <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
-      <span class="thread-dot" />
-    </button>
+    <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]" @click="emit('newThread')">
+        <Icon name="ph:pencil-simple-line-bold" class="h-[14px] w-[14px]" />
+        <span class="sidebar-label truncate">New Thread</span>
+      </button>
 
-    <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
-      <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
-      <span class="sidebar-label">Settings</span>
-    </button>
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+        <Icon name="ph:clock-counter-clockwise-bold" class="h-[14px] w-[14px]" />
+        <span class="sidebar-label truncate">Automations</span>
+      </button>
+
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+        <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
+        <span class="sidebar-label truncate">Skills</span>
+      </button>
+
+      <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-white/[0.52] uppercase tracking-[0.12em]">
+        <span class="sidebar-label">Threads</span>
+        <div class="inline-flex items-center gap-1">
+          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
+            <Icon name="ph:folder-plus-bold" class="h-3 w-3" />
+          </button>
+          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
+            <Icon name="ph:funnel-simple-bold" class="h-3 w-3" />
+          </button>
+        </div>
+      </div>
+
+      <button
+        v-for="thread in threads"
+        :key="thread.id"
+        class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-white/[0.07] bg-black/[0.2] px-[10px] text-left text-[12.5px] text-white/[0.88] transition-colors hover:bg-white/[0.08]"
+        :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
+        @click="emit('selectThread', thread.id)"
+      >
+        <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
+        <span v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'" class="sidebar-label inline-flex items-center gap-1 font-[var(--font-code)] text-[11px]">
+          <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
+          <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+        </span>
+        <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+        <span class="thread-dot" />
+      </button>
+
+      <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+        <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
+        <span class="sidebar-label">Settings</span>
+      </button>
+    </div>
   </aside>
 </template>
 
@@ -85,34 +95,36 @@ const emit = defineEmits<{
 }
 
 .sidebar {
-  transform-origin: left center;
-  transition:
-    width 220ms ease,
-    padding 180ms ease,
-    opacity 180ms ease,
-    transform 220ms ease;
-}
-
-.sidebar--collapsed {
-  width: 100%;
-  padding-inline: 7px;
-  opacity: 0;
-  transform: translateX(-10px);
-  pointer-events: none;
+  gap: 7px;
 }
 
 .sidebar-label {
   white-space: nowrap;
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
 }
 
-.sidebar--collapsed .sidebar-label {
-  opacity: 0;
-  transform: translateX(-9px);
-  width: 0;
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  transform-origin: left top;
   overflow: hidden;
+  transition:
+    max-height 260ms ease,
+    opacity 220ms ease,
+    transform 260ms ease;
+}
+
+.sidebar-content--expanded {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+}
+
+.sidebar-content--collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateX(-10px) scaleX(0.97);
+  pointer-events: none;
 }
 
 .thread-row {
@@ -138,10 +150,6 @@ const emit = defineEmits<{
   background: rgba(255, 255, 255, 0.72);
 }
 
-.sidebar--collapsed .thread-dot {
-  display: inline-block;
-}
-
 .thread-row--active {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.18);
@@ -164,8 +172,7 @@ const emit = defineEmits<{
     pointer-events: auto;
   }
 
-  .sidebar,
-  .sidebar--collapsed {
+  .sidebar {
     position: fixed;
     top: 104px;
     left: 8px;
@@ -180,14 +187,8 @@ const emit = defineEmits<{
     transform: translateX(0);
   }
 
-  .sidebar--collapsed .sidebar-label {
-    opacity: 1;
-    transform: none;
-    width: auto;
-  }
-
-  .sidebar--collapsed .thread-dot {
-    display: none;
+  .sidebar-content--collapsed {
+    max-height: 0;
   }
 }
 </style>
