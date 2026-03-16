@@ -79,10 +79,7 @@ const headerWrapClass = computed(() =>
         </p>
 
         <h1 class="font-geist-800 text-white text-[clamp(4.4rem,9vw,8.6rem)] leading-[0.84] tracking-[-0.04em]">
-          <template v-for="(line, index) in headlineLines" :key="`${line}-${index}`">
-            <span>{{ line }}</span>
-            <br v-if="index < headlineLines.length - 1">
-          </template>
+          <HyperText :text="headline" :duration="950" :animate-on-load="true" />
         </h1>
 
         <p class="font-geist-400 mt-4 max-w-[56ch] text-[15px] text-pureWhite/74 leading-[1.5] md:text-[19px]">
@@ -106,9 +103,13 @@ const headerWrapClass = computed(() =>
       </div>
 
       <aside class="pointer-events-auto border border-white/16 rounded-[22px] bg-black/38 p-4 backdrop-blur-[12px] md:col-span-4 md:ml-auto md:w-[360px]">
-        <p class="font-geist-mono-500 text-[10px] text-pureWhite/60 tracking-[0.18em] uppercase">
-          What You Can Generate
-        </p>
+        <div class="rounded-xl border border-white/10 bg-black/8 px-3 py-2.5">
+          <NativeTypewriter
+            content="What you can generate"
+            speed="fast"
+            class-name="font-geist-700 text-[14px] text-pureWhite/92 tracking-[0.02em]"
+          />
+        </div>
 
         <div class="mt-4 space-y-3">
           <div class="rounded-xl border border-white/10 bg-black/22 px-0 py-2.5">
