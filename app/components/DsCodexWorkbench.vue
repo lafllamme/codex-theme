@@ -33,6 +33,9 @@ const selectedModel = ref(modelOptions[0])
 const selectedThinking = ref(thinkingOptions[1])
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
+const sidebarWidth = ref(286)
+const minSidebarWidth = 248
+const maxSidebarWidth = 420
 
 const {
   isSidebarCollapsed,
@@ -50,8 +53,10 @@ const threadItems: ThreadItem[] = [
   { id: 'thread-2', title: 'Open Vue-Bits Dither page', repo: 'codex-theme', time: '17 Std.', added: 2, removed: 9 },
   { id: 'thread-3', title: 'Load Codex controls refs', repo: 'codex-theme', time: '8 Std.', added: 7, removed: 9 },
   { id: 'thread-4', title: 'Add thread list examples', repo: 'codex-theme', time: '17 Std.', added: 9, removed: 6 },
+  { id: 'thread-7', title: 'Review sidebar parity', repo: 'codex-theme', time: '11 Std.' },
   { id: 'thread-5', title: 'Create fix for collapse', repo: 'personal-page', time: '1 Tag(e)' },
   { id: 'thread-6', title: 'Review chat spacing', repo: 'personal-page', time: '5 Tag(e)' },
+  { id: 'thread-8', title: 'Refine card hover states', repo: 'personal-page', time: '6 Std.', added: 4, removed: 3 },
 ]
 
 const messagesByThread: Record<string, ChatMessage[]> = {
@@ -75,6 +80,14 @@ const messagesByThread: Record<string, ChatMessage[]> = {
     { id: 'u4', role: 'user', text: 'Great, keep the hover understated.' },
     { id: 'a8', role: 'assistant', text: 'Confirmed. Hover remains low-intensity with no layout shift.' },
   ],
+  'thread-7': [
+    { id: 'a9', role: 'assistant', text: 'Codex-theme sidebar checks are in good shape for this pass.' },
+    { id: 'u9', role: 'user', text: 'Looks good, keep this one without diff counters.' },
+  ],
+  'thread-8': [
+    { id: 'a10', role: 'assistant', text: 'Personal-page card states updated with balanced hover contrast.' },
+    { id: 'u10', role: 'user', text: 'Nice, keep plus/minus visible for this task.' },
+  ],
 }
 
 const activeMessages = computed(() => messagesByThread[activeThreadId.value] || [])
@@ -91,6 +104,8 @@ const shellStyle = computed(() => ({
   '--ui-font-size': `${props.uiFontSize}px`,
   '--code-font-size': `${props.codeFontSize}px`,
   '--sidebar-bg': props.translucentSidebar ? 'rgba(9, 10, 12, 0.58)' : 'rgba(9, 10, 12, 0.9)',
+  '--wb-sidebar-width': `${sidebarWidth.value}px`,
+  '--wb-sidebar-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }))
 
 function startNewThread() {
@@ -101,6 +116,31 @@ function startNewThread() {
 function selectThread(id: string) {
   activeThreadId.value = id
   closeSidebarMobile()
+}
+
+function beginSidebarResize(event: MouseEvent) {
+  if (isSidebarCollapsed.value)
+    return
+
+  const startX = event.clientX
+  const startWidth = sidebarWidth.value
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+
+  function onMouseMove(moveEvent: MouseEvent) {
+    const delta = moveEvent.clientX - startX
+    sidebarWidth.value = Math.min(maxSidebarWidth, Math.max(minSidebarWidth, startWidth + delta))
+  }
+
+  function onMouseUp() {
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+    window.removeEventListener('mousemove', onMouseMove)
+    window.removeEventListener('mouseup', onMouseUp)
+  }
+
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('mouseup', onMouseUp)
 }
 </script>
 
@@ -120,6 +160,11 @@ function selectThread(id: string) {
             @toggle-collapsed="toggleSidebar"
           />
         </div>
+        <div
+          v-if="!isSidebarCollapsed"
+          class="sidebar-resize-handle"
+          @mousedown="beginSidebarResize"
+        />
 
         <section class="min-w-0 flex-1">
           <div class="flex items-stretch gap-2">
@@ -152,14 +197,21 @@ function selectThread(id: string) {
 
 <style scoped>
 .sidebar-column {
-  width: 286px;
+  width: var(--wb-sidebar-width);
   margin-right: 8px;
   flex-shrink: 0;
   position: relative;
   overflow: visible;
   transition:
-    width 260ms ease,
-    margin-right 220ms ease;
+    width 260ms var(--wb-sidebar-ease),
+    margin-right 220ms var(--wb-sidebar-ease);
+}
+
+.sidebar-resize-handle {
+  width: 8px;
+  margin-right: 8px;
+  cursor: col-resize;
+  background: transparent;
 }
 
 .sidebar-column--collapsed {
@@ -171,6 +223,10 @@ function selectThread(id: string) {
   .sidebar-column {
     width: 0;
     margin-right: 0;
+  }
+
+  .sidebar-resize-handle {
+    display: none;
   }
 }
 </style>

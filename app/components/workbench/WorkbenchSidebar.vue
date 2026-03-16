@@ -22,6 +22,7 @@ const emit = defineEmits<{
   toggleCollapsed: []
 }>()
 const { activeThreadId, collapsed, mobileOpen } = toRefs(props)
+const collapsedRepos = ref<Set<string>>(new Set())
 
 const groupedThreads = computed(() => {
   const groups: Array<{ repo: string, items: ThreadItem[] }> = []
@@ -34,6 +35,19 @@ const groupedThreads = computed(() => {
   }
   return groups
 })
+
+function isRepoCollapsed(repo: string) {
+  return collapsedRepos.value.has(repo)
+}
+
+function toggleRepo(repo: string) {
+  const next = new Set(collapsedRepos.value)
+  if (next.has(repo))
+    next.delete(repo)
+  else
+    next.add(repo)
+  collapsedRepos.value = next
+}
 </script>
 
 <template>
@@ -51,24 +65,24 @@ const groupedThreads = computed(() => {
     </div>
 
     <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7" @click="emit('newThread')">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13.5px] font-medium text-pureWhite/83 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7" @click="emit('newThread')">
         <Icon name="ph:note-pencil" class="h-[15px] w-[15px]" />
         <span class="sidebar-label truncate">New Thread</span>
       </button>
 
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13.5px] font-medium text-pureWhite/83 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
         <Icon name="ph:clock" class="h-[15px] w-[15px]" />
         <span class="sidebar-label truncate">Automations</span>
       </button>
 
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13.5px] font-medium text-pureWhite/83 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
         <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label truncate">Skills</span>
       </button>
 
-      <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-pureWhite/44 uppercase tracking-[0.12em]">
+      <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-pureWhite/38 uppercase tracking-[0.13em]">
         <span class="sidebar-label">Threads</span>
-        <div class="inline-flex items-center gap-1">
+        <div class="inline-flex items-center gap-2.5">
           <button class="inline-flex items-center justify-center border-none bg-transparent p-0 text-pureWhite/58 transition-colors hover:text-pureWhite/78">
             <Icon name="ph:folder-plus" class="h-[16px] w-[16px]" />
           </button>
@@ -79,26 +93,37 @@ const groupedThreads = computed(() => {
       </div>
 
       <div v-for="group in groupedThreads" :key="group.repo" class="mt-0.5 flex flex-col gap-[3px]">
-        <div class="inline-flex items-center gap-2 px-[10px] text-[12px] font-semibold text-pureWhite/76">
-          <Icon name="ph:folder-open" class="h-[15px] w-[15px]" />
-          <span>{{ group.repo }}</span>
-        </div>
-
-        <button
-          v-for="thread in group.items"
-          :key="thread.id"
-          class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[28px] text-left text-[12.5px] text-pureWhite/86 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
-          :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
-          @click="emit('selectThread', thread.id)"
-        >
-          <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
-          <span v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'" class="sidebar-label inline-flex items-center gap-1 font-[var(--font-code)] text-[11px]">
-            <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
-            <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+        <button class="group inline-flex w-full items-center justify-start gap-2 appearance-none border-none bg-transparent px-[10px] py-0 text-left text-[12.5px] font-semibold text-pureWhite/74 shadow-none outline-none" @click="toggleRepo(group.repo)">
+          <span class="relative inline-flex h-[15px] w-[15px] items-center justify-center">
+            <Icon
+              name="ph:folder-open"
+              class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
+            />
+            <Icon
+              :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
+              class="absolute h-[13px] w-[13px] text-pureWhite/66 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+            />
           </span>
-          <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
-          <span class="thread-dot" />
+          <span>{{ group.repo }}</span>
         </button>
+
+        <div class="repo-items" :class="isRepoCollapsed(group.repo) ? 'repo-items--collapsed' : 'repo-items--expanded'">
+          <button
+            v-for="thread in group.items"
+            :key="thread.id"
+            class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[30px] text-left text-[12.5px] text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
+            :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
+            @click="emit('selectThread', thread.id)"
+          >
+            <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
+            <span v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'" class="sidebar-label inline-flex items-center gap-1 font-[var(--font-code)] text-[11px]">
+              <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
+              <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+            </span>
+            <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+            <span class="thread-dot" />
+          </button>
+        </div>
       </div>
 
       <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
@@ -164,6 +189,31 @@ const groupedThreads = computed(() => {
   pointer-events: none;
 }
 
+.repo-items {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: hidden;
+  transform-origin: top;
+  transition:
+    max-height 230ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 160ms ease,
+    transform 230ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.repo-items--expanded {
+  max-height: 420px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.repo-items--collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+}
+
 .thread-row {
   justify-content: space-between;
 }
@@ -172,10 +222,11 @@ const groupedThreads = computed(() => {
   max-width: 62%;
   overflow: hidden;
   text-overflow: ellipsis;
+  transform: translateX(1px);
 }
 
 .thread-row__time {
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(255, 255, 255, 0.48);
   font-size: 11px;
 }
 
