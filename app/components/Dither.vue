@@ -1,11 +1,7 @@
-<template>
-  <div ref="containerRef" class="absolute left-0 top-0 h-full w-full pointer-events-none" />
-</template>
-
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
-import { Color, Mesh, Program, Renderer, Triangle } from 'ogl'
 import type { OGLRenderingContext } from 'ogl'
+import { Color, Mesh, Program, Renderer, Triangle } from 'ogl'
+import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 
 interface DitherProps {
   waveSpeed?: number
@@ -31,7 +27,25 @@ const props = withDefaults(defineProps<DitherProps>(), {
   mouseRadius: 1,
 })
 
+const emit = defineEmits<{
+  ready: []
+}>()
+
 const containerRef = useTemplateRef<HTMLDivElement>('containerRef')
+
+interface SharedSceneState {
+  renderer: Renderer | null
+  gl: OGLRenderingContext | null
+  program: Program | null
+  mesh: Mesh | null
+}
+
+const sharedScene: SharedSceneState = {
+  renderer: null,
+  gl: null,
+  program: null,
+  mesh: null,
+}
 
 let renderer: Renderer | null = null
 let gl: OGLRenderingContext | null = null
@@ -40,6 +54,8 @@ let mesh: Mesh | null = null
 let animationId: number | null = null
 let currentMouse = [0, 0]
 let targetMouse = [0, 0]
+let mouseListenersAttached = false
+let hasEmittedReady = false
 
 const vertexShader = `
 attribute vec2 position;
@@ -230,7 +246,7 @@ void main() {
 }
 `
 
-const resize = () => {
+function resize() {
   if (!containerRef.value || !renderer || !program)
     return
 
@@ -241,7 +257,7 @@ const resize = () => {
   program.uniforms.resolution.value[1] = clientHeight
 }
 
-const handleMouseMove = (e: MouseEvent) => {
+function handleMouseMove(e: MouseEvent) {
   if (!containerRef.value || !gl)
     return
 
@@ -256,13 +272,13 @@ const handleMouseMove = (e: MouseEvent) => {
   targetMouse = [x, y]
 }
 
-const handleMouseLeave = () => {
+function handleMouseLeave() {
   if (!gl)
     return
   targetMouse = [gl.canvas.width / 2, gl.canvas.height / 2]
 }
 
-const update = (t: number) => {
+function update(t: number) {
   if (!program || !renderer || !mesh)
     return
 
@@ -293,61 +309,80 @@ const update = (t: number) => {
   program.uniforms.pixelSize.value = props.pixelSize
 
   renderer.render({ scene: mesh })
+  if (!hasEmittedReady) {
+    hasEmittedReady = true
+    emit('ready')
+  }
   animationId = requestAnimationFrame(update)
 }
 
-const initializeScene = () => {
+function initializeScene() {
   if (!containerRef.value)
     return
 
-  cleanup()
+  if (sharedScene.renderer && sharedScene.gl && sharedScene.program && sharedScene.mesh) {
+    renderer = sharedScene.renderer
+    gl = sharedScene.gl
+    program = sharedScene.program
+    mesh = sharedScene.mesh
+  }
+  else {
+    renderer = new Renderer({ alpha: true })
+    gl = renderer.gl
+    gl.clearColor(0, 0, 0, 0)
+    gl.enable(gl.BLEND)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-  const container = containerRef.value
-  renderer = new Renderer({ alpha: true })
-  gl = renderer.gl
-  gl.clearColor(0, 0, 0, 0)
-  gl.enable(gl.BLEND)
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    const geometry = new Triangle(gl)
+    program = new Program(gl, {
+      vertex: vertexShader,
+      fragment: fragmentShader,
+      uniforms: {
+        time: { value: 0 },
+        resolution: { value: new Float32Array([gl.canvas.width, gl.canvas.height]) },
+        waveSpeed: { value: props.waveSpeed },
+        waveFrequency: { value: props.waveFrequency },
+        waveAmplitude: { value: props.waveAmplitude },
+        waveColor: { value: new Color(...props.waveColor) },
+        mousePos: { value: new Float32Array([gl.canvas.width / 2, gl.canvas.height / 2]) },
+        enableMouseInteraction: { value: props.enableMouseInteraction ? 1 : 0 },
+        mouseRadius: { value: props.mouseRadius },
+        colorNum: { value: props.colorNum },
+        pixelSize: { value: props.pixelSize },
+      },
+    })
 
-  const geometry = new Triangle(gl)
-  program = new Program(gl, {
-    vertex: vertexShader,
-    fragment: fragmentShader,
-    uniforms: {
-      time: { value: 0 },
-      resolution: { value: new Float32Array([gl.canvas.width, gl.canvas.height]) },
-      waveSpeed: { value: props.waveSpeed },
-      waveFrequency: { value: props.waveFrequency },
-      waveAmplitude: { value: props.waveAmplitude },
-      waveColor: { value: new Color(...props.waveColor) },
-      mousePos: { value: new Float32Array([gl.canvas.width / 2, gl.canvas.height / 2]) },
-      enableMouseInteraction: { value: props.enableMouseInteraction ? 1 : 0 },
-      mouseRadius: { value: props.mouseRadius },
-      colorNum: { value: props.colorNum },
-      pixelSize: { value: props.pixelSize },
-    },
-  })
+    mesh = new Mesh(gl, { geometry, program })
 
-  mesh = new Mesh(gl, { geometry, program })
+    sharedScene.renderer = renderer
+    sharedScene.gl = gl
+    sharedScene.program = program
+    sharedScene.mesh = mesh
+  }
 
   const canvas = gl.canvas as HTMLCanvasElement
   canvas.style.width = '100%'
   canvas.style.height = '100%'
   canvas.style.display = 'block'
 
-  container.appendChild(canvas)
+  if (canvas.parentElement !== containerRef.value) {
+    canvas.parentElement?.removeChild(canvas)
+    containerRef.value.appendChild(canvas)
+  }
 
   window.addEventListener('resize', resize)
-  if (props.enableMouseInteraction) {
-    window.addEventListener('mousemove', handleMouseMove)
+  if (props.enableMouseInteraction && !mouseListenersAttached) {
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('mouseleave', handleMouseLeave)
+    mouseListenersAttached = true
   }
 
   resize()
+  hasEmittedReady = false
   animationId = requestAnimationFrame(update)
 }
 
-const cleanup = () => {
+function cleanup() {
   if (animationId) {
     cancelAnimationFrame(animationId)
     animationId = null
@@ -355,22 +390,20 @@ const cleanup = () => {
 
   window.removeEventListener('resize', resize)
 
-  if (containerRef.value) {
-    const canvas = containerRef.value.querySelector('canvas')
-    if (canvas)
-      containerRef.value.removeChild(canvas)
+  if (mouseListenersAttached) {
+    window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('mouseleave', handleMouseLeave)
+    mouseListenersAttached = false
   }
 
-  window.removeEventListener('mousemove', handleMouseMove)
-  window.removeEventListener('mouseleave', handleMouseLeave)
+  if (containerRef.value && gl?.canvas.parentElement === containerRef.value) {
+    containerRef.value.removeChild(gl.canvas as HTMLCanvasElement)
+  }
 
-  if (gl)
-    gl.getExtension('WEBGL_lose_context')?.loseContext()
-
-  renderer = null
-  gl = null
-  program = null
-  mesh = null
+  renderer = sharedScene.renderer
+  gl = sharedScene.gl
+  program = sharedScene.program
+  mesh = sharedScene.mesh
   currentMouse = [0, 0]
   targetMouse = [0, 0]
 }
@@ -384,10 +417,22 @@ onUnmounted(() => {
 })
 
 watch(
-  () => props,
-  () => {
-    initializeScene()
+  () => props.enableMouseInteraction,
+  (enabled) => {
+    if (enabled && !mouseListenersAttached) {
+      window.addEventListener('mousemove', handleMouseMove, { passive: true })
+      window.addEventListener('mouseleave', handleMouseLeave)
+      mouseListenersAttached = true
+    }
+    else if (!enabled && mouseListenersAttached) {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseleave', handleMouseLeave)
+      mouseListenersAttached = false
+    }
   },
-  { deep: true },
 )
 </script>
+
+<template>
+  <div ref="containerRef" class="pointer-events-none absolute left-0 top-0 h-full w-full" />
+</template>
