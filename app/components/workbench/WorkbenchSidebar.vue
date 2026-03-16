@@ -85,9 +85,11 @@ const emit = defineEmits<{
 }
 
 .sidebar {
+  transform-origin: left center;
   transition:
     width 220ms ease,
     padding 180ms ease,
+    opacity 180ms ease,
     transform 220ms ease;
 }
 
@@ -95,6 +97,7 @@ const emit = defineEmits<{
   width: 100%;
   padding-inline: 7px;
   opacity: 0;
+  transform: translateX(-10px);
   pointer-events: none;
 }
 

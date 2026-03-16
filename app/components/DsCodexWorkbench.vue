@@ -158,7 +158,7 @@ function toggleSidebarMobile() {
         @toggle-pip="togglePip"
       />
 
-      <section class="mt-2 grid max-[1180px]:grid-cols-1" :class="isSidebarCollapsed ? 'grid-cols-[0_1fr] gap-0' : 'grid-cols-[auto_1fr] gap-2'">
+      <section class="mt-2 flex">
         <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
           <WorkbenchSidebar
             :threads="threadItems"
@@ -172,7 +172,7 @@ function toggleSidebarMobile() {
           />
         </div>
 
-        <section class="min-w-0">
+        <section class="min-w-0 flex-1">
           <div class="flex items-stretch gap-2">
             <WorkbenchMainStage :messages="activeMessages" />
             <DiffDrawer
@@ -204,18 +204,24 @@ function toggleSidebarMobile() {
 <style scoped>
 .sidebar-column {
   width: 286px;
-  transition: width 220ms ease;
+  margin-right: 8px;
   overflow: hidden;
+  transition:
+    width 260ms ease,
+    margin-right 220ms ease;
+  will-change: width, margin-right;
 }
 
 .sidebar-column--collapsed {
   width: 0;
+  margin-right: 0;
 }
 
 @media (max-width: 1180px) {
   .sidebar-column,
   .sidebar-column--collapsed {
     width: 0;
+    margin-right: 0;
   }
 }
 </style>
