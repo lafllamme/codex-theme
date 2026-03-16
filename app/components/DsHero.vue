@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Motion } from 'motion-v'
 import { computed } from 'vue'
 
 type HeroVariant = 'tight' | 'typo' | 'grid'
@@ -43,24 +42,18 @@ const heroHeadlineBottom = computed(() => heroHeadline.value.split('\n')[1] || '
 
 const headerWrapClass = computed(() =>
   props.variant === 'grid'
-    ? 'pointer-events-auto absolute left-0 top-5 z-1 h-[60px] w-full sm:top-6'
+    ? 'pointer-events-auto absolute left-0 top-5 z-1 h-[52px] w-full sm:top-6 sm:h-[60px]'
     : props.variant === 'typo'
-      ? 'pointer-events-auto absolute left-0 top-3 z-1 h-[60px] w-full sm:top-4'
-      : 'pointer-events-auto absolute left-0 top-7 z-1 h-[60px] w-full sm:top-8',
+      ? 'pointer-events-auto absolute left-0 top-16 z-1 h-[52px] w-full sm:top-4 sm:h-[60px]'
+      : 'pointer-events-auto absolute left-0 top-7 z-1 h-[52px] w-full sm:top-8 sm:h-[60px]',
 )
 </script>
 
 <template>
   <div class="pointer-events-none absolute inset-0 select-none">
-    <Motion
-      as="div"
-      :class="headerWrapClass"
-      :initial="{ opacity: 0, y: -28 }"
-      :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.38, easing: 'easeOut', delay: 0.02 }"
-    >
+    <div :class="headerWrapClass">
       <DsHeader />
-    </Motion>
+    </div>
 
     <div
       v-if="variant === 'tight'"
@@ -101,47 +94,23 @@ const headerWrapClass = computed(() =>
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto grid h-full w-full max-w-[1320px] grid-cols-1 items-start gap-9 px-6 pt-26 pb-16 md:grid-cols-12 md:gap-8 md:pr-8 md:pt-30 lg:gap-12"
+      class="mx-auto grid h-full w-full max-w-[1320px] grid-cols-1 items-start gap-7 px-4 pt-32 pb-12 sm:gap-9 sm:px-6 sm:pt-26 sm:pb-16 md:grid-cols-12 md:gap-8 md:pr-8 md:pt-30 lg:gap-12"
     >
       <div class="w-full text-center md:col-span-8 md:text-left">
-        <Motion
-          as="p"
-          class="font-geist-mono-500 mb-3 text-[11px] text-pureWhite/58 tracking-[0.18em] uppercase"
-          :initial="{ opacity: 0, y: 18, filter: 'blur(12px)' }"
-          :animate="{ opacity: 1, y: 0, filter: 'blur(0px)' }"
-          :transition="{ duration: 0.5, easing: 'easeOut', delay: 0.12 }"
-        >
+        <p class="font-geist-mono-500 mb-3 text-[11px] text-pureWhite/58 tracking-[0.18em] uppercase">
           Tokens · Preview · Export
-        </Motion>
+        </p>
 
-        <Motion
-          as="h1"
-          class="font-geist-800 w-fit max-w-full text-[clamp(3.1rem,6.3vw,6.2rem)] text-white leading-[0.9] tracking-[-0.024em]"
-          :initial="{ opacity: 0, y: 24, filter: 'blur(14px)' }"
-          :animate="{ opacity: 1, y: 0, filter: 'blur(0px)' }"
-          :transition="{ duration: 0.56, easing: 'easeOut', delay: 0.2 }"
-        >
-          <span class="block whitespace-nowrap">{{ heroHeadlineTop }}</span>
-          <span class="block whitespace-nowrap">{{ heroHeadlineBottom }}</span>
-        </Motion>
+        <h1 class="font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
+          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
+          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
+        </h1>
 
-        <Motion
-          as="p"
-          class="font-geist-400 mt-10 max-w-[56ch] text-[15px] text-pureWhite/74 leading-[1.5] md:text-[19px]"
-          :initial="{ opacity: 0, y: 14, filter: 'blur(8px)' }"
-          :animate="{ opacity: 1, y: 0, filter: 'blur(0px)' }"
-          :transition="{ duration: 0.46, easing: 'easeOut', delay: 0.32 }"
-        >
+        <p class="font-geist-400 mt-7 max-w-[56ch] text-[14px] text-pureWhite/74 leading-[1.45] sm:mt-10 sm:text-[15px] sm:leading-[1.5] md:text-[19px]">
           {{ body }}
-        </Motion>
+        </p>
 
-        <Motion
-          as="div"
-          class="mt-12 flex flex-wrap items-center justify-center gap-3 md:justify-start"
-          :initial="{ opacity: 0, y: 12 }"
-          :animate="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.42, easing: 'easeOut', delay: 0.42 }"
-        >
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-12 md:justify-start">
           <NuxtLink
             to="/themes"
             class="font-geist-600 pointer-events-auto inline-flex items-center justify-center rounded-[999px] border border-white/90 bg-[rgba(255,255,255,0.98)] px-6 py-2.5 text-[13px] !text-[rgba(0,0,0,0.92)] no-underline shadow-[0_8px_20px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[rgba(255,255,255,0.92)] hover:!text-[rgba(0,0,0,0.92)] sm:px-8 sm:text-[14px]"
@@ -156,18 +125,12 @@ const headerWrapClass = computed(() =>
           >
             {{ secondCtaText }}
           </DsGlassSurface>
-        </Motion>
+        </div>
       </div>
 
-      <Motion
-        as="div"
-        class="md:col-span-4"
-        :initial="{ opacity: 0, y: 22 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 0.52, easing: 'easeOut', delay: 0.28 }"
-      >
+      <div class="md:col-span-4">
         <DsGlassSurface
-          class="pointer-events-auto w-full max-w-[480px] self-start rounded-[24px] p-4 md:ml-auto md:p-5"
+          class="pointer-events-auto box-border mx-auto w-full max-w-full min-w-0 self-start overflow-hidden rounded-[22px] p-4 sm:rounded-[24px] md:ml-auto md:max-w-[480px] md:p-5"
         >
           <div class="rounded-[14px] border border-white/10 bg-black/18 px-3.5 py-2">
             <NativeTypewriter
@@ -219,7 +182,7 @@ const headerWrapClass = computed(() =>
             </div>
           </div>
         </DsGlassSurface>
-      </Motion>
+      </div>
     </div>
 
     <div

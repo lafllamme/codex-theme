@@ -3,14 +3,16 @@ definePageMeta({
   layout: 'default',
 })
 
+const route = useRoute()
 const controls = useDitherControls()
 const controlsOpen = ref(false)
+const controlsEnabled = computed(() => route.query.controls === '1')
 </script>
 
 <template>
-  <main class="p-4 sm:p-6 lg:p-8">
-    <section class="relative mx-auto min-h-[88vh] max-w-[1600px] overflow-visible border border-white/8 rounded-[30px]">
-      <div class="relative z-10 min-h-[88vh]">
+  <main class="p-0 sm:p-6 lg:p-8">
+    <section class="relative mx-auto min-h-screen w-full max-w-[1600px] overflow-hidden border-0 rounded-none sm:min-h-[88vh] sm:overflow-visible sm:border sm:border-white/8 sm:rounded-[30px]">
+      <div class="relative z-10 min-h-screen sm:min-h-[88vh]">
         <DsHero
           variant="typo"
           headline="Codex Theme Studio"
@@ -21,16 +23,20 @@ const controlsOpen = ref(false)
       </div>
     </section>
 
+    <GithubStarsButton username="imskyleen" repo="animate-ui" />
+
     <button
-      class="font-geist-500 fixed top-4 right-4 z-30 inline-flex items-center justify-center rounded-[999px] border border-white/90 !bg-white px-7 py-2.5 text-[13px] !text-black no-underline shadow-[0_8px_22px_rgba(0,0,0,0.22)] transition-all hover:-translate-y-0.5 hover:!bg-white/92 sm:top-6 sm:right-6 sm:px-9 sm:py-3 sm:text-[14px]"
+      v-if="controlsEnabled"
+      class="font-geist-500 fixed top-18 right-4 z-30 inline-flex items-center justify-center rounded-[999px] border border-white/90 !bg-white px-7 py-2.5 text-[13px] !text-black no-underline shadow-[0_8px_22px_rgba(0,0,0,0.22)] transition-all hover:-translate-y-0.5 hover:!bg-white/92 sm:top-20 sm:right-6 sm:px-9 sm:py-3 sm:text-[14px]"
       @click="controlsOpen = !controlsOpen"
     >
       {{ controlsOpen ? 'Hide Controls' : 'Show Controls' }}
     </button>
 
     <aside
+      v-if="controlsEnabled"
       v-show="controlsOpen"
-      class="fixed top-16 right-4 z-20 w-[286px] border border-white/11 rounded-2xl bg-black/68 p-3.5 backdrop-blur-xl shadow-[0_24px_50px_rgba(0,0,0,0.45)] sm:top-18 sm:right-6"
+      class="fixed top-30 right-4 z-20 w-[286px] border border-white/11 rounded-2xl bg-black/68 p-3.5 backdrop-blur-xl shadow-[0_24px_50px_rgba(0,0,0,0.45)] sm:top-32 sm:right-6"
     >
       <p class="font-geist-500 text-[11px] text-pureWhite/75 tracking-[0.14em] uppercase">
         Dither Control Center

@@ -16,15 +16,15 @@ interface DitherProps {
 }
 
 const props = withDefaults(defineProps<DitherProps>(), {
-  waveSpeed: 0.05,
-  waveFrequency: 3,
-  waveAmplitude: 0.3,
-  waveColor: () => [0.5, 0.5, 0.5] as [number, number, number],
+  waveSpeed: 0.1,
+  waveFrequency: 2.5,
+  waveAmplitude: 0.2,
+  waveColor: () => [0.1, 0.7, 0.5] as [number, number, number],
   colorNum: 4,
-  pixelSize: 2,
+  pixelSize: 3,
   disableAnimation: false,
   enableMouseInteraction: true,
-  mouseRadius: 1,
+  mouseRadius: 0.5,
 })
 
 const emit = defineEmits<{
