@@ -5,6 +5,7 @@ import {
   presetMini,
   presetTypography,
   presetUno,
+  presetWebFonts,
   presetWind,
 } from 'unocss'
 import presetAnimations from 'unocss-preset-animations'
@@ -18,6 +19,11 @@ export const presets = [
   presetIcons(),
   presetTypography(),
   animatedUno(),
+  presetWebFonts({
+    fonts: {
+      // ...
+    },
+  }),
   presetRadix({
     darkSelector: ':root',
     lightSelector: '.light',

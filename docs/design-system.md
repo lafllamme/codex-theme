@@ -4,7 +4,17 @@
 - Typography: `Geist` (UI and body), `Geist Mono` (hero, code-like labels, numeric values)
 - Color direction: primär schwarz/dunkel (`#050607` / near-black surfaces)
 - Accent color: `mint` (Radix `mint*` tokens) for highlights, focus, CTA emphasis
-- Surface style: glass + blur overlays (`bg-black/..`, `backdrop-blur-*`, thin translucent borders)
+- Surface style: glass + blur overlays (`bg-pureBlack/..`, `backdrop-blur-*`, thin translucent borders)
+
+## Uno Color Tokens
+- `pureWhite` maps to `#fff`
+- `pureBlack` maps to `#000`
+- Use these in Uno classes with opacity suffixes:
+- `text-pureWhite/90`
+- `color-pureWhite/90`
+- `bg-pureBlack/70`
+- `border-pureWhite/20`
+- Fallback rules are enabled so `text-*`, `color-*`, `bg-*`, and `border-*` with `pureWhite/pureBlack` all resolve consistently.
 
 ## Visual Rules
 - Dark-first UI. Light mode is secondary.
