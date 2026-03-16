@@ -145,9 +145,9 @@ function beginSidebarResize(event: MouseEvent) {
 </script>
 
 <template>
-  <section class="grid gap-0 font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
-    <section class="rounded-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
-      <section class="relative flex">
+  <section class="grid min-h-screen gap-0 font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
+    <section class="flex min-h-0 flex-1 flex-col rounded-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
+      <section class="relative flex min-h-0 flex-1">
         <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
           <WorkbenchSidebar
             :threads="threadItems"
@@ -166,8 +166,8 @@ function beginSidebarResize(event: MouseEvent) {
           @mousedown="beginSidebarResize"
         />
 
-        <section class="min-w-0 flex-1">
-          <div class="flex items-stretch gap-2">
+        <section class="min-h-0 min-w-0 flex flex-1 flex-col">
+          <div class="flex min-h-0 min-w-0 w-full flex-1 items-stretch gap-2">
             <WorkbenchMainStage :messages="activeMessages" />
             <DiffDrawer
               :open="isDiffOpen"
@@ -198,6 +198,9 @@ function beginSidebarResize(event: MouseEvent) {
 <style scoped>
 .sidebar-column {
   width: var(--wb-sidebar-width);
+  height: 100%;
+  min-height: 0;
+  display: flex;
   margin-right: 8px;
   flex-shrink: 0;
   position: relative;

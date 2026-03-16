@@ -11,10 +11,16 @@ defineProps<{
 </script>
 
 <template>
-  <main class="grid min-h-[480px] grid-rows-[auto_1fr] gap-2 rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)] p-2 max-[1180px]:min-h-[420px]">
+  <main class="grid h-full min-h-[480px] min-w-0 flex-1 grid-rows-[auto_auto_1fr] gap-2 rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)] p-2 max-[1180px]:min-h-[420px]">
     <header class="flex justify-end">
       <CommitChip />
     </header>
+
+    <div class="flex items-center gap-3 px-1 text-[12px] text-pureWhite/52">
+      <span class="h-px flex-1 bg-pureWhite/10" />
+      <span class="font-medium">5m 56s lang bearbeitet</span>
+      <span class="h-px flex-1 bg-pureWhite/10" />
+    </div>
 
     <section class="min-h-[380px] rounded-[var(--wb-r-md)] border border-[var(--wb-border-1)] bg-[color-mix(in_srgb,var(--theme-surface)_91%,black_9%)] p-2.5">
       <div class="flex flex-col gap-2.5">

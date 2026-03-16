@@ -52,7 +52,7 @@ function toggleRepo(repo: string) {
 
 <template>
   <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] bg-[rgba(8,10,14,0.42)] p-[7px] text-pureWhite/86 backdrop-blur-[14px]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
+  <aside class="sidebar flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] bg-[rgba(8,10,14,0.42)] p-[7px] text-pureWhite/86 backdrop-blur-[14px]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
     <div class="mb-[2px] flex items-center justify-between px-[2px]">
       <div class="inline-flex items-center gap-[7px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
@@ -175,10 +175,12 @@ function toggleRepo(repo: string) {
 .sidebar-content {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-height: 0;
   gap: 7px;
   width: 100%;
   transform-origin: left center;
-  overflow: hidden;
+  overflow-x: hidden;
   transition:
     width 260ms ease,
     opacity 220ms ease,
@@ -189,12 +191,14 @@ function toggleRepo(repo: string) {
   width: 100%;
   opacity: 1;
   transform: translateX(0);
+  overflow-y: auto;
 }
 
 .sidebar-content--collapsed {
   width: 0;
   opacity: 0;
   transform: translateX(-12px);
+  overflow-y: hidden;
   pointer-events: none;
 }
 
