@@ -9,9 +9,9 @@ export function useDitherControls() {
   const colorNum = useState<number>('dither-color-num', () => 4)
   const pixelSize = useState<number>('dither-pixel-size', () => 3)
   const mouseRadius = useState<number>('dither-mouse-radius', () => 0.5)
-  const waveColorR = useState<number>('dither-wave-color-r', () => 0.1)
-  const waveColorG = useState<number>('dither-wave-color-g', () => 0.7)
-  const waveColorB = useState<number>('dither-wave-color-b', () => 0.5)
+  const waveColorR = useState<number>('dither-wave-color-r', () => 0.05)
+  const waveColorG = useState<number>('dither-wave-color-g', () => 0.78)
+  const waveColorB = useState<number>('dither-wave-color-b', () => 0.62)
 
   return {
     enableMouseInteraction,

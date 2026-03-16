@@ -16,6 +16,7 @@ const controls = useDitherControls()
         :enable-mouse-interaction="controls.enableMouseInteraction.value"
         :mouse-radius="controls.mouseRadius.value"
       />
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(0,0,0,0.04),rgba(0,0,0,0.24)_46%,rgba(0,0,0,0.44)_100%)]" />
     </div>
 
     <div class="relative z-10">
