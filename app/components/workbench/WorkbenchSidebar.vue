@@ -25,14 +25,14 @@ const emit = defineEmits<{
 
 <template>
   <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-white/[0.09] bg-[rgba(10,12,16,0.48)] p-[7px] backdrop-blur-[14px]" :class="mobileOpen ? 'sidebar--mobile-open' : ''">
+  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-white/[0.09] bg-[rgba(10,12,16,0.48)] p-[7px] backdrop-blur-[14px]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
     <div class="mb-[2px] flex items-center justify-between px-[2px]">
       <div class="inline-flex items-center gap-[7px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <button class="inline-flex h-6 w-6 items-center justify-center rounded-[7px] text-white/[0.5] transition-colors hover:text-white/[0.82]" @click="emit('toggleCollapsed')">
+      <button class="inline-flex h-6 w-6 items-center justify-center appearance-none border-none bg-transparent p-0 text-pureWhite/46 shadow-none outline-none transition-colors hover:text-pureWhite/74" @click="emit('toggleCollapsed')">
         <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
       </button>
     </div>
@@ -96,6 +96,22 @@ const emit = defineEmits<{
 
 .sidebar {
   gap: 7px;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    backdrop-filter 180ms ease;
+}
+
+.sidebar--collapsed-shell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  border-color: transparent;
+  background: transparent;
+  backdrop-filter: none;
+  padding-inline: 4px;
+  z-index: 2;
 }
 
 .sidebar-label {
@@ -106,24 +122,25 @@ const emit = defineEmits<{
   display: flex;
   flex-direction: column;
   gap: 7px;
-  transform-origin: left top;
+  width: 100%;
+  transform-origin: left center;
   overflow: hidden;
   transition:
-    max-height 260ms ease,
+    width 260ms ease,
     opacity 220ms ease,
     transform 260ms ease;
 }
 
 .sidebar-content--expanded {
-  max-height: 1000px;
+  width: 100%;
   opacity: 1;
-  transform: translateX(0) scaleX(1);
+  transform: translateX(0);
 }
 
 .sidebar-content--collapsed {
-  max-height: 0;
+  width: 0;
   opacity: 0;
-  transform: translateX(-10px) scaleX(0.97);
+  transform: translateX(-12px);
   pointer-events: none;
 }
 
@@ -156,6 +173,15 @@ const emit = defineEmits<{
 }
 
 @media (max-width: 1180px) {
+  .sidebar--collapsed-shell {
+    position: fixed;
+    width: min(82vw, 320px);
+    border-color: rgba(255, 255, 255, 0.09);
+    background: rgba(10, 12, 16, 0.48);
+    backdrop-filter: blur(14px);
+    padding-inline: 7px;
+  }
+
   .sidebar-backdrop {
     display: block;
     position: fixed;
@@ -188,7 +214,7 @@ const emit = defineEmits<{
   }
 
   .sidebar-content--collapsed {
-    max-height: 0;
+    width: 0;
   }
 }
 </style>

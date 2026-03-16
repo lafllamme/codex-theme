@@ -106,26 +106,9 @@ function selectThread(id: string) {
 
 <template>
   <section class="grid gap-0 font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
-    <header class="flex h-[30px] items-center justify-between rounded-t-[var(--wb-r-xl)] border border-b-0 border-[var(--wb-border-1)] bg-[rgba(10,12,16,0.46)] px-3 text-[12px] backdrop-blur-[14px] max-[1180px]:hidden">
-      <div class="inline-flex items-center gap-3">
-        <span class="opacity-90"></span>
-        <span class="font-semibold opacity-90">Codex</span>
-        <span class="opacity-90">File</span>
-        <span class="opacity-90">Edit</span>
-        <span class="opacity-90">View</span>
-        <span class="opacity-90">Window</span>
-        <span class="opacity-90">Help</span>
-      </div>
-      <div class="inline-flex items-center gap-3">
-        <Icon name="ph:wifi-high-bold" class="h-3 w-3" />
-        <Icon name="ph:battery-full-bold" class="h-3 w-3" />
-        <Icon name="ph:clock-bold" class="h-3 w-3" />
-      </div>
-    </header>
-
-    <section class="rounded-b-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
-      <section class="flex">
-        <div class="sidebar-column">
+    <section class="rounded-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
+      <section class="relative flex">
+        <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
           <WorkbenchSidebar
             :threads="threadItems"
             :active-thread-id="activeThreadId"
@@ -172,6 +155,16 @@ function selectThread(id: string) {
   width: 286px;
   margin-right: 8px;
   flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+  transition:
+    width 260ms ease,
+    margin-right 220ms ease;
+}
+
+.sidebar-column--collapsed {
+  width: 0;
+  margin-right: 0;
 }
 
 @media (max-width: 1180px) {
