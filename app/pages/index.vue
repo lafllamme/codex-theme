@@ -4,7 +4,7 @@ definePageMeta({
 })
 
 const controls = useDitherControls()
-const controlsOpen = ref(true)
+const controlsOpen = ref(false)
 </script>
 
 <template>
