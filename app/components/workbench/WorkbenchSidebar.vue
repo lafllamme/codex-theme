@@ -111,14 +111,16 @@ function toggleRepo(repo: string) {
           <button
             v-for="thread in group.items"
             :key="thread.id"
-            class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[30px] text-left text-[12.5px] text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
+            class="thread-row min-h-[34px] grid grid-cols-[minmax(0,1fr)_62px_66px] items-center gap-[6px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[30px] text-left text-[12.5px] text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
             :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
             @click="emit('selectThread', thread.id)"
           >
             <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
-            <span v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'" class="sidebar-label inline-flex items-center gap-1 font-[var(--font-code)] text-[11px]">
-              <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
-              <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+            <span class="thread-row__delta sidebar-label inline-flex items-center justify-end gap-[2px] font-[var(--font-code)] text-[11px]">
+              <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
+                <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
+                <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+              </template>
             </span>
             <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
             <span class="thread-dot" />
@@ -219,15 +221,22 @@ function toggleRepo(repo: string) {
 }
 
 .thread-row__title {
-  max-width: 62%;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   transform: translateX(1px);
 }
 
+.thread-row__delta {
+  min-height: 1em;
+  text-align: right;
+}
+
 .thread-row__time {
   color: rgba(255, 255, 255, 0.48);
   font-size: 11px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .thread-dot {
