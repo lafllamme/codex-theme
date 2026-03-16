@@ -8,7 +8,7 @@ interface DsHeroProps {
 
 withDefaults(defineProps<DsHeroProps>(), {
   headline: 'Codex Theme Generator',
-  body: 'Create, preview, and export Codex themes with live tokens, instant contrast checks, and ready-to-share presets.',
+  body: 'Design, preview, and ship signature Codex themes in minutes with live tokens, instant contrast scoring, and one-click exports.',
   mainCtaText: 'Get Started',
   secondCtaText: 'Learn More',
 })
@@ -16,24 +16,24 @@ withDefaults(defineProps<DsHeroProps>(), {
 
 <template>
   <div class="pointer-events-none absolute inset-0 select-none">
-    <div class="pointer-events-auto absolute left-0 top-5 z-1 h-[60px] w-full sm:top-6">
+    <div class="pointer-events-auto absolute left-0 top-7 z-1 h-[60px] w-full sm:top-8">
       <DsHeader />
     </div>
 
-    <div class="mx-auto flex h-full w-full max-w-[1180px] flex-col items-center justify-center px-4 pt-28 pb-8 text-center sm:pt-30 sm:pb-10">
+    <div class="mx-auto flex h-full w-full max-w-[1180px] flex-col items-center justify-center px-4 pt-20 pb-8 text-center sm:pt-22 sm:pb-10">
       <h1
-        class="font-geist-700 text-white max-w-4xl text-[clamp(2.9rem,6.1vw,6.35rem)] leading-[0.96]"
+        class="font-geist-700 text-white max-w-4xl text-[clamp(3.2rem,6.8vw,6.9rem)] leading-[0.94]"
       >
         Codex Theme
         <br>
         Generator
       </h1>
 
-      <p class="font-geist-400 text-white/76 mt-7 max-w-[64ch] text-[15px] leading-relaxed sm:text-[18px]">
+      <p class="font-geist-400 text-white/76 mt-6 max-w-[64ch] text-[15px] leading-relaxed sm:text-[18px]">
         {{ body }}
       </p>
 
-      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
         <NuxtLink
           to="/themes"
           class="border-white/90 font-geist-500 pointer-events-auto border rounded-[50px] bg-[rgba(255,255,255,0.98)] px-6 py-2 text-[12px] no-underline shadow-[0_8px_22px_rgba(0,0,0,0.24)] transition-all duration-200 ease-in-out hover:translate-y-[-1px] hover:bg-[rgba(255,255,255,0.92)] md:px-10 md:py-3 md:text-[14px] !text-[rgba(0,0,0,0.92)]"
