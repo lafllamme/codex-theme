@@ -7,25 +7,25 @@ defineProps<{
 </script>
 
 <template>
-  <section class="terminal-drawer" :class="open ? 'terminal-drawer--open' : ''">
-    <header class="drawer-head">
+  <section class="terminal-drawer mt-2 overflow-hidden rounded-[var(--wb-r-md)] border border-[var(--wb-border-1)] bg-[rgba(8,9,11,0.95)]" :class="open ? 'terminal-drawer--open' : ''">
+    <header class="flex h-[34px] items-center justify-between border-b border-[var(--wb-border-2)] px-3 text-[12px] text-white/[0.82]">
       <span>Terminal</span>
-      <span class="drawer-meta">local</span>
+      <span class="font-[var(--font-code)] opacity-[0.62]">local</span>
     </header>
-    <div class="terminal-body">
-      <p class="term-line">
-        <span class="term-dim">$</span> pnpm dev
+    <div class="flex flex-col gap-2 p-[10px_12px_12px] font-[var(--font-code)] text-[var(--code-font-size)]">
+      <p class="m-0 leading-[1.5]">
+        <span class="opacity-[0.65]">$</span> pnpm dev
       </p>
-      <p class="term-line">
-        <span class="term-info">info</span> Nuxt ready at http://localhost:3000
+      <p class="m-0 leading-[1.5]">
+        <span class="text-[#59a8ff]">info</span> Nuxt ready at http://localhost:3000
       </p>
-      <p class="term-line">
-        <span class="term-add">+ added</span> app/components/workbench/TerminalDrawer.vue
+      <p class="m-0 leading-[1.5]">
+        <span class="text-[var(--theme-added)]">+ added</span> app/components/workbench/TerminalDrawer.vue
       </p>
-      <p class="term-line">
-        <span class="term-del">- removed</span> old/theme-panel.vue
+      <p class="m-0 leading-[1.5]">
+        <span class="text-[var(--theme-removed)]">- removed</span> old/theme-panel.vue
       </p>
-      <p class="term-line">
+      <p class="m-0 leading-[1.5]">
         contrast: {{ contrast }} · opaqueWindows: {{ opaqueWindows }}
       </p>
     </div>
@@ -34,11 +34,6 @@ defineProps<{
 
 <style scoped>
 .terminal-drawer {
-  margin-top: 8px;
-  border: 1px solid var(--wb-border-1);
-  border-radius: var(--wb-r-md);
-  background: rgba(8, 9, 11, 0.95);
-  overflow: hidden;
   max-height: 0;
   opacity: 0;
   transform: translateY(12px);
@@ -53,41 +48,6 @@ defineProps<{
   opacity: 1;
   transform: translateY(0);
 }
-
-.drawer-head {
-  height: 34px;
-  border-bottom: 1px solid var(--wb-border-2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 12px;
-}
-
-.drawer-meta {
-  font-family: var(--font-code);
-  opacity: 0.62;
-}
-
-.terminal-body {
-  padding: 10px 12px 12px;
-  font-family: var(--font-code);
-  font-size: var(--code-font-size);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.term-line {
-  margin: 0;
-  line-height: 1.5;
-}
-
-.term-dim { opacity: 0.65; }
-.term-info { color: #59a8ff; }
-.term-add { color: var(--theme-added); }
-.term-del { color: var(--theme-removed); }
 
 @media (max-width: 1180px) {
   .terminal-drawer {

@@ -11,20 +11,19 @@ defineProps<{
 </script>
 
 <template>
-  <main class="chat-window">
-    <header class="chat-header">
-      <button class="commit-pill">
-        commit
-      </button>
+  <main class="grid min-h-[480px] grid-rows-[auto_1fr] gap-2 rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)] p-2 max-[1180px]:min-h-[420px]">
+    <header class="flex justify-end">
+      <CommitChip />
     </header>
 
-    <section class="view-stage">
-      <div class="history-view">
+    <section class="min-h-[380px] rounded-[var(--wb-r-md)] border border-[var(--wb-border-1)] bg-[color-mix(in_srgb,var(--theme-surface)_91%,black_9%)] p-2.5">
+      <div class="flex flex-col gap-2.5">
         <article
           v-for="message in messages"
           :key="message.id"
-          class="chat-bubble"
-          :class="message.role === 'user' ? 'chat-bubble--user' : 'chat-bubble--assistant'"
+          class="max-w-[84%] whitespace-pre-line rounded-[12px] border border-[var(--wb-border-2)] p-[12px_14px] leading-[1.45]"
+          :class="message.role === 'user' ? 'self-end bg-white/[0.02]' : 'bg-white/[0.04]'"
+          :style="message.role === 'user' ? { borderColor: 'color-mix(in srgb, var(--theme-accent) 42%, rgba(255, 255, 255, 0.14))' } : undefined"
         >
           {{ message.text }}
         </article>
@@ -32,70 +31,3 @@ defineProps<{
     </section>
   </main>
 </template>
-
-<style scoped>
-.chat-window {
-  border: 1px solid var(--wb-border-1);
-  border-radius: var(--wb-r-lg);
-  background: var(--wb-panel-bg-1);
-  padding: 8px;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 8px;
-  min-height: 480px;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.commit-pill {
-  height: 42px;
-  padding: 0 16px;
-  border-radius: 11px;
-  border: 1px solid var(--wb-border-2);
-  background: rgba(255, 255, 255, 0.03);
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 15px;
-}
-
-.view-stage {
-  border: 1px solid var(--wb-border-1);
-  border-radius: var(--wb-r-md);
-  background: color-mix(in srgb, var(--theme-surface) 91%, black 9%);
-  min-height: 380px;
-  padding: 10px;
-}
-
-.history-view {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.chat-bubble {
-  max-width: 84%;
-  border-radius: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--wb-border-2);
-  white-space: pre-line;
-  line-height: 1.45;
-}
-
-.chat-bubble--assistant {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.chat-bubble--user {
-  align-self: flex-end;
-  background: rgba(255, 255, 255, 0.02);
-  border-color: color-mix(in srgb, var(--theme-accent) 42%, rgba(255, 255, 255, 0.14));
-}
-
-@media (max-width: 1180px) {
-  .chat-window {
-    min-height: 420px;
-  }
-}
-</style>

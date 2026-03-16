@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CODEX_PATH, CODEX_VIEWBOX, THEME_STUDIO_PATH, THEME_STUDIO_VIEWBOX } from '~/data/heroHeadlinePaths'
 import { computed } from 'vue'
 
 type HeroVariant = 'tight' | 'typo' | 'grid'
@@ -105,10 +106,15 @@ const headerWrapClass = computed(() =>
           />
         </div>
 
-        <h1 class="font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
-          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
-          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
-        </h1>
+        <HeroHeadlineDraw
+          :line1="heroHeadlineTop"
+          :line2="heroHeadlineBottom"
+          :path-line1="CODEX_PATH"
+          :path-line2="THEME_STUDIO_PATH"
+          :view-box1="CODEX_VIEWBOX"
+          :view-box2="THEME_STUDIO_VIEWBOX"
+          :duration="1600"
+        />
 
         <p class="font-geist-400 mt-7 max-w-[56ch] text-[14px] text-pureWhite/74 leading-[1.45] sm:mt-10 sm:text-[15px] sm:leading-[1.5] md:text-[19px]">
           {{ body }}

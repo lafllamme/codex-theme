@@ -1,19 +1,9 @@
-# Codex Theme App
+# Codex Theme App (Legacy Note)
 
-## Ziel
-Wir bauen eine Nuxt-Anwendung, mit der Codex-Themes visuell entwickelt, getestet und direkt exportiert werden können.
+This file is legacy context.
 
-## Was die App können soll
-- Live-Preview: Zeigt sofort, wie ein Theme in typischen Codex-Flächen wirkt (Panels, Cards, Controls, Diff/Code-Bereiche).
-- Theme-Konfiguration: Farben, Kontrast, Semantik und weitere Theme-Werte direkt im UI anpassen.
-- Import/Export: `codex-theme-v1` einfügen, bearbeiten und wieder ausgeben.
-- Download: Theme als JSON und optional als JS-Datei herunterladen.
+Use current docs:
 
-## Tech-Setup
-- Nuxt 4
-- UnoCSS
-- `unocss-preset-radix` für Farbskalen
-- `@nuxt/icon` für Icon-Previews
-
-## Ergebnis
-Ein schneller Theme-Playground für Codex: konfigurieren, previewen, exportieren, teilen.
+- Docs hub: `docs/README.md`
+- Clone roadmap: `docs/clone-roadmap.md`
+- Theme schema: `docs/theme-schema.md`
