@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type CardItem = {
+interface CardItem {
   id: string
   title: string
   value: string
@@ -12,21 +12,21 @@ const cards: CardItem[] = [
     id: 'velocity',
     title: 'Build Velocity',
     value: '+24%',
-    note: 'Compared to last week',
+    note: 'Steady delivery over 7 days',
     icon: 'ph:rocket-launch',
   },
   {
     id: 'quality',
     title: 'Theme Quality',
     value: 'AA/AAA',
-    note: 'Contrast checks passing',
+    note: 'Contrast and semantic checks stable',
     icon: 'ph:check-circle',
   },
   {
     id: 'tokens',
     title: 'Active Tokens',
     value: '56',
-    note: 'Teal colorway configured',
+    note: 'Radix scales mapped and available',
     icon: 'ph:coins',
   },
 ]
@@ -37,24 +37,27 @@ const cards: CardItem[] = [
     <article
       v-for="item in cards"
       :key="item.id"
-      class="panel-shell rounded-2xl p-4 shadow-sm transition-transform duration-200 ease-out hover:-translate-y-0.5"
+      class="border border-[var(--un-preset-radix-slate6)] rounded-2xl bg-[#090b0d] p-5 transition-all duration-200 hover:border-[var(--un-preset-radix-mint6A)]"
     >
-      <div class="mb-3 h-10 w-10 grid place-items-center rounded-xl border border-[var(--un-preset-radix-teal-a6)] bg-[var(--un-preset-radix-teal-a4)]">
-        <Icon :name="item.icon" class="text-[18px] text-[var(--un-preset-radix-teal11)]" />
+      <div class="mb-4 flex items-center justify-between">
+        <div class="grid h-10 w-10 place-items-center border border-[var(--un-preset-radix-slate6)] rounded-xl bg-[#0e1114]">
+          <Icon :name="item.icon" class="text-[18px] text-[var(--un-preset-radix-slate11)]" />
+        </div>
+        <span class="h-1.5 w-1.5 rounded-full bg-[var(--un-preset-radix-mint9)]" />
       </div>
 
-      <p class="m-0 text-xs font-medium tracking-wide text-[var(--un-preset-radix-slate11)] uppercase">
+      <p class="font-geist-500 m-0 text-[10px] text-[var(--un-preset-radix-slate10)] tracking-[0.16em] uppercase sm:text-[11px]">
         {{ item.title }}
       </p>
-      <p class="mt-2 text-3xl leading-none font-bold text-[var(--un-preset-radix-teal11)] sm:text-4xl">
+      <p class="font-geist-mono-700 mt-2 text-[38px] text-[var(--un-preset-radix-slate12)] leading-none sm:text-[44px]">
         {{ item.value }}
       </p>
-      <p class="mt-2 text-xs leading-relaxed text-[var(--un-preset-radix-slate10)]">
+      <p class="font-geist-400 mt-3 text-[13px] text-[var(--un-preset-radix-slate10)] leading-relaxed">
         {{ item.note }}
       </p>
 
-      <div class="mt-4 h-1 w-full rounded-full bg-[var(--un-preset-radix-slate5)]">
-        <div class="h-full w-3/5 rounded-full bg-[var(--un-preset-radix-teal9)]" />
+      <div class="mt-4 h-px w-full bg-[var(--un-preset-radix-slate6)]">
+        <div class="h-px w-2/5 bg-[var(--un-preset-radix-mint9)]" />
       </div>
     </article>
   </section>

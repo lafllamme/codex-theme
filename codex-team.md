@@ -29,7 +29,7 @@ Neues Projekt in:
 - `presetTypography()`
 - `animatedUno()`
 - `presetWebFonts()`
-- `presetRadix({ darkSelector: '.dark', lightSelector: '.light', palette: [...] })`
+- `presetRadix({ darkSelector: ':root', lightSelector: '.light', palette: [...] })`
 - `presetAnimations()`
 
 Referenz:
@@ -56,3 +56,6 @@ Referenz:
 3. Theme-Editor-Page bauen (`/`) mit Live-Preview.
 4. `codex-theme-v1` Import/Export implementieren.
 5. Adventure-Black Preset als Startwert hinterlegen.
+
+## Doku
+- `/Users/flame/Developer/Projects/codex-theme/docs/index.md` (UnoCSS/Radix Color-Schreibweisen)

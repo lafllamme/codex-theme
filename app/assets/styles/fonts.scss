@@ -1,0 +1,129 @@
+:root {
+  --font-ui: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-code: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+}
+
+body {
+  font-family: var(--font-ui);
+}
+
+code,
+pre {
+  font-family: var(--font-code);
+}
+
+.font-geist {
+  font-family: var(--font-ui);
+}
+
+.font-geist-mono {
+  font-family: var(--font-code);
+}
+
+.font-geist-100,
+.font-geist-thin {
+  font-family: var(--font-ui);
+  font-weight: 100;
+}
+
+.font-geist-200,
+.font-geist-extralight {
+  font-family: var(--font-ui);
+  font-weight: 200;
+}
+
+.font-geist-300,
+.font-geist-light {
+  font-family: var(--font-ui);
+  font-weight: 300;
+}
+
+.font-geist-400,
+.font-geist-regular {
+  font-family: var(--font-ui);
+  font-weight: 400;
+}
+
+.font-geist-500,
+.font-geist-medium {
+  font-family: var(--font-ui);
+  font-weight: 500;
+}
+
+.font-geist-600,
+.font-geist-semibold {
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+
+.font-geist-700,
+.font-geist-bold {
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+
+.font-geist-800,
+.font-geist-extrabold {
+  font-family: var(--font-ui);
+  font-weight: 800;
+}
+
+.font-geist-900,
+.font-geist-black {
+  font-family: var(--font-ui);
+  font-weight: 900;
+}
+
+.font-geist-mono-100,
+.font-geist-mono-thin {
+  font-family: var(--font-code);
+  font-weight: 100;
+}
+
+.font-geist-mono-200,
+.font-geist-mono-extralight {
+  font-family: var(--font-code);
+  font-weight: 200;
+}
+
+.font-geist-mono-300,
+.font-geist-mono-light {
+  font-family: var(--font-code);
+  font-weight: 300;
+}
+
+.font-geist-mono-400,
+.font-geist-mono-regular {
+  font-family: var(--font-code);
+  font-weight: 400;
+}
+
+.font-geist-mono-500,
+.font-geist-mono-medium {
+  font-family: var(--font-code);
+  font-weight: 500;
+}
+
+.font-geist-mono-600,
+.font-geist-mono-semibold {
+  font-family: var(--font-code);
+  font-weight: 600;
+}
+
+.font-geist-mono-700,
+.font-geist-mono-bold {
+  font-family: var(--font-code);
+  font-weight: 700;
+}
+
+.font-geist-mono-800,
+.font-geist-mono-extrabold {
+  font-family: var(--font-code);
+  font-weight: 800;
+}
+
+.font-geist-mono-900,
+.font-geist-mono-black {
+  font-family: var(--font-code);
+  font-weight: 900;
+}

@@ -6,6 +6,8 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
@@ -23,6 +25,15 @@
   },
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264",
   "devDependencies": {
-    "@iconify-json/ph": "^1.2.2"
+    "@antfu/eslint-config": "^7.7.2",
+    "@iconify-json/ph": "^1.2.2",
+    "@nuxt/fonts": "^0.14.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "@unocss/eslint-plugin": "^66.6.6",
+    "eslint": "^10.0.3",
+    "eslint-plugin-format": "^2.0.1",
+    "sass": "^1.98.0",
+    "typescript": "^5.9.3",
+    "vue-eslint-parser": "^10.4.0"
   }
 }

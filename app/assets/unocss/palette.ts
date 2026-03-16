@@ -3,7 +3,7 @@ export function colorTokensPreflightCss() {
     ':root {',
     '  --app-bg: #050a09;',
     '  --app-ink: #edf3f2;',
-    '  --app-accent: var(--un-preset-radix-teal9);',
+    '  --app-accent: var(--un-preset-radix-mint9);',
     '}',
     '.dark { color-scheme: dark; }',
   ].join('\n')
