@@ -1,49 +1,78 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: 'default',
+})
+</script>
+
 <template>
-  <main class="relative min-h-screen overflow-hidden bg-[#030405] text-[var(--un-preset-radix-slate12)]">
-    <div class="[background-image:radial-gradient(circle_at_20%_0%,rgba(13,148,136,0.12),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(18,18,20,0.7),transparent_42%)] pointer-events-none absolute inset-0" />
-    <div class="[background-image:linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none absolute inset-0 opacity-30" />
+  <main class="p-4 sm:p-6 lg:p-8">
+    <section class="relative mx-auto min-h-[86vh] max-w-[1600px] overflow-hidden border border-[var(--un-preset-radix-mint6A)] rounded-3xl bg-black">
+      <Dither
+        :wave-speed="0.05"
+        :wave-frequency="3"
+        :wave-amplitude="0.3"
+        :wave-color="[0.06, 0.68, 0.44]"
+        :color-num="4"
+        :pixel-size="2"
+        :disable-animation="false"
+        :enable-mouse-interaction="true"
+        :mouse-radius="1"
+      />
 
-    <div class="relative mx-auto max-w-7xl px-4 py-10 lg:px-10 sm:px-6">
-      <header class="panel-shell p-6 sm:p-8">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div class="max-w-3xl">
-            <p class="font-geist-500 text-[10px] text-[var(--un-preset-radix-slate10)] tracking-[0.24em] uppercase sm:text-[11px]">
-              Codex Theme Lab
-            </p>
-            <h1 class="font-geist-mono-700 mt-4 text-[clamp(2.1rem,5.4vw,4.25rem)] text-[var(--un-preset-radix-slate12)] leading-[0.92]">
-              Black Console,
-              <span class="text-[var(--un-preset-radix-mint10)]">Mint Signals</span>
-            </h1>
-            <p class="font-geist-400 mt-4 max-w-2xl text-[14px] text-[var(--un-preset-radix-slate10)] leading-relaxed sm:text-[16px]">
-              Dark-first visual system for theme prototyping: near-black surfaces, quiet borders, strong typography,
-              and mint used only where interaction needs hierarchy.
-            </p>
-          </div>
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(0,0,0,0.05),rgba(0,0,0,0.56)_45%,rgba(0,0,0,0.88)_100%)]" />
 
-          <div class="min-w-[240px] border border-[var(--un-preset-radix-slate6)] rounded-2xl bg-[#0a0d10] p-4">
-            <p class="font-geist-500 text-[10px] text-[var(--un-preset-radix-slate10)] tracking-[0.16em] uppercase">
-              Active Profile
-            </p>
-            <div class="mt-3 flex items-center gap-3">
-              <span class="h-2.5 w-2.5 rounded-full bg-[var(--un-preset-radix-mint9)] shadow-[0_0_0_5px_var(--un-preset-radix-mint3A)]" />
-              <p class="font-geist-600 text-[15px] text-[var(--un-preset-radix-slate12)]">
-                Oscurange Black
+      <div class="relative z-10 flex min-h-[86vh] flex-col items-center px-4 py-6 sm:px-8 lg:px-12">
+        <nav class="w-full max-w-[980px] border border-white/14 rounded-full bg-black/58 px-6 py-3 backdrop-blur-xl shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset]">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="h-8 w-8 grid place-items-center border border-[var(--un-preset-radix-mint7)] rounded-full bg-[var(--un-preset-radix-mint3A)] text-[var(--un-preset-radix-mint11)]">
+                <span class="font-geist-mono-700 text-xs">LF</span>
+              </div>
+              <p class="font-geist-600 text-[30px] text-white leading-none">
+                Laflam
+                <span class="font-geist-400 text-[15px] text-white/76">Theme Lab</span>
               </p>
             </div>
-            <p class="font-geist-400 mt-3 text-[12px] text-[var(--un-preset-radix-slate10)]">
-              Accent #f9b98c available, mint reserved for UI guidance.
+
+            <div class="flex items-center gap-6 text-white/90">
+              <NuxtLink to="/" class="font-geist-500 text-sm transition-colors hover:text-[var(--un-preset-radix-mint10)]">
+                Home
+              </NuxtLink>
+              <NuxtLink to="/old.view" class="font-geist-500 text-sm transition-colors hover:text-[var(--un-preset-radix-mint10)]">
+                Docs
+              </NuxtLink>
+            </div>
+          </div>
+        </nav>
+
+        <div class="mt-20 flex flex-1 flex-col items-center justify-center text-center">
+          <div class="border border-[var(--un-preset-radix-mint7)] rounded-full bg-[var(--un-preset-radix-mint3A)] px-6 py-2 backdrop-blur-md">
+            <p class="font-geist-500 text-[18px] text-[var(--un-preset-radix-mint11)]">
+              Dynamic Dither Background
             </p>
           </div>
+
+          <h1 class="font-geist-mono-700 mt-8 max-w-4xl text-[clamp(2.4rem,6vw,6rem)] text-white leading-[0.95]">
+            Codex Theme Generator
+          </h1>
+
+          <p class="font-geist-400 mt-5 max-w-2xl text-[15px] text-white/78 leading-relaxed sm:text-[18px]">
+            Build, preview and export dark-first Codex themes with live tokens, mint accents, and production-ready output.
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <button class="font-geist-600 appearance-none border border-white/18 rounded-full bg-white px-9 py-3 text-[17px] text-black transition-transform hover:translate-y-[-1px]">
+              Get Started
+            </button>
+            <NuxtLink
+              to="/old.view"
+              class="font-geist-500 border border-white/18 rounded-full bg-black/44 px-9 py-3 text-[17px] text-white/84 backdrop-blur-xl transition-colors hover:border-[var(--un-preset-radix-mint7)] hover:text-[var(--un-preset-radix-mint10)]"
+            >
+              Open Old View
+            </NuxtLink>
+          </div>
         </div>
-      </header>
-
-      <section class="mt-6">
-        <TealStatsCards />
-      </section>
-
-      <section class="mt-6">
-        <TealControlPanel />
-      </section>
-    </div>
+      </div>
+    </section>
   </main>
 </template>
