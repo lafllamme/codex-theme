@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="absolute left-0 top-0 h-full w-full" />
+  <div ref="containerRef" class="absolute left-0 top-0 h-full w-full pointer-events-none" />
 </template>
 
 <script setup lang="ts">
@@ -339,8 +339,8 @@ const initializeScene = () => {
 
   window.addEventListener('resize', resize)
   if (props.enableMouseInteraction) {
-    container.addEventListener('mousemove', handleMouseMove)
-    container.addEventListener('mouseleave', handleMouseLeave)
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseleave', handleMouseLeave)
   }
 
   resize()
@@ -356,13 +356,13 @@ const cleanup = () => {
   window.removeEventListener('resize', resize)
 
   if (containerRef.value) {
-    containerRef.value.removeEventListener('mousemove', handleMouseMove)
-    containerRef.value.removeEventListener('mouseleave', handleMouseLeave)
-
     const canvas = containerRef.value.querySelector('canvas')
     if (canvas)
       containerRef.value.removeChild(canvas)
   }
+
+  window.removeEventListener('mousemove', handleMouseMove)
+  window.removeEventListener('mouseleave', handleMouseLeave)
 
   if (gl)
     gl.getExtension('WEBGL_lose_context')?.loseContext()
