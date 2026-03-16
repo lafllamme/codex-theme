@@ -8,68 +8,51 @@ interface HyperTextProps {
   class?: HTMLAttributes['class']
   text: string
   duration?: number
-  hoverDuration?: number
   animateOnLoad?: boolean
-  hoverable?: boolean
-  triggerKey?: number
 }
 
 const props = withDefaults(defineProps<HyperTextProps>(), {
-  duration: 1900,
-  hoverDuration: 1400,
+  duration: 800,
   animateOnLoad: true,
-  hoverable: true,
-  triggerKey: 0,
 })
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const displayText = ref(props.text.split(''))
 const iterations = ref(0)
-const activeMode = ref<'load' | 'hover'>('load')
-const revealStep = 0.04
-
-const activeDuration = computed(() =>
-  activeMode.value === 'hover' ? props.hoverDuration : props.duration,
-)
-const perTick = computed(() => {
+const tickMs = computed(() => {
   const safeLength = Math.max(props.text.length, 1)
-  return activeDuration.value / (safeLength * (1 / revealStep))
+  return props.duration / (safeLength * 10)
 })
 
 function getRandomLetter() {
   return alphabets[Math.floor(Math.random() * alphabets.length)]
 }
 
-function easeInOutCubic(x: number) {
-  if (x < 0.5)
-    return 4 * x * x * x
-  return 1 - ((-2 * x + 2) ** 3) / 2
-}
-
 const { pause, resume } = useIntervalFn(
   () => {
-    const textLength = Math.max(props.text.length, 1)
-    const easedRevealIndex = easeInOutCubic(Math.min(iterations.value / textLength, 1)) * textLength
-
-    if (iterations.value < textLength) {
-      displayText.value = displayText.value.map((letter, i) =>
-        letter === ' ' ? letter : i <= easedRevealIndex ? (props.text[i] ?? letter) : getRandomLetter(),
-      )
-      iterations.value += revealStep
+    if (iterations.value < props.text.length) {
+      displayText.value = displayText.value.map((letter, i) => {
+        const sourceChar = props.text[i]
+        if (sourceChar === ' ' || sourceChar === '\n')
+          return sourceChar
+        return i <= iterations.value ? (sourceChar ?? letter) : getRandomLetter()
+      })
+      iterations.value += 0.1
       return
     }
-
     pause()
   },
-  perTick,
+  tickMs,
   { immediate: false },
 )
 
-function triggerAnimation(mode: 'load' | 'hover' = 'hover') {
-  activeMode.value = mode
-  displayText.value = props.text.split('')
-  pause()
+function triggerAnimation() {
   iterations.value = 0
+  startAnimation()
+}
+
+function startAnimation() {
+  pause()
   resume()
 }
 
@@ -77,41 +60,33 @@ watch(
   () => props.text,
   (newText) => {
     displayText.value = newText.split('')
-    triggerAnimation('load')
-  },
-)
-
-watch(
-  () => props.triggerKey,
-  () => {
-    triggerAnimation('load')
+    triggerAnimation()
   },
 )
 
 onMounted(() => {
   if (props.animateOnLoad)
-    triggerAnimation('load')
+    triggerAnimation()
 })
 </script>
 
 <template>
   <span
-    :class="`pointer-events-auto relative inline-block whitespace-pre ${props.class ?? ''}`"
-    @mouseenter="() => props.hoverable && triggerAnimation('hover')"
+    :class="`pointer-events-auto inline-block cursor-default overflow-hidden py-2 ${props.class ?? ''}`"
+    @mouseenter="triggerAnimation"
   >
-    <span class="invisible whitespace-pre">{{ props.text }}</span>
-    <span class="pointer-events-none absolute inset-0 whitespace-pre">
-      <template v-for="(letter, i) in displayText" :key="`char-${i}`">
-        <br v-if="letter === '\n'" :key="`break-${i}`">
+    <span class="inline-block whitespace-pre">
+      <template v-for="(letter, i) in displayText" :key="i">
+        <br v-if="letter === '\n'">
         <Motion
           v-else
           as="span"
-          :initial="{ opacity: 0, y: -5 }"
+          :initial="{ opacity: 0, y: -10 }"
           :animate="{ opacity: 1, y: 0 }"
-          :delay="i * (activeDuration / (Math.max(props.text.length, 1) * 10))"
+          :delay="i * (props.duration / (Math.max(props.text.length, 1) * 10))"
           class="inline-block"
         >
-          {{ letter === ' ' ? '\u00A0' : letter }}
+          {{ letter === ' ' ? '\u00A0' : letter.toUpperCase() }}
         </Motion>
       </template>
     </span>

@@ -79,12 +79,14 @@ const headerWrapClass = computed(() =>
         >
           {{ mainCtaText }}
         </NuxtLink>
-        <NuxtLink
+        <DsGlassSurface
+          as="NuxtLink"
           to="/old.view"
-          class="font-geist-500 pointer-events-auto rounded-[999px] border border-white/20 bg-white/6 px-7 py-2.5 text-[13px] !text-pureWhite/72 no-underline backdrop-blur-[10px] transition-all hover:bg-white/10 hover:!text-pureWhite/86 sm:px-9 sm:py-3 sm:text-[14px]"
+          tone="soft"
+          class="font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-[999px] px-7 py-2.5 text-[13px] !text-pureWhite/72 no-underline transition-all hover:bg-[rgba(255,255,255,0.08)] hover:!text-pureWhite/86 sm:px-9 sm:py-3 sm:text-[14px]"
         >
           {{ secondCtaText }}
-        </NuxtLink>
+        </DsGlassSurface>
       </div>
     </div>
 
@@ -100,8 +102,7 @@ const headerWrapClass = computed(() =>
         <h1 class="font-geist-800 max-w-full w-fit text-white text-[clamp(2.6rem,5.6vw,5.4rem)] leading-[0.9] tracking-[-0.024em]">
           <HyperText
             :text="heroHeadline"
-            :duration="1900"
-            :hover-duration="1400"
+            :duration="1400"
             :animate-on-load="true"
             class="block"
           />
@@ -118,16 +119,20 @@ const headerWrapClass = computed(() =>
           >
             {{ mainCtaText }}
           </NuxtLink>
-          <NuxtLink
+          <DsGlassSurface
+            as="NuxtLink"
             to="/old.view"
-            class="font-geist-500 pointer-events-auto rounded-[999px] border border-white/20 bg-white/6 px-6 py-2.5 text-[13px] !text-pureWhite/74 no-underline backdrop-blur-[10px] transition-all hover:bg-white/10 hover:!text-pureWhite/88 sm:px-8 sm:text-[14px]"
+            tone="soft"
+            class="font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-[999px] px-6 py-2.5 text-[13px] !text-pureWhite/74 no-underline transition-all hover:bg-[rgba(255,255,255,0.08)] hover:!text-pureWhite/88 sm:px-8 sm:text-[14px]"
           >
             {{ secondCtaText }}
-          </NuxtLink>
+          </DsGlassSurface>
         </div>
       </div>
 
-      <aside class="pointer-events-auto w-full max-w-[480px] self-start border border-white/12 rounded-[24px] bg-[linear-gradient(160deg,rgba(0,0,0,0.76)_8%,rgba(7,73,48,0.26)_54%,rgba(0,0,0,0.7)_100%)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-28px_70px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:col-span-4 md:ml-auto md:p-5">
+      <DsGlassSurface
+        class="pointer-events-auto w-full max-w-[480px] self-start rounded-[24px] p-4 md:col-span-4 md:ml-auto md:p-5"
+      >
         <div class="rounded-[14px] border border-white/10 bg-black/18 px-3.5 py-2">
           <NativeTypewriter
             content="What you can generate"
@@ -177,7 +182,7 @@ const headerWrapClass = computed(() =>
             </div>
           </div>
         </div>
-      </aside>
+      </DsGlassSurface>
     </div>
 
     <div

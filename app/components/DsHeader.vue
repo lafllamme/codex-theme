@@ -1,6 +1,6 @@
 <template>
-  <div
-    class="box-border mx-auto my-0 flex h-full w-[90%] items-center justify-between rounded-[50px] border-[1px] border-solid border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.05)] px-6 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[10px] md:w-[60%]"
+  <DsGlassSurface
+    class="box-border mx-auto my-0 flex h-full w-[90%] items-center justify-between rounded-[50px] px-6 py-4 md:w-[60%]"
   >
     <div class="flex items-center gap-3.5">
       <svg
@@ -33,7 +33,7 @@
     <div class="flex items-center text-white md:hidden">
       <Icon name="ph:list-bold" class="h-[18px] w-[18px]" aria-hidden="true" />
     </div>
-  </div>
+  </DsGlassSurface>
 </template>
 
 <style scoped>
