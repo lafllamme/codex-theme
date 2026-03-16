@@ -59,3 +59,4 @@ Referenz:
 
 ## Doku
 - `/Users/flame/Developer/Projects/codex-theme/docs/index.md` (UnoCSS/Radix Color-Schreibweisen)
+- `/Users/flame/Developer/Projects/codex-theme/docs/codex-theme-scheme.md` (Codex-Theme-Schema codex-theme-v1, alle Optionen)

@@ -1,5 +1,11 @@
 # Codex Theme Docs
 
+## Codex theme scheme (codex-theme-v1)
+
+For the full structure of theme options (accent, surface, ink, contrast, semanticColors, fonts, opaqueWindows, variant), see **[codex-theme-scheme.md](./codex-theme-scheme.md)**.
+
+---
+
 ## Color System Quick Intro
 
 This project uses two color systems in UnoCSS:

@@ -61,6 +61,23 @@ const presetMap: Record<string, CodexThemePayload> = {
       surface: '#071019',
     },
   },
+  'rose-pine': {
+    codeThemeId: 'rose-pine',
+    variant: 'dark',
+    theme: {
+      accent: '#ea9a97',
+      contrast: 60,
+      fonts: { code: null, ui: null },
+      ink: '#e0def4',
+      opaqueWindows: false,
+      semanticColors: {
+        diffAdded: '#9ccfd8',
+        diffRemoved: '#908caa',
+        skill: '#c4a7e7',
+      },
+      surface: '#232136',
+    },
+  },
 }
 
 const payload = reactive<CodexThemePayload>(structuredClone(presetMap['adventure-black']))
@@ -68,15 +85,78 @@ const jsonValue = ref('')
 const jsonError = ref('')
 const copyState = ref<'idle' | 'ok' | 'error'>('idle')
 const isApplyingJson = ref(false)
+const scenarioId = ref('neutral')
+
+const scenarioOptions = [
+  { id: 'neutral', label: 'Neutral' },
+  { id: 'diff-stress', label: 'Diff stress' },
+  { id: 'high-contrast', label: 'High contrast' },
+  { id: 'panel-combo', label: 'Panel combo' },
+]
+
+const knownTopLevelKeys = new Set(['codeThemeId', 'theme', 'variant'])
+const knownThemeKeys = new Set(['accent', 'contrast', 'fonts', 'ink', 'opaqueWindows', 'semanticColors', 'surface'])
+const knownSemanticKeys = new Set(['diffAdded', 'diffRemoved', 'skill'])
+const knownFontKeys = new Set(['ui', 'code'])
+
+const extraTopLevel = ref<Record<string, unknown>>({})
+const extraTheme = ref<Record<string, unknown>>({})
+const extraSemantic = ref<Record<string, unknown>>({})
+const extraFonts = ref<Record<string, unknown>>({})
+const neutralSnapshot = ref<CodexThemePayload | null>(null)
 
 const uiFontSize = ref(16)
 const codeFontSize = ref(18)
 
-function toExportString() {
-  return JSON.stringify(payload, null, 2)
+function toExportObject() {
+  return {
+    ...extraTopLevel.value,
+    codeThemeId: payload.codeThemeId,
+    theme: {
+      ...extraTheme.value,
+      accent: payload.theme.accent,
+      contrast: payload.theme.contrast,
+      fonts: {
+        ...extraFonts.value,
+        code: payload.theme.fonts.code,
+        ui: payload.theme.fonts.ui,
+      },
+      ink: payload.theme.ink,
+      opaqueWindows: payload.theme.opaqueWindows,
+      semanticColors: {
+        ...extraSemantic.value,
+        diffAdded: payload.theme.semanticColors.diffAdded,
+        diffRemoved: payload.theme.semanticColors.diffRemoved,
+        skill: payload.theme.semanticColors.skill,
+      },
+      surface: payload.theme.surface,
+    },
+    variant: payload.variant,
+  }
 }
 
-function parsePayload(rawValue: string): CodexThemePayload | null {
+function toExportString() {
+  return JSON.stringify(toExportObject(), null, 2)
+}
+
+function toCodexThemeString() {
+  return `codex-theme-v1:${JSON.stringify(toExportObject())}`
+}
+
+function collectUnknownKeys(raw: Record<string, unknown>, allowed: Set<string>) {
+  return Object.fromEntries(
+    Object.entries(raw).filter(([key]) => !allowed.has(key),
+    ),
+  )
+}
+
+function parsePayload(rawValue: string): {
+  payload: CodexThemePayload
+  extraTopLevel: Record<string, unknown>
+  extraTheme: Record<string, unknown>
+  extraSemantic: Record<string, unknown>
+  extraFonts: Record<string, unknown>
+} | null {
   try {
     const raw = rawValue.trim()
     if (!raw)
@@ -86,29 +166,39 @@ function parsePayload(rawValue: string): CodexThemePayload | null {
       ? raw.slice('codex-theme-v1:'.length)
       : raw
 
-    const next = JSON.parse(normalized) as Partial<CodexThemePayload>
+    const next = JSON.parse(normalized) as Partial<CodexThemePayload> & Record<string, unknown>
     if (!next || typeof next !== 'object' || !next.theme || !next.theme.semanticColors || !next.theme.fonts)
       return null
 
+    const nextTheme = next.theme as Record<string, unknown>
+    const nextSemantic = next.theme.semanticColors as Record<string, unknown>
+    const nextFonts = next.theme.fonts as Record<string, unknown>
+
     return {
-      codeThemeId: String(next.codeThemeId || payload.codeThemeId),
-      variant: next.variant === 'light' ? 'light' : 'dark',
-      theme: {
-        accent: String(next.theme.accent || payload.theme.accent),
-        contrast: Number.isFinite(next.theme.contrast) ? Number(next.theme.contrast) : payload.theme.contrast,
-        fonts: {
-          code: next.theme.fonts.code ? String(next.theme.fonts.code) : null,
-          ui: next.theme.fonts.ui ? String(next.theme.fonts.ui) : null,
+      payload: {
+        codeThemeId: String(next.codeThemeId || payload.codeThemeId),
+        variant: next.variant === 'light' ? 'light' : 'dark',
+        theme: {
+          accent: String(next.theme.accent || payload.theme.accent),
+          contrast: Number.isFinite(next.theme.contrast) ? Number(next.theme.contrast) : payload.theme.contrast,
+          fonts: {
+            code: next.theme.fonts.code ? String(next.theme.fonts.code) : null,
+            ui: next.theme.fonts.ui ? String(next.theme.fonts.ui) : null,
+          },
+          ink: String(next.theme.ink || payload.theme.ink),
+          opaqueWindows: Boolean(next.theme.opaqueWindows),
+          semanticColors: {
+            diffAdded: String(next.theme.semanticColors.diffAdded || payload.theme.semanticColors.diffAdded),
+            diffRemoved: String(next.theme.semanticColors.diffRemoved || payload.theme.semanticColors.diffRemoved),
+            skill: String(next.theme.semanticColors.skill || payload.theme.semanticColors.skill),
+          },
+          surface: String(next.theme.surface || payload.theme.surface),
         },
-        ink: String(next.theme.ink || payload.theme.ink),
-        opaqueWindows: Boolean(next.theme.opaqueWindows),
-        semanticColors: {
-          diffAdded: String(next.theme.semanticColors.diffAdded || payload.theme.semanticColors.diffAdded),
-          diffRemoved: String(next.theme.semanticColors.diffRemoved || payload.theme.semanticColors.diffRemoved),
-          skill: String(next.theme.semanticColors.skill || payload.theme.semanticColors.skill),
-        },
-        surface: String(next.theme.surface || payload.theme.surface),
       },
+      extraTopLevel: collectUnknownKeys(next, knownTopLevelKeys),
+      extraTheme: collectUnknownKeys(nextTheme, knownThemeKeys),
+      extraSemantic: collectUnknownKeys(nextSemantic, knownSemanticKeys),
+      extraFonts: collectUnknownKeys(nextFonts, knownFontKeys),
     }
   }
   catch {
@@ -131,6 +221,18 @@ function applyPayload(next: CodexThemePayload) {
   payload.theme.surface = next.theme.surface
 }
 
+function setExtraFromParsed(next: {
+  extraTopLevel: Record<string, unknown>
+  extraTheme: Record<string, unknown>
+  extraSemantic: Record<string, unknown>
+  extraFonts: Record<string, unknown>
+}) {
+  extraTopLevel.value = next.extraTopLevel
+  extraTheme.value = next.extraTheme
+  extraSemantic.value = next.extraSemantic
+  extraFonts.value = next.extraFonts
+}
+
 function syncJsonFromPayload() {
   if (isApplyingJson.value)
     return
@@ -148,7 +250,8 @@ function setJsonValue(value: string) {
   }
 
   isApplyingJson.value = true
-  applyPayload(parsed)
+  applyPayload(parsed.payload)
+  setExtraFromParsed(parsed)
   queueMicrotask(() => {
     isApplyingJson.value = false
   })
@@ -167,7 +270,7 @@ async function copyExport() {
   }
 
   try {
-    await navigator.clipboard.writeText(toExportString())
+    await navigator.clipboard.writeText(toCodexThemeString())
     copyState.value = 'ok'
   }
   catch {
@@ -223,6 +326,39 @@ function setCodeFontSize(value: number) {
   codeFontSize.value = Math.max(12, Math.min(24, Math.round(value)))
 }
 
+function setScenario(next: string) {
+  if (next === scenarioId.value)
+    return
+
+  if (next === 'neutral' && neutralSnapshot.value) {
+    applyPayload(structuredClone(neutralSnapshot.value))
+    neutralSnapshot.value = null
+    scenarioId.value = next
+    return
+  }
+
+  if (!neutralSnapshot.value)
+    neutralSnapshot.value = structuredClone(payload)
+
+  if (next === 'diff-stress') {
+    payload.theme.semanticColors.diffAdded = '#00ff8f'
+    payload.theme.semanticColors.diffRemoved = '#ff4f78'
+    payload.theme.contrast = 74
+  }
+  else if (next === 'high-contrast') {
+    payload.theme.ink = '#ffffff'
+    payload.theme.surface = '#050505'
+    payload.theme.contrast = 94
+  }
+  else if (next === 'panel-combo') {
+    payload.theme.opaqueWindows = false
+    payload.theme.contrast = 66
+    payload.theme.semanticColors.skill = '#8ec9ff'
+  }
+
+  scenarioId.value = next
+}
+
 watch(
   payload,
   () => {
@@ -250,6 +386,8 @@ onMounted(() => {
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
           :translucent-sidebar="!payload.theme.opaqueWindows"
+          :scenario-id="scenarioId"
+          :scenario-options="scenarioOptions"
           @set-json-value="setJsonValue"
           @export-theme="exportTheme"
           @copy-export="copyExport"
@@ -265,6 +403,7 @@ onMounted(() => {
           @set-translucent-sidebar="setTranslucentSidebar"
           @set-ui-font-size="setUiFontSize"
           @set-code-font-size="setCodeFontSize"
+          @set-scenario="setScenario"
         />
       </div>
 

@@ -9,6 +9,6 @@ export default defineNuxtConfig({
       { name: 'Geist Mono', provider: 'google' },
     ],
   },
-  css: ['~/assets/styles/fonts.scss'],
+  css: ['~/assets/styles/fonts.scss', '~/assets/styles/workbench-tokens.css'],
   modules: ['@nuxt/fonts', '@nuxt/icon', '@unocss/nuxt'],
 })

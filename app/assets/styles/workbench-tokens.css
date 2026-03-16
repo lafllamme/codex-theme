@@ -1,0 +1,15 @@
+:root {
+  --wb-r-xl: 16px;
+  --wb-r-lg: 12px;
+  --wb-r-md: 10px;
+  --wb-r-sm: 8px;
+
+  --wb-border-1: rgba(255, 255, 255, 0.08);
+  --wb-border-2: rgba(255, 255, 255, 0.12);
+  --wb-border-3: rgba(255, 255, 255, 0.16);
+
+  --wb-panel-bg-1: rgba(6, 7, 9, 0.85);
+  --wb-panel-bg-2: rgba(8, 9, 11, 0.88);
+
+  --wb-topbar-height: 54px;
+}

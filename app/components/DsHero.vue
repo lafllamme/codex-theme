@@ -97,9 +97,13 @@ const headerWrapClass = computed(() =>
       class="mx-auto grid h-full w-full max-w-[1320px] grid-cols-1 items-start gap-7 px-4 pt-32 pb-12 sm:gap-9 sm:px-6 sm:pt-26 sm:pb-16 md:grid-cols-12 md:gap-8 md:pr-8 md:pt-30 lg:gap-12"
     >
       <div class="w-full text-center md:col-span-8 md:text-left">
-        <p class="font-geist-mono-500 mb-3 text-[11px] text-pureWhite/58 tracking-[0.18em] uppercase">
-          Tokens · Preview · Export
-        </p>
+        <div class="mb-3">
+          <HyperText
+            text="Tokens · Preview · Export"
+            :duration="1500"
+            class="font-geist-mono-500 text-[11px] text-pureWhite/58 tracking-[0.18em] uppercase"
+          />
+        </div>
 
         <h1 class="font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
           <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>

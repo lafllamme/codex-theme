@@ -11,6 +11,8 @@ const props = defineProps<{
   uiFontSize: number
   codeFontSize: number
   translucentSidebar: boolean
+  scenarioId: string
+  scenarioOptions: Array<{ id: string, label: string }>
 }>()
 
 const emit = defineEmits<{
@@ -29,6 +31,7 @@ const emit = defineEmits<{
   setTranslucentSidebar: [value: boolean]
   setUiFontSize: [value: number]
   setCodeFontSize: [value: number]
+  setScenario: [value: string]
 }>()
 
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
@@ -151,6 +154,21 @@ function onCodeSize(event: Event) {
         </header>
 
         <div class="rows">
+          <div class="row">
+            <label>Scenario</label>
+            <div class="chips">
+              <button
+                v-for="scenario in scenarioOptions"
+                :key="scenario.id"
+                class="chip"
+                :class="scenario.id === scenarioId ? 'chip--active' : ''"
+                @click="emit('setScenario', scenario.id)"
+              >
+                {{ scenario.label }}
+              </button>
+            </div>
+          </div>
+
           <div class="row">
             <label>UI font</label>
             <input class="text-input" type="text" :value="payload.theme.fonts.ui || ''" placeholder="Geist" @input="onUiFont">
@@ -413,6 +431,29 @@ function onCodeSize(event: Event) {
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+}
+
+.chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.chip {
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(2, 2, 3, 0.95);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  padding: 0 10px;
+}
+
+.chip--active {
+  border-color: rgba(255, 182, 112, 0.78);
+  box-shadow: 0 0 0 2px rgba(255, 182, 112, 0.2) inset;
 }
 
 .color-stack {
