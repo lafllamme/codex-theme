@@ -11,7 +11,7 @@ function handleDitherReady() {
   <div class="relative min-h-screen bg-[#050607] text-[var(--un-preset-radix-slate12)]">
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
-        class="absolute inset-0 transition-opacity duration-700 ease-out"
+        class="absolute inset-0 transition-opacity duration-1200 ease-out"
         :class="ditherReady ? 'opacity-0' : 'opacity-100'"
       >
         <div class="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,rgba(31,102,87,0.26)_0%,rgba(8,12,14,0.9)_48%,rgba(5,6,7,1)_100%)]" />
@@ -19,7 +19,7 @@ function handleDitherReady() {
       </div>
 
       <div
-        class="absolute inset-0 transition-opacity duration-700 ease-out"
+        class="absolute inset-0 transition-opacity duration-1200 ease-out"
         :class="ditherReady ? 'opacity-100' : 'opacity-0'"
       >
         <Dither
