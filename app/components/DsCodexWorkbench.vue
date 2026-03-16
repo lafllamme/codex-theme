@@ -18,13 +18,16 @@ interface ChatMessage {
 
 const props = defineProps<{
   payload: CodexThemePayload
+  uiFontSize: number
+  codeFontSize: number
+  translucentSidebar: boolean
 }>()
 
 const defaultUiFont = '\'Geist\', ui-sans-serif, system-ui, -apple-system, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif'
 const defaultCodeFont = '\'Geist Mono\', ui-monospace, \'SFMono-Regular\', Menlo, Monaco, Consolas, monospace'
 
 const modelOptions = ['GPT-5.3-Codex', 'GPT-5.2-Codex', 'o3']
-const thinkingOptions = ['Niedrig', 'Mittel', 'Hoch']
+const thinkingOptions = ['Low', 'Medium', 'High']
 
 const sidebarCollapsed = ref(false)
 const activeThreadId = ref('thread-1')
@@ -38,19 +41,19 @@ const composeValue = ref('Tune accent + semantic colors')
 
 const threadItems: ThreadItem[] = [
   { id: 'thread-1', title: 'Make DsRing mobile friendly', repo: 'codex-theme', time: '54 Min.' },
-  { id: 'thread-2', title: 'Öffne Vue-Bits Dither Seite', repo: 'codex-theme', time: '2 Std.' },
+  { id: 'thread-2', title: 'Open Vue-Bits Dither page', repo: 'codex-theme', time: '2 Hr.' },
 ]
 
 const messagesByThread: Record<string, ChatMessage[]> = {
   'thread-1': [
-    { id: 'a1', role: 'assistant', text: '1 Datei geändert\napp/components/DsCodexWorkbench.vue +94 -34' },
-    { id: 'u1', role: 'user', text: 'Kannst du eine saubere Mismatch-Liste machen und den Header 1:1 nachbauen?' },
-    { id: 'a2', role: 'assistant', text: 'Ja. Ich baue den Chat-Header als eigenen Block und setze die Top-Hierarchie korrekt um.' },
+    { id: 'a1', role: 'assistant', text: '1 file changed\napp/components/DsCodexWorkbench.vue +94 -34' },
+    { id: 'u1', role: 'user', text: 'Can you make a clean mismatch list and rebuild the header 1:1?' },
+    { id: 'a2', role: 'assistant', text: 'Yes. I will isolate the chat header and align the full top hierarchy.' },
   ],
   'thread-2': [
-    { id: 'a3', role: 'assistant', text: 'Build ist erfolgreich. Ich habe die Header-Nähe und Abstände angeglichen.' },
-    { id: 'u2', role: 'user', text: 'Bitte den Theme-Selector oberhalb und nicht im Codex-Lookalike.' },
-    { id: 'a4', role: 'assistant', text: 'Erledigt. Theme Controls sind jetzt ein separates Layer über der Replica.' },
+    { id: 'a3', role: 'assistant', text: 'Build is successful. Header spacing and hierarchy are now closer to Codex.' },
+    { id: 'u2', role: 'user', text: 'Please keep theme controls outside the replica layer.' },
+    { id: 'a4', role: 'assistant', text: 'Done. Theme controls are now detached and remain above the replica.' },
   ],
 }
 
@@ -69,6 +72,9 @@ const shellStyle = computed(() => ({
   '--theme-skill': props.payload.theme.semanticColors.skill,
   '--font-ui': props.payload.theme.fonts.ui || defaultUiFont,
   '--font-code': props.payload.theme.fonts.code || defaultCodeFont,
+  '--ui-font-size': `${props.uiFontSize}px`,
+  '--code-font-size': `${props.codeFontSize}px`,
+  '--sidebar-bg': props.translucentSidebar ? 'rgba(9, 10, 12, 0.58)' : 'rgba(9, 10, 12, 0.9)',
 }))
 
 function startNewThread() {
@@ -80,16 +86,8 @@ function toggleSidebar() {
   sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
-function showTerminal() {
-  activeView.value = 'terminal'
-}
-
-function showDiff() {
-  activeView.value = 'diff'
-}
-
-function showChat() {
-  activeView.value = 'chat'
+function showView(next: MainView) {
+  activeView.value = next
 }
 
 function togglePip() {
@@ -126,40 +124,47 @@ function toggleRun() {
           <span class="dot dot-red" />
           <span class="dot dot-yellow" />
           <span class="dot dot-green" />
-          <button class="top-icon" @click="toggleSidebar">
+
+          <button class="sidebar-toggle" @click="toggleSidebar">
             <Icon name="ph:sidebar-simple-bold" class="icon-14" />
           </button>
 
-          <div class="title-stack">
+          <div class="title-line">
             <strong>{{ activeThread.title }}</strong>
             <span>{{ activeThread.repo }}</span>
           </div>
         </div>
 
         <div class="app-topbar__actions">
-          <button class="toolbar-chip" :class="runEnabled ? 'toolbar-chip--active' : ''" @click="toggleRun">
-            <Icon name="ph:play-bold" class="icon-12" />
+          <button class="run-btn" :class="runEnabled ? 'run-btn--active' : ''" @click="toggleRun">
+            <Icon name="ph:play-bold" class="icon-14" />
           </button>
-          <button class="toolbar-chip">
+
+          <button class="light-chip">
             <Icon name="ph:caret-down-bold" class="icon-12" />
+            <Icon name="ph:wave-sine-bold" class="icon-12" />
           </button>
-          <button class="toolbar-chip">
-            In Worktree verschieben
+
+          <button class="light-chip">
+            <Icon name="ph:arrows-left-right-bold" class="icon-14" /> In Worktree verschieben
           </button>
-          <button class="toolbar-chip">
-            <Icon name="ph:git-pull-request-bold" class="icon-14" /> Push
+
+          <button class="light-chip">
+            <Icon name="ph:cloud-arrow-up-bold" class="icon-14" /> Push
             <Icon name="ph:caret-down-bold" class="icon-12" />
           </button>
 
-          <button class="toolbar-chip icon-only" :class="activeView === 'terminal' ? 'toolbar-chip--active' : ''" @click="showTerminal">
+          <span class="toolbar-divider" />
+
+          <button class="ghost-icon" :class="activeView === 'terminal' ? 'ghost-icon--active' : ''" @click="showView('terminal')">
             <Icon name="ph:terminal-window-bold" class="icon-14" />
           </button>
-          <button class="toolbar-chip icon-only" :class="activeView === 'diff' ? 'toolbar-chip--active' : ''" @click="showDiff">
+          <button class="ghost-icon" :class="activeView === 'diff' ? 'ghost-icon--active' : ''" @click="showView('diff')">
             <Icon name="ph:file-diff-bold" class="icon-14" />
             <span class="count">9</span>
           </button>
-          <button class="toolbar-chip icon-only" :class="pipEnabled ? 'toolbar-chip--active' : ''" @click="togglePip">
-            <Icon name="ph:picture-in-picture-bold" class="icon-14" />
+          <button class="ghost-icon" :class="pipEnabled ? 'ghost-icon--active' : ''" @click="togglePip">
+            <Icon name="ph:rectangle-bold" class="icon-14" />
           </button>
         </div>
       </header>
@@ -168,27 +173,29 @@ function toggleRun() {
         <aside class="sidebar" :class="sidebarCollapsed ? 'sidebar--collapsed' : ''">
           <button class="nav-row" @click="startNewThread">
             <Icon name="ph:pencil-simple-line-bold" class="icon-16" />
-            <span v-if="!sidebarCollapsed">Neuer Thread</span>
+            <span class="sidebar-label">New Thread</span>
           </button>
+
           <button class="nav-row">
             <Icon name="ph:clock-counter-clockwise-bold" class="icon-16" />
-            <span v-if="!sidebarCollapsed">Automatisierungen</span>
+            <span class="sidebar-label">Automations</span>
           </button>
+
           <button class="nav-row">
             <Icon name="ph:circles-four-bold" class="icon-16" />
-            <span v-if="!sidebarCollapsed">Fähigkeiten</span>
+            <span class="sidebar-label">Skills</span>
           </button>
 
           <div class="thread-head">
-            <span v-if="!sidebarCollapsed">Threads</span>
+            <span class="sidebar-label">Threads</span>
             <div class="thread-head__icons">
-              <button class="tiny-btn">
-                <Icon name="ph:plus-bold" class="icon-12" />
+              <button class="tiny-icon">
+                <Icon name="ph:folder-plus-bold" class="icon-12" />
               </button>
-              <button class="tiny-btn">
+              <button class="tiny-icon">
                 <Icon name="ph:funnel-simple-bold" class="icon-12" />
               </button>
-              <button class="tiny-btn" @click="toggleSidebar">
+              <button class="tiny-icon" @click="toggleSidebar">
                 <Icon :name="sidebarCollapsed ? 'ph:caret-right-bold' : 'ph:caret-left-bold'" class="icon-12" />
               </button>
             </div>
@@ -199,87 +206,97 @@ function toggleRun() {
             :key="thread.id"
             class="thread-row"
             :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
-            @click="activeThreadId = thread.id; showChat()"
+            @click="activeThreadId = thread.id; showView('chat')"
           >
-            <span v-if="!sidebarCollapsed" class="thread-row__title">{{ thread.title }}</span>
-            <span v-if="!sidebarCollapsed" class="thread-row__time">{{ thread.time }}</span>
-            <span v-else class="thread-dot" />
+            <span class="thread-row__title sidebar-label">{{ thread.title }}</span>
+            <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+            <span class="thread-dot" />
           </button>
 
           <button class="settings-row">
             <Icon name="ph:gear-six-bold" class="icon-16" />
-            <span v-if="!sidebarCollapsed">Einstellungen</span>
+            <span class="sidebar-label">Settings</span>
           </button>
         </aside>
 
         <main class="chat-window">
           <header class="chat-header">
-            <div>
-              <p class="chat-header__title">
-                {{ activeThread.title }}
-              </p>
-              <p class="chat-header__sub">
-                {{ activeThread.repo }}
-              </p>
-            </div>
             <button class="commit-pill">
               commit
             </button>
           </header>
 
-          <section class="view-stage">
-            <div v-if="activeView === 'chat'" class="history-view">
-              <article
-                v-for="message in activeMessages"
-                :key="message.id"
-                class="chat-bubble"
-                :class="message.role === 'user' ? 'chat-bubble--user' : 'chat-bubble--assistant'"
-              >
-                {{ message.text }}
-              </article>
-            </div>
+          <Transition name="slide-view" mode="out-in">
+            <section :key="activeView" class="view-stage">
+              <div v-if="activeView === 'chat'" class="history-view">
+                <article
+                  v-for="message in activeMessages"
+                  :key="message.id"
+                  class="chat-bubble"
+                  :class="message.role === 'user' ? 'chat-bubble--user' : 'chat-bubble--assistant'"
+                >
+                  {{ message.text }}
+                </article>
+              </div>
 
-            <div v-else-if="activeView === 'terminal'" class="terminal-view">
-              <p class="term-line">
-                <span class="term-dim">$</span> pnpm dev
-              </p>
-              <p class="term-line">
-                <span class="term-info">info</span> Nuxt ready at http://localhost:3000
-              </p>
-              <p class="term-line">
-                <span class="term-add">+ added</span> app/components/DsCodexWorkbench.vue
-              </p>
-              <p class="term-line">
-                <span class="term-del">- removed</span> old/theme-panel.vue
-              </p>
-            </div>
+              <div v-else-if="activeView === 'terminal'" class="terminal-view">
+                <p class="term-line">
+                  <span class="term-dim">$</span> pnpm dev
+                </p>
+                <p class="term-line">
+                  <span class="term-info">info</span> Nuxt ready at http://localhost:3000
+                </p>
+                <p class="term-line">
+                  <span class="term-add">+ added</span> app/components/DsCodexWorkbench.vue
+                </p>
+                <p class="term-line">
+                  <span class="term-del">- removed</span> old/theme-panel.vue
+                </p>
+                <p class="term-line">
+                  contrast: {{ payload.theme.contrast }} · opaqueWindows: {{ payload.theme.opaqueWindows }}
+                </p>
+              </div>
 
-            <div v-else class="diff-view">
-              <p class="diff-line">
-                <span class="line-no">451</span> &lt;input v-model="composeValue" class="composer-input" /&gt;
-              </p>
-              <p class="diff-line diff-line--remove">
-                <span class="line-no">407</span> - &lt;button class="icon-chip"&gt;&lt;Icon name="ph:microphone-bold" /&gt;&lt;/button&gt;
-              </p>
-              <p class="diff-line diff-line--add">
-                <span class="line-no">453</span> + &lt;button class="icon-chip"&gt;&lt;Icon name="ph:microphone-bold" class="icon-14" /&gt;&lt;/button&gt;
-              </p>
-            </div>
-          </section>
+              <div v-else class="diff-view">
+                <div class="diff-column diff-column--remove">
+                  <p class="diff-line">
+                    <span class="line-no">2</span> surface: "sidebar",
+                  </p>
+                  <p class="diff-line">
+                    <span class="line-no">3</span> accent: "#2563eb",
+                  </p>
+                  <p class="diff-line">
+                    <span class="line-no">4</span> contrast: 42,
+                  </p>
+                </div>
+                <div class="diff-column diff-column--add">
+                  <p class="diff-line">
+                    <span class="line-no">2</span> surface: "sidebar-elevated",
+                  </p>
+                  <p class="diff-line">
+                    <span class="line-no">3</span> accent: "{{ payload.theme.accent }}",
+                  </p>
+                  <p class="diff-line">
+                    <span class="line-no">4</span> contrast: {{ payload.theme.contrast }},
+                  </p>
+                </div>
+              </div>
+            </section>
+          </Transition>
 
           <footer class="composer-wrap">
             <div class="composer-row">
-              <button class="icon-chip">
+              <button class="composer-icon">
                 <Icon name="ph:plus-bold" class="icon-14" />
               </button>
 
-              <select v-model="selectedModel" class="select-chip">
+              <select v-model="selectedModel" class="composer-select">
                 <option v-for="model in modelOptions" :key="model" :value="model">
                   {{ model }}
                 </option>
               </select>
 
-              <select v-model="selectedThinking" class="select-chip select-chip--small">
+              <select v-model="selectedThinking" class="composer-select composer-select--small">
                 <option v-for="thinking in thinkingOptions" :key="thinking" :value="thinking">
                   {{ thinking }}
                 </option>
@@ -287,7 +304,7 @@ function toggleRun() {
 
               <input v-model="composeValue" class="composer-input" type="text">
 
-              <button class="icon-chip">
+              <button class="composer-icon">
                 <Icon name="ph:microphone-bold" class="icon-14" />
               </button>
               <button class="send-btn">
@@ -297,8 +314,8 @@ function toggleRun() {
 
             <div class="status-row">
               <div class="status-left">
-                <span><Icon name="ph:laptop-bold" class="icon-12" /> Lokal</span>
-                <span><Icon name="ph:lock-key-bold" class="icon-12" /> Vollzugriff</span>
+                <span><Icon name="ph:laptop-bold" class="icon-12" /> Local</span>
+                <span><Icon name="ph:lock-key-bold" class="icon-12" /> Full access</span>
               </div>
               <div class="status-right">
                 <span><Icon name="ph:git-branch-bold" class="icon-12" /> main</span>
@@ -314,20 +331,22 @@ function toggleRun() {
 <style scoped>
 .replica-root {
   display: grid;
-  gap: 10px;
+  gap: 0;
   font-family: var(--font-ui);
-  color: color-mix(in srgb, var(--theme-ink) 88%, #fff);
+  color: color-mix(in srgb, var(--theme-ink) 90%, #fff);
+  font-size: var(--ui-font-size);
 }
 
 .os-menu {
-  height: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  background: rgba(5, 6, 8, 0.92);
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  background: rgba(4, 5, 7, 0.95);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 12px;
   font-size: 12px;
 }
 
@@ -347,25 +366,23 @@ function toggleRun() {
 }
 
 .window-shell {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-  background: rgba(3, 4, 6, 0.94);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 26px 60px rgba(0, 0, 0, 0.5);
-  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 16px 16px;
+  background: rgba(4, 5, 7, 0.95);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.42);
+  padding: 10px;
 }
 
 .app-topbar {
-  height: 56px;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 14px;
-  background: rgba(8, 9, 12, 0.9);
+  min-height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  background: rgba(8, 9, 11, 0.86);
   padding: 8px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .app-topbar__left,
@@ -376,8 +393,8 @@ function toggleRun() {
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 999px;
 }
 
@@ -391,115 +408,160 @@ function toggleRun() {
   background: #28c840;
 }
 
-.top-icon,
-.toolbar-chip,
-.nav-row,
-.thread-row,
-.settings-row,
-.tiny-btn,
-.icon-chip,
-.select-chip,
-.composer-input,
-.commit-pill {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.top-icon,
-.tiny-btn,
-.icon-chip {
+.sidebar-toggle {
   width: 34px;
   height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.86);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.title-stack {
+.title-line {
   margin-left: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
 }
 
-.title-stack strong {
+.title-line strong {
   font-size: 15px;
+  font-weight: 600;
   line-height: 1;
-  font-weight: 550;
 }
 
-.title-stack span {
+.title-line span {
   font-family: var(--font-code);
-  font-size: 13px;
-  opacity: 0.65;
+  font-size: var(--code-font-size);
+  opacity: 0.6;
 }
 
-.toolbar-chip {
-  height: 36px;
+.run-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.run-btn--active {
+  color: #fff;
+}
+
+.light-chip {
+  height: 34px;
   padding: 0 12px;
-  font-size: 14px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.9);
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 14px;
 }
 
-.toolbar-chip--active {
-  border-color: color-mix(in srgb, var(--theme-accent) 70%, rgba(255, 255, 255, 0.24));
-  background: color-mix(in srgb, var(--theme-accent) 22%, transparent);
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.toolbar-chip.icon-only {
-  width: 40px;
-  padding: 0;
+.ghost-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.ghost-icon--active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .count {
-  min-width: 18px;
-  height: 18px;
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
   border-radius: 999px;
-  padding: 0 5px;
+  padding: 0 4px;
   background: rgba(255, 255, 255, 0.2);
-  font-size: 11px;
+  font-size: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .app-grid {
-  margin-top: 12px;
+  margin-top: 10px;
   display: grid;
-  grid-template-columns: 286px 1fr;
-  gap: 12px;
+  grid-template-columns: 300px 1fr;
+  gap: 10px;
 }
 
 .sidebar {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  background: rgba(8, 9, 12, 0.86);
+  border-radius: 14px;
+  background: var(--sidebar-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+  overflow: hidden;
+  transition:
+    width 260ms ease,
+    padding 220ms ease,
+    background-color 220ms ease;
 }
 
 .sidebar--collapsed {
-  width: 78px;
+  width: 92px;
+  padding-inline: 8px;
 }
 
 .nav-row,
 .thread-row,
 .settings-row {
-  width: 100%;
   min-height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
   padding: 0 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
   text-align: left;
+}
+
+.sidebar-label {
+  white-space: nowrap;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.sidebar--collapsed .sidebar-label {
+  opacity: 0;
+  transform: translateX(-10px);
+  width: 0;
+  overflow: hidden;
 }
 
 .thread-head {
@@ -507,10 +569,10 @@ function toggleRun() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.58);
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
 }
 
 .thread-head__icons {
@@ -519,45 +581,54 @@ function toggleRun() {
   gap: 4px;
 }
 
-.tiny-btn {
+.tiny-icon {
   width: 24px;
   height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .thread-row {
   justify-content: space-between;
-  font-size: 14px;
-}
-
-.thread-row--active {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.12);
 }
 
 .thread-row__title {
-  max-width: 70%;
+  max-width: 74%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .thread-row__time {
+  color: rgba(255, 255, 255, 0.6);
   font-size: 12px;
-  opacity: 0.65;
 }
 
 .thread-dot {
+  display: none;
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
-  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.sidebar--collapsed .thread-dot {
+  display: inline-block;
+}
+
+.thread-row--active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .chat-window {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  background: rgba(6, 7, 9, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(6, 7, 9, 0.84);
   padding: 10px;
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -565,36 +636,22 @@ function toggleRun() {
 }
 
 .chat-header {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  background: rgba(10, 11, 14, 0.82);
-  padding: 10px 12px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.chat-header__title {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.chat-header__sub {
-  margin: 2px 0 0;
-  font-size: 13px;
-  font-family: var(--font-code);
-  opacity: 0.6;
+  justify-content: flex-end;
 }
 
 .commit-pill {
-  height: 46px;
-  padding: 0 16px;
-  font-size: 15px;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 17px;
 }
 
 .view-stage {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   background: color-mix(in srgb, var(--theme-surface) 90%, black 10%);
   min-height: 560px;
@@ -602,50 +659,48 @@ function toggleRun() {
 }
 
 .history-view,
-.terminal-view,
-.diff-view {
+.terminal-view {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .chat-bubble {
-  max-width: 78%;
+  max-width: 84%;
   border-radius: 14px;
-  padding: 12px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  line-height: 1.45;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   white-space: pre-line;
-  font-size: 14px;
+  line-height: 1.5;
 }
 
 .chat-bubble--assistant {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .chat-bubble--user {
   align-self: flex-end;
-  background: rgba(255, 255, 255, 0.03);
-  border-color: color-mix(in srgb, var(--theme-accent) 44%, rgba(255, 255, 255, 0.16));
+  background: rgba(255, 255, 255, 0.02);
+  border-color: color-mix(in srgb, var(--theme-accent) 44%, rgba(255, 255, 255, 0.14));
 }
 
 .terminal-view,
 .diff-view {
   font-family: var(--font-code);
-  font-size: 13px;
+  font-size: var(--code-font-size);
 }
 
 .term-line,
 .diff-line {
   margin: 0;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .term-dim {
-  opacity: 0.7;
+  opacity: 0.65;
 }
 .term-info {
-  color: #56a7ff;
+  color: #59a8ff;
 }
 .term-add {
   color: var(--theme-added);
@@ -654,26 +709,38 @@ function toggleRun() {
   color: var(--theme-removed);
 }
 
-.diff-line {
-  padding: 6px 8px;
-  border-radius: 8px;
+.diff-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.diff-line--remove {
-  background: rgba(250, 66, 62, 0.16);
+.diff-column {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
 }
-.diff-line--add {
-  background: rgba(64, 201, 119, 0.16);
+
+.diff-column--remove {
+  background: rgba(216, 74, 51, 0.2);
+}
+
+.diff-column--add {
+  background: rgba(153, 181, 44, 0.2);
+}
+
+.diff-line {
+  padding: 10px 12px;
 }
 
 .line-no {
   display: inline-block;
-  width: 44px;
-  opacity: 0.5;
+  width: 26px;
+  opacity: 0.55;
 }
 
 .composer-wrap {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   background: rgba(8, 9, 11, 0.92);
   padding: 10px;
@@ -681,28 +748,39 @@ function toggleRun() {
 
 .composer-row {
   display: grid;
-  grid-template-columns: 36px 170px 120px 1fr 36px 36px;
+  grid-template-columns: 36px 180px 120px 1fr 36px 36px;
   gap: 8px;
   align-items: center;
 }
 
-.select-chip,
+.composer-icon,
+.composer-select,
 .composer-input {
   height: 36px;
-  padding: 0 12px;
-  font-size: 14px;
-  font-family: var(--font-ui);
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.92);
 }
 
-.select-chip--small {
-  width: 120px;
+.composer-icon {
+  width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.composer-select,
+.composer-input {
+  padding: 0 12px;
+  font-size: 14px;
 }
 
 .send-btn {
   width: 36px;
   height: 36px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--theme-accent) 60%, rgba(255, 255, 255, 0.2));
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 62%, rgba(255, 255, 255, 0.18));
   background: color-mix(in srgb, var(--theme-accent) 82%, black 18%);
   color: black;
   display: inline-flex;
@@ -715,8 +793,8 @@ function toggleRun() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: rgba(255, 255, 255, 0.66);
   font-size: 13px;
-  opacity: 0.75;
 }
 
 .status-left,
@@ -729,17 +807,34 @@ function toggleRun() {
 .status-row span {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+}
+
+.slide-view-enter-active,
+.slide-view-leave-active {
+  transition: all 240ms ease;
+}
+
+.slide-view-enter-from {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.slide-view-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
 }
 
 .icon-16 {
   width: 16px;
   height: 16px;
 }
+
 .icon-14 {
   width: 14px;
   height: 14px;
 }
+
 .icon-12 {
   width: 12px;
   height: 12px;
@@ -750,24 +845,40 @@ function toggleRun() {
     grid-template-columns: 1fr;
   }
 
+  .sidebar,
   .sidebar--collapsed {
     width: 100%;
   }
+
+  .sidebar--collapsed .sidebar-label {
+    opacity: 1;
+    transform: none;
+    width: auto;
+  }
+
+  .sidebar--collapsed .thread-dot {
+    display: none;
+  }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1000px) {
   .os-menu {
     display: none;
   }
 
   .app-topbar {
-    height: auto;
     flex-direction: column;
     align-items: flex-start;
   }
 
   .app-topbar__actions {
     flex-wrap: wrap;
+  }
+
+  .title-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
   }
 
   .composer-row {
@@ -779,8 +890,8 @@ function toggleRun() {
     grid-column: 1 / -1;
   }
 
-  .chat-bubble {
-    max-width: 100%;
+  .diff-view {
+    grid-template-columns: 1fr;
   }
 
   .status-row {

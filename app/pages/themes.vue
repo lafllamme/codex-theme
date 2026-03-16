@@ -63,63 +63,24 @@ const presetMap: Record<string, CodexThemePayload> = {
   },
 }
 
-const codeThemeOptions = ['oscurange', 'night-owl', 'tokyo-night', 'catppuccin', 'one-dark']
-
-const payload = reactive<CodexThemePayload>(structuredClone(presetMap.oscurange))
-const activePreset = ref('oscurange')
-const importValue = ref('')
-const importError = ref('')
+const payload = reactive<CodexThemePayload>(structuredClone(presetMap['adventure-black']))
+const jsonValue = ref('')
+const jsonError = ref('')
 const copyState = ref<'idle' | 'ok' | 'error'>('idle')
+const isApplyingJson = ref(false)
 
-function applyPayload(next: CodexThemePayload) {
-  payload.codeThemeId = next.codeThemeId
-  payload.variant = next.variant
-  payload.theme.accent = next.theme.accent
-  payload.theme.contrast = next.theme.contrast
-  payload.theme.fonts.code = next.theme.fonts.code
-  payload.theme.fonts.ui = next.theme.fonts.ui
-  payload.theme.ink = next.theme.ink
-  payload.theme.opaqueWindows = next.theme.opaqueWindows
-  payload.theme.semanticColors.diffAdded = next.theme.semanticColors.diffAdded
-  payload.theme.semanticColors.diffRemoved = next.theme.semanticColors.diffRemoved
-  payload.theme.semanticColors.skill = next.theme.semanticColors.skill
-  payload.theme.surface = next.theme.surface
+const uiFontSize = ref(16)
+const codeFontSize = ref(18)
+
+function toExportString() {
+  return JSON.stringify(payload, null, 2)
 }
 
-function applyPreset(preset: string) {
-  const selected = presetMap[preset]
-  if (!selected)
-    return
-
-  activePreset.value = preset
-  applyPayload(structuredClone(selected))
-}
-
-function setThemeId(value: string) {
-  payload.codeThemeId = value
-}
-
-function setVariant(value: 'dark' | 'light') {
-  payload.variant = value
-}
-
-function setImport(value: string) {
-  importValue.value = value
-}
-
-function resetPreset() {
-  applyPreset(activePreset.value)
-}
-
-function applyImport() {
-  importError.value = ''
-
+function parsePayload(rawValue: string): CodexThemePayload | null {
   try {
-    const raw = importValue.value.trim()
-    if (!raw) {
-      importError.value = 'Bitte erst einen codex-theme-v1 String einfügen.'
-      return
-    }
+    const raw = rawValue.trim()
+    if (!raw)
+      return null
 
     const normalized = raw.startsWith('codex-theme-v1:')
       ? raw.slice('codex-theme-v1:'.length)
@@ -127,9 +88,9 @@ function applyImport() {
 
     const next = JSON.parse(normalized) as Partial<CodexThemePayload>
     if (!next || typeof next !== 'object' || !next.theme || !next.theme.semanticColors || !next.theme.fonts)
-      throw new Error('Invalid payload')
+      return null
 
-    applyPayload({
+    return {
       codeThemeId: String(next.codeThemeId || payload.codeThemeId),
       variant: next.variant === 'light' ? 'light' : 'dark',
       theme: {
@@ -148,11 +109,54 @@ function applyImport() {
         },
         surface: String(next.theme.surface || payload.theme.surface),
       },
-    })
+    }
   }
   catch {
-    importError.value = 'Ungültiges Format. Bitte codex-theme-v1 JSON verwenden.'
+    return null
   }
+}
+
+function applyPayload(next: CodexThemePayload) {
+  payload.codeThemeId = next.codeThemeId
+  payload.variant = next.variant
+  payload.theme.accent = next.theme.accent
+  payload.theme.contrast = next.theme.contrast
+  payload.theme.fonts.code = next.theme.fonts.code
+  payload.theme.fonts.ui = next.theme.fonts.ui
+  payload.theme.ink = next.theme.ink
+  payload.theme.opaqueWindows = next.theme.opaqueWindows
+  payload.theme.semanticColors.diffAdded = next.theme.semanticColors.diffAdded
+  payload.theme.semanticColors.diffRemoved = next.theme.semanticColors.diffRemoved
+  payload.theme.semanticColors.skill = next.theme.semanticColors.skill
+  payload.theme.surface = next.theme.surface
+}
+
+function syncJsonFromPayload() {
+  if (isApplyingJson.value)
+    return
+  jsonValue.value = toExportString()
+}
+
+function setJsonValue(value: string) {
+  jsonValue.value = value
+  jsonError.value = ''
+
+  const parsed = parsePayload(value)
+  if (!parsed) {
+    jsonError.value = 'Invalid theme JSON. Keep codex-theme-v1 format.'
+    return
+  }
+
+  isApplyingJson.value = true
+  applyPayload(parsed)
+  queueMicrotask(() => {
+    isApplyingJson.value = false
+  })
+}
+
+function exportTheme() {
+  jsonError.value = ''
+  jsonValue.value = toExportString()
 }
 
 async function copyExport() {
@@ -163,13 +167,73 @@ async function copyExport() {
   }
 
   try {
-    await navigator.clipboard.writeText(`codex-theme-v1:${JSON.stringify(payload)}`)
+    await navigator.clipboard.writeText(toExportString())
     copyState.value = 'ok'
   }
   catch {
     copyState.value = 'error'
   }
 }
+
+function setAccent(value: string) {
+  payload.theme.accent = value
+}
+
+function setSurface(value: string) {
+  payload.theme.surface = value
+}
+
+function setInk(value: string) {
+  payload.theme.ink = value
+}
+
+function setDiffAdded(value: string) {
+  payload.theme.semanticColors.diffAdded = value
+}
+
+function setDiffRemoved(value: string) {
+  payload.theme.semanticColors.diffRemoved = value
+}
+
+function setSkill(value: string) {
+  payload.theme.semanticColors.skill = value
+}
+
+function setUiFont(value: string) {
+  payload.theme.fonts.ui = value.trim() ? value.trim() : null
+}
+
+function setCodeFont(value: string) {
+  payload.theme.fonts.code = value.trim() ? value.trim() : null
+}
+
+function setContrast(value: number) {
+  payload.theme.contrast = Math.max(0, Math.min(100, Number.isFinite(value) ? value : 60))
+}
+
+function setTranslucentSidebar(value: boolean) {
+  payload.theme.opaqueWindows = !value
+}
+
+function setUiFontSize(value: number) {
+  uiFontSize.value = Math.max(12, Math.min(22, Math.round(value)))
+}
+
+function setCodeFontSize(value: number) {
+  codeFontSize.value = Math.max(12, Math.min(24, Math.round(value)))
+}
+
+watch(
+  payload,
+  () => {
+    syncJsonFromPayload()
+  },
+  { deep: true },
+)
+
+onMounted(() => {
+  syncJsonFromPayload()
+})
 </script>
 
 <template>
@@ -177,24 +241,39 @@ async function copyExport() {
     <div class="themes-shell__glow" />
 
     <div class="themes-shell__content">
-      <DsThemeControlsBar
-        :payload="payload"
-        :active-preset="activePreset"
-        :preset-options="Object.keys(presetMap)"
-        :code-theme-options="codeThemeOptions"
-        :import-value="importValue"
-        :import-error="importError"
-        :copy-state="copyState"
-        @apply-preset="applyPreset"
-        @set-theme-id="setThemeId"
-        @set-variant="setVariant"
-        @set-import="setImport"
-        @apply-import="applyImport"
-        @copy-export="copyExport"
-        @reset-preset="resetPreset"
-      />
+      <div class="themes-shell__controls">
+        <DsThemeControlsBar
+          :payload="payload"
+          :json-value="jsonValue"
+          :json-error="jsonError"
+          :copy-state="copyState"
+          :ui-font-size="uiFontSize"
+          :code-font-size="codeFontSize"
+          :translucent-sidebar="!payload.theme.opaqueWindows"
+          @set-json-value="setJsonValue"
+          @export-theme="exportTheme"
+          @copy-export="copyExport"
+          @set-accent="setAccent"
+          @set-surface="setSurface"
+          @set-ink="setInk"
+          @set-diff-added="setDiffAdded"
+          @set-diff-removed="setDiffRemoved"
+          @set-skill="setSkill"
+          @set-ui-font="setUiFont"
+          @set-code-font="setCodeFont"
+          @set-contrast="setContrast"
+          @set-translucent-sidebar="setTranslucentSidebar"
+          @set-ui-font-size="setUiFontSize"
+          @set-code-font-size="setCodeFontSize"
+        />
+      </div>
 
-      <DsCodexWorkbench :payload="payload" />
+      <DsCodexWorkbench
+        :payload="payload"
+        :ui-font-size="uiFontSize"
+        :code-font-size="codeFontSize"
+        :translucent-sidebar="!payload.theme.opaqueWindows"
+      />
     </div>
   </main>
 </template>
@@ -218,23 +297,25 @@ async function copyExport() {
 .themes-shell__content {
   position: relative;
   z-index: 2;
-  margin: 0 auto;
-  max-width: 1720px;
   display: grid;
-  gap: 12px;
-}
-</style>
-
-<style>
-.theme-page-enter-active,
-.theme-page-leave-active {
-  transition: all 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  gap: 8px;
 }
 
-.theme-page-enter-from,
-.theme-page-leave-to {
-  opacity: 0;
-  filter: blur(18px);
-  transform: translateY(16px) scale(0.985);
+.themes-shell__controls {
+  width: min(98vw, 1860px);
+  min-width: 960px;
+}
+
+@media (max-width: 1200px) {
+  .themes-shell__controls {
+    width: min(98vw, 1420px);
+    min-width: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .themes-shell__controls {
+    width: 100%;
+  }
 }
 </style>

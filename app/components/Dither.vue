@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<DitherProps>(), {
   waveSpeed: 0.05,
   waveFrequency: 3,
   waveAmplitude: 0.3,
-  waveColor: () => [0.05, 0.78, 0.62] as [number, number, number],
+  waveColor: () => [0.5, 0.5, 0.5] as [number, number, number],
   colorNum: 4,
   pixelSize: 2,
   disableAnimation: false,
@@ -203,7 +203,7 @@ vec3 dither(vec2 uv, vec3 color) {
   float threshold = getBayerValue(x, y) - 0.25;
   float step = 1.0 / (colorNum - 1.0);
   color += threshold * step;
-  float bias = 0.16;
+  float bias = 0.2;
   color = clamp(color - bias, 0.0, 1.0);
   return floor(color * (colorNum - 1.0) + 0.5) / (colorNum - 1.0);
 }
