@@ -22,12 +22,10 @@ const controlsOpen = ref(false)
     </section>
 
     <button
-      class="fixed top-4 right-4 z-30 border border-white/15 rounded-full bg-black/70 px-4 py-2 text-pureWhite/88 backdrop-blur-xl transition-colors hover:border-[var(--un-preset-radix-mint7)] hover:text-[var(--un-preset-radix-mint10)] sm:top-6 sm:right-6"
+      class="font-geist-500 fixed top-4 right-4 z-30 inline-flex items-center justify-center rounded-[999px] border border-white/90 !bg-white px-7 py-2.5 text-[13px] !text-black no-underline shadow-[0_8px_22px_rgba(0,0,0,0.22)] transition-all hover:-translate-y-0.5 hover:!bg-white/92 sm:top-6 sm:right-6 sm:px-9 sm:py-3 sm:text-[14px]"
       @click="controlsOpen = !controlsOpen"
     >
-      <span class="font-geist-500 text-[12px] tracking-[0.08em] uppercase">
-        {{ controlsOpen ? 'Hide Controls' : 'Show Controls' }}
-      </span>
+      {{ controlsOpen ? 'Hide Controls' : 'Show Controls' }}
     </button>
 
     <aside
