@@ -25,41 +25,41 @@ const emit = defineEmits<{
 
 <template>
   <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-white/[0.09] bg-[rgba(10,12,16,0.48)] p-[7px] backdrop-blur-[14px]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
+  <aside class="sidebar flex w-full flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-pureWhite/10 bg-[rgba(8,10,14,0.42)] p-[7px] text-pureWhite/86 backdrop-blur-[14px]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
     <div class="mb-[2px] flex items-center justify-between px-[2px]">
       <div class="inline-flex items-center gap-[7px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <button class="inline-flex h-6 w-6 items-center justify-center appearance-none border-none bg-transparent p-0 text-pureWhite/46 shadow-none outline-none transition-colors hover:text-pureWhite/74" @click="emit('toggleCollapsed')">
+      <button class="inline-flex h-6 w-6 items-center justify-center appearance-none border-none bg-transparent p-0 text-pureWhite/40 shadow-none outline-none transition-colors hover:text-pureWhite/62" @click="emit('toggleCollapsed')">
         <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
       </button>
     </div>
 
     <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]" @click="emit('newThread')">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:bg-pureWhite/7" @click="emit('newThread')">
         <Icon name="ph:pencil-simple-line-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label truncate">New Thread</span>
       </button>
 
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:bg-pureWhite/7">
         <Icon name="ph:clock-counter-clockwise-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label truncate">Automations</span>
       </button>
 
-      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+      <button class="nav-row min-h-[36px] flex items-center gap-2 rounded-[9px] bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:bg-pureWhite/7">
         <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label truncate">Skills</span>
       </button>
 
-      <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-white/[0.52] uppercase tracking-[0.12em]">
+      <div class="mt-1.5 flex items-center justify-between px-[2px] text-[10px] text-pureWhite/44 uppercase tracking-[0.12em]">
         <span class="sidebar-label">Threads</span>
         <div class="inline-flex items-center gap-1">
-          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
+          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-pureWhite/12 bg-transparent text-pureWhite/68 hover:bg-pureWhite/8">
             <Icon name="ph:folder-plus-bold" class="h-3 w-3" />
           </button>
-          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.05] text-white/[0.8]">
+          <button class="tiny-icon inline-flex h-[20px] w-[20px] items-center justify-center rounded-full border border-pureWhite/12 bg-transparent text-pureWhite/68 hover:bg-pureWhite/8">
             <Icon name="ph:funnel-simple-bold" class="h-3 w-3" />
           </button>
         </div>
@@ -68,7 +68,7 @@ const emit = defineEmits<{
       <button
         v-for="thread in threads"
         :key="thread.id"
-        class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-white/[0.07] bg-black/[0.2] px-[10px] text-left text-[12.5px] text-white/[0.88] transition-colors hover:bg-white/[0.08]"
+        class="thread-row min-h-[34px] flex items-center justify-between gap-[9px] rounded-[9px] border border-pureWhite/8 bg-[rgba(14,17,22,0.34)] px-[10px] text-left text-[12.5px] text-pureWhite/86 transition-colors hover:bg-pureWhite/9"
         :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
         @click="emit('selectThread', thread.id)"
       >
@@ -81,7 +81,7 @@ const emit = defineEmits<{
         <span class="thread-dot" />
       </button>
 
-      <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-white/[0.1] bg-white/[0.02] px-[10px] text-left text-[13px] font-medium text-white/[0.86] transition-colors hover:bg-white/[0.08]">
+      <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-pureWhite/9 bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:bg-pureWhite/7">
         <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label">Settings</span>
       </button>
@@ -168,8 +168,8 @@ const emit = defineEmits<{
 }
 
 .thread-row--active {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 @media (max-width: 1180px) {
