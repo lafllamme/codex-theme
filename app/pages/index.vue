@@ -9,7 +9,7 @@ const controlsOpen = ref(false)
 
 <template>
   <main class="p-4 sm:p-6 lg:p-8">
-    <section class="relative mx-auto min-h-[88vh] max-w-[1600px] overflow-hidden border border-white/8 rounded-[30px]">
+    <section class="relative mx-auto min-h-[88vh] max-w-[1600px] overflow-visible border border-white/8 rounded-[30px]">
       <div class="relative z-10 min-h-[88vh]">
         <DsHero
           variant="typo"

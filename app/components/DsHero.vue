@@ -18,13 +18,32 @@ const props = withDefaults(defineProps<DsHeroProps>(), {
   secondCtaText: 'Learn More',
   variant: 'tight',
 })
+const WHITESPACE_RE = /\s+/g
 
 const headlineLines = computed(() => props.headline.split('\n'))
+const heroHeadline = computed(() => {
+  const normalized = props.headline
+    .trim()
+    .replace(WHITESPACE_RE, ' ')
+    .toUpperCase()
+
+  if (!normalized)
+    return 'CODEX\nTHEME STUDIO'
+
+  const words = normalized.split(' ')
+  if (words[0] !== 'CODEX')
+    return normalized
+
+  const rest = words.slice(1).join('\u00A0')
+  return rest ? `CODEX\n${rest}` : 'CODEX'
+})
 
 const headerWrapClass = computed(() =>
   props.variant === 'grid'
     ? 'pointer-events-auto absolute left-0 top-5 z-1 h-[60px] w-full sm:top-6'
-    : 'pointer-events-auto absolute left-0 top-7 z-1 h-[60px] w-full sm:top-8',
+    : props.variant === 'typo'
+      ? 'pointer-events-auto absolute left-0 top-3 z-1 h-[60px] w-full sm:top-4'
+      : 'pointer-events-auto absolute left-0 top-7 z-1 h-[60px] w-full sm:top-8',
 )
 </script>
 
@@ -71,22 +90,28 @@ const headerWrapClass = computed(() =>
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto grid h-full w-full max-w-[1280px] grid-cols-1 items-center gap-8 px-6 pt-18 pb-8 md:grid-cols-12 md:gap-10"
+      class="mx-auto grid h-full w-full max-w-[1320px] grid-cols-1 items-start gap-9 px-6 pt-26 pb-16 md:grid-cols-12 md:gap-8 md:pr-8 md:pt-30 lg:gap-12"
     >
-      <div class="text-center md:col-span-8 md:text-left">
+      <div class="w-full text-center md:col-span-8 md:text-left">
         <p class="font-geist-mono-500 mb-3 text-[11px] text-pureWhite/58 tracking-[0.18em] uppercase">
           Tokens · Preview · Export
         </p>
 
-        <h1 class="font-geist-800 text-white text-[clamp(4.4rem,9vw,8.6rem)] leading-[0.84] tracking-[-0.04em]">
-          <HyperText :text="headline" :duration="950" :animate-on-load="true" />
+        <h1 class="font-geist-800 max-w-full w-fit text-white text-[clamp(2.6rem,5.6vw,5.4rem)] leading-[0.9] tracking-[-0.024em]">
+          <HyperText
+            :text="heroHeadline"
+            :duration="1900"
+            :hover-duration="1400"
+            :animate-on-load="true"
+            class="block"
+          />
         </h1>
 
-        <p class="font-geist-400 mt-4 max-w-[56ch] text-[15px] text-pureWhite/74 leading-[1.5] md:text-[19px]">
+        <p class="font-geist-400 mt-10 max-w-[56ch] text-[15px] text-pureWhite/74 leading-[1.5] md:text-[19px]">
           {{ body }}
         </p>
 
-        <div class="mt-7 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+        <div class="mt-12 flex flex-wrap items-center justify-center gap-3 md:justify-start">
           <NuxtLink
             to="/themes"
             class="font-geist-600 pointer-events-auto inline-flex items-center justify-center rounded-[999px] border border-white/90 bg-[rgba(255,255,255,0.98)] px-6 py-2.5 text-[13px] !text-[rgba(0,0,0,0.92)] no-underline shadow-[0_8px_20px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[rgba(255,255,255,0.92)] hover:!text-[rgba(0,0,0,0.92)] sm:px-8 sm:text-[14px]"
@@ -102,47 +127,51 @@ const headerWrapClass = computed(() =>
         </div>
       </div>
 
-      <aside class="pointer-events-auto border border-white/16 rounded-[22px] bg-black/38 p-4 backdrop-blur-[12px] md:col-span-4 md:ml-auto md:w-[360px]">
-        <div class="rounded-xl border border-white/10 bg-black/8 px-3 py-2.5">
+      <aside class="pointer-events-auto w-full max-w-[480px] self-start border border-white/12 rounded-[24px] bg-[linear-gradient(160deg,rgba(0,0,0,0.76)_8%,rgba(7,73,48,0.26)_54%,rgba(0,0,0,0.7)_100%)] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-28px_70px_rgba(0,0,0,0.24)] backdrop-blur-[14px] md:col-span-4 md:ml-auto md:p-5">
+        <div class="rounded-[14px] border border-white/10 bg-black/18 px-3.5 py-2">
           <NativeTypewriter
             content="What you can generate"
             speed="fast"
-            class-name="font-geist-700 text-[14px] text-pureWhite/92 tracking-[0.02em]"
+            class-name="font-geist-700 text-[clamp(1.28rem,1.9vw,1.75rem)] text-pureWhite/90 leading-[1.12] tracking-[-0.01em]"
           />
         </div>
 
-        <div class="mt-4 space-y-3">
-          <div class="rounded-xl border border-white/10 bg-black/22 px-0 py-2.5">
-            <div class="grid grid-cols-[16px_1fr] items-center gap-x-2 gap-y-1">
-              <Icon name="ph:brackets-curly-bold" class="h-4 w-4 text-pureWhite/70" aria-hidden="true" />
-              <p class="font-geist-700 text-[14px] leading-none text-pureWhite/90">
+        <div class="mt-3 space-y-0">
+          <div class="rounded-[12px] px-2 py-2.5 transition-colors hover:bg-white/4">
+            <div class="grid grid-cols-[18px_1fr] items-start gap-x-2.5 gap-y-1.5">
+              <Icon name="ph:brackets-curly-bold" class="col-start-1 row-start-1 h-[18px] w-[18px] self-center text-pureWhite/74" aria-hidden="true" />
+              <p class="col-start-2 row-start-1 font-geist-600 text-[clamp(1.08rem,1.35vw,1.22rem)] leading-[1.18] text-pureWhite/92">
                 Semantic Token Sets
               </p>
-              <p class="col-start-2 mt-1.5 font-geist-400 text-[12px] text-pureWhite/62 leading-[1.45]">
+              <p class="col-start-2 row-start-2 max-w-[31ch] font-geist-400 text-[13px] text-pureWhite/68 leading-[1.5]">
                 Surface, text, accent and state colors tuned for dark-first UIs.
               </p>
             </div>
           </div>
 
-          <div class="rounded-xl border border-white/10 bg-black/22 px-0 py-2.5">
-            <div class="grid grid-cols-[16px_1fr] items-center gap-x-2 gap-y-1">
-              <Icon name="ph:sliders" class="h-4 w-4 text-pureWhite/70" aria-hidden="true" />
-              <p class="font-geist-700 text-[14px] leading-none text-pureWhite/90">
+          <div class="my-0 border-t border-white/10" />
+
+          <div class="rounded-[12px] px-2 py-2.5 transition-colors hover:bg-white/4">
+            <div class="grid grid-cols-[18px_1fr] items-start gap-x-2.5 gap-y-1.5">
+              <Icon name="ph:sliders" class="col-start-1 row-start-1 h-[18px] w-[18px] self-center text-pureWhite/74" aria-hidden="true" />
+              <p class="col-start-2 row-start-1 font-geist-600 text-[clamp(1.08rem,1.35vw,1.22rem)] leading-[1.18] text-pureWhite/92">
                 Live Multi-Preview
               </p>
-              <p class="col-start-2 mt-1.5 font-geist-400 text-[12px] text-pureWhite/62 leading-[1.45]">
+              <p class="col-start-2 row-start-2 max-w-[31ch] font-geist-400 text-[13px] text-pureWhite/68 leading-[1.5]">
                 Validate themes in editor, docs, and terminal-style previews.
               </p>
             </div>
           </div>
 
-          <div class="rounded-xl border border-white/10 bg-black/22 px-0 py-2.5">
-            <div class="grid grid-cols-[16px_1fr] items-center gap-x-2 gap-y-1">
-              <Icon name="ph:file-arrow-up-fill" class="h-4 w-4 text-pureWhite/70" aria-hidden="true" />
-              <p class="font-geist-700 text-[14px] leading-none text-pureWhite/90">
+          <div class="my-0 border-t border-white/10" />
+
+          <div class="rounded-[12px] px-2 py-2.5 transition-colors hover:bg-white/4">
+            <div class="grid grid-cols-[18px_1fr] items-start gap-x-2.5 gap-y-1.5">
+              <Icon name="ph:file-arrow-up-fill" class="col-start-1 row-start-1 h-[18px] w-[18px] self-center text-pureWhite/74" aria-hidden="true" />
+              <p class="col-start-2 row-start-1 font-geist-600 text-[clamp(1.08rem,1.35vw,1.22rem)] leading-[1.18] text-pureWhite/92">
                 Export-Ready Output
               </p>
-              <p class="col-start-2 mt-1.5 font-geist-400 text-[12px] text-pureWhite/62 leading-[1.45]">
+              <p class="col-start-2 row-start-2 max-w-[31ch] font-geist-400 text-[13px] text-pureWhite/68 leading-[1.5]">
                 Ship JSON tokens and theme files with consistent naming.
               </p>
             </div>
