@@ -34,7 +34,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 </script>
 
 <template>
-  <section class="flex min-h-0 flex-1 flex-col rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)]">
+  <section class="flex h-full min-h-0 flex-1 flex-col rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)]">
     <div class="px-[7px] pt-[7px]">
       <ChatHeaderBar
         :title="title"
@@ -58,7 +58,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       v-model:compose-value="composeValue"
       :model-options="modelOptions"
       :thinking-options="thinkingOptions"
-      class="mx-[7px] mt-1 mb-[7px]"
+      class="mx-[7px] mt-1 mb-0"
     />
   </section>
 </template>

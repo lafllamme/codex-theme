@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
+import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
+import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
 
 interface ThreadItem {
   id: string
@@ -30,8 +32,8 @@ const defaultCodeFont = '\'Geist Mono\', ui-monospace, \'SFMono-Regular\', Menlo
 const modelOptions = ['GPT-5.3-Codex', 'GPT-5.2-Codex', 'o3']
 const thinkingOptions = ['Low', 'Medium', 'High']
 
-const selectedModel = ref(modelOptions[0])
-const selectedThinking = ref(thinkingOptions[1])
+const selectedModel = ref(modelOptions[0] ?? '')
+const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
 const runEnabled = ref(false)
@@ -97,6 +99,9 @@ const messagesByThread: Record<string, ChatMessage[]> = {
 }
 
 const activeMessages = computed(() => messagesByThread[activeThreadId.value] || [])
+const rightColumnsStyle = computed(() => ({
+  gridTemplateColumns: isDiffOpen.value ? 'minmax(0,1fr) minmax(380px,41vw)' : 'minmax(0,1fr) 0px',
+}))
 
 const shellStyle = computed(() => ({
   '--theme-surface': props.payload.theme.surface,
@@ -151,60 +156,62 @@ function beginSidebarResize(event: MouseEvent) {
 </script>
 
 <template>
-  <section class="grid min-h-screen gap-0 font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
-    <section class="flex min-h-0 flex-1 flex-col rounded-[var(--wb-r-xl)] border border-[var(--wb-border-2)] bg-[rgba(10,12,16,0.5)] p-2 backdrop-blur-[14px] shadow-[0_20px_52px_rgba(0,0,0,0.42)]">
-      <section class="relative flex min-h-0 flex-1">
-        <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
-          <WorkbenchSidebar
-            :threads="threadItems"
-            :active-thread-id="activeThreadId"
-            :collapsed="isSidebarCollapsed"
-            :mobile-open="isSidebarOpenMobile"
-            @new-thread="startNewThread"
-            @select-thread="selectThread"
-            @close-mobile="closeSidebarMobile"
-            @toggle-collapsed="toggleSidebar"
-          />
-        </div>
-        <div
-          v-if="!isSidebarCollapsed"
-          class="sidebar-resize-handle"
-          @mousedown="beginSidebarResize"
+  <section class="flex h-[100dvh] min-h-0 flex-col overflow-hidden font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
+    <section class="relative flex min-h-0 flex-1">
+      <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
+        <WorkbenchSidebar
+          :threads="threadItems"
+          :active-thread-id="activeThreadId"
+          :collapsed="isSidebarCollapsed"
+          :mobile-open="isSidebarOpenMobile"
+          @new-thread="startNewThread"
+          @select-thread="selectThread"
+          @close-mobile="closeSidebarMobile"
+          @toggle-collapsed="toggleSidebar"
         />
+      </div>
+      <div
+        v-if="!isSidebarCollapsed"
+        class="sidebar-resize-handle"
+        @mousedown="beginSidebarResize"
+      />
 
-        <section class="min-h-0 min-w-0 flex flex-1 flex-col" :class="isSidebarCollapsed ? '' : '-ml-px'">
-          <div class="flex min-h-0 min-w-0 w-full flex-1 items-stretch gap-2">
-            <ChatWindow
-              v-model:selected-model="selectedModel"
-              v-model:selected-thinking="selectedThinking"
-              v-model:compose-value="composeValue"
-              title="Open Vue-Bits Dither Sei..."
-              repo="codex-theme"
-              :run-enabled="runEnabled"
-              :is-terminal-open="isTerminalOpen"
-              :is-diff-open="isDiffOpen"
-              :is-pip-enabled="isPipEnabled"
-              :model-options="modelOptions"
-              :thinking-options="thinkingOptions"
-              :messages="activeMessages"
-              @toggle-run="runEnabled = !runEnabled"
-              @toggle-terminal="toggleTerminal"
-              @toggle-diff="toggleDiff"
-              @toggle-pip="togglePip"
-            />
+      <section class="min-h-0 min-w-0 flex flex-1 flex-col" :class="isSidebarCollapsed ? '' : '-ml-px'">
+        <div class="workbench-columns grid min-h-0 min-w-0 w-full flex-1 items-stretch gap-0" :style="rightColumnsStyle">
+          <ChatWindow
+            class="transition-[border-radius,border-color] duration-[260ms]"
+            :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
+            v-model:selected-model="selectedModel"
+            v-model:selected-thinking="selectedThinking"
+            v-model:compose-value="composeValue"
+            title="Open Vue-Bits Dither Sei..."
+            repo="codex-theme"
+            :run-enabled="runEnabled"
+            :is-terminal-open="isTerminalOpen"
+            :is-diff-open="isDiffOpen"
+            :is-pip-enabled="isPipEnabled"
+            :model-options="modelOptions"
+            :thinking-options="thinkingOptions"
+            :messages="activeMessages"
+            @toggle-run="runEnabled = !runEnabled"
+            @toggle-terminal="toggleTerminal"
+            @toggle-diff="toggleDiff"
+            @toggle-pip="togglePip"
+          />
+          <div class="diff-column min-h-0 overflow-hidden" :class="isDiffOpen ? 'diff-column--open' : ''">
             <DiffDrawer
               :open="isDiffOpen"
               :accent="payload.theme.accent"
               :contrast="payload.theme.contrast"
             />
           </div>
+        </div>
 
-          <TerminalDrawer
-            :open="isTerminalOpen"
-            :contrast="payload.theme.contrast"
-            :opaque-windows="payload.theme.opaqueWindows"
-          />
-        </section>
+        <TerminalDrawer
+          :open="isTerminalOpen"
+          :contrast="payload.theme.contrast"
+          :opaque-windows="payload.theme.opaqueWindows"
+        />
       </section>
     </section>
   </section>
@@ -245,6 +252,22 @@ function beginSidebarResize(event: MouseEvent) {
 .sidebar-column--collapsed {
   width: 0;
   margin-right: 0;
+}
+
+.workbench-columns {
+  transition: grid-template-columns 280ms var(--wb-sidebar-ease);
+}
+
+.diff-column {
+  min-width: 0;
+  transition:
+    margin-left 280ms var(--wb-sidebar-ease),
+    opacity 200ms ease;
+  margin-left: 0;
+}
+
+.diff-column--open {
+  margin-left: -1px;
 }
 
 @media (max-width: 1180px) {

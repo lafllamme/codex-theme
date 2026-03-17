@@ -22,22 +22,11 @@ function handleDitherReady() {
         class="absolute inset-0 transition-opacity duration-1200 ease-out"
         :class="ditherReady ? 'opacity-100' : 'opacity-0'"
       >
-        <Dither
-          :wave-speed="controls.waveSpeed.value"
-          :wave-frequency="controls.waveFrequency.value"
-          :wave-amplitude="controls.waveAmplitude.value"
-          :wave-color="[controls.waveColorR.value, controls.waveColorG.value, controls.waveColorB.value]"
-          :color-num="controls.colorNum.value"
-          :pixel-size="controls.pixelSize.value"
-          :disable-animation="controls.disableAnimation.value"
-          :enable-mouse-interaction="controls.enableMouseInteraction.value"
-          :mouse-radius="controls.mouseRadius.value"
-          @ready="handleDitherReady"
-        />
+       
       </div>
     </div>
 
-    <div class="relative z-10">
+    <div class="relative z-10 bg-crimson-9">
       <slot />
     </div>
   </div>
