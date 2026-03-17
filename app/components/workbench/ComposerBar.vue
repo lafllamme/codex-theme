@@ -15,32 +15,32 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       <div class="flex items-center gap-2">
         <input
           v-model="composeValue"
-          class="h-[28px] min-w-0 flex-1 bg-transparent px-1 text-[20px] text-pureWhite/34 outline-none placeholder:text-pureWhite/24"
+          class="h-[28px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-pureWhite/34 outline-none placeholder:text-pureWhite/24"
           type="text"
           placeholder="Ask a follow-up"
         >
 
-        <button class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-transparent text-pureWhite/45 transition-colors hover:bg-pureWhite/7 hover:text-pureWhite/80">
+        <button class="inline-flex h-7 w-7 items-center justify-center appearance-none border-none rounded-full bg-transparent text-pureWhite/45 outline-none transition-colors hover:bg-pureWhite/7">
           <Icon name="ph:microphone-bold" class="h-[12px] w-[12px]" />
         </button>
-        <button class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[color-mix(in_srgb,var(--theme-accent)_62%,rgba(255,255,255,0.18))] bg-[color-mix(in_srgb,var(--theme-accent)_82%,black_18%)] text-black">
+        <button class="inline-flex h-7 w-7 items-center justify-center appearance-none border-none rounded-full bg-[color-mix(in_srgb,var(--theme-accent)_82%,black_18%)] text-pureBlack shadow-[0_0_0_1px_color-mix(in_srgb,var(--theme-accent)_62%,rgba(255,255,255,0.18))_inset]">
           <Icon name="ph:arrow-up-bold" class="h-[12px] w-[12px]" />
         </button>
       </div>
 
       <div class="mt-2 flex items-center justify-between gap-2 text-[12px]">
         <div class="inline-flex min-w-0 items-center gap-1.5">
-          <button class="inline-flex h-[24px] w-[24px] items-center justify-center rounded-[7px] bg-transparent text-pureWhite/56 transition-colors hover:bg-pureWhite/8 hover:text-pureWhite/82">
+          <button class="inline-flex h-[24px] w-[24px] items-center justify-center appearance-none border-none rounded-[7px] bg-transparent text-pureWhite/56 outline-none transition-colors hover:bg-pureWhite/8">
             <Icon name="ph:plus-bold" class="h-[11px] w-[11px]" />
           </button>
 
-          <select v-model="selectedModel" class="h-[24px] min-w-[118px] rounded-[7px] border border-pureWhite/10 bg-pureWhite/4 px-2 text-[12px] text-pureWhite/78">
+          <select v-model="selectedModel" class="h-[24px] min-w-[118px] appearance-none border-none rounded-[7px] bg-pureBlack/52 px-2 text-[12px] text-pureWhite/78 outline-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset]">
             <option v-for="model in modelOptions" :key="model" :value="model">
               {{ model }}
             </option>
           </select>
 
-          <select v-model="selectedThinking" class="h-[24px] min-w-[80px] rounded-[7px] border border-pureWhite/10 bg-pureWhite/4 px-2 text-[12px] text-pureWhite/78">
+          <select v-model="selectedThinking" class="h-[24px] min-w-[80px] appearance-none border-none rounded-[7px] bg-pureBlack/52 px-2 text-[12px] text-pureWhite/78 outline-none shadow-[0_0_0_1px_rgba(255,255,255,0.08)_inset]">
             <option v-for="thinking in thinkingOptions" :key="thinking" :value="thinking">
               {{ thinking }}
             </option>
