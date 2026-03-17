@@ -35,7 +35,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 
 <template>
   <section class="flex min-h-0 flex-1 flex-col rounded-[var(--wb-r-lg)] border border-[var(--wb-border-1)] bg-[var(--wb-panel-bg-1)]">
-    <div class="px-2 pt-2">
+    <div class="px-[7px] pt-[7px]">
       <ChatHeaderBar
         :title="title"
         :repo="repo"
@@ -58,7 +58,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       v-model:compose-value="composeValue"
       :model-options="modelOptions"
       :thinking-options="thinkingOptions"
-      class="m-2 mt-1"
+      class="mx-[7px] mt-1 mb-[7px]"
     />
   </section>
 </template>

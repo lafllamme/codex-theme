@@ -172,7 +172,7 @@ function beginSidebarResize(event: MouseEvent) {
           @mousedown="beginSidebarResize"
         />
 
-        <section class="min-h-0 min-w-0 flex flex-1 flex-col">
+        <section class="min-h-0 min-w-0 flex flex-1 flex-col" :class="isSidebarCollapsed ? '' : '-ml-px'">
           <div class="flex min-h-0 min-w-0 w-full flex-1 items-stretch gap-2">
             <ChatWindow
               v-model:selected-model="selectedModel"
@@ -216,7 +216,7 @@ function beginSidebarResize(event: MouseEvent) {
   height: 100%;
   min-height: 0;
   display: flex;
-  margin-right: 8px;
+  margin-right: 0;
   flex-shrink: 0;
   position: relative;
   overflow: visible;
@@ -226,10 +226,20 @@ function beginSidebarResize(event: MouseEvent) {
 }
 
 .sidebar-resize-handle {
-  width: 8px;
-  margin-right: 8px;
-  cursor: col-resize;
+  position: relative;
+  width: 0;
+  margin-right: 0;
   background: transparent;
+}
+
+.sidebar-resize-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
 }
 
 .sidebar-column--collapsed {
