@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
@@ -13,6 +14,8 @@ const props = defineProps<{
   translucentSidebar: boolean
   scenarioId: string
   scenarioOptions: Array<{ id: string, label: string }>
+  themePresets: ThemePresetEntry[]
+  activePresetId: string | null
 }>()
 
 const emit = defineEmits<{
@@ -32,6 +35,7 @@ const emit = defineEmits<{
   setUiFontSize: [value: number]
   setCodeFontSize: [value: number]
   setScenario: [value: string]
+  applyThemePreset: [entry: ThemePresetEntry]
 }>()
 
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
@@ -138,6 +142,22 @@ function onCodeSize(event: Event) {
     <p class="appearance-shell__title">
       THEME CONTROLS
     </p>
+
+    <div class="preset-row">
+      <span class="preset-row__label">Presets</span>
+      <div class="preset-scroll">
+        <button
+          v-for="preset in themePresets"
+          :key="preset.id"
+          type="button"
+          class="preset-chip"
+          :class="preset.id === activePresetId ? 'preset-chip--active' : ''"
+          @click="emit('applyThemePreset', preset)"
+        >
+          {{ preset.label }}
+        </button>
+      </div>
+    </div>
 
     <div class="controls-layout">
       <article class="panel panel-main">
@@ -318,6 +338,67 @@ function onCodeSize(event: Event) {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: rgba(255, 255, 255, 0.74);
+}
+
+.preset-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(640px, 100%);
+}
+
+.preset-row__label {
+  flex-shrink: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.preset-scroll {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 10px;
+  margin: -4px 0 -6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 182, 112, 0.35) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.preset-scroll::-webkit-scrollbar {
+  height: 5px;
+}
+
+.preset-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 182, 112, 0.35);
+  border-radius: 999px;
+}
+
+.preset-chip {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(2, 2, 3, 0.92);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.preset-chip:hover {
+  border-color: rgba(255, 182, 112, 0.45);
+}
+
+.preset-chip--active {
+  border-color: rgba(255, 182, 112, 0.78);
+  box-shadow: 0 0 0 2px rgba(255, 182, 112, 0.18) inset;
 }
 
 .controls-layout {

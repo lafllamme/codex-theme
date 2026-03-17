@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import { themePresetEntries } from '~/data/theme-preset-catalog'
 
 definePageMeta({
   layout: 'default',
@@ -86,6 +87,7 @@ const jsonError = ref('')
 const copyState = ref<'idle' | 'ok' | 'error'>('idle')
 const isApplyingJson = ref(false)
 const scenarioId = ref('neutral')
+const activePresetId = ref<string | null>(null)
 
 const scenarioOptions = [
   { id: 'neutral', label: 'Neutral' },
@@ -326,6 +328,23 @@ function setCodeFontSize(value: number) {
   codeFontSize.value = Math.max(12, Math.min(24, Math.round(value)))
 }
 
+function applyThemePreset(entry: (typeof themePresetEntries)[number]) {
+  applyPayload(structuredClone(entry.payload))
+  setExtraFromParsed({
+    extraTopLevel: {},
+    extraTheme: {},
+    extraSemantic: {},
+    extraFonts: {},
+  })
+  activePresetId.value = entry.id
+  scenarioId.value = 'neutral'
+  neutralSnapshot.value = null
+  jsonError.value = ''
+  queueMicrotask(() => {
+    syncJsonFromPayload()
+  })
+}
+
 function setScenario(next: string) {
   if (next === scenarioId.value)
     return
@@ -388,7 +407,10 @@ onMounted(() => {
           :translucent-sidebar="!payload.theme.opaqueWindows"
           :scenario-id="scenarioId"
           :scenario-options="scenarioOptions"
+          :theme-presets="themePresetEntries"
+          :active-preset-id="activePresetId"
           @set-json-value="setJsonValue"
+          @apply-theme-preset="applyThemePreset"
           @export-theme="exportTheme"
           @copy-export="copyExport"
           @set-accent="setAccent"

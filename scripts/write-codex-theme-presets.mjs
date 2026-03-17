@@ -1,0 +1,40 @@
+import { mkdirSync, writeFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const dirs = [join(root, 'docs/themes/presets'), join(root, 'app/assets/theme-presets')]
+const presets = [
+  ['absolutely', { codeThemeId: 'absolutely', variant: 'dark', theme: { accent: '#cc7d5e', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#f9f9f7', opaqueWindows: true, semanticColors: { diffAdded: '#00c853', diffRemoved: '#ff5f38', skill: '#cc7d5e' }, surface: '#2d2d2b' } }],
+  ['ayu', { codeThemeId: 'ayu', variant: 'dark', theme: { accent: '#e6b450', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#bfbdb6', opaqueWindows: true, semanticColors: { diffAdded: '#7fd962', diffRemoved: '#ea6c73', skill: '#cda1fa' }, surface: '#0b0e14' } }],
+  ['catppuccin', { codeThemeId: 'catppuccin', variant: 'dark', theme: { accent: '#cba6f7', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#cdd6f4', opaqueWindows: true, semanticColors: { diffAdded: '#a6e3a1', diffRemoved: '#f38ba8', skill: '#cba6f7' }, surface: '#1e1e2e' } }],
+  ['codex', { codeThemeId: 'codex', variant: 'dark', theme: { accent: '#0169cc', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#fcfcfc', opaqueWindows: true, semanticColors: { diffAdded: '#00a240', diffRemoved: '#e02e2a', skill: '#b06dff' }, surface: '#111111' } }],
+  ['dracula', { codeThemeId: 'dracula', variant: 'dark', theme: { accent: '#ff79c6', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#f8f8f2', opaqueWindows: true, semanticColors: { diffAdded: '#50fa7b', diffRemoved: '#ff5555', skill: '#ff79c6' }, surface: '#282a36' } }],
+  ['everforest', { codeThemeId: 'everforest', variant: 'dark', theme: { accent: '#a7c080', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#d3c6aa', opaqueWindows: true, semanticColors: { diffAdded: '#a7c080', diffRemoved: '#e67e80', skill: '#d699b6' }, surface: '#2d353b' } }],
+  ['github', { codeThemeId: 'github', variant: 'dark', theme: { accent: '#1f6feb', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#e6edf3', opaqueWindows: true, semanticColors: { diffAdded: '#3fb950', diffRemoved: '#f85149', skill: '#bc8cff' }, surface: '#0d1117' } }],
+  ['gruvbox', { codeThemeId: 'gruvbox', variant: 'dark', theme: { accent: '#458588', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#ebdbb2', opaqueWindows: true, semanticColors: { diffAdded: '#ebdbb2', diffRemoved: '#cc241d', skill: '#b16286' }, surface: '#282828' } }],
+  ['linear', { codeThemeId: 'linear', variant: 'dark', theme: { accent: '#5e6ad2', contrast: 60, fonts: { code: null, ui: 'Inter' }, ink: '#e6e9ef', opaqueWindows: true, semanticColors: { diffAdded: '#7ad9c0', diffRemoved: '#fa423e', skill: '#c2a1ff' }, surface: '#17181d' } }],
+  ['lobster', { codeThemeId: 'lobster', variant: 'dark', theme: { accent: '#ff5c5c', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#e4e4e7', opaqueWindows: true, semanticColors: { diffAdded: '#22c55e', diffRemoved: '#ff5c5c', skill: '#3b82f6' }, surface: '#111827' } }],
+  ['material', { codeThemeId: 'material', variant: 'dark', theme: { accent: '#80cbc4', contrast: 60, fonts: { code: null, ui: 'Satoshi' }, ink: '#eeffff', opaqueWindows: true, semanticColors: { diffAdded: '#c3e88d', diffRemoved: '#f07178', skill: '#c792ea' }, surface: '#212121' } }],
+  ['matrix', { codeThemeId: 'matrix', variant: 'dark', theme: { accent: '#1eff5a', contrast: 60, fonts: { code: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace', ui: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' }, ink: '#b8ffca', opaqueWindows: true, semanticColors: { diffAdded: '#1eff5a', diffRemoved: '#fa423e', skill: '#1eff5a' }, surface: '#040805' } }],
+  ['monokai', { codeThemeId: 'monokai', variant: 'dark', theme: { accent: '#99947c', contrast: 60, fonts: { code: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace', ui: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' }, ink: '#f8f8f2', opaqueWindows: true, semanticColors: { diffAdded: '#86b42b', diffRemoved: '#c4265e', skill: '#8c6bc8' }, surface: '#272822' } }],
+  ['night-owl', { codeThemeId: 'night-owl', variant: 'dark', theme: { accent: '#44596b', contrast: 60, fonts: { code: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace', ui: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' }, ink: '#d6deeb', opaqueWindows: true, semanticColors: { diffAdded: '#c5e478', diffRemoved: '#ef5350', skill: '#c792ea' }, surface: '#011627' } }],
+  ['nord', { codeThemeId: 'nord', variant: 'dark', theme: { accent: '#88c0d0', contrast: 60, fonts: { code: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace', ui: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' }, ink: '#d8dee9', opaqueWindows: true, semanticColors: { diffAdded: '#a3be8c', diffRemoved: '#bf616a', skill: '#b48ead' }, surface: '#2e3440' } }],
+  ['notion', { codeThemeId: 'notion', variant: 'dark', theme: { accent: '#3183d8', contrast: 60, fonts: { code: null, ui: null }, ink: '#d9d9d8', opaqueWindows: true, semanticColors: { diffAdded: '#4ec9b0', diffRemoved: '#fa423e', skill: '#3183d8' }, surface: '#191919' } }],
+  ['one', { codeThemeId: 'one', variant: 'dark', theme: { accent: '#4d78cc', contrast: 60, fonts: { code: null, ui: null }, ink: '#abb2bf', opaqueWindows: true, semanticColors: { diffAdded: '#8cc265', diffRemoved: '#e05561', skill: '#c162de' }, surface: '#282c34' } }],
+  ['oscurange', { codeThemeId: 'oscurange', variant: 'dark', theme: { accent: '#f9b98c', contrast: 60, fonts: { code: null, ui: null }, ink: '#e6e6e6', opaqueWindows: true, semanticColors: { diffAdded: '#40c977', diffRemoved: '#fa423e', skill: '#479ffa' }, surface: '#0b0b0f' } }],
+  ['rose-pine', { codeThemeId: 'rose-pine', variant: 'dark', theme: { accent: '#ea9a97', contrast: 60, fonts: { code: null, ui: null }, ink: '#e0def4', opaqueWindows: true, semanticColors: { diffAdded: '#9ccfd8', diffRemoved: '#908caa', skill: '#c4a7e7' }, surface: '#232136' } }],
+  ['sentry', { codeThemeId: 'sentry', variant: 'dark', theme: { accent: '#7055f6', contrast: 60, fonts: { code: null, ui: null }, ink: '#e6dff9', opaqueWindows: true, semanticColors: { diffAdded: '#8ee6d7', diffRemoved: '#fa423e', skill: '#7055f6' }, surface: '#2d2935' } }],
+  ['solarized', { codeThemeId: 'solarized', variant: 'dark', theme: { accent: '#d30102', contrast: 60, fonts: { code: null, ui: null }, ink: '#839496', opaqueWindows: true, semanticColors: { diffAdded: '#859900', diffRemoved: '#dc322f', skill: '#d33682' }, surface: '#002b36' } }],
+  ['temple', { codeThemeId: 'temple', variant: 'dark', theme: { accent: '#e4f222', contrast: 60, fonts: { code: null, ui: null }, ink: '#c7e6da', opaqueWindows: true, semanticColors: { diffAdded: '#40c977', diffRemoved: '#fa423e', skill: '#e4f222' }, surface: '#02120c' } }],
+  ['tokyo-night', { codeThemeId: 'tokyo-night', variant: 'dark', theme: { accent: '#3d59a1', contrast: 60, fonts: { code: null, ui: null }, ink: '#a9b1d6', opaqueWindows: true, semanticColors: { diffAdded: '#449dab', diffRemoved: '#914c54', skill: '#9d7cd8' }, surface: '#1a1b26' } }],
+  ['vscode-plus', { codeThemeId: 'vscode-plus', variant: 'dark', theme: { accent: '#007acc', contrast: 60, fonts: { code: null, ui: null }, ink: '#d4d4d4', opaqueWindows: true, semanticColors: { diffAdded: '#369432', diffRemoved: '#f44747', skill: '#000080' }, surface: '#1e1e1e' } }],
+]
+
+for (const dir of dirs) {
+  mkdirSync(dir, { recursive: true })
+  for (const [id, obj] of presets) {
+    writeFileSync(join(dir, `${id}.json`), `${JSON.stringify(obj, null, 2)}\n`)
+  }
+}
+console.log(`Wrote ${presets.length} presets to docs/themes/presets and app/assets/theme-presets`)
