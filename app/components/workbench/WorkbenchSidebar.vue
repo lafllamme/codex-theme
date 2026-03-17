@@ -80,62 +80,66 @@ function toggleRepo(repo: string) {
         <span class="sidebar-label truncate">Skills</span>
       </button>
 
-      <div class="mt-1.5 flex items-center justify-between px-[2px] pr-[6px] text-[10px] text-pureWhite/38 uppercase tracking-[0.13em]">
-        <span class="sidebar-label">Threads</span>
-        <div class="inline-flex translate-y-[1px] items-center gap-2">
-          <button class="inline-flex h-[18px] w-[18px] items-center justify-center border-none bg-transparent p-0 text-pureWhite/58 transition-colors hover:text-pureWhite/78">
-            <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />
-          </button>
-          <button class="inline-flex h-[18px] w-[18px] items-center justify-center border-none bg-transparent p-0 text-pureWhite/58 transition-colors hover:text-pureWhite/78">
-            <Icon name="ph:funnel-simple" class="h-[15px] w-[15px]" />
-          </button>
+      <div class="flex min-h-0 flex-1 flex-col">
+        <div class="mt-1.5 flex items-center justify-between px-[2px] pr-[6px] text-[10px] text-pureWhite/38 uppercase tracking-[0.13em]">
+          <span class="sidebar-label">Threads</span>
+          <div class="inline-flex translate-y-[1px] items-center gap-2">
+            <button class="inline-flex h-[18px] w-[18px] items-center justify-center border-none bg-transparent p-0 text-pureWhite/58 transition-colors hover:text-pureWhite/78">
+              <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />
+            </button>
+            <button class="inline-flex h-[18px] w-[18px] items-center justify-center border-none bg-transparent p-0 text-pureWhite/58 transition-colors hover:text-pureWhite/78">
+              <Icon name="ph:funnel-simple" class="h-[15px] w-[15px]" />
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-0.5 flex-1 overflow-y-auto pr-[2px]">
+          <div v-for="group in groupedThreads" :key="group.repo" class="mt-0.5 flex flex-col gap-[3px]">
+            <button class="group inline-flex w-full items-center justify-between gap-2 appearance-none border-none bg-transparent px-[10px] py-0 text-left text-[12.5px] font-semibold text-pureWhite/74 shadow-none outline-none" @click="toggleRepo(group.repo)">
+              <span class="inline-flex min-w-0 items-center gap-2">
+                <span class="relative inline-flex h-[15px] w-[15px] items-center justify-center">
+                  <Icon
+                    name="ph:folder-open"
+                    class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
+                  />
+                  <Icon
+                    :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
+                    class="absolute h-[13px] w-[13px] text-pureWhite/66 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                  />
+                </span>
+                <span class="truncate">{{ group.repo }}</span>
+              </span>
+              <span class="inline-flex items-center gap-2 text-pureWhite/58 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
+                <Icon name="ph:note-pencil" class="h-[16px] w-[16px]" />
+              </span>
+            </button>
+
+            <div class="repo-items" :class="isRepoCollapsed(group.repo) ? 'repo-items--collapsed' : 'repo-items--expanded'">
+              <button
+                v-for="thread in group.items"
+                :key="thread.id"
+                class="thread-row group relative min-h-[34px] grid grid-cols-[minmax(0,1fr)_52px_66px] items-center gap-[4px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[30px] text-left text-[12.5px] text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
+                :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
+                @click="emit('selectThread', thread.id)"
+              >
+                <Icon name="ph:push-pin" class="pointer-events-none absolute left-[10px] h-[11px] w-[11px] text-pureWhite/48 opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+                <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
+                <span class="thread-row__delta sidebar-label inline-flex items-center justify-end gap-[1px] font-[var(--font-code)] text-[11px]">
+                  <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
+                    <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
+                    <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
+                  </template>
+                </span>
+                <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+                <span class="thread-dot" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div v-for="group in groupedThreads" :key="group.repo" class="mt-0.5 flex flex-col gap-[3px]">
-        <button class="group inline-flex w-full items-center justify-between gap-2 appearance-none border-none bg-transparent px-[10px] py-0 text-left text-[12.5px] font-semibold text-pureWhite/74 shadow-none outline-none" @click="toggleRepo(group.repo)">
-          <span class="inline-flex min-w-0 items-center gap-2">
-            <span class="relative inline-flex h-[15px] w-[15px] items-center justify-center">
-              <Icon
-                name="ph:folder-open"
-                class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
-              />
-              <Icon
-                :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
-                class="absolute h-[13px] w-[13px] text-pureWhite/66 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-              />
-            </span>
-            <span class="truncate">{{ group.repo }}</span>
-          </span>
-          <span class="inline-flex items-center gap-2 text-pureWhite/58 opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-            <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
-            <Icon name="ph:note-pencil" class="h-[16px] w-[16px]" />
-          </span>
-        </button>
-
-        <div class="repo-items" :class="isRepoCollapsed(group.repo) ? 'repo-items--collapsed' : 'repo-items--expanded'">
-          <button
-            v-for="thread in group.items"
-            :key="thread.id"
-            class="thread-row group relative min-h-[34px] grid grid-cols-[minmax(0,1fr)_52px_66px] items-center gap-[4px] rounded-[9px] border border-transparent bg-transparent pr-[10px] pl-[30px] text-left text-[12.5px] text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/9"
-            :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
-            @click="emit('selectThread', thread.id)"
-          >
-            <Icon name="ph:push-pin" class="pointer-events-none absolute left-[10px] h-[11px] w-[11px] text-pureWhite/48 opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
-            <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
-            <span class="thread-row__delta sidebar-label inline-flex items-center justify-end gap-[1px] font-[var(--font-code)] text-[11px]">
-              <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
-                <span v-if="typeof thread.added === 'number'" class="text-[#32d089]">+{{ thread.added }}</span>
-                <span v-if="typeof thread.removed === 'number'" class="text-[#f04f5f]">-{{ thread.removed }}</span>
-              </template>
-            </span>
-            <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
-            <span class="thread-dot" />
-          </button>
-        </div>
-      </div>
-
-      <button class="settings-row mt-[2px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
+      <button class="settings-row mt-[4px] min-h-[36px] flex items-center gap-2 rounded-[9px] border border-transparent bg-transparent px-[10px] text-left text-[13px] font-medium text-pureWhite/84 transition-colors hover:border-pureWhite/12 hover:bg-pureWhite/7">
         <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
         <span class="sidebar-label">Settings</span>
       </button>
@@ -191,7 +195,7 @@ function toggleRepo(repo: string) {
   width: 100%;
   opacity: 1;
   transform: translateX(0);
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .sidebar-content--collapsed {

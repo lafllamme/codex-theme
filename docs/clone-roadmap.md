@@ -64,18 +64,28 @@ See detailed checklist:
 
 ## Slice status (latest)
 
-- Controls slice is active and now split into focused sub-components:
+- Controls slice is complete and split into focused sub-components:
   - `workbench/controls/TopbarConversationMeta`
   - `workbench/controls/TopbarWorktreeControls`
   - `workbench/controls/TopbarUtilityToggles`
   - `workbench/controls/CommitChip`
-- Screenshot source mapping for this slice:
-  - Local/current references: `screenshots/current/01-controls-current.png`, `screenshots/current/02-controls-current-alt.png`
-  - Real Codex targets: `screenshots/target/03-full-ui-target.png` ... `screenshots/target/08-toolbar-diff-target.png`
+- Sidebar slice is complete:
+  - anchored window controls inside sidebar glass shell
+  - collapsible repo groups with stable icon behavior
+  - draggable width + symmetric collapse/expand choreography
+  - full-height behavior with internal thread scrolling (no bottom dead area)
+- ChatWindow slice is now active and integrated:
+  - new `workbench/ChatWindow` wrapper for `header -> transcript -> composer`
+  - new `workbench/chat/ChatHeaderBar` for in-panel heading and controls
+  - `WorkbenchMainStage` narrowed to transcript rendering lane
+  - `ComposerBar` updated to Codex-like input hierarchy
+- Screenshot source mapping for active parity pass:
+  - `screenshots/target/01-full-look-demo.png`
+  - `screenshots/target/02-full-look.png`
 
-## Next slice: Sidebar (acceptance criteria)
+## Next slice: Final pixel polish (acceptance criteria)
 
-- Sidebar header hierarchy matches Codex: title weight, muted project text, subtle overflow action.
-- Thread rows align with Codex spacing: row height, left icon lane, active row emphasis.
-- Collapse interaction mirrors Codex behavior: icon alignment, text fade timing, hover response.
-- Mobile sidebar keeps parity: off-canvas width, scrim opacity, close affordance.
+- Header control spacing and typography are tuned to screenshot-level parity.
+- Transcript vertical rhythm and bubble widths match Codex density.
+- Composer baseline, icon contrast, and token row alignment match Codex.
+- No regressions in collapsed sidebar, diff-open, terminal-open, and combined states.

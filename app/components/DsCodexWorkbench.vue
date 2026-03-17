@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import ChatWindow from '~/components/workbench/ChatWindow.vue'
 
 interface ThreadItem {
   id: string
@@ -33,6 +34,7 @@ const selectedModel = ref(modelOptions[0])
 const selectedThinking = ref(thinkingOptions[1])
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
+const runEnabled = ref(false)
 const sidebarWidth = ref(286)
 const minSidebarWidth = 248
 const maxSidebarWidth = 420
@@ -42,8 +44,12 @@ const {
   isSidebarOpenMobile,
   isTerminalOpen,
   isDiffOpen,
+  isPipEnabled,
   toggleSidebar,
   closeSidebarMobile,
+  toggleTerminal,
+  toggleDiff,
+  togglePip,
 } = useWorkbenchPanels()
 
 const defaultThread: ThreadItem = { id: 'thread-1', title: 'Make DsRing mobile friendly', repo: 'codex-theme', time: '54 Min.' }
@@ -168,21 +174,30 @@ function beginSidebarResize(event: MouseEvent) {
 
         <section class="min-h-0 min-w-0 flex flex-1 flex-col">
           <div class="flex min-h-0 min-w-0 w-full flex-1 items-stretch gap-2">
-            <WorkbenchMainStage :messages="activeMessages" />
+            <ChatWindow
+              v-model:selected-model="selectedModel"
+              v-model:selected-thinking="selectedThinking"
+              v-model:compose-value="composeValue"
+              title="Open Vue-Bits Dither Sei..."
+              repo="codex-theme"
+              :run-enabled="runEnabled"
+              :is-terminal-open="isTerminalOpen"
+              :is-diff-open="isDiffOpen"
+              :is-pip-enabled="isPipEnabled"
+              :model-options="modelOptions"
+              :thinking-options="thinkingOptions"
+              :messages="activeMessages"
+              @toggle-run="runEnabled = !runEnabled"
+              @toggle-terminal="toggleTerminal"
+              @toggle-diff="toggleDiff"
+              @toggle-pip="togglePip"
+            />
             <DiffDrawer
               :open="isDiffOpen"
               :accent="payload.theme.accent"
               :contrast="payload.theme.contrast"
             />
           </div>
-
-          <ComposerBar
-            v-model:selected-model="selectedModel"
-            v-model:selected-thinking="selectedThinking"
-            v-model:compose-value="composeValue"
-            :model-options="modelOptions"
-            :thinking-options="thinkingOptions"
-          />
 
           <TerminalDrawer
             :open="isTerminalOpen"

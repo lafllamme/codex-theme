@@ -14,6 +14,13 @@ Checklist for visual/behavior parity against Codex reference screenshots.
 - [x] Match chip/button roundness and icon weight.
 - [x] Match action spacing (`run`, `worktree`, `push`, utility icons).
 
+## Chat window (in-panel header + content lane)
+
+- [x] Move heading/controls into the chat panel hierarchy.
+- [x] Isolate chat header as a dedicated component.
+- [x] Keep title/project/actions hierarchy aligned with Codex screenshot structure.
+- [x] Apply compact diff count spacing and subtle divider rhythm.
+
 ## Sidebar
 
 - [x] Match row heights and section spacing.
@@ -24,7 +31,8 @@ Checklist for visual/behavior parity against Codex reference screenshots.
 
 - [x] Match chat surface contrast and border layering.
 - [x] Match bubble geometry and spacing.
-- [x] Match commit/header card geometry.
+- [x] Move commit/header ownership out of transcript renderer.
+- [x] Keep transcript lane inset and center rhythm aligned.
 
 ## Drawers
 
@@ -34,8 +42,9 @@ Checklist for visual/behavior parity against Codex reference screenshots.
 
 ## Composer
 
-- [x] Match control density and sizing.
-- [x] Match status row typography and spacing.
+- [x] Match prompt field hierarchy with mic/send controls.
+- [x] Match model/thinking selector row density and spacing.
+- [x] Match status row typography and branch alignment.
 - [x] Keep CTA response tied to accent token.
 
 ## Mobile
@@ -48,3 +57,8 @@ Checklist for visual/behavior parity against Codex reference screenshots.
 
 - [x] Scenario presets cover visual edge cases.
 - [x] Unknown key passthrough is preserved on import/export.
+
+## Final verification
+
+- [ ] Manual side-by-side check vs `screenshots/target/01-full-look-demo.png`.
+- [ ] Manual side-by-side check vs `screenshots/target/02-full-look.png`.
