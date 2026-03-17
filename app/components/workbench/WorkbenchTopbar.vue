@@ -20,9 +20,9 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <header class="flex min-h-[var(--wb-topbar-height)] items-center justify-between gap-3 rounded-[var(--wb-r-md)] border border-[var(--wb-border-2)] bg-[rgba(15,17,22,0.45)] p-[8px_10px] backdrop-blur-[14px] max-[1180px]:items-start max-[1180px]:flex-col">
+  <header class="min-h-[var(--wb-topbar-height)] flex items-center justify-between gap-3 border border-[var(--wb-border-2)] rounded-[var(--wb-r-md)] bg-[rgba(15,17,22,0.45)] p-[8px_10px] backdrop-blur-[14px] max-[1180px]:flex-col max-[1180px]:items-start">
     <div class="inline-flex items-center gap-2">
-      <button class="inline-flex h-8 w-8 items-center justify-center rounded-[8px] border border-white/[0.14] bg-white/[0.02] text-white/[0.52] transition-colors hover:bg-white/[0.07] hover:text-white/[0.82] min-[1181px]:hidden" @click="emit('toggleSidebarMobile')">
+      <button class="border-white/[0.14] bg-white/[0.02] text-white/[0.52] hover:bg-white/[0.07] hover:text-white/[0.82] h-8 w-8 inline-flex items-center justify-center border rounded-[8px] transition-colors min-[1181px]:hidden" @click="emit('toggleSidebarMobile')">
         <Icon :name="mobileSidebarOpen ? 'ph:x-bold' : 'ph:list-bold'" class="h-[14px] w-[14px]" />
       </button>
       <TopbarConversationMeta :title="title" :repo="repo" />

@@ -8,19 +8,19 @@ defineProps<{
 
 <template>
   <section
-    class="terminal-drawer overflow-hidden rounded-[var(--wb-r-md)] border border-[var(--wb-border-1)] bg-[rgba(8,9,11,0.95)]"
+    class="terminal-drawer overflow-hidden border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-md)] bg-[var(--wb-bg-terminal)]"
     :class="open ? 'terminal-drawer--open terminal-drawer--spaced' : 'terminal-drawer--closed'"
   >
-    <header class="flex h-[34px] items-center justify-between border-b border-[var(--wb-border-2)] px-3 text-[12px] text-white/[0.82]">
+    <header class="h-[34px] flex items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:var(--wb-text-primary)]">
       <span>Terminal</span>
       <span class="font-[var(--font-code)] opacity-[0.62]">local</span>
     </header>
-    <div class="flex flex-col gap-2 p-[10px_12px_12px] font-[var(--font-code)] text-[var(--code-font-size)]">
+    <div class="flex flex-col gap-2 p-[10px_12px_12px] text-[color:var(--wb-text-primary)] text-[var(--code-font-size)] font-[var(--font-code)]">
       <p class="m-0 leading-[1.5]">
-        <span class="opacity-[0.65]">$</span> pnpm dev
+        <span class="text-[color:var(--wb-terminal-prompt)]">$</span> pnpm dev
       </p>
       <p class="m-0 leading-[1.5]">
-        <span class="text-[#59a8ff]">info</span> Nuxt ready at http://localhost:3000
+        <span class="text-[color:var(--theme-skill)]">info</span> Nuxt ready at http://localhost:3000
       </p>
       <p class="m-0 leading-[1.5]">
         <span class="text-[var(--theme-added)]">+ added</span> app/components/workbench/TerminalDrawer.vue

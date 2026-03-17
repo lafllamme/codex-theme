@@ -35,6 +35,22 @@
 - `mouseRadius: 0.5`
 - `waveColor: [0.1, 0.7, 0.5]`
 
+## Workbench replica: codex-theme-v1 CSS variables
+
+The theme page workbench (`DsCodexWorkbench`) maps **`CodexThemePayload`** to shell CSS variables in [`app/utils/codex-workbench-theme.ts`](../app/utils/codex-workbench-theme.ts). Clone components should use these instead of hardcoded grays.
+
+| Variable | Role |
+| -------- | ---- |
+| `--wb-bg-panel` | Main chat surface (`surface`) |
+| `--wb-bg-sidebar` | Sidebar: **darker than** panel; glass = semi-transparent + blur, solid when `opaqueWindows` or non-translucent page flag |
+| `--wb-bg-composer`, `--wb-bg-diff-*`, `--wb-bg-terminal` | Elevated panels from `surface` |
+| `--wb-text-primary` … `--wb-text-faint` | From `ink` |
+| `--wb-border-*`, `--wb-divider`, `--wb-hover-*` | From `ink` + `contrast` |
+| `--wb-diff-delta-added/removed` | `semanticColors` |
+| `--syntax-*` | Fallback code colors from v1 (`accent`, `semanticColors`, `ink`); future: override per `codeThemeId` via VS Code `tokenColors` |
+
+**Sidebar rule:** background is always a **darker mix** than the chosen `surface`. **Glas** (`backdrop-filter`) only when translucent + not `opaqueWindows`.
+
 ## Notes
 - Dither is global page background in `default` layout.
 - Start page includes a fixed control center for live tweaking.

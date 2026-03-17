@@ -3,6 +3,7 @@ import type { CodexThemePayload } from '~/types/codex-theme'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
+import { codexWorkbenchCssVars } from '~/utils/codex-workbench-theme'
 
 interface ThreadItem {
   id: string
@@ -99,22 +100,13 @@ const messagesByThread: Record<string, ChatMessage[]> = {
 }
 
 const activeMessages = computed(() => messagesByThread[activeThreadId.value] || [])
-const rightColumnsStyle = computed(() => ({
-  gridTemplateColumns: isDiffOpen.value ? 'minmax(0,1fr) minmax(380px,41vw)' : 'minmax(0,1fr) 0px',
-}))
 
 const shellStyle = computed(() => ({
-  '--theme-surface': props.payload.theme.surface,
-  '--theme-ink': props.payload.theme.ink,
-  '--theme-accent': props.payload.theme.accent,
-  '--theme-added': props.payload.theme.semanticColors.diffAdded,
-  '--theme-removed': props.payload.theme.semanticColors.diffRemoved,
-  '--theme-skill': props.payload.theme.semanticColors.skill,
+  ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
   '--font-ui': props.payload.theme.fonts.ui || defaultUiFont,
   '--font-code': props.payload.theme.fonts.code || defaultCodeFont,
   '--ui-font-size': `${props.uiFontSize}px`,
   '--code-font-size': `${props.codeFontSize}px`,
-  '--sidebar-bg': props.translucentSidebar ? 'rgba(9, 10, 12, 0.58)' : 'rgba(9, 10, 12, 0.9)',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
   '--wb-sidebar-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }))
@@ -156,8 +148,8 @@ function beginSidebarResize(event: MouseEvent) {
 </script>
 
 <template>
-  <section class="flex h-[100dvh] min-h-0 flex-col overflow-hidden font-[var(--font-ui)] text-[var(--ui-font-size)] text-[color-mix(in_srgb,var(--theme-ink)_90%,#fff)]" :style="shellStyle">
-    <section class="relative flex min-h-0 flex-1">
+  <section class="h-[100dvh] min-h-0 flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
+    <section class="relative min-h-0 flex flex-1">
       <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
         <WorkbenchSidebar
           :threads="threadItems"
@@ -177,28 +169,33 @@ function beginSidebarResize(event: MouseEvent) {
       />
 
       <section class="min-h-0 min-w-0 flex flex-1 flex-col" :class="isSidebarCollapsed ? '' : '-ml-px'">
-        <div class="workbench-columns grid min-h-0 min-w-0 w-full flex-1 items-stretch gap-0" :style="rightColumnsStyle">
-          <ChatWindow
-            class="transition-[border-radius,border-color] duration-[260ms]"
-            :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
-            v-model:selected-model="selectedModel"
-            v-model:selected-thinking="selectedThinking"
-            v-model:compose-value="composeValue"
-            title="Open Vue-Bits Dither Sei..."
-            repo="codex-theme"
-            :run-enabled="runEnabled"
-            :is-terminal-open="isTerminalOpen"
-            :is-diff-open="isDiffOpen"
-            :is-pip-enabled="isPipEnabled"
-            :model-options="modelOptions"
-            :thinking-options="thinkingOptions"
-            :messages="activeMessages"
-            @toggle-run="runEnabled = !runEnabled"
-            @toggle-terminal="toggleTerminal"
-            @toggle-diff="toggleDiff"
-            @toggle-pip="togglePip"
-          />
-          <div class="diff-column min-h-0 overflow-hidden" :class="isDiffOpen ? 'diff-column--open' : ''">
+        <div class="workbench-main-row min-h-0 min-w-0 w-full flex flex-1 items-stretch">
+          <div class="chat-main-column min-h-0 min-w-0 flex-1">
+            <ChatWindow
+              v-model:selected-model="selectedModel"
+              v-model:selected-thinking="selectedThinking"
+              v-model:compose-value="composeValue"
+              class="h-full transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+              :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
+              title="Open Vue-Bits Dither Sei..."
+              repo="codex-theme"
+              :run-enabled="runEnabled"
+              :is-terminal-open="isTerminalOpen"
+              :is-diff-open="isDiffOpen"
+              :is-pip-enabled="isPipEnabled"
+              :model-options="modelOptions"
+              :thinking-options="thinkingOptions"
+              :messages="activeMessages"
+              @toggle-run="runEnabled = !runEnabled"
+              @toggle-terminal="toggleTerminal"
+              @toggle-diff="toggleDiff"
+              @toggle-pip="togglePip"
+            />
+          </div>
+          <div
+            class="diff-column min-h-0 shrink-0 overflow-hidden"
+            :class="isDiffOpen ? 'diff-column--open' : ''"
+          >
             <DiffDrawer
               :open="isDiffOpen"
               :accent="payload.theme.accent"
@@ -254,19 +251,16 @@ function beginSidebarResize(event: MouseEvent) {
   margin-right: 0;
 }
 
-.workbench-columns {
-  transition: grid-template-columns 280ms var(--wb-sidebar-ease);
-}
-
 .diff-column {
-  min-width: 0;
-  transition:
-    margin-left 280ms var(--wb-sidebar-ease),
-    opacity 200ms ease;
+  width: 0;
   margin-left: 0;
+  transition:
+    width 260ms var(--wb-sidebar-ease),
+    margin-left 220ms var(--wb-sidebar-ease);
 }
 
 .diff-column--open {
+  width: min(41vw, 520px);
   margin-left: -1px;
 }
 
