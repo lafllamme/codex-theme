@@ -9,6 +9,7 @@ This is the team SOP for moving clone components from scoped CSS to UnoCSS utili
 - Use `pureWhite` / `pureBlack` token classes instead of raw `white` / `black` utilities.
   - Prefer: `text-pureWhite/90`, `bg-pureBlack/45`, `border-pureWhite/10`
   - Avoid: `text-white/90`, `bg-black/45`, `border-white/10`
+- Prefer VueUse composables for behavior wiring (`onClickOutside`, `useEventListener`, etc.) over manual `addEventListener` blocks.
 - Keep scoped CSS only for special cases:
   - complex choreography/transitions,
   - hard pseudo-selector dependencies,

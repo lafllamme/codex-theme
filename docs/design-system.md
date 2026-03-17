@@ -38,3 +38,4 @@
 ## Notes
 - Dither is global page background in `default` layout.
 - Start page includes a fixed control center for live tweaking.
+- Prefer VueUse composables for UI interaction wiring (outside click, key listeners, media/query state) instead of manual DOM listeners.
