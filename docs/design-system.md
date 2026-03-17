@@ -9,6 +9,8 @@
 ## Uno Color Tokens
 - `pureWhite` maps to `#fff`
 - `pureBlack` maps to `#000`
+- Team rule: do not use raw Uno `white` / `black` utilities in clone UI (`text-white/*`, `bg-black/*`, `border-white/*`, etc.).
+- Always use tokenized variants (`pureWhite` / `pureBlack`) so opacity rendering stays consistent across Uno parsing and theming.
 - Use these in Uno classes with opacity suffixes:
 - `text-pureWhite/90`
 - `color-pureWhite/90`

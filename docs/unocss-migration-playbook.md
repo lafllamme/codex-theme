@@ -6,6 +6,9 @@ This is the team SOP for moving clone components from scoped CSS to UnoCSS utili
 
 - Prefer Uno utility classes directly in templates.
 - Prefer Radix/Uno tokens for color and border semantics.
+- Use `pureWhite` / `pureBlack` token classes instead of raw `white` / `black` utilities.
+  - Prefer: `text-pureWhite/90`, `bg-pureBlack/45`, `border-pureWhite/10`
+  - Avoid: `text-white/90`, `bg-black/45`, `border-white/10`
 - Keep scoped CSS only for special cases:
   - complex choreography/transitions,
   - hard pseudo-selector dependencies,
