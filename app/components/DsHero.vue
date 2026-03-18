@@ -97,7 +97,7 @@ const headerWrapClass = computed(() =>
       class="mx-auto grid h-full w-full max-w-[1320px] grid-cols-1 items-start gap-7 px-4 pt-32 pb-12 sm:gap-9 sm:px-6 sm:pt-26 sm:pb-16 md:grid-cols-12 md:gap-8 md:pr-8 md:pt-30 lg:gap-12"
     >
       <div class="w-full text-center md:col-span-8 md:text-left">
-        <div class="mb-3">
+        <div class="mb-3 hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
             :duration="1500"
@@ -106,18 +106,18 @@ const headerWrapClass = computed(() =>
         </div>
 
         <h1 class="font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
-          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
-          <span class="block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
+          <span class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
+          <span class="hero-intro hero-delay-3 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
         </h1>
 
-        <p class="font-geist-400 mt-7 max-w-[56ch] text-[14px] text-pureWhite/74 leading-[1.45] sm:mt-10 sm:text-[15px] sm:leading-[1.5] md:text-[19px]">
+        <p class="hero-intro hero-delay-4 font-geist-400 mt-7 max-w-[56ch] text-[14px] text-pureWhite/74 leading-[1.45] sm:mt-10 sm:text-[15px] sm:leading-[1.5] md:text-[19px]">
           {{ body }}
         </p>
 
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-12 md:justify-start">
           <NuxtLink
             to="/themes"
-            class="font-geist-600 pointer-events-auto inline-flex items-center justify-center rounded-[999px] border border-white/90 bg-[rgba(255,255,255,0.98)] px-6 py-2.5 text-[13px] !text-[rgba(0,0,0,0.92)] no-underline shadow-[0_8px_20px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[rgba(255,255,255,0.92)] hover:!text-[rgba(0,0,0,0.92)] sm:px-8 sm:text-[14px]"
+            class="hero-intro hero-delay-5 font-geist-600 pointer-events-auto inline-flex items-center justify-center rounded-[999px] border border-white/90 bg-[rgba(255,255,255,0.98)] px-6 py-2.5 text-[13px] !text-[rgba(0,0,0,0.92)] no-underline shadow-[0_8px_20px_rgba(0,0,0,0.2)] transition-all hover:-translate-y-0.5 hover:bg-[rgba(255,255,255,0.92)] hover:!text-[rgba(0,0,0,0.92)] sm:px-8 sm:text-[14px]"
           >
             {{ mainCtaText }}
           </NuxtLink>
@@ -125,7 +125,7 @@ const headerWrapClass = computed(() =>
             as="NuxtLink"
             to="/old.view"
             tone="soft"
-            class="font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-[999px] px-6 py-2.5 text-[13px] !text-pureWhite/74 no-underline transition-all hover:bg-[rgba(255,255,255,0.08)] hover:!text-pureWhite/88 sm:px-8 sm:text-[14px]"
+            class="hero-intro hero-delay-6 font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-[999px] px-6 py-2.5 text-[13px] !text-pureWhite/74 no-underline transition-all hover:bg-[rgba(255,255,255,0.08)] hover:!text-pureWhite/88 sm:px-8 sm:text-[14px]"
           >
             {{ secondCtaText }}
           </DsGlassSurface>
@@ -225,3 +225,46 @@ const headerWrapClass = computed(() =>
     </div>
   </div>
 </template>
+
+<style scoped>
+.hero-intro {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translate3d(0, 24px, 0);
+  will-change: transform, opacity, filter;
+  animation-name: hero-lift-reveal;
+  animation-duration: 720ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+.hero-delay-1 { animation-delay: 120ms; }
+.hero-delay-2 { animation-delay: 260ms; }
+.hero-delay-3 { animation-delay: 380ms; }
+.hero-delay-4 { animation-delay: 540ms; }
+.hero-delay-5 { animation-delay: 680ms; }
+.hero-delay-6 { animation-delay: 800ms; }
+.hero-delay-7 { animation-delay: 920ms; }
+
+@keyframes hero-lift-reveal {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translate3d(0, 24px, 0);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    animation: none;
+  }
+}
+</style>
