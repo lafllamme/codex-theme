@@ -4,6 +4,7 @@ import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
 import { codexWorkbenchCssVars } from '~/utils/codex-workbench-theme'
+import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
 interface ThreadItem {
   id: string
@@ -26,9 +27,6 @@ const props = defineProps<{
   codeFontSize: number
   translucentSidebar: boolean
 }>()
-
-const defaultUiFont = '\'Geist\', ui-sans-serif, system-ui, -apple-system, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif'
-const defaultCodeFont = '\'Geist Mono\', ui-monospace, \'SFMono-Regular\', Menlo, Monaco, Consolas, monospace'
 
 const modelOptions = ['GPT-5.3-Codex', 'GPT-5.2-Codex', 'o3']
 const thinkingOptions = ['Low', 'Medium', 'High']
@@ -103,8 +101,8 @@ const activeMessages = computed(() => messagesByThread[activeThreadId.value] || 
 
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
-  '--font-ui': props.payload.theme.fonts.ui || defaultUiFont,
-  '--font-code': props.payload.theme.fonts.code || defaultCodeFont,
+  '--font-ui': resolveThemeUiFont(props.payload.theme.fonts.ui),
+  '--font-code': resolveThemeCodeFont(props.payload.theme.fonts.code, props.payload.theme.fonts.ui),
   '--ui-font-size': `${props.uiFontSize}px`,
   '--code-font-size': `${props.codeFontSize}px`,
   '--wb-sidebar-width': `${sidebarWidth.value}px`,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import { themePresetEntries } from '~/data/theme-preset-catalog'
+import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
 definePageMeta({
   layout: 'default',
@@ -109,6 +110,13 @@ const neutralSnapshot = ref<CodexThemePayload | null>(null)
 
 const uiFontSize = ref(16)
 const codeFontSize = ref(18)
+
+const themePageFontStyle = computed(() => ({
+  '--font-ui': resolveThemeUiFont(payload.theme.fonts.ui),
+  '--font-code': resolveThemeCodeFont(payload.theme.fonts.code, payload.theme.fonts.ui),
+  '--ui-font-size': `${uiFontSize.value}px`,
+  '--code-font-size': `${codeFontSize.value}px`,
+}))
 
 function toExportObject() {
   return {
@@ -396,45 +404,47 @@ onMounted(() => {
     <div class="themes-shell__glow" />
 
     <div class="themes-shell__content">
-      <div class="themes-shell__controls">
-        <DsThemeControlsBar
+      <div class="themes-shell__themed" :style="themePageFontStyle">
+        <div class="themes-shell__controls">
+          <DsThemeControlsBar
+            :payload="payload"
+            :json-value="jsonValue"
+            :json-error="jsonError"
+            :copy-state="copyState"
+            :ui-font-size="uiFontSize"
+            :code-font-size="codeFontSize"
+            :translucent-sidebar="!payload.theme.opaqueWindows"
+            :scenario-id="scenarioId"
+            :scenario-options="scenarioOptions"
+            :theme-presets="themePresetEntries"
+            :active-preset-id="activePresetId"
+            @set-json-value="setJsonValue"
+            @apply-theme-preset="applyThemePreset"
+            @export-theme="exportTheme"
+            @copy-export="copyExport"
+            @set-accent="setAccent"
+            @set-surface="setSurface"
+            @set-ink="setInk"
+            @set-diff-added="setDiffAdded"
+            @set-diff-removed="setDiffRemoved"
+            @set-skill="setSkill"
+            @set-ui-font="setUiFont"
+            @set-code-font="setCodeFont"
+            @set-contrast="setContrast"
+            @set-translucent-sidebar="setTranslucentSidebar"
+            @set-ui-font-size="setUiFontSize"
+            @set-code-font-size="setCodeFontSize"
+            @set-scenario="setScenario"
+          />
+        </div>
+
+        <DsCodexWorkbench
           :payload="payload"
-          :json-value="jsonValue"
-          :json-error="jsonError"
-          :copy-state="copyState"
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
           :translucent-sidebar="!payload.theme.opaqueWindows"
-          :scenario-id="scenarioId"
-          :scenario-options="scenarioOptions"
-          :theme-presets="themePresetEntries"
-          :active-preset-id="activePresetId"
-          @set-json-value="setJsonValue"
-          @apply-theme-preset="applyThemePreset"
-          @export-theme="exportTheme"
-          @copy-export="copyExport"
-          @set-accent="setAccent"
-          @set-surface="setSurface"
-          @set-ink="setInk"
-          @set-diff-added="setDiffAdded"
-          @set-diff-removed="setDiffRemoved"
-          @set-skill="setSkill"
-          @set-ui-font="setUiFont"
-          @set-code-font="setCodeFont"
-          @set-contrast="setContrast"
-          @set-translucent-sidebar="setTranslucentSidebar"
-          @set-ui-font-size="setUiFontSize"
-          @set-code-font-size="setCodeFontSize"
-          @set-scenario="setScenario"
         />
       </div>
-
-      <DsCodexWorkbench
-        :payload="payload"
-        :ui-font-size="uiFontSize"
-        :code-font-size="codeFontSize"
-        :translucent-sidebar="!payload.theme.opaqueWindows"
-      />
     </div>
   </main>
 </template>
@@ -460,6 +470,12 @@ onMounted(() => {
   z-index: 2;
   display: grid;
   gap: 8px;
+}
+
+.themes-shell__themed {
+  display: grid;
+  gap: 8px;
+  font-family: var(--font-ui);
 }
 
 .themes-shell__controls {
