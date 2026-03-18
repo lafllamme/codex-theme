@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, usePreferredReducedMotion } from '@vueuse/core'
+import { Motion } from 'motion-v'
+import ThemeFabButton from '~/components/theme-controls/ThemeFabButton.vue'
+import ThemePanelBody from '~/components/theme-controls/ThemePanelBody.vue'
 
-type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
-
-const props = defineProps<{
+defineProps<{
   payload: CodexThemePayload
   jsonValue: string
   jsonError: string
@@ -39,125 +40,129 @@ const emit = defineEmits<{
   applyThemePreset: [entry: ThemePresetEntry]
 }>()
 
-const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
+const MORPH_MS = 460
+const prefersReducedMotion = usePreferredReducedMotion()
+const reduceMotion = computed(() => prefersReducedMotion.value === 'reduce')
 
-function normalizeHex(value: string, fallback: string) {
-  const next = value.trim()
-  if (HEX_COLOR_RE.test(next))
-    return next
-  return fallback
-}
-
-function onHexInput(field: ColorField, event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-
-  const next = target.value
-
-  if (field === 'accent')
-    emit('setAccent', normalizeHex(next, props.payload.theme.accent))
-  if (field === 'surface')
-    emit('setSurface', normalizeHex(next, props.payload.theme.surface))
-  if (field === 'ink')
-    emit('setInk', normalizeHex(next, props.payload.theme.ink))
-  if (field === 'diffAdded')
-    emit('setDiffAdded', normalizeHex(next, props.payload.theme.semanticColors.diffAdded))
-  if (field === 'diffRemoved')
-    emit('setDiffRemoved', normalizeHex(next, props.payload.theme.semanticColors.diffRemoved))
-  if (field === 'skill')
-    emit('setSkill', normalizeHex(next, props.payload.theme.semanticColors.skill))
-}
-
-function onColorInput(field: ColorField, event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-
-  if (field === 'accent')
-    emit('setAccent', target.value)
-  if (field === 'surface')
-    emit('setSurface', target.value)
-  if (field === 'ink')
-    emit('setInk', target.value)
-  if (field === 'diffAdded')
-    emit('setDiffAdded', target.value)
-  if (field === 'diffRemoved')
-    emit('setDiffRemoved', target.value)
-  if (field === 'skill')
-    emit('setSkill', target.value)
-}
-
-function onJsonInput(event: Event) {
-  const target = event.target as HTMLTextAreaElement | null
-  if (!target)
-    return
-  emit('setJsonValue', target.value)
-}
-
-function onUiFont(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setUiFont', target.value)
-}
-
-function onCodeFont(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setCodeFont', target.value)
-}
-
-function onTranslucent(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setTranslucentSidebar', target.checked)
-}
-
-function onContrast(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setContrast', Number(target.value))
-}
-
-function onUiSize(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setUiFontSize', Number(target.value))
-}
-
-function onCodeSize(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setCodeFontSize', Number(target.value))
-}
-
-const panelOpen = ref(false)
+const portalVisible = ref(false)
+const fabHidden = ref(false)
+const backdropVisible = ref(false)
+const morph = reactive({
+  left: 0,
+  top: 0,
+  w: 80,
+  h: 56,
+  br: '9999px',
+})
+const storedFabRect = ref<DOMRect | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
-const fabRef = ref<HTMLElement | null>(null)
 
-function openPanel() {
-  panelOpen.value = true
+function panelMetrics() {
+  if (!import.meta.client)
+    return { left: 0, top: 0, w: 480, h: 800 }
+  const w = Math.min(520, Math.max(320, window.innerWidth * 0.92))
+  return {
+    left: window.innerWidth - w,
+    top: 0,
+    w,
+    h: window.innerHeight,
+  }
+}
+
+function applyFabRect(r: DOMRect) {
+  morph.left = r.left
+  morph.top = r.top
+  morph.w = r.width
+  morph.h = r.height
+  morph.br = '9999px'
+}
+
+async function openPanel() {
+  if (!import.meta.client)
+    return
+  const el = document.getElementById('theme-fab-trigger')
+  storedFabRect.value = el?.getBoundingClientRect() ?? null
+
+  fabHidden.value = true
+  portalVisible.value = true
+  await nextTick()
+
+  if (reduceMotion.value) {
+    const m = panelMetrics()
+    morph.left = m.left
+    morph.top = m.top
+    morph.w = m.w
+    morph.h = m.h
+    morph.br = '14px 0 0 14px'
+    backdropVisible.value = true
+    await nextTick()
+    panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
+    return
+  }
+
+  if (storedFabRect.value) {
+    applyFabRect(storedFabRect.value)
+  }
+  else {
+    const m = panelMetrics()
+    morph.w = 72
+    morph.h = 56
+    morph.left = m.left + m.w - 72
+    morph.top = window.innerHeight - 120
+    morph.br = '9999px'
+  }
+
+  backdropVisible.value = false
+  await nextTick()
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      backdropVisible.value = true
+      const m = panelMetrics()
+      morph.left = m.left
+      morph.top = m.top
+      morph.w = m.w
+      morph.h = m.h
+      morph.br = '16px 0 0 16px'
+    })
+  })
+
+  setTimeout(() => {
+    panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
+  }, reduceMotion.value ? 0 : MORPH_MS + 50)
+}
+
+function finishClose() {
+  portalVisible.value = false
+  fabHidden.value = false
+  backdropVisible.value = false
+  document.body.style.overflow = ''
+  nextTick(() => {
+    document.getElementById('theme-fab-trigger')?.focus()
+  })
 }
 
 function closePanel() {
-  panelOpen.value = false
+  if (!portalVisible.value)
+    return
+
+  if (reduceMotion.value || !storedFabRect.value) {
+    document.body.style.overflow = ''
+    finishClose()
+    return
+  }
+
+  backdropVisible.value = false
+  applyFabRect(storedFabRect.value)
+
+  setTimeout(() => {
+    finishClose()
+  }, MORPH_MS)
 }
 
-watch(panelOpen, async (open) => {
+watch(portalVisible, (v) => {
   if (!import.meta.client)
     return
-  document.body.style.overflow = open ? 'hidden' : ''
-  await nextTick()
-  if (open)
-    panelRef.value?.querySelector<HTMLButtonElement>('.theme-drawer__close')?.focus()
-  else
-    fabRef.value?.focus()
+  document.body.style.overflow = v ? 'hidden' : ''
 })
 
 onBeforeUnmount(() => {
@@ -167,237 +172,110 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
   useEventListener(document, 'keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && panelOpen.value) {
+    if (e.key === 'Escape' && portalVisible.value) {
       e.preventDefault()
       closePanel()
     }
   })
 })
+
+const morphStyle = computed(() => ({
+  left: `${morph.left}px`,
+  top: `${morph.top}px`,
+  width: `${morph.w}px`,
+  height: `${morph.h}px`,
+  borderRadius: morph.br,
+  transition: reduceMotion.value
+    ? 'none'
+    : `left ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), top ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), width ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), height ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${MORPH_MS * 0.85}ms cubic-bezier(0.33, 1, 0.68, 1)`,
+}))
 </script>
 
 <template>
   <div class="theme-controls-anchor">
-    <button
-      ref="fabRef"
-      type="button"
-      class="theme-fab"
-      :aria-expanded="panelOpen"
-      aria-controls="theme-controls-panel"
+    <ThemeFabButton
+      :visually-hidden="fabHidden"
       @click="openPanel"
-    >
-      <Icon name="ph:palette-bold" class="theme-fab__icon" aria-hidden="true" />
-      <span class="theme-fab__label">Theme</span>
-    </button>
+    />
 
     <Teleport to="body">
-      <Transition name="theme-drawer-shell">
-        <div
-          v-if="panelOpen"
-          class="theme-drawer-portal"
+      <div
+        v-show="portalVisible"
+        class="theme-morph-portal pointer-events-none fixed inset-0 z-[10000]"
+      >
+        <Motion
+          as="div"
+          class="theme-morph-backdrop bg-black/55 pointer-events-auto absolute inset-0 backdrop-blur-[6px]"
+          :initial="{ opacity: 0 }"
+          :animate="{ opacity: backdropVisible ? 1 : 0 }"
+          :transition="{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }"
+          aria-hidden="true"
+          @click="closePanel"
+        />
+
+        <aside
+          id="theme-controls-panel"
+          ref="panelRef"
+          class="theme-morph-shell border-white/12 bg-neutral-950 text-white/92 ring-white/[0.06] pointer-events-auto fixed z-[10001] flex flex-col overflow-hidden border shadow-[-20px_0_60px_rgba(0,0,0,0.5)] ring-1"
+          :style="morphStyle"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="theme-controls-heading"
+          tabindex="-1"
         >
-          <div
-            class="theme-drawer-portal__backdrop"
-            aria-hidden="true"
-            @click="closePanel"
-          />
-          <aside
-            id="theme-controls-panel"
-            ref="panelRef"
-            class="theme-drawer-portal__panel appearance-shell appearance-shell--drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="theme-controls-heading"
-            tabindex="-1"
-          >
-            <div class="theme-drawer__toolbar">
-              <p id="theme-controls-heading" class="theme-drawer__heading">
-                Theme controls
+          <header class="theme-morph__head border-white/[0.08] flex shrink-0 items-center justify-between gap-3 border-b px-4 py-3 font-[var(--font-ui)]">
+            <div>
+              <p id="theme-controls-heading" class="text-white/95 text-[15px] font-semibold tracking-tight">
+                Theme
               </p>
-              <button
-                type="button"
-                class="theme-drawer__close"
-                aria-label="Close theme panel"
-                @click="closePanel"
-              >
-                <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-
-            <div class="theme-drawer__scroll">
-              <p class="appearance-shell__title">
-                PRESETS & APPEARANCE
+              <p class="text-white/40 mt-0.5 text-[11px]">
+                Presets, colors, display, export
               </p>
-
-              <div class="preset-row">
-                <span class="preset-row__label">Presets</span>
-                <div class="preset-scroll">
-                  <button
-                    v-for="preset in themePresets"
-                    :key="preset.id"
-                    type="button"
-                    class="preset-chip"
-                    :class="preset.id === activePresetId ? 'preset-chip--active' : ''"
-                    @click="emit('applyThemePreset', preset)"
-                  >
-                    {{ preset.label }}
-                  </button>
-                </div>
-              </div>
-
-              <div class="controls-layout">
-                <article class="panel panel-main">
-                  <header class="panel-header">
-                    <strong>Appearance</strong>
-                    <div class="header-actions">
-                      <button class="action-btn" @click="emit('exportTheme')">
-                        Export theme
-                      </button>
-                      <button class="action-btn" @click="emit('copyExport')">
-                        {{ copyState === 'ok' ? 'Copied' : 'Copy theme' }}
-                      </button>
-                    </div>
-                  </header>
-
-                  <div class="rows">
-                    <div class="row">
-                      <label>Scenario</label>
-                      <div class="chips">
-                        <button
-                          v-for="scenario in scenarioOptions"
-                          :key="scenario.id"
-                          class="chip"
-                          :class="scenario.id === scenarioId ? 'chip--active' : ''"
-                          @click="emit('setScenario', scenario.id)"
-                        >
-                          {{ scenario.label }}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label>UI font</label>
-                      <input class="text-input" type="text" :value="payload.theme.fonts.ui || ''" placeholder="Geist" @input="onUiFont">
-                    </div>
-
-                    <div class="row">
-                      <label>Code font</label>
-                      <input class="text-input" type="text" :value="payload.theme.fonts.code || ''" placeholder="Geist Mono" @input="onCodeFont">
-                    </div>
-
-                    <div class="row">
-                      <label>Translucent sidebar</label>
-                      <label class="toggle">
-                        <input type="checkbox" :checked="translucentSidebar" @change="onTranslucent">
-                        <span class="toggle__track"><span class="toggle__thumb" /></span>
-                      </label>
-                    </div>
-
-                    <div class="row">
-                      <label>Contrast</label>
-                      <div class="slider-wrap">
-                        <input class="slider" type="range" min="0" max="100" :value="payload.theme.contrast" @input="onContrast">
-                        <span>{{ payload.theme.contrast }}</span>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label>UI font size</label>
-                      <div class="size-wrap">
-                        <input class="size-input" type="number" min="12" max="22" :value="uiFontSize" @input="onUiSize">
-                        <span>px</span>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <label>Code font size</label>
-                      <div class="size-wrap">
-                        <input class="size-input" type="number" min="12" max="24" :value="codeFontSize" @input="onCodeSize">
-                        <span>px</span>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <div class="panel-stack">
-                  <article class="panel panel-colors">
-                    <header class="panel-header panel-header--simple">
-                      <strong>Colors</strong>
-                    </header>
-
-                    <div class="rows">
-                      <div class="row row--compact">
-                        <label>Accent</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.accent" @input="onColorInput('accent', $event)">
-                          <input class="hex" type="text" :value="payload.theme.accent" @change="onHexInput('accent', $event)">
-                        </div>
-                      </div>
-
-                      <div class="row row--compact">
-                        <label>Background</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.surface" @input="onColorInput('surface', $event)">
-                          <input class="hex" type="text" :value="payload.theme.surface" @change="onHexInput('surface', $event)">
-                        </div>
-                      </div>
-
-                      <div class="row row--compact">
-                        <label>Foreground</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.ink" @input="onColorInput('ink', $event)">
-                          <input class="hex" type="text" :value="payload.theme.ink" @change="onHexInput('ink', $event)">
-                        </div>
-                      </div>
-
-                      <div class="row row--compact">
-                        <label>Diff added</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.semanticColors.diffAdded" @input="onColorInput('diffAdded', $event)">
-                          <input class="hex" type="text" :value="payload.theme.semanticColors.diffAdded" @change="onHexInput('diffAdded', $event)">
-                        </div>
-                      </div>
-
-                      <div class="row row--compact">
-                        <label>Diff removed</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.semanticColors.diffRemoved" @input="onColorInput('diffRemoved', $event)">
-                          <input class="hex" type="text" :value="payload.theme.semanticColors.diffRemoved" @change="onHexInput('diffRemoved', $event)">
-                        </div>
-                      </div>
-
-                      <div class="row row--compact">
-                        <label>Skill</label>
-                        <div class="value-stack color-stack">
-                          <input class="swatch" type="color" :value="payload.theme.semanticColors.skill" @input="onColorInput('skill', $event)">
-                          <input class="hex" type="text" :value="payload.theme.semanticColors.skill" @change="onHexInput('skill', $event)">
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-
-                  <article class="panel panel-json">
-                    <header class="panel-header panel-header--simple">
-                      <strong>Live theme JSON</strong>
-                    </header>
-
-                    <div class="json-body">
-                      <textarea
-                        class="json-editor"
-                        rows="12"
-                        :value="jsonValue"
-                        @input="onJsonInput"
-                      />
-                      <p v-if="jsonError" class="json-error">
-                        {{ jsonError }}
-                      </p>
-                    </div>
-                  </article>
-                </div>
-              </div>
             </div>
-          </aside>
-        </div>
-      </Transition>
+            <button
+              type="button"
+              class="theme-morph__close border-white/10 bg-white/[0.06] text-white/80 hover:border-white/18 hover:bg-white/[0.1] hover:text-white h-10 w-10 inline-flex items-center justify-center border rounded-xl font-[inherit] transition-colors"
+              aria-label="Close theme panel"
+              @click="closePanel"
+            >
+              <Icon name="ph:x-bold" class="h-5 w-5" aria-hidden="true" />
+            </button>
+          </header>
+
+          <div class="[scrollbar-width:thin] min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4">
+            <ThemePanelBody
+              :payload="payload"
+              :json-value="jsonValue"
+              :json-error="jsonError"
+              :copy-state="copyState"
+              :ui-font-size="uiFontSize"
+              :code-font-size="codeFontSize"
+              :translucent-sidebar="translucentSidebar"
+              :scenario-id="scenarioId"
+              :scenario-options="scenarioOptions"
+              :theme-presets="themePresets"
+              :active-preset-id="activePresetId"
+              @set-json-value="emit('setJsonValue', $event)"
+              @export-theme="emit('exportTheme')"
+              @copy-export="emit('copyExport')"
+              @set-accent="emit('setAccent', $event)"
+              @set-surface="emit('setSurface', $event)"
+              @set-ink="emit('setInk', $event)"
+              @set-diff-added="emit('setDiffAdded', $event)"
+              @set-diff-removed="emit('setDiffRemoved', $event)"
+              @set-skill="emit('setSkill', $event)"
+              @set-ui-font="emit('setUiFont', $event)"
+              @set-code-font="emit('setCodeFont', $event)"
+              @set-contrast="emit('setContrast', $event)"
+              @set-translucent-sidebar="emit('setTranslucentSidebar', $event)"
+              @set-ui-font-size="emit('setUiFontSize', $event)"
+              @set-code-font-size="emit('setCodeFontSize', $event)"
+              @set-scenario="emit('setScenario', $event)"
+              @apply-theme-preset="emit('applyThemePreset', $event)"
+            />
+          </div>
+        </aside>
+      </div>
     </Teleport>
   </div>
 </template>
@@ -410,582 +288,9 @@ onMounted(() => {
   flex-shrink: 0;
 }
 
-.theme-fab {
-  position: fixed;
-  right: max(16px, env(safe-area-inset-right, 0px));
-  bottom: max(16px, env(safe-area-inset-bottom, 0px));
-  z-index: 50;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 44px;
-  padding: 0 16px 0 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  background: rgba(12, 12, 14, 0.92);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 13px;
-  font-weight: 600;
-  font-family: var(--font-ui, 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-  cursor: pointer;
-  transition:
-    border-color 0.18s ease,
-    background-color 0.18s ease,
-    transform 0.18s ease;
-}
-
-.theme-fab:hover {
-  border-color: rgba(255, 182, 112, 0.5);
-  background: rgba(18, 18, 22, 0.96);
-}
-
-.theme-fab:focus-visible {
-  outline: 2px solid rgba(255, 182, 112, 0.75);
-  outline-offset: 3px;
-}
-
-.theme-fab__icon {
-  width: 20px;
-  height: 20px;
-  color: rgba(255, 182, 112, 0.95);
-}
-
-.theme-drawer-portal {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-  pointer-events: none;
-}
-
-.theme-drawer-portal > * {
-  pointer-events: auto;
-}
-
-.theme-drawer-portal__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.52);
-  backdrop-filter: blur(4px);
-}
-
-.theme-drawer-portal__panel {
-  position: relative;
-  z-index: 1;
-  width: min(560px, min(94vw, 100vw - 8px));
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  border-radius: 16px 0 0 16px;
-  border-right: none;
-  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.55);
-}
-
-.theme-drawer__toolbar {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.theme-drawer__heading {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.96);
-}
-
-.theme-drawer__close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.theme-drawer__close:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.theme-drawer__close:focus-visible {
-  outline: 2px solid rgba(255, 182, 112, 0.7);
-  outline-offset: 2px;
-}
-
-.theme-drawer__scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 0 12px 16px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.theme-drawer-shell-enter-active .theme-drawer-portal__backdrop,
-.theme-drawer-shell-leave-active .theme-drawer-portal__backdrop {
-  transition: opacity 0.22s ease;
-}
-
-.theme-drawer-shell-enter-from .theme-drawer-portal__backdrop,
-.theme-drawer-shell-leave-to .theme-drawer-portal__backdrop {
-  opacity: 0;
-}
-
-.theme-drawer-shell-enter-active .theme-drawer-portal__panel,
-.theme-drawer-shell-leave-active .theme-drawer-portal__panel {
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.theme-drawer-shell-enter-from .theme-drawer-portal__panel,
-.theme-drawer-shell-leave-to .theme-drawer-portal__panel {
-  transform: translateX(100%);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .theme-drawer-shell-enter-active .theme-drawer-portal__backdrop,
-  .theme-drawer-shell-leave-active .theme-drawer-portal__backdrop,
-  .theme-drawer-shell-enter-active .theme-drawer-portal__panel,
-  .theme-drawer-shell-leave-active .theme-drawer-portal__panel {
-    transition-duration: 0.01ms !important;
-  }
-
-  .theme-fab {
-    transition: none;
-  }
-}
-
-.appearance-shell {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.9);
-  padding: 12px;
-  font-family: var(
-    --font-ui,
-    'Geist',
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif
-  );
-}
-
-.appearance-shell--drawer {
-  border-radius: 16px 0 0 16px;
-  padding: 0;
-}
-
-.appearance-shell--drawer .controls-layout {
-  grid-template-columns: 1fr;
-}
-
-.appearance-shell--drawer .panel-stack {
-  grid-template-rows: auto minmax(200px, 1fr);
-}
-
-.appearance-shell__title {
-  margin: 0;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: rgba(255, 255, 255, 0.74);
-}
-
-.preset-row {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  max-width: min(640px, 100%);
-}
-
-.preset-row__label {
-  flex-shrink: 0;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.preset-scroll {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 6px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 4px 2px 10px;
-  margin: -4px 0 -6px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 182, 112, 0.35) transparent;
-  -webkit-overflow-scrolling: touch;
-}
-
-.preset-scroll::-webkit-scrollbar {
-  height: 5px;
-}
-
-.preset-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 182, 112, 0.35);
-  border-radius: 999px;
-}
-
-.preset-chip {
-  flex-shrink: 0;
-  height: 30px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(2, 2, 3, 0.92);
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 12px;
-  white-space: nowrap;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.preset-chip:hover {
-  border-color: rgba(255, 182, 112, 0.45);
-}
-
-.preset-chip--active {
-  border-color: rgba(255, 182, 112, 0.78);
-  box-shadow: 0 0 0 2px rgba(255, 182, 112, 0.18) inset;
-}
-
-.controls-layout {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: minmax(520px, 1fr) minmax(420px, 0.82fr);
-  gap: 10px;
-}
-
-.panel {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  background: rgba(5, 5, 6, 0.96);
-  overflow: hidden;
-}
-
-.panel-stack {
-  display: grid;
-  grid-template-rows: auto minmax(300px, 1fr);
-  gap: 10px;
-}
-
-.panel-header {
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.panel-header strong {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.98);
-}
-
-.panel-header--simple {
-  justify-content: flex-start;
-}
-
-.header-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.action-btn,
-.text-input,
-.hex,
-.size-input {
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(2, 2, 3, 0.95);
-  color: rgba(255, 255, 255, 0.98);
-  border-radius: 10px;
-  font-family: var(
-    --font-ui,
-    'Geist',
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif
-  );
-}
-
-.action-btn {
-  height: 34px;
-  padding: 0 11px;
-  font-size: 12px;
-}
-
-.rows {
-  display: grid;
-}
-
-.row {
-  min-height: 56px;
-  padding: 0 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.row:last-child {
-  border-bottom: none;
-}
-
-.row--compact {
-  min-height: 52px;
-}
-
-.row label {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.98);
-}
-
-.text-input {
-  width: 240px;
-  height: 36px;
-  padding: 0 11px;
-  font-size: 14px;
-}
-
-.value-stack {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.chips {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.chip {
-  height: 30px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(2, 2, 3, 0.95);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 12px;
-  padding: 0 10px;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.chip--active {
-  border-color: rgba(255, 182, 112, 0.78);
-  box-shadow: 0 0 0 2px rgba(255, 182, 112, 0.2) inset;
-}
-
-.color-stack {
-  min-width: 250px;
-}
-
-.swatch {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  background: transparent;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.swatch::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-.swatch::-webkit-color-swatch {
-  border: none;
-  border-radius: 999px;
-}
-
-.swatch::-moz-color-swatch {
-  border: none;
-  border-radius: 999px;
-}
-
-.hex {
-  width: 150px;
-  height: 36px;
-  padding: 0 10px;
-  font-family: var(--font-code, 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace);
-  font-size: 14px;
-}
-
-.toggle {
-  cursor: pointer;
-}
-
-.toggle input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.toggle__track {
-  width: 52px;
-  height: 30px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.06);
-  display: inline-flex;
-  align-items: center;
-  padding: 3px;
-  transition: background-color 180ms ease;
-}
-
-.toggle__thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: #fefefe;
-  transform: translateX(0);
-  transition: transform 180ms ease;
-}
-
-.toggle input:checked + .toggle__track {
-  background: rgba(255, 182, 112, 0.85);
-}
-
-.toggle input:checked + .toggle__track .toggle__thumb {
-  transform: translateX(21px);
-}
-
-.slider-wrap {
-  min-width: 300px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.slider {
-  width: 220px;
-  accent-color: #ffb670;
-}
-
-.size-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.size-input {
-  width: 76px;
-  height: 36px;
-  padding: 0 10px;
-  text-align: right;
-  font-size: 14px;
-}
-
-.json-body {
-  padding: 10px 12px;
-}
-
-.json-editor {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  background: rgba(1, 1, 1, 0.98);
-  color: rgba(255, 255, 255, 0.95);
-  padding: 9px 10px;
-  font-family: var(--font-code, 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace);
-  font-size: 12px;
-  line-height: 1.5;
-  resize: vertical;
-  min-height: 240px;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  outline: none;
-}
-
-.json-error {
-  margin: 6px 0 0;
-  color: #ff8f8f;
-  font-size: 12px;
-}
-
-.json-editor:focus,
-.text-input:focus,
-.hex:focus,
-.size-input:focus {
-  border-color: rgba(255, 182, 112, 0.78);
-  box-shadow: 0 0 0 2px rgba(255, 182, 112, 0.24);
-}
-
-@media (max-width: 1320px) {
-  .controls-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .panel-stack {
-    grid-template-rows: auto auto;
-  }
-}
-
-@media (max-width: 900px) {
-  .panel-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .header-actions {
-    width: 100%;
-  }
-
-  .row {
-    min-height: 68px;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 10px 12px;
-  }
-
-  .color-stack,
-  .slider-wrap,
-  .text-input {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .hex,
-  .text-input,
-  .slider {
-    width: 100%;
+  .theme-morph-shell {
+    transition: none !important;
   }
 }
 </style>
