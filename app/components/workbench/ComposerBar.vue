@@ -34,17 +34,29 @@ const composeValue = defineModel<string>('composeValue', { required: true })
             <Icon name="ph:plus-bold" class="h-[11px] w-[11px]" />
           </button>
 
-          <select v-model="selectedModel" class="h-[24px] min-w-[118px] appearance-none rounded-[7px] border-none bg-[var(--wb-select-bg)] px-2 text-[12px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-1)_90%,transparent)_inset] outline-none">
-            <option v-for="model in modelOptions" :key="model" :value="model">
-              {{ model }}
-            </option>
-          </select>
+          <div class="relative inline-flex items-center">
+            <select
+              v-model="selectedModel"
+              class="h-[24px] min-w-[118px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
+            >
+              <option v-for="model in modelOptions" :key="model" :value="model">
+                {{ model }}
+              </option>
+            </select>
+            <Icon name="ph:caret-down-bold" class="pointer-events-none absolute right-1.5 h-[10px] w-[10px] text-[color:var(--wb-text-muted)]" />
+          </div>
 
-          <select v-model="selectedThinking" class="h-[24px] min-w-[80px] appearance-none rounded-[7px] border-none bg-[var(--wb-select-bg)] px-2 text-[12px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-1)_90%,transparent)_inset] outline-none">
-            <option v-for="thinking in thinkingOptions" :key="thinking" :value="thinking">
-              {{ thinking }}
-            </option>
-          </select>
+          <div class="relative inline-flex items-center">
+            <select
+              v-model="selectedThinking"
+              class="h-[24px] min-w-[80px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
+            >
+              <option v-for="thinking in thinkingOptions" :key="thinking" :value="thinking">
+                {{ thinking }}
+              </option>
+            </select>
+            <Icon name="ph:caret-down-bold" class="pointer-events-none absolute right-1.5 h-[10px] w-[10px] text-[color:var(--wb-text-muted)]" />
+          </div>
         </div>
       </div>
     </div>
