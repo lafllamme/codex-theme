@@ -16,8 +16,16 @@ export default defineNuxtConfig({
   },
   fonts: {
     families: [
-      { name: 'Geist', provider: 'google' },
-      { name: 'Geist Mono', provider: 'google' },
+      {
+        name: 'Geist',
+        provider: 'google',
+        weights: ['100 900'],
+      },
+      {
+        name: 'Geist Mono',
+        provider: 'google',
+        weights: ['100 900'],
+      },
       { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700] },
     ],
   },

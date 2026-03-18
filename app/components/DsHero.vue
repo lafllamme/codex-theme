@@ -105,7 +105,7 @@ const headerWrapClass = computed(() =>
           />
         </div>
 
-        <h1 class="font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
+        <h1 class="font-geist-700 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
           <span class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
           <span class="hero-intro hero-delay-3 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
         </h1>
