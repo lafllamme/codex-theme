@@ -124,11 +124,20 @@ solarized     temple        tokyo-night   vscode-plus
 
 ### Our Workaround
 
-For converted themes that don't have a matching Codex code theme, we default to:
-- **Dark themes:** `"codeThemeId": "monokai"`
-- **Light themes:** `"codeThemeId": "github"`
+For all converted themes, we use:
+- **`"codeThemeId": "monokai"`** - a universally available Codex code theme
 
-This allows the theme to import successfully, even though the syntax highlighting won't perfectly match the color scheme.
+This allows themes to import successfully into Codex.
+
+### Light-Colored Themes
+
+Codex does not support `variant: "light"` - all 24 official Codex themes are dark.
+
+**Our solution:**
+- **Stored JSON**: Uses real variant (`light` or `dark`) based on background luminance - this enables the Dark/Light filter in the UI
+- **Export string**: Always forces `variant: "dark"` for Codex compatibility
+
+This way the UI filter works correctly, but exported themes will import into Codex without issues.
 
 ### Future: Codex Feature Request
 

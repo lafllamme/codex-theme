@@ -96,16 +96,15 @@ function convertItermToCodex(itermPath) {
   const diffRemoved = rgbToHex(data['Ansi 1 Color']) // Red
   const skill = rgbToHex(data['Ansi 5 Color']) // Magenta
   
-  // Determine variant based on background luminance
+  // Determine variant based on background luminance (for UI filtering)
   const bgLuminance = getLuminance(surface)
   const variant = bgLuminance < 0.5 ? 'dark' : 'light'
   
   const filename = path.basename(itermPath)
   const id = toKebabCase(filename)
   
-  // Use sensible default codeThemeId - these must be valid Codex built-in code themes
-  // Dark themes get "monokai", light themes get "github" (both are universally available)
-  const codeThemeId = variant === 'dark' ? 'monokai' : 'github'
+  // Use monokai as default codeThemeId - must be a valid Codex built-in code theme
+  const codeThemeId = 'monokai'
   
   return {
     id,

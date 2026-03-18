@@ -10,61 +10,116 @@ defineEmits<{
   select: []
 }>()
 
-const colors = computed(() => {
-  const t = props.preset.payload.theme
-  return [
-    t.surface,
-    t.ink,
-    t.accent,
-    t.semanticColors.diffAdded,
-    t.semanticColors.skill,
-  ]
+const theme = computed(() => props.preset.payload.theme)
+const isDark = computed(() => props.preset.payload.variant === 'dark')
+
+const skeletonBg = computed(() => {
+  if (isDark.value) {
+    return 'rgba(255, 255, 255, 0.06)'
+  }
+  return 'rgba(0, 0, 0, 0.04)'
 })
 
-const isDark = computed(() => props.preset.payload.variant === 'dark')
+const inkWithOpacity = computed(() => {
+  const ink = theme.value.ink
+  if (isDark.value) {
+    return `${ink}40`
+  }
+  return `${ink}30`
+})
+
+const buttonTextColor = computed(() => {
+  if (isDark.value) {
+    return 'rgba(255, 255, 255, 0.5)'
+  }
+  return 'rgba(255, 255, 255, 0.7)'
+})
 </script>
 
 <template>
-  <button
-    type="button"
-    class="theme-preset-card group relative flex flex-col overflow-hidden rounded-lg border p-2 text-left transition-all"
-    :class="[
-      active
-        ? 'border-pureBlack/40 bg-pureBlack/8 ring-1 ring-pureBlack/20'
-        : 'border-pureBlack/10 bg-pureBlack/2 hover:border-pureBlack/20 hover:bg-pureBlack/5',
-    ]"
+  <div
+    class="theme-preset-card group flex flex-col gap-2 cursor-pointer select-none"
+    :class="active ? '' : 'opacity-75 hover:opacity-100'"
     :title="preset.label"
+    role="button"
+    tabindex="0"
     @click="$emit('select')"
+    @keydown.enter="$emit('select')"
+    @keydown.space.prevent="$emit('select')"
   >
-    <!-- Color swatches -->
-    <div class="mb-1.5 flex gap-1">
-      <span
-        v-for="(color, i) in colors"
-        :key="i"
-        class="h-3 w-3 rounded-full border shadow-sm"
-        :class="isDark ? 'border-white/20' : 'border-black/10'"
-        :style="{ backgroundColor: color }"
+    <!-- Preview container -->
+    <div
+      class="relative h-[90px] rounded-xl p-2.5 flex flex-col gap-1.5 overflow-hidden transition-all group-active:scale-[0.98]"
+      :class="active ? 'ring-2 ring-pureBlack/50' : ''"
+      :style="{ backgroundColor: theme.surface }"
+    >
+      <!-- Top row: circle + skeleton -->
+      <div
+        class="w-full h-6 rounded-md flex items-center px-1.5 gap-1.5"
+        :style="{ backgroundColor: skeletonBg }"
+      >
+        <div
+          class="w-3 h-3 rounded-full shrink-0"
+          :style="{ backgroundColor: theme.accent }"
+        />
+        <div
+          class="w-10 h-1 rounded-full"
+          :style="{ backgroundColor: inkWithOpacity }"
+        />
+      </div>
+
+      <!-- Skeleton content lines (use ink color to represent text) -->
+      <div
+        class="w-3/4 h-1.5 rounded-full mt-0.5"
+        :style="{ backgroundColor: inkWithOpacity }"
       />
+      <div
+        class="w-1/2 h-1.5 rounded-full"
+        :style="{ backgroundColor: inkWithOpacity }"
+      />
+
+      <!-- Bottom button -->
+      <div
+        class="mt-auto w-full h-5 rounded-md flex items-center justify-center"
+        :style="{ backgroundColor: theme.accent }"
+      >
+        <div
+          class="w-5 h-0.5 rounded-full"
+          :style="{ backgroundColor: buttonTextColor }"
+        />
+      </div>
+
+      <!-- Active checkmark -->
+      <div
+        v-if="active"
+        class="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-bl-lg rounded-tr-xl flex items-center justify-center"
+        :style="{ backgroundColor: theme.accent }"
+      >
+        <Icon name="ph:check-bold" class="w-2.5 h-2.5 text-white" />
+      </div>
     </div>
 
     <!-- Theme name -->
-    <span
-      class="line-clamp-1 text-[11px] leading-tight"
-      :class="active ? 'text-pureBlack/90 font-medium' : 'text-pureBlack/70'"
-    >
-      {{ preset.label }}
-    </span>
-
-    <!-- Active indicator -->
-    <span
-      v-if="active"
-      class="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-pureBlack/60"
-    />
-  </button>
+    <div class="text-center px-1">
+      <p
+        class="text-[11px] leading-tight truncate"
+        :class="active ? 'font-semibold text-pureBlack/90' : 'font-medium text-pureBlack/70'"
+      >
+        {{ preset.label }}
+      </p>
+      <p
+        v-if="active"
+        class="text-[10px] text-pureBlack/50 mt-0.5"
+      >
+        Active
+      </p>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .theme-preset-card {
   min-width: 0;
+  transition: opacity 0.15s ease;
 }
 </style>

@@ -150,7 +150,9 @@ function toExportString() {
 }
 
 function toCodexThemeString() {
-  return `codex-theme-v1:${JSON.stringify(toExportObject())}`
+  // Force variant: "dark" for Codex compatibility (Codex doesn't support light variant)
+  const exportObj = { ...toExportObject(), variant: 'dark' }
+  return `codex-theme-v1:${JSON.stringify(exportObj)}`
 }
 
 function collectUnknownKeys(raw: Record<string, unknown>, allowed: Set<string>) {

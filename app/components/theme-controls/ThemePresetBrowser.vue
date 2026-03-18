@@ -48,11 +48,11 @@ const filteredPresets = computed(() => {
 const displayedPresets = computed(() => {
   if (isExpanded.value)
     return filteredPresets.value
-  return filteredPresets.value.slice(0, 12)
+  return filteredPresets.value.slice(0, 6)
 })
 
 const hasMore = computed(() =>
-  !isExpanded.value && filteredPresets.value.length > 12,
+  !isExpanded.value && filteredPresets.value.length > 6,
 )
 
 const counts = computed(() => ({
@@ -107,9 +107,8 @@ function handleSelect(entry: ThemePresetEntry) {
 
     <!-- Theme grid -->
     <div
-      class="grid gap-2 transition-all"
-      :class="isExpanded ? 'max-h-[400px] overflow-y-auto' : ''"
-      style="grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));"
+      class="grid grid-cols-2 gap-3 transition-all"
+      :class="isExpanded ? 'max-h-[400px] overflow-y-auto pr-1' : ''"
     >
       <ThemePresetCard
         v-for="preset in displayedPresets"
@@ -121,10 +120,10 @@ function handleSelect(entry: ThemePresetEntry) {
     </div>
 
     <!-- Show more / less -->
-    <div v-if="filteredPresets.length > 12" class="mt-2 flex justify-center">
+    <div v-if="filteredPresets.length > 6" class="mt-3 flex justify-center">
       <button
         type="button"
-        class="flex items-center gap-1 rounded-full px-3 py-1 text-[11px] text-pureBlack/50 transition-colors hover:bg-pureBlack/5 hover:text-pureBlack/70"
+        class="flex items-center gap-1.5 rounded-full border border-pureBlack/10 bg-pureBlack/4 px-3.5 py-1.5 text-[11px] font-medium text-pureBlack/60 transition-colors hover:bg-pureBlack/8 hover:text-pureBlack/80"
         @click="isExpanded = !isExpanded"
       >
         <span>{{ isExpanded ? 'Show less' : `Show all ${filteredPresets.length}` }}</span>
