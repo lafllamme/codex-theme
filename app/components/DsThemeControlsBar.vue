@@ -105,17 +105,17 @@ const morphStyle = computed(() => ({
     ? (typeof panelHeight.value === 'number' ? `${panelHeight.value}px` : 'auto')
     : '44px',
   maxHeight: open.value ? '85vh' : '44px',
-  overflow: open.value && contentVisible.value ? 'visible' : 'hidden',
+  overflow: 'hidden',
 }))
 </script>
 
 <template>
   <div class="theme-controls-anchor">
     <!-- Morphing FAB/Panel container (always visible) -->
-    <div class="fixed bottom-35 right-6 z-50">
+    <div class="fixed bottom-30 right-6 z-50">
       <div
         ref="containerRef"
-        class="relative border shadow-2xl shadow-black/60 transition-all bg-pureBlack border-pureWhite/10"
+        class="relative border shadow-2xl shadow-black/20 transition-all bg-pureWhite border-pureBlack/10"
         :style="morphStyle"
         :role="open ? 'dialog' : undefined"
         :aria-modal="open ? 'true' : undefined"
@@ -132,8 +132,8 @@ const morphStyle = computed(() => ({
           @click="open = true"
           @keydown.enter="open = true"
         >
-          <Icon name="ph:palette-bold" class="size-[18px] text-pureWhite/80" aria-hidden="true" />
-          <span class="text-[14px] font-medium text-pureWhite/90">Theme</span>
+          <Icon name="ph:palette-bold" class="size-[18px] text-pureBlack/70" aria-hidden="true" />
+          <span class="text-[14px] font-medium text-pureBlack/90">Theme</span>
         </div>
 
         <!-- Panel content wrapper (ref for height measurement) -->
@@ -147,16 +147,16 @@ const morphStyle = computed(() => ({
             <!-- Header -->
             <div class="flex items-center justify-between px-5 pb-3 pt-5">
               <div>
-                <h2 class="text-[14px] font-semibold text-pureWhite/95">
+                <h2 class="text-[14px] font-semibold text-pureBlack/90">
                   Theme
                 </h2>
-                <p class="mt-0.5 text-[10px] text-pureWhite/40">
+                <p class="mt-0.5 text-[10px] text-pureBlack/50">
                   Presets, colors, display, export
                 </p>
               </div>
               <button
                 type="button"
-                class="theme-morph__close h-6 w-6 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureWhite/40 transition-colors hover:bg-pureWhite/8 hover:text-pureWhite/90"
+                class="theme-morph__close h-6 w-6 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureBlack/40 transition-colors hover:bg-pureBlack/8 hover:text-pureBlack/90"
                 aria-label="Close theme panel"
                 @click="open = false"
               >
