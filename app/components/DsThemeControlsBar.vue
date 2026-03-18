@@ -144,19 +144,12 @@ const morphStyle = computed(() => ({
             :aria-hidden="!open"
           >
             <!-- Header -->
-            <div class="flex items-center justify-between px-5 pt-5 pb-2">
+            <div class="flex items-center justify-center px-5 pt-5 pb-2">
               <h2 class="text-[17px] font-semibold tracking-tight text-pureBlack/90">
                 Appearance
               </h2>
-              <button
-                type="button"
-                class="theme-morph__close h-8 w-8 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureBlack/40 transition-colors hover:bg-pureBlack/8 hover:text-pureBlack/90"
-                aria-label="Close theme panel"
-                @click="open = false"
-              >
-                <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
-              </button>
             </div>
+            
 
             <!-- Scrollable body -->
             <div class="space-y-4 overflow-y-auto px-5 pb-5" style="max-height: calc(85vh - 72px);">

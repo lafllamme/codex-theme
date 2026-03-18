@@ -68,17 +68,15 @@ function handleSelect(entry: ThemePresetEntry) {
     <div class="relative mb-4">
       <Icon
         name="ph:magnifying-glass"
-        class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-pureBlack/40"
+        class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-pureBlack/40 z-10"
       />
-     <div class="w-full">
-         <input
-           type="text"
-           placeholder="Search themes..."
-           class="rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10"
-           :value="searchQuery"
-           @input="onSearchInput"
-         >
-     </div>
+      <input
+        type="text"
+        placeholder="Search themes..."
+        class="w-full rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10 box-border"
+        :value="searchQuery"
+        @input="onSearchInput"
+      >
     </div>
 
     <!-- Filter badges -->
@@ -138,8 +136,8 @@ function handleSelect(entry: ThemePresetEntry) {
 
     <!-- Theme grid -->
     <div
-      class="grid grid-cols-2 gap-4 transition-all"
-      :class="isExpanded ? 'max-h-[500px] overflow-y-auto pr-1' : ''"
+      class="preset-grid grid grid-cols-2 gap-4"
+      :class="isExpanded ? 'preset-grid--expanded' : ''"
     >
       <ThemePresetCard
         v-for="preset in displayedPresets"
@@ -168,6 +166,7 @@ function handleSelect(entry: ThemePresetEntry) {
 <style scoped>
 .theme-preset-browser {
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
+  overflow: hidden;
 }
 
 .theme-preset-browser input {
@@ -179,6 +178,15 @@ function handleSelect(entry: ThemePresetEntry) {
   background: none;
   padding: 0;
   cursor: pointer;
+}
+
+.preset-grid {
+  scrollbar-gutter: stable;
+}
+
+.preset-grid--expanded {
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .no-scrollbar::-webkit-scrollbar {
