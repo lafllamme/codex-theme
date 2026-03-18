@@ -34,7 +34,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 </script>
 
 <template>
-  <section class="h-full min-h-0 flex flex-1 flex-col border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-panel)]">
+  <section class="min-h-0 min-w-0 flex flex-1 flex-col border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-panel)]">
     <div class="px-[7px] pt-[7px]">
       <ChatHeaderBar
         :title="title"

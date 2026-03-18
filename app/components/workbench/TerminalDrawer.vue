@@ -62,6 +62,10 @@ defineProps<{
 }
 
 .terminal-drawer--closed {
+  height: 0;
+  min-height: 0;
+  margin: 0;
+  border-width: 0;
   pointer-events: none;
 }
 

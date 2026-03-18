@@ -15,7 +15,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       <div class="flex items-center gap-2">
         <input
           v-model="composeValue"
-          class="h-[28px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
+          class="h-[28px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
           type="text"
           placeholder="Ask a follow-up"
         >
@@ -37,7 +37,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
           <div class="relative inline-flex items-center">
             <select
               v-model="selectedModel"
-              class="h-[24px] min-w-[118px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
+              class="h-[24px] min-w-[118px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
             >
               <option v-for="model in modelOptions" :key="model" :value="model">
                 {{ model }}
@@ -49,7 +49,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
           <div class="relative inline-flex items-center">
             <select
               v-model="selectedThinking"
-              class="h-[24px] min-w-[80px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
+              class="h-[24px] min-w-[80px] cursor-pointer appearance-none border border-transparent rounded-[7px] bg-transparent py-0 pl-2 pr-7 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] outline-none transition-colors focus-visible:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
             >
               <option v-for="thinking in thinkingOptions" :key="thinking" :value="thinking">
                 {{ thinking }}
@@ -61,7 +61,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       </div>
     </div>
 
-    <div class="mt-2 flex items-center justify-between px-1 text-[12px] text-[color:var(--wb-text-secondary)]">
+    <div class="mt-2 flex items-center justify-between px-1 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]">
       <div class="inline-flex items-center gap-3">
         <span class="inline-flex items-center gap-1.5"><Icon name="ph:laptop-bold" class="h-[12px] w-[12px]" /> Local</span>
         <span class="inline-flex items-center gap-1.5 text-[color:var(--wb-access-warn)]"><Icon name="ph:shield-warning-bold" class="h-[12px] w-[12px]" /> Full access</span>

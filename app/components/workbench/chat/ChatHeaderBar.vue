@@ -103,7 +103,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
       </button>
 
       <div ref="editorMenuRef" class="relative">
-        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-1.5 text-[10px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleEditorMenu">
+        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-1.5 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleEditorMenu">
           <span class="text-[10px] leading-none">🧩</span>
           <Icon name="ph:caret-down-bold" class="h-[9px] w-[9px]" />
         </button>
@@ -119,13 +119,13 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         </div>
       </div>
 
-      <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
+      <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
         <Icon name="ph:arrows-left-right-bold" class="h-[10px] w-[10px]" />
         Move to Worktree
       </button>
 
       <div ref="commitMenuRef" class="relative">
-        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
+        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
           <Icon name="ph:git-commit" class="h-[10px] w-[10px]" />
           Commit
           <Icon name="ph:caret-down-bold" class="h-[9px] w-[9px]" />
@@ -161,7 +161,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         @click="emit('toggleDiff')"
       >
         <Icon name="ph:square-split-vertical-bold" class="h-[10px] w-[10px]" />
-        <span class="text-[10px] leading-none font-[var(--font-code)]">
+        <span class="text-[10px] leading-none font-[var(--font-ui)] tabular-nums">
           <span class="text-[color:var(--wb-diff-delta-added)]">+836</span>
           <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">1.068</span>

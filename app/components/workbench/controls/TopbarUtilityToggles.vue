@@ -35,7 +35,7 @@ const emit = defineEmits<{
       @click="emit('toggleDiff')"
     >
       <Icon name="ph:square-split-vertical-bold" class="h-[15px] w-[15px]" />
-      <span class="text-[11px] tracking-tight font-[var(--font-code)]">
+      <span class="text-[11px] tracking-tight font-[var(--font-ui)] tabular-nums">
         <span class="text-[color:var(--theme-diff-added,#9ccfd8)]">+55</span>
         <span class="text-white/[0.45] mx-[2px]">/</span>
         <span class="text-[color:var(--theme-diff-removed,#908caa)]">-1047</span>

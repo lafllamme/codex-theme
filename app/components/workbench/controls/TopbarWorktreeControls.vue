@@ -23,12 +23,12 @@ const emit = defineEmits<{
       <Icon name="ph:waves-bold" class="h-3 w-3" />
     </button>
 
-    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] max-[1180px]:hidden">
+    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] font-[var(--font-ui)] max-[1180px]:hidden">
       <Icon name="ph:arrows-left-right-bold" class="h-[13px] w-[13px]" />
       In Worktree verschieben
     </button>
 
-    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] max-[1180px]:hidden">
+    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] font-[var(--font-ui)] max-[1180px]:hidden">
       Commit
       <Icon name="ph:caret-down-bold" class="h-3 w-3" />
     </button>

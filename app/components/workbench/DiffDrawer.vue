@@ -76,11 +76,11 @@ function lineSyntaxVar(text: string) {
 </script>
 
 <template>
-  <aside class="diff-drawer overflow-hidden border border-transparent rounded-[var(--wb-r-md)] bg-[var(--wb-bg-diff-chrome)]" :class="open ? 'diff-drawer--open' : ''">
-    <header class="h-[34px] flex items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:var(--wb-text-primary)]">
+  <aside class="diff-drawer max-w-full overflow-hidden border border-transparent rounded-[var(--wb-r-md)] bg-[var(--wb-bg-diff-chrome)]" :class="open ? 'diff-drawer--open' : ''">
+    <header class="h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:var(--wb-text-primary)]">
       <div class="inline-flex items-center gap-2">
         <span class="font-medium">Nicht gestagt</span>
-        <span class="h-5 min-w-5 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-full px-1.5 text-[11px] font-[var(--font-code)]">3</span>
+        <span class="h-5 min-w-5 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-full px-1.5 text-[11px] font-[var(--font-ui)] tabular-nums">3</span>
         <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:var(--wb-text-muted)]" />
       </div>
       <div class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)]">
@@ -92,8 +92,8 @@ function lineSyntaxVar(text: string) {
         </button>
       </div>
     </header>
-    <div class="diff-scroll min-h-0 overflow-y-auto p-2 text-[13px] font-[var(--font-code)]">
-      <section v-for="section in diffSections" :key="section.path" class="mb-3 overflow-hidden border border-[color:var(--wb-border-2)] rounded-[12px] bg-[var(--wb-bg-diff-section)] last:mb-0">
+    <div class="diff-scroll min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto p-2 text-[13px] font-[var(--font-code)]">
+      <section v-for="section in diffSections" :key="section.path" class="mb-3 max-w-full min-w-0 overflow-hidden border border-[color:var(--wb-border-2)] rounded-[12px] bg-[var(--wb-bg-diff-section)] last:mb-0">
         <button
           class="w-full flex items-center justify-between border-b border-[color:var(--wb-border-2)] border-none bg-[var(--wb-bg-diff-header)] px-3 py-2 text-left outline-none"
           @click="toggleSection(section.path)"
@@ -117,20 +117,20 @@ function lineSyntaxVar(text: string) {
           </div>
         </button>
 
-        <div class="diff-section-body divide-y divide-[color:var(--wb-divider)]" :class="isSectionCollapsed(section.path) ? 'diff-section-body--collapsed' : 'diff-section-body--expanded'">
+        <div class="diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]" :class="isSectionCollapsed(section.path) ? 'diff-section-body--collapsed' : 'diff-section-body--expanded'">
           <div
             v-for="line in section.lines"
             :key="`${section.path}-${line.left}-${line.right}-${line.text}`"
-            class="grid grid-cols-[42px_42px_1fr] gap-0 px-0 text-[13px] leading-[1.65]"
+            class="diff-line-row grid gap-0 px-0 text-[13px] leading-[1.65]"
             :class="line.kind === 'added'
               ? 'bg-[color:color-mix(in_srgb,var(--theme-added)_17%,transparent)]'
               : line.kind === 'removed'
                 ? 'bg-[color:color-mix(in_srgb,var(--theme-removed)_16%,transparent)]'
                 : 'bg-transparent'"
           >
-            <span class="border-r border-[color:var(--wb-divider)] px-3 py-1.5 text-right text-[color:var(--wb-text-faint)]">{{ line.left }}</span>
-            <span class="border-r border-[color:var(--wb-divider)] px-3 py-1.5 text-right text-[color:var(--wb-text-faint)]">{{ line.right }}</span>
-            <span class="whitespace-pre-wrap px-3 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
+            <span class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums">{{ line.left }}</span>
+            <span class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right }}</span>
+            <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
           </div>
         </div>
       </section>
@@ -145,8 +145,25 @@ function lineSyntaxVar(text: string) {
 <style scoped>
 .diff-drawer {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   transition: border-color 180ms ease;
+}
+
+.diff-line-row {
+  grid-template-columns: 38px 38px minmax(0, 1fr);
+}
+
+.diff-line-gutter {
+  flex-shrink: 0;
+}
+
+.diff-line-text {
+  word-break: break-word;
 }
 
 .diff-drawer--open {

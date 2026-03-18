@@ -405,44 +405,42 @@ onMounted(() => {
 
     <div class="themes-shell__content">
       <div class="themes-shell__themed" :style="themePageFontStyle">
-        <div class="themes-shell__controls">
-          <DsThemeControlsBar
-            :payload="payload"
-            :json-value="jsonValue"
-            :json-error="jsonError"
-            :copy-state="copyState"
-            :ui-font-size="uiFontSize"
-            :code-font-size="codeFontSize"
-            :translucent-sidebar="!payload.theme.opaqueWindows"
-            :scenario-id="scenarioId"
-            :scenario-options="scenarioOptions"
-            :theme-presets="themePresetEntries"
-            :active-preset-id="activePresetId"
-            @set-json-value="setJsonValue"
-            @apply-theme-preset="applyThemePreset"
-            @export-theme="exportTheme"
-            @copy-export="copyExport"
-            @set-accent="setAccent"
-            @set-surface="setSurface"
-            @set-ink="setInk"
-            @set-diff-added="setDiffAdded"
-            @set-diff-removed="setDiffRemoved"
-            @set-skill="setSkill"
-            @set-ui-font="setUiFont"
-            @set-code-font="setCodeFont"
-            @set-contrast="setContrast"
-            @set-translucent-sidebar="setTranslucentSidebar"
-            @set-ui-font-size="setUiFontSize"
-            @set-code-font-size="setCodeFontSize"
-            @set-scenario="setScenario"
-          />
-        </div>
-
         <DsCodexWorkbench
+          class="themes-shell__workbench"
           :payload="payload"
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
           :translucent-sidebar="!payload.theme.opaqueWindows"
+        />
+        <DsThemeControlsBar
+          :payload="payload"
+          :json-value="jsonValue"
+          :json-error="jsonError"
+          :copy-state="copyState"
+          :ui-font-size="uiFontSize"
+          :code-font-size="codeFontSize"
+          :translucent-sidebar="!payload.theme.opaqueWindows"
+          :scenario-id="scenarioId"
+          :scenario-options="scenarioOptions"
+          :theme-presets="themePresetEntries"
+          :active-preset-id="activePresetId"
+          @set-json-value="setJsonValue"
+          @apply-theme-preset="applyThemePreset"
+          @export-theme="exportTheme"
+          @copy-export="copyExport"
+          @set-accent="setAccent"
+          @set-surface="setSurface"
+          @set-ink="setInk"
+          @set-diff-added="setDiffAdded"
+          @set-diff-removed="setDiffRemoved"
+          @set-skill="setSkill"
+          @set-ui-font="setUiFont"
+          @set-code-font="setCodeFont"
+          @set-contrast="setContrast"
+          @set-translucent-sidebar="setTranslucentSidebar"
+          @set-ui-font-size="setUiFontSize"
+          @set-code-font-size="setCodeFontSize"
+          @set-scenario="setScenario"
         />
       </div>
     </div>
@@ -452,8 +450,13 @@ onMounted(() => {
 <style scoped>
 .themes-shell {
   position: relative;
-  min-height: 100vh;
-  padding: 14px;
+  display: flex;
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 100dvh;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
 }
 
 .themes-shell__glow {
@@ -468,31 +471,26 @@ onMounted(() => {
 .themes-shell__content {
   position: relative;
   z-index: 2;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .themes-shell__themed {
-  display: grid;
-  gap: 8px;
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  overflow: hidden;
   font-family: var(--font-ui);
 }
 
-.themes-shell__controls {
-  width: min(98vw, 1860px);
-  min-width: 960px;
-}
-
-@media (max-width: 1200px) {
-  .themes-shell__controls {
-    width: min(98vw, 1420px);
-    min-width: 0;
-  }
-}
-
-@media (max-width: 900px) {
-  .themes-shell__controls {
-    width: 100%;
-  }
+.themes-shell__workbench {
+  min-height: 0;
+  min-width: 0;
+  flex: 1 1 0;
+  width: 100%;
 }
 </style>

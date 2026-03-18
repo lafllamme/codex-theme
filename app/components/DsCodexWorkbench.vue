@@ -146,8 +146,8 @@ function beginSidebarResize(event: MouseEvent) {
 </script>
 
 <template>
-  <section class="h-[100dvh] min-h-0 flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
-    <section class="relative min-h-0 flex flex-1">
+  <section class="relative h-full min-h-0 w-full flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
+    <section class="absolute inset-0 box-border min-h-0 flex flex-row items-stretch overflow-hidden">
       <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
         <WorkbenchSidebar
           :threads="threadItems"
@@ -166,14 +166,14 @@ function beginSidebarResize(event: MouseEvent) {
         @mousedown="beginSidebarResize"
       />
 
-      <section class="min-h-0 min-w-0 flex flex-1 flex-col" :class="isSidebarCollapsed ? '' : '-ml-px'">
-        <div class="workbench-main-row min-h-0 min-w-0 w-full flex flex-1 items-stretch">
-          <div class="chat-main-column min-h-0 min-w-0 flex-1">
+      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? '' : '-ml-px'">
+        <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
+          <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
             <ChatWindow
               v-model:selected-model="selectedModel"
               v-model:selected-thinking="selectedThinking"
               v-model:compose-value="composeValue"
-              class="h-full transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+              class="min-h-0 flex-1 transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
               :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
               title="Open Vue-Bits Dither Sei..."
               repo="codex-theme"
@@ -191,10 +191,11 @@ function beginSidebarResize(event: MouseEvent) {
             />
           </div>
           <div
-            class="diff-column min-h-0 shrink-0 overflow-hidden"
+            class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
             :class="isDiffOpen ? 'diff-column--open' : ''"
           >
             <DiffDrawer
+              class="min-h-0 min-w-0 flex-1"
               :open="isDiffOpen"
               :accent="payload.theme.accent"
               :contrast="payload.theme.contrast"
@@ -215,13 +216,14 @@ function beginSidebarResize(event: MouseEvent) {
 <style scoped>
 .sidebar-column {
   width: var(--wb-sidebar-width);
-  height: 100%;
   min-height: 0;
+  align-self: stretch;
   display: flex;
+  flex-direction: column;
   margin-right: 0;
   flex-shrink: 0;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   transition:
     width 260ms var(--wb-sidebar-ease),
     margin-right 220ms var(--wb-sidebar-ease);
@@ -251,7 +253,10 @@ function beginSidebarResize(event: MouseEvent) {
 
 .diff-column {
   width: 0;
+  min-width: 0;
+  max-width: 100%;
   margin-left: 0;
+  flex-shrink: 0;
   transition:
     width 260ms var(--wb-sidebar-ease),
     margin-left 220ms var(--wb-sidebar-ease);
@@ -259,6 +264,8 @@ function beginSidebarResize(event: MouseEvent) {
 
 .diff-column--open {
   width: min(41vw, 520px);
+  max-width: min(520px, 100%);
+  flex: 0 0 min(41vw, 520px);
   margin-left: -1px;
 }
 

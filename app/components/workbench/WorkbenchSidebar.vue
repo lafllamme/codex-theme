@@ -51,103 +51,109 @@ function toggleRepo(repo: string) {
 </script>
 
 <template>
-  <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-  <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] h-full min-h-0 w-full flex flex-col overflow-hidden rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] p-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
-    <div class="mb-[2px] flex items-center justify-between px-[2px]">
-      <div class="inline-flex items-center gap-[7px]">
-        <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
-        <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
-        <span class="h-3 w-3 rounded-full bg-[#28c840]" />
-      </div>
-      <button class="h-6 w-6 inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-faint)] shadow-none outline-none transition-colors hover:text-[color:var(--wb-text-secondary)]" @click="emit('toggleCollapsed')">
-        <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
-      </button>
-    </div>
-
-    <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
-      <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
-        <Icon name="ph:note-pencil" class="h-[15px] w-[15px]" />
-        <span class="sidebar-label truncate">New Thread</span>
-      </button>
-
-      <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-        <Icon name="ph:clock" class="h-[15px] w-[15px]" />
-        <span class="sidebar-label truncate">Automations</span>
-      </button>
-
-      <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-        <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
-        <span class="sidebar-label truncate">Skills</span>
-      </button>
-
-      <div class="min-h-0 flex flex-1 flex-col">
-        <div class="mt-1.5 flex items-center justify-between px-[2px] pr-[6px] text-[10px] text-[color:var(--wb-text-muted)] tracking-[0.13em] uppercase">
-          <span class="sidebar-label">Threads</span>
-          <div class="inline-flex translate-y-[1px] items-center gap-2">
-            <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
-              <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />
-            </button>
-            <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
-              <Icon name="ph:funnel-simple" class="h-[15px] w-[15px]" />
-            </button>
-          </div>
+  <div class="wb-sidebar-root relative h-full min-h-0 min-w-0 w-full flex flex-1 flex-col">
+    <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
+    <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] p-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
+      <div class="mb-[2px] flex items-center justify-between px-[2px]">
+        <div class="inline-flex items-center gap-[7px]">
+          <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
+          <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
+          <span class="h-3 w-3 rounded-full bg-[#28c840]" />
         </div>
+        <button class="h-6 w-6 inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-faint)] shadow-none outline-none transition-colors hover:text-[color:var(--wb-text-secondary)]" @click="emit('toggleCollapsed')">
+          <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
+        </button>
+      </div>
 
-        <div class="mt-0.5 flex-1 overflow-y-auto pr-[2px]">
-          <div v-for="group in groupedThreads" :key="group.repo" class="mt-0.5 flex flex-col gap-[3px]">
-            <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[12.5px] text-[color:var(--wb-text-secondary)] font-semibold shadow-none outline-none" @click="toggleRepo(group.repo)">
-              <span class="min-w-0 inline-flex items-center gap-2">
-                <span class="relative h-[15px] w-[15px] inline-flex items-center justify-center">
-                  <Icon
-                    name="ph:folder-open"
-                    class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
-                  />
-                  <Icon
-                    :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
-                    class="absolute h-[13px] w-[13px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                  />
-                </span>
-                <span class="truncate">{{ group.repo }}</span>
-              </span>
-              <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-                <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
-                <Icon name="ph:note-pencil" class="h-[16px] w-[16px]" />
-              </span>
-            </button>
+      <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
+        <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
+          <Icon name="ph:note-pencil" class="h-[15px] w-[15px]" />
+          <span class="sidebar-label truncate">New Thread</span>
+        </button>
 
-            <div class="repo-items" :class="isRepoCollapsed(group.repo) ? 'repo-items--collapsed' : 'repo-items--expanded'">
-              <button
-                v-for="thread in group.items"
-                :key="thread.id"
-                class="thread-row group relative grid grid-cols-[minmax(0,1fr)_52px_66px] min-h-[34px] items-center gap-[4px] border border-transparent rounded-[9px] bg-transparent pl-[30px] pr-[10px] text-left text-[12.5px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
-                :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
-                @click="emit('selectThread', thread.id)"
-              >
-                <Icon name="ph:push-pin" class="pointer-events-none absolute left-[10px] h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
-                <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
-                <span class="thread-row__delta sidebar-label inline-flex items-center justify-end gap-[1px] text-[11px] font-[var(--font-code)]">
-                  <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
-                    <span v-if="typeof thread.added === 'number'" class="text-[color:var(--wb-diff-delta-added)]">+{{ thread.added }}</span>
-                    <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
-                  </template>
-                </span>
-                <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
-                <span class="thread-dot" />
+        <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <Icon name="ph:clock" class="h-[15px] w-[15px]" />
+          <span class="sidebar-label truncate">Automations</span>
+        </button>
+
+        <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
+          <span class="sidebar-label truncate">Skills</span>
+        </button>
+
+        <div class="min-h-0 flex flex-1 flex-col">
+          <div class="mt-1.5 flex items-center justify-between px-[2px] pr-[6px] text-[10px] text-[color:var(--wb-text-muted)] tracking-[0.13em] uppercase">
+            <span class="sidebar-label">Threads</span>
+            <div class="inline-flex translate-y-[1px] items-center gap-2">
+              <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
+                <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />
+              </button>
+              <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
+                <Icon name="ph:funnel-simple" class="h-[15px] w-[15px]" />
               </button>
             </div>
           </div>
-        </div>
-      </div>
 
-      <button class="settings-row mt-[4px] min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-        <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
-        <span class="sidebar-label">Settings</span>
-      </button>
-    </div>
-  </aside>
+          <div class="mt-0.5 flex-1 overflow-y-auto pr-[2px]">
+            <div v-for="group in groupedThreads" :key="group.repo" class="mt-0.5 flex flex-col gap-[3px]">
+              <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[12.5px] text-[color:var(--wb-text-secondary)] font-semibold shadow-none outline-none" @click="toggleRepo(group.repo)">
+                <span class="min-w-0 inline-flex items-center gap-2">
+                  <span class="relative h-[15px] w-[15px] inline-flex items-center justify-center">
+                    <Icon
+                      name="ph:folder-open"
+                      class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
+                    />
+                    <Icon
+                      :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
+                      class="absolute h-[13px] w-[13px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                    />
+                  </span>
+                  <span class="truncate">{{ group.repo }}</span>
+                </span>
+                <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                  <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
+                  <Icon name="ph:note-pencil" class="h-[16px] w-[16px]" />
+                </span>
+              </button>
+
+              <div class="repo-items" :class="isRepoCollapsed(group.repo) ? 'repo-items--collapsed' : 'repo-items--expanded'">
+                <button
+                  v-for="thread in group.items"
+                  :key="thread.id"
+                  class="thread-row group relative grid grid-cols-[minmax(0,1fr)_52px_66px] min-h-[34px] items-center gap-[4px] border border-transparent rounded-[9px] bg-transparent pl-[30px] pr-[10px] text-left text-[12.5px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
+                  :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
+                  @click="emit('selectThread', thread.id)"
+                >
+                  <Icon name="ph:push-pin" class="pointer-events-none absolute left-[10px] h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+                  <span class="thread-row__title sidebar-label truncate">{{ thread.title }}</span>
+                  <span class="thread-row__delta sidebar-label inline-flex items-center justify-end gap-[1px] text-[11px] font-[var(--font-ui)] tabular-nums">
+                    <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
+                      <span v-if="typeof thread.added === 'number'" class="text-[color:var(--wb-diff-delta-added)]">+{{ thread.added }}</span>
+                      <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
+                    </template>
+                  </span>
+                  <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+                  <span class="thread-dot" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="settings-row mt-[4px] min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
+          <span class="sidebar-label">Settings</span>
+        </button>
+      </div>
+    </aside>
+  </div>
 </template>
 
 <style scoped>
+.wb-sidebar-root {
+  align-self: stretch;
+}
+
 .sidebar-backdrop {
   display: none;
 }
@@ -163,6 +169,7 @@ function toggleRepo(repo: string) {
 .sidebar--collapsed-shell {
   position: absolute;
   top: 0;
+  bottom: 0;
   left: 0;
   width: 64px;
   border-color: transparent;

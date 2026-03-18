@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
+import { useEventListener } from '@vueuse/core'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
 
@@ -135,184 +136,438 @@ function onCodeSize(event: Event) {
     return
   emit('setCodeFontSize', Number(target.value))
 }
+
+const panelOpen = ref(false)
+const panelRef = ref<HTMLElement | null>(null)
+const fabRef = ref<HTMLElement | null>(null)
+
+function openPanel() {
+  panelOpen.value = true
+}
+
+function closePanel() {
+  panelOpen.value = false
+}
+
+watch(panelOpen, async (open) => {
+  if (!import.meta.client)
+    return
+  document.body.style.overflow = open ? 'hidden' : ''
+  await nextTick()
+  if (open)
+    panelRef.value?.querySelector<HTMLButtonElement>('.theme-drawer__close')?.focus()
+  else
+    fabRef.value?.focus()
+})
+
+onBeforeUnmount(() => {
+  if (import.meta.client)
+    document.body.style.overflow = ''
+})
+
+onMounted(() => {
+  useEventListener(document, 'keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && panelOpen.value) {
+      e.preventDefault()
+      closePanel()
+    }
+  })
+})
 </script>
 
 <template>
-  <section class="appearance-shell">
-    <p class="appearance-shell__title">
-      THEME CONTROLS
-    </p>
+  <div class="theme-controls-anchor">
+    <button
+      ref="fabRef"
+      type="button"
+      class="theme-fab"
+      :aria-expanded="panelOpen"
+      aria-controls="theme-controls-panel"
+      @click="openPanel"
+    >
+      <Icon name="ph:palette-bold" class="theme-fab__icon" aria-hidden="true" />
+      <span class="theme-fab__label">Theme</span>
+    </button>
 
-    <div class="preset-row">
-      <span class="preset-row__label">Presets</span>
-      <div class="preset-scroll">
-        <button
-          v-for="preset in themePresets"
-          :key="preset.id"
-          type="button"
-          class="preset-chip"
-          :class="preset.id === activePresetId ? 'preset-chip--active' : ''"
-          @click="emit('applyThemePreset', preset)"
+    <Teleport to="body">
+      <Transition name="theme-drawer-shell">
+        <div
+          v-if="panelOpen"
+          class="theme-drawer-portal"
         >
-          {{ preset.label }}
-        </button>
-      </div>
-    </div>
-
-    <div class="controls-layout">
-      <article class="panel panel-main">
-        <header class="panel-header">
-          <strong>Appearance</strong>
-          <div class="header-actions">
-            <button class="action-btn" @click="emit('exportTheme')">
-              Export theme
-            </button>
-            <button class="action-btn" @click="emit('copyExport')">
-              {{ copyState === 'ok' ? 'Copied' : 'Copy theme' }}
-            </button>
-          </div>
-        </header>
-
-        <div class="rows">
-          <div class="row">
-            <label>Scenario</label>
-            <div class="chips">
+          <div
+            class="theme-drawer-portal__backdrop"
+            aria-hidden="true"
+            @click="closePanel"
+          />
+          <aside
+            id="theme-controls-panel"
+            ref="panelRef"
+            class="theme-drawer-portal__panel appearance-shell appearance-shell--drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="theme-controls-heading"
+            tabindex="-1"
+          >
+            <div class="theme-drawer__toolbar">
+              <p id="theme-controls-heading" class="theme-drawer__heading">
+                Theme controls
+              </p>
               <button
-                v-for="scenario in scenarioOptions"
-                :key="scenario.id"
-                class="chip"
-                :class="scenario.id === scenarioId ? 'chip--active' : ''"
-                @click="emit('setScenario', scenario.id)"
+                type="button"
+                class="theme-drawer__close"
+                aria-label="Close theme panel"
+                @click="closePanel"
               >
-                {{ scenario.label }}
+                <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-          </div>
 
-          <div class="row">
-            <label>UI font</label>
-            <input class="text-input" type="text" :value="payload.theme.fonts.ui || ''" placeholder="Geist" @input="onUiFont">
-          </div>
+            <div class="theme-drawer__scroll">
+              <p class="appearance-shell__title">
+                PRESETS & APPEARANCE
+              </p>
 
-          <div class="row">
-            <label>Code font</label>
-            <input class="text-input" type="text" :value="payload.theme.fonts.code || ''" placeholder="Geist Mono" @input="onCodeFont">
-          </div>
+              <div class="preset-row">
+                <span class="preset-row__label">Presets</span>
+                <div class="preset-scroll">
+                  <button
+                    v-for="preset in themePresets"
+                    :key="preset.id"
+                    type="button"
+                    class="preset-chip"
+                    :class="preset.id === activePresetId ? 'preset-chip--active' : ''"
+                    @click="emit('applyThemePreset', preset)"
+                  >
+                    {{ preset.label }}
+                  </button>
+                </div>
+              </div>
 
-          <div class="row">
-            <label>Translucent sidebar</label>
-            <label class="toggle">
-              <input type="checkbox" :checked="translucentSidebar" @change="onTranslucent">
-              <span class="toggle__track"><span class="toggle__thumb" /></span>
-            </label>
-          </div>
+              <div class="controls-layout">
+                <article class="panel panel-main">
+                  <header class="panel-header">
+                    <strong>Appearance</strong>
+                    <div class="header-actions">
+                      <button class="action-btn" @click="emit('exportTheme')">
+                        Export theme
+                      </button>
+                      <button class="action-btn" @click="emit('copyExport')">
+                        {{ copyState === 'ok' ? 'Copied' : 'Copy theme' }}
+                      </button>
+                    </div>
+                  </header>
 
-          <div class="row">
-            <label>Contrast</label>
-            <div class="slider-wrap">
-              <input class="slider" type="range" min="0" max="100" :value="payload.theme.contrast" @input="onContrast">
-              <span>{{ payload.theme.contrast }}</span>
+                  <div class="rows">
+                    <div class="row">
+                      <label>Scenario</label>
+                      <div class="chips">
+                        <button
+                          v-for="scenario in scenarioOptions"
+                          :key="scenario.id"
+                          class="chip"
+                          :class="scenario.id === scenarioId ? 'chip--active' : ''"
+                          @click="emit('setScenario', scenario.id)"
+                        >
+                          {{ scenario.label }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label>UI font</label>
+                      <input class="text-input" type="text" :value="payload.theme.fonts.ui || ''" placeholder="Geist" @input="onUiFont">
+                    </div>
+
+                    <div class="row">
+                      <label>Code font</label>
+                      <input class="text-input" type="text" :value="payload.theme.fonts.code || ''" placeholder="Geist Mono" @input="onCodeFont">
+                    </div>
+
+                    <div class="row">
+                      <label>Translucent sidebar</label>
+                      <label class="toggle">
+                        <input type="checkbox" :checked="translucentSidebar" @change="onTranslucent">
+                        <span class="toggle__track"><span class="toggle__thumb" /></span>
+                      </label>
+                    </div>
+
+                    <div class="row">
+                      <label>Contrast</label>
+                      <div class="slider-wrap">
+                        <input class="slider" type="range" min="0" max="100" :value="payload.theme.contrast" @input="onContrast">
+                        <span>{{ payload.theme.contrast }}</span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label>UI font size</label>
+                      <div class="size-wrap">
+                        <input class="size-input" type="number" min="12" max="22" :value="uiFontSize" @input="onUiSize">
+                        <span>px</span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label>Code font size</label>
+                      <div class="size-wrap">
+                        <input class="size-input" type="number" min="12" max="24" :value="codeFontSize" @input="onCodeSize">
+                        <span>px</span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <div class="panel-stack">
+                  <article class="panel panel-colors">
+                    <header class="panel-header panel-header--simple">
+                      <strong>Colors</strong>
+                    </header>
+
+                    <div class="rows">
+                      <div class="row row--compact">
+                        <label>Accent</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.accent" @input="onColorInput('accent', $event)">
+                          <input class="hex" type="text" :value="payload.theme.accent" @change="onHexInput('accent', $event)">
+                        </div>
+                      </div>
+
+                      <div class="row row--compact">
+                        <label>Background</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.surface" @input="onColorInput('surface', $event)">
+                          <input class="hex" type="text" :value="payload.theme.surface" @change="onHexInput('surface', $event)">
+                        </div>
+                      </div>
+
+                      <div class="row row--compact">
+                        <label>Foreground</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.ink" @input="onColorInput('ink', $event)">
+                          <input class="hex" type="text" :value="payload.theme.ink" @change="onHexInput('ink', $event)">
+                        </div>
+                      </div>
+
+                      <div class="row row--compact">
+                        <label>Diff added</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.semanticColors.diffAdded" @input="onColorInput('diffAdded', $event)">
+                          <input class="hex" type="text" :value="payload.theme.semanticColors.diffAdded" @change="onHexInput('diffAdded', $event)">
+                        </div>
+                      </div>
+
+                      <div class="row row--compact">
+                        <label>Diff removed</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.semanticColors.diffRemoved" @input="onColorInput('diffRemoved', $event)">
+                          <input class="hex" type="text" :value="payload.theme.semanticColors.diffRemoved" @change="onHexInput('diffRemoved', $event)">
+                        </div>
+                      </div>
+
+                      <div class="row row--compact">
+                        <label>Skill</label>
+                        <div class="value-stack color-stack">
+                          <input class="swatch" type="color" :value="payload.theme.semanticColors.skill" @input="onColorInput('skill', $event)">
+                          <input class="hex" type="text" :value="payload.theme.semanticColors.skill" @change="onHexInput('skill', $event)">
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article class="panel panel-json">
+                    <header class="panel-header panel-header--simple">
+                      <strong>Live theme JSON</strong>
+                    </header>
+
+                    <div class="json-body">
+                      <textarea
+                        class="json-editor"
+                        rows="12"
+                        :value="jsonValue"
+                        @input="onJsonInput"
+                      />
+                      <p v-if="jsonError" class="json-error">
+                        {{ jsonError }}
+                      </p>
+                    </div>
+                  </article>
+                </div>
+              </div>
             </div>
-          </div>
-
-          <div class="row">
-            <label>UI font size</label>
-            <div class="size-wrap">
-              <input class="size-input" type="number" min="12" max="22" :value="uiFontSize" @input="onUiSize">
-              <span>px</span>
-            </div>
-          </div>
-
-          <div class="row">
-            <label>Code font size</label>
-            <div class="size-wrap">
-              <input class="size-input" type="number" min="12" max="24" :value="codeFontSize" @input="onCodeSize">
-              <span>px</span>
-            </div>
-          </div>
+          </aside>
         </div>
-      </article>
-
-      <div class="panel-stack">
-        <article class="panel panel-colors">
-          <header class="panel-header panel-header--simple">
-            <strong>Colors</strong>
-          </header>
-
-          <div class="rows">
-            <div class="row row--compact">
-              <label>Accent</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.accent" @input="onColorInput('accent', $event)">
-                <input class="hex" type="text" :value="payload.theme.accent" @change="onHexInput('accent', $event)">
-              </div>
-            </div>
-
-            <div class="row row--compact">
-              <label>Background</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.surface" @input="onColorInput('surface', $event)">
-                <input class="hex" type="text" :value="payload.theme.surface" @change="onHexInput('surface', $event)">
-              </div>
-            </div>
-
-            <div class="row row--compact">
-              <label>Foreground</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.ink" @input="onColorInput('ink', $event)">
-                <input class="hex" type="text" :value="payload.theme.ink" @change="onHexInput('ink', $event)">
-              </div>
-            </div>
-
-            <div class="row row--compact">
-              <label>Diff added</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.semanticColors.diffAdded" @input="onColorInput('diffAdded', $event)">
-                <input class="hex" type="text" :value="payload.theme.semanticColors.diffAdded" @change="onHexInput('diffAdded', $event)">
-              </div>
-            </div>
-
-            <div class="row row--compact">
-              <label>Diff removed</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.semanticColors.diffRemoved" @input="onColorInput('diffRemoved', $event)">
-                <input class="hex" type="text" :value="payload.theme.semanticColors.diffRemoved" @change="onHexInput('diffRemoved', $event)">
-              </div>
-            </div>
-
-            <div class="row row--compact">
-              <label>Skill</label>
-              <div class="value-stack color-stack">
-                <input class="swatch" type="color" :value="payload.theme.semanticColors.skill" @input="onColorInput('skill', $event)">
-                <input class="hex" type="text" :value="payload.theme.semanticColors.skill" @change="onHexInput('skill', $event)">
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="panel panel-json">
-          <header class="panel-header panel-header--simple">
-            <strong>Live theme JSON</strong>
-          </header>
-
-          <div class="json-body">
-            <textarea
-              class="json-editor"
-              rows="12"
-              :value="jsonValue"
-              @input="onJsonInput"
-            />
-            <p v-if="jsonError" class="json-error">
-              {{ jsonError }}
-            </p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
+      </Transition>
+    </Teleport>
+  </div>
 </template>
 
 <style scoped>
+.theme-controls-anchor {
+  position: relative;
+  width: 0;
+  height: 0;
+  flex-shrink: 0;
+}
+
+.theme-fab {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(12, 12, 14, 0.92);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui, 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.theme-fab:hover {
+  border-color: rgba(255, 182, 112, 0.5);
+  background: rgba(18, 18, 22, 0.96);
+}
+
+.theme-fab:focus-visible {
+  outline: 2px solid rgba(255, 182, 112, 0.75);
+  outline-offset: 3px;
+}
+
+.theme-fab__icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 182, 112, 0.95);
+}
+
+.theme-drawer-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.theme-drawer-portal > * {
+  pointer-events: auto;
+}
+
+.theme-drawer-portal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(4px);
+}
+
+.theme-drawer-portal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, min(94vw, 100vw - 8px));
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border-radius: 16px 0 0 16px;
+  border-right: none;
+  box-shadow: -12px 0 48px rgba(0, 0, 0, 0.55);
+}
+
+.theme-drawer__toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-drawer__heading {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.theme-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.theme-drawer__close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.theme-drawer__close:focus-visible {
+  outline: 2px solid rgba(255, 182, 112, 0.7);
+  outline-offset: 2px;
+}
+
+.theme-drawer__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 12px 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.theme-drawer-shell-enter-active .theme-drawer-portal__backdrop,
+.theme-drawer-shell-leave-active .theme-drawer-portal__backdrop {
+  transition: opacity 0.22s ease;
+}
+
+.theme-drawer-shell-enter-from .theme-drawer-portal__backdrop,
+.theme-drawer-shell-leave-to .theme-drawer-portal__backdrop {
+  opacity: 0;
+}
+
+.theme-drawer-shell-enter-active .theme-drawer-portal__panel,
+.theme-drawer-shell-leave-active .theme-drawer-portal__panel {
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-drawer-shell-enter-from .theme-drawer-portal__panel,
+.theme-drawer-shell-leave-to .theme-drawer-portal__panel {
+  transform: translateX(100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-drawer-shell-enter-active .theme-drawer-portal__backdrop,
+  .theme-drawer-shell-leave-active .theme-drawer-portal__backdrop,
+  .theme-drawer-shell-enter-active .theme-drawer-portal__panel,
+  .theme-drawer-shell-leave-active .theme-drawer-portal__panel {
+    transition-duration: 0.01ms !important;
+  }
+
+  .theme-fab {
+    transition: none;
+  }
+}
+
 .appearance-shell {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 16px;
@@ -330,6 +585,19 @@ function onCodeSize(event: Event) {
     Arial,
     sans-serif
   );
+}
+
+.appearance-shell--drawer {
+  border-radius: 16px 0 0 16px;
+  padding: 0;
+}
+
+.appearance-shell--drawer .controls-layout {
+  grid-template-columns: 1fr;
+}
+
+.appearance-shell--drawer .panel-stack {
+  grid-template-rows: auto minmax(200px, 1fr);
 }
 
 .appearance-shell__title {
@@ -530,6 +798,8 @@ function onCodeSize(event: Event) {
   color: rgba(255, 255, 255, 0.92);
   font-size: 12px;
   padding: 0 10px;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .chip--active {
