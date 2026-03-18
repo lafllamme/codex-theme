@@ -38,8 +38,7 @@ const buttonTextColor = computed(() => {
 
 <template>
   <div
-    class="theme-preset-card group flex flex-col gap-2 cursor-pointer select-none"
-    :class="active ? '' : 'opacity-75 hover:opacity-100'"
+    class="theme-preset-card group flex flex-col gap-2.5 cursor-pointer select-none"
     :title="preset.label"
     role="button"
     tabindex="0"
@@ -49,42 +48,46 @@ const buttonTextColor = computed(() => {
   >
     <!-- Preview container -->
     <div
-      class="relative h-[90px] rounded-xl p-2.5 flex flex-col gap-1.5 overflow-hidden transition-all group-active:scale-[0.98]"
-      :class="active ? 'ring-2 ring-pureBlack/50' : ''"
+      class="relative h-[120px] rounded-2xl p-3.5 flex flex-col gap-2.5 overflow-hidden transition-all group-active:scale-[0.98]"
+      :class="[
+        active
+          ? 'border-2 border-pureBlack/80'
+          : 'border border-pureBlack/10 group-hover:border-pureBlack/30',
+      ]"
       :style="{ backgroundColor: theme.surface }"
     >
       <!-- Top row: circle + skeleton -->
       <div
-        class="w-full h-6 rounded-md flex items-center px-1.5 gap-1.5"
+        class="w-full h-8 rounded-lg flex items-center px-2.5 gap-2"
         :style="{ backgroundColor: skeletonBg }"
       >
         <div
-          class="w-3 h-3 rounded-full shrink-0"
+          class="w-4 h-4 rounded-full shrink-0"
           :style="{ backgroundColor: theme.accent }"
         />
         <div
-          class="w-10 h-1 rounded-full"
+          class="w-14 h-1.5 rounded-full"
           :style="{ backgroundColor: inkWithOpacity }"
         />
       </div>
 
-      <!-- Skeleton content lines (use ink color to represent text) -->
+      <!-- Skeleton content lines -->
       <div
-        class="w-3/4 h-1.5 rounded-full mt-0.5"
+        class="w-3/4 h-2 rounded-full mt-1"
         :style="{ backgroundColor: inkWithOpacity }"
       />
       <div
-        class="w-1/2 h-1.5 rounded-full"
+        class="w-1/2 h-2 rounded-full"
         :style="{ backgroundColor: inkWithOpacity }"
       />
 
       <!-- Bottom button -->
       <div
-        class="mt-auto w-full h-5 rounded-md flex items-center justify-center"
+        class="mt-auto w-full h-7 rounded-lg flex items-center justify-center"
         :style="{ backgroundColor: theme.accent }"
       >
         <div
-          class="w-5 h-0.5 rounded-full"
+          class="w-8 h-1 rounded-full"
           :style="{ backgroundColor: buttonTextColor }"
         />
       </div>
@@ -92,7 +95,7 @@ const buttonTextColor = computed(() => {
       <!-- Active checkmark -->
       <div
         v-if="active"
-        class="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-bl-lg rounded-tr-xl flex items-center justify-center"
+        class="absolute -top-1 -right-1 w-6 h-6 rounded-bl-xl rounded-tr-2xl flex items-center justify-center shadow-sm"
         :style="{ backgroundColor: theme.accent }"
       >
         <Icon name="ph:check-bold" class="w-2.5 h-2.5 text-white" />
@@ -100,18 +103,18 @@ const buttonTextColor = computed(() => {
     </div>
 
     <!-- Theme name -->
-    <div class="text-center px-1">
+    <div class="text-center">
       <p
-        class="text-[11px] leading-tight truncate"
+        class="text-[14px] truncate"
         :class="active ? 'font-semibold text-pureBlack/90' : 'font-medium text-pureBlack/70'"
       >
         {{ preset.label }}
       </p>
       <p
-        v-if="active"
-        class="text-[10px] text-pureBlack/50 mt-0.5"
+        class="text-[12px] mt-0.5 transition-opacity"
+        :class="active ? 'text-pureBlack/50' : 'text-pureBlack/40 opacity-0 group-hover:opacity-100'"
       >
-        Active
+        {{ active ? 'Active' : 'Preview' }}
       </p>
     </div>
   </div>
@@ -120,6 +123,5 @@ const buttonTextColor = computed(() => {
 <style scoped>
 .theme-preset-card {
   min-width: 0;
-  transition: opacity 0.15s ease;
 }
 </style>
