@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
-import { templateRef, useEventListener, usePreferredReducedMotion } from '@vueuse/core'
-import { Motion } from 'motion-v'
-import ThemeFabButton from '~/components/theme-controls/ThemeFabButton.vue'
+import { onClickOutside, templateRef, useEventListener, usePreferredReducedMotion } from '@vueuse/core'
 import ThemePanelBody from '~/components/theme-controls/ThemePanelBody.vue'
 
 defineProps<{
@@ -40,145 +38,70 @@ const emit = defineEmits<{
   applyThemePreset: [entry: ThemePresetEntry]
 }>()
 
-const MORPH_MS = 460
+const MORPH_MS = 380
 const prefersReducedMotion = usePreferredReducedMotion()
 const reduceMotion = computed(() => prefersReducedMotion.value === 'reduce')
 
-const portalVisible = ref(false)
-const fabHidden = ref(false)
-const backdropVisible = ref(false)
+const open = ref(false)
 const contentVisible = ref(false)
-const morph = reactive({
-  left: 0,
-  top: 0,
-  w: 80,
-  h: 56,
-  br: '9999px',
-})
-const storedFabRect = ref<DOMRect | null>(null)
+const panelHeight = ref<number | 'auto'>('auto')
+
 const panelRef = templateRef<HTMLElement>('panelRef')
+const contentRef = templateRef<HTMLElement>('contentRef')
 
-function panelMetrics() {
-  if (!import.meta.client)
-    return { left: 0, top: 0, w: 480, h: 800 }
-  const w = Math.min(520, Math.max(320, window.innerWidth * 0.92))
-  return {
-    left: window.innerWidth - w,
-    top: 0,
-    w,
-    h: window.innerHeight,
-  }
-}
-
-function applyFabRect(r: DOMRect) {
-  morph.left = r.left
-  morph.top = r.top
-  morph.w = r.width
-  morph.h = r.height
-  morph.br = '9999px'
-}
-
-async function openPanel() {
+function openPanel() {
   if (!import.meta.client)
     return
-  const el = document.getElementById('theme-fab-trigger')
-  storedFabRect.value = el?.getBoundingClientRect() ?? null
 
-  fabHidden.value = true
-  portalVisible.value = true
-  await nextTick()
+  open.value = true
 
   if (reduceMotion.value) {
-    const m = panelMetrics()
-    morph.left = m.left
-    morph.top = m.top
-    morph.w = m.w
-    morph.h = m.h
-    morph.br = '14px 0 0 14px'
-    backdropVisible.value = true
     contentVisible.value = true
-    await nextTick()
-    panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
+    nextTick(() => {
+      panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
+    })
     return
   }
-
-  if (storedFabRect.value) {
-    applyFabRect(storedFabRect.value)
-  }
-  else {
-    const m = panelMetrics()
-    morph.w = 72
-    morph.h = 56
-    morph.left = m.left + m.w - 72
-    morph.top = window.innerHeight - 120
-    morph.br = '9999px'
-  }
-
-  backdropVisible.value = false
-  await nextTick()
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      backdropVisible.value = true
-      const m = panelMetrics()
-      morph.left = m.left
-      morph.top = m.top
-      morph.w = m.w
-      morph.h = m.h
-      morph.br = '16px 0 0 16px'
-    })
-  })
 
   setTimeout(() => {
     contentVisible.value = true
-    panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
-  }, reduceMotion.value ? 0 : MORPH_MS)
-}
-
-function finishClose() {
-  portalVisible.value = false
-  fabHidden.value = false
-  backdropVisible.value = false
-  contentVisible.value = false
-  document.body.style.overflow = ''
-  nextTick(() => {
-    document.getElementById('theme-fab-trigger')?.focus()
-  })
+    if (contentRef.value) {
+      panelHeight.value = contentRef.value.scrollHeight
+    }
+    nextTick(() => {
+      panelRef.value?.querySelector<HTMLButtonElement>('.theme-morph__close')?.focus()
+    })
+  }, MORPH_MS + 20)
 }
 
 function closePanel() {
-  if (!portalVisible.value)
+  if (!open.value)
     return
 
   contentVisible.value = false
 
-  if (reduceMotion.value || !storedFabRect.value) {
-    document.body.style.overflow = ''
-    finishClose()
+  if (reduceMotion.value) {
+    open.value = false
+    panelHeight.value = 'auto'
     return
   }
 
-  backdropVisible.value = false
-  applyFabRect(storedFabRect.value)
-
   setTimeout(() => {
-    finishClose()
+    open.value = false
+    panelHeight.value = 'auto'
   }, MORPH_MS)
 }
 
-watch(portalVisible, (v) => {
-  if (!import.meta.client)
-    return
-  document.body.style.overflow = v ? 'hidden' : ''
-})
 
-onBeforeUnmount(() => {
-  if (import.meta.client)
-    document.body.style.overflow = ''
+onClickOutside(panelRef, () => {
+  if (open.value) {
+    closePanel()
+  }
 })
 
 onMounted(() => {
   useEventListener(document, 'keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && portalVisible.value) {
+    if (e.key === 'Escape' && open.value) {
       e.preventDefault()
       closePanel()
     }
@@ -186,108 +109,113 @@ onMounted(() => {
 })
 
 const morphStyle = computed(() => ({
-  left: `${morph.left}px`,
-  top: `${morph.top}px`,
-  width: `${morph.w}px`,
-  height: `${morph.h}px`,
-  borderRadius: morph.br,
+  borderRadius: open.value ? '1.25rem' : '9999px',
+  width: open.value ? 'min(420px, calc(100vw - 3rem))' : '126px',
+  height: open.value
+    ? (typeof panelHeight.value === 'number' ? `${panelHeight.value}px` : 'auto')
+    : '40px',
+  maxHeight: open.value ? '85vh' : '40px',
+  overflow: 'hidden',
   transition: reduceMotion.value
     ? 'none'
-    : `left ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), top ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), width ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), height ${MORPH_MS}ms cubic-bezier(0.22, 1, 0.36, 1), border-radius ${MORPH_MS * 0.85}ms cubic-bezier(0.33, 1, 0.68, 1)`,
+    : `border-radius ${MORPH_MS}ms cubic-bezier(0.4, 0, 0.2, 1), width ${MORPH_MS}ms cubic-bezier(0.4, 0, 0.2, 1), height ${MORPH_MS}ms cubic-bezier(0.4, 0, 0.2, 1), max-height ${MORPH_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
 }))
 </script>
 
 <template>
   <div class="theme-controls-anchor">
-    <ThemeFabButton
-      :visually-hidden="fabHidden"
-      @click="openPanel"
-    />
-
-    <Teleport to="body">
+    <!-- Single morphing element: FAB → Panel -->
+    <div
+      class="fixed z-[10000]"
+      style="bottom: max(1.5rem, env(safe-area-inset-bottom, 0px)); right: max(1.5rem, env(safe-area-inset-right, 0px));"
+    >
       <div
-        v-show="portalVisible"
-        class="theme-morph-portal pointer-events-none fixed inset-0 z-[10000]"
+        id="theme-controls-panel"
+        ref="panelRef"
+        class="theme-morph-shell relative border shadow-2xl shadow-black/60 text-pureWhite/92 bg-pureBlack border-pureWhite/10"
+        :style="morphStyle"
+        :role="open ? 'dialog' : undefined"
+        :aria-modal="open ? 'true' : undefined"
+        :aria-labelledby="open ? 'theme-controls-heading' : undefined"
+        :tabindex="open ? -1 : undefined"
       >
-        <Motion
-          as="div"
-          class="theme-morph-backdrop pointer-events-auto absolute inset-0 bg-black/28 backdrop-blur-[3px]"
-          :initial="{ opacity: 0 }"
-          :animate="{ opacity: backdropVisible ? 1 : 0 }"
-          :transition="{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }"
-          aria-hidden="true"
-          @click="closePanel"
-        />
-
-        <aside
-          id="theme-controls-panel"
-          ref="panelRef"
-          class="theme-morph-shell pointer-events-auto fixed z-[10001] flex flex-col overflow-hidden border shadow-[-20px_0_60px_rgba(0,0,0,0.5)] text-pureWhite/92 bg-pureBlack border-pureWhite/10"
-          :style="morphStyle"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="theme-controls-heading"
-          tabindex="-1"
+        <!-- FAB Label (visible when closed) -->
+        <div
+          class="fab-label absolute inset-0 flex cursor-pointer select-none items-center justify-center gap-2 transition-opacity"
+          :class="open ? 'opacity-0 pointer-events-none' : 'opacity-100'"
+          :style="{ transitionDuration: '120ms' }"
+          role="button"
+          tabindex="0"
+          aria-label="Open theme panel"
+          @click="openPanel"
+          @keydown.enter="openPanel"
         >
-          <div
-            class="theme-morph__content min-h-0 flex flex-1 flex-col transition-all duration-400 ease-out"
-            :class="contentVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-3 scale-[0.98]'"
-          >
-            <header class="theme-morph__head flex shrink-0 items-center justify-between gap-3 border-b px-4 py-3 font-[var(--font-ui)] border-pureWhite/8">
-              <div>
-                <p id="theme-controls-heading" class="text-[15px] font-semibold tracking-tight text-pureWhite/95">
-                  Theme
-                </p>
-                <p class="mt-0.5 text-[11px] text-pureWhite/40">
-                  Presets, colors, display, export
-                </p>
-              </div>
-              <button
-                type="button"
-                class="theme-morph__close h-10 w-10 inline-flex items-center justify-center border rounded-xl font-[inherit] transition-colors text-pureWhite/80 bg-pureWhite/6 border-pureWhite/10 hover:text-pureWhite hover:bg-pureWhite/10 hover:border-pureWhite/18"
-                aria-label="Close theme panel"
-                @click="closePanel"
-              >
-                <Icon name="ph:x-bold" class="h-5 w-5" aria-hidden="true" />
-              </button>
-            </header>
+          <Icon name="ph:palette-bold" class="size-[15px] shrink-0 text-pureWhite/74" aria-hidden="true" />
+          <span class="text-[13px] font-medium text-pureWhite/88">Theme</span>
+        </div>
 
-            <div class="[scrollbar-width:thin] min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-4">
-              <ThemePanelBody
-                :payload="payload"
-                :json-value="jsonValue"
-                :json-error="jsonError"
-                :copy-state="copyState"
-                :ui-font-size="uiFontSize"
-                :code-font-size="codeFontSize"
-                :translucent-sidebar="translucentSidebar"
-                :scenario-id="scenarioId"
-                :scenario-options="scenarioOptions"
-                :theme-presets="themePresets"
-                :active-preset-id="activePresetId"
-                @set-json-value="emit('setJsonValue', $event)"
-                @export-theme="emit('exportTheme')"
-                @copy-export="emit('copyExport')"
-                @set-accent="emit('setAccent', $event)"
-                @set-surface="emit('setSurface', $event)"
-                @set-ink="emit('setInk', $event)"
-                @set-diff-added="emit('setDiffAdded', $event)"
-                @set-diff-removed="emit('setDiffRemoved', $event)"
-                @set-skill="emit('setSkill', $event)"
-                @set-ui-font="emit('setUiFont', $event)"
-                @set-code-font="emit('setCodeFont', $event)"
-                @set-contrast="emit('setContrast', $event)"
-                @set-translucent-sidebar="emit('setTranslucentSidebar', $event)"
-                @set-ui-font-size="emit('setUiFontSize', $event)"
-                @set-code-font-size="emit('setCodeFontSize', $event)"
-                @set-scenario="emit('setScenario', $event)"
-                @apply-theme-preset="emit('applyThemePreset', $event)"
-              />
+        <!-- Panel Content (visible after morph) -->
+        <div
+          ref="contentRef"
+          class="theme-morph__content flex flex-col transition-opacity"
+          :class="contentVisible && open ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+          :style="{ transitionDuration: '160ms', maxHeight: '85vh' }"
+          :aria-hidden="!open"
+        >
+          <header class="theme-morph__head flex shrink-0 items-center justify-between gap-3 border-b px-5 pb-3 pt-5 font-[var(--font-ui)] border-pureWhite/8">
+            <div>
+              <p id="theme-controls-heading" class="text-[14px] font-semibold text-pureWhite/95">
+                Theme
+              </p>
+              <p class="mt-0.5 text-[10px] text-pureWhite/40">
+                Presets, colors, display, export
+              </p>
             </div>
+            <button
+              type="button"
+              class="theme-morph__close h-6 w-6 inline-flex items-center justify-center rounded-full font-[inherit] transition-colors text-pureWhite/50 hover:text-pureWhite hover:bg-pureWhite/10"
+              aria-label="Close theme panel"
+              @click="closePanel"
+            >
+              <Icon name="ph:x-bold" class="h-3 w-3" aria-hidden="true" />
+            </button>
+          </header>
+
+          <div class="[scrollbar-width:thin] min-h-0 flex-1 overflow-x-hidden overflow-y-auto px-5 pb-5" style="max-height: calc(85vh - 72px);">
+            <ThemePanelBody
+              :payload="payload"
+              :json-value="jsonValue"
+              :json-error="jsonError"
+              :copy-state="copyState"
+              :ui-font-size="uiFontSize"
+              :code-font-size="codeFontSize"
+              :translucent-sidebar="translucentSidebar"
+              :scenario-id="scenarioId"
+              :scenario-options="scenarioOptions"
+              :theme-presets="themePresets"
+              :active-preset-id="activePresetId"
+              @set-json-value="emit('setJsonValue', $event)"
+              @export-theme="emit('exportTheme')"
+              @copy-export="emit('copyExport')"
+              @set-accent="emit('setAccent', $event)"
+              @set-surface="emit('setSurface', $event)"
+              @set-ink="emit('setInk', $event)"
+              @set-diff-added="emit('setDiffAdded', $event)"
+              @set-diff-removed="emit('setDiffRemoved', $event)"
+              @set-skill="emit('setSkill', $event)"
+              @set-ui-font="emit('setUiFont', $event)"
+              @set-code-font="emit('setCodeFont', $event)"
+              @set-contrast="emit('setContrast', $event)"
+              @set-translucent-sidebar="emit('setTranslucentSidebar', $event)"
+              @set-ui-font-size="emit('setUiFontSize', $event)"
+              @set-code-font-size="emit('setCodeFontSize', $event)"
+              @set-scenario="emit('setScenario', $event)"
+              @apply-theme-preset="emit('applyThemePreset', $event)"
+            />
           </div>
-        </aside>
+        </div>
       </div>
-    </Teleport>
+    </div>
   </div>
 </template>
 
