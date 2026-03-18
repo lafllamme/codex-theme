@@ -114,7 +114,7 @@ const morphStyle = computed(() => ({
     <div class="fixed bottom-30 right-6 z-50">
       <div
         ref="containerRef"
-        class="relative overflow-hidden border shadow-2xl shadow-black/20 transition-all bg-pureWhite border-pureBlack/10"
+        class="relative overflow-hidden border shadow-2xl shadow-black/20 transition-all bg-[#f8f8f8] border-pureBlack/10"
         :style="morphStyle"
         :role="open ? 'dialog' : undefined"
         :aria-modal="open ? 'true' : undefined"
