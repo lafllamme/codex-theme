@@ -100,11 +100,11 @@ const morphStyle = computed(() => ({
   transitionDuration: `${MORPH_MS}ms`,
   transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
   borderRadius: open.value ? '1.25rem' : '9999px',
-  width: open.value ? 'min(420px, calc(100vw - 3rem))' : '126px',
+  width: open.value ? 'min(420px, calc(100vw - 3rem))' : '132px',
   height: open.value
     ? (typeof panelHeight.value === 'number' ? `${panelHeight.value}px` : 'auto')
-    : '40px',
-  maxHeight: open.value ? '85vh' : '40px',
+    : '44px',
+  maxHeight: open.value ? '85vh' : '44px',
   overflow: open.value && contentVisible.value ? 'visible' : 'hidden',
 }))
 </script>
@@ -112,7 +112,7 @@ const morphStyle = computed(() => ({
 <template>
   <div class="theme-controls-anchor">
     <!-- Morphing FAB/Panel container (always visible) -->
-    <div class="fixed bottom-6 right-6 z-50">
+    <div class="fixed bottom-35 right-6 z-50">
       <div
         ref="containerRef"
         class="relative border shadow-2xl shadow-black/60 transition-all bg-pureBlack border-pureWhite/10"
@@ -132,12 +132,12 @@ const morphStyle = computed(() => ({
           @click="open = true"
           @keydown.enter="open = true"
         >
-          <Icon name="ph:palette-bold" class="size-[15px] text-pureWhite/74" aria-hidden="true" />
-          <span class="text-[13px] font-medium text-pureWhite/88">Theme</span>
+          <Icon name="ph:palette-bold" class="size-[18px] text-pureWhite/80" aria-hidden="true" />
+          <span class="text-[14px] font-medium text-pureWhite/90">Theme</span>
         </div>
 
         <!-- Panel content wrapper (ref for height measurement) -->
-        <div ref="panelRef">
+        <div ref="panelRef" class="font-geist">
           <div
             class="transition-opacity"
             :class="contentVisible && open ? 'opacity-100' : 'opacity-0 pointer-events-none'"
@@ -156,11 +156,11 @@ const morphStyle = computed(() => ({
               </div>
               <button
                 type="button"
-                class="theme-morph__close h-6 w-6 flex shrink-0 items-center justify-center rounded-full text-pureWhite/50 transition-colors hover:bg-pureWhite/10 hover:text-pureWhite"
+                class="theme-morph__close h-6 w-6 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureWhite/40 transition-colors hover:bg-pureWhite/8 hover:text-pureWhite/90"
                 aria-label="Close theme panel"
                 @click="open = false"
               >
-                <Icon name="ph:x-bold" class="h-3 w-3" aria-hidden="true" />
+                <Icon name="ph:x-bold" class="h-3.5 w-3.5" aria-hidden="true" />
               </button>
             </div>
 
