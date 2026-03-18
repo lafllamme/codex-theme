@@ -163,7 +163,7 @@ const hexInputValue = computed(() => {
             </div>
 
             <div class="flex items-center gap-3">
-              <span class="text-[13px] text-pureBlack/40 font-mono tracking-wider uppercase">
+              <span class="hex-value text-[13px] text-pureBlack/40 tracking-wider uppercase">
                 {{ swatchValue(row.field) }}
               </span>
               <div
@@ -184,10 +184,10 @@ const hexInputValue = computed(() => {
           >
             <div class="flex items-center gap-3 mt-2">
               <div class="flex-1 flex items-center px-3.5 py-2.5 bg-pureWhite border border-pureBlack/10 rounded-xl shadow-sm focus-within:border-pureBlack/30 focus-within:ring-1 focus-within:ring-pureBlack/10 transition-all">
-                <span class="text-pureBlack/40 text-[14px] font-mono mr-2">#</span>
+                <span class="hex-value text-pureBlack/40 text-[14px] mr-2">#</span>
                 <input
                   type="text"
-                  class="bg-transparent border-none outline-none w-full text-[14px] font-mono uppercase text-pureBlack/80 tracking-wider placeholder-pureBlack/30"
+                  class="hex-input bg-transparent border-none outline-none w-full text-[14px] uppercase text-pureBlack/80 tracking-wider placeholder-pureBlack/30"
                   :value="hexInputValue"
                   placeholder="000000"
                   maxlength="6"
@@ -284,7 +284,7 @@ const hexInputValue = computed(() => {
               :style="{ left: `calc(${payload.theme.contrast}% - 9px)` }"
             />
           </div>
-          <span class="text-[15px] text-pureBlack/50 w-8 text-right font-mono">{{ payload.theme.contrast }}</span>
+          <span class="hex-value text-[15px] text-pureBlack/50 w-8 text-right">{{ payload.theme.contrast }}</span>
         </div>
 
         <!-- Size inputs -->
@@ -295,7 +295,7 @@ const hexInputValue = computed(() => {
           </div>
           <div class="flex w-full rounded-xl border border-pureBlack/10 bg-pureWhite shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-pureBlack/10 transition-shadow">
             <input
-              class="flex-1 p-3 border-r border-pureBlack/8 bg-transparent outline-none text-[15px] text-pureBlack/90 font-mono"
+              class="flex-1 p-3 border-r border-pureBlack/8 bg-transparent outline-none text-[15px] text-pureBlack/90"
               :value="uiFontSize"
               type="number"
               min="12"
@@ -303,7 +303,7 @@ const hexInputValue = computed(() => {
               @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
             >
             <input
-              class="flex-1 p-3 bg-pureBlack/3 outline-none text-[15px] text-pureBlack/90 font-mono"
+              class="flex-1 p-3 bg-pureBlack/3 outline-none text-[15px] text-pureBlack/90"
               :value="codeFontSize"
               type="number"
               min="12"
@@ -362,23 +362,13 @@ const hexInputValue = computed(() => {
 </template>
 
 <style scoped>
-.theme-panel-body {
-  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
-}
-
-.theme-panel-body input[type="text"],
-.theme-panel-body input[type="number"],
-.theme-panel-body textarea {
-  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
-}
-
-.theme-panel-body input[type="number"]::-webkit-inner-spin-button,
-.theme-panel-body input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.theme-panel-body input[type="number"] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>

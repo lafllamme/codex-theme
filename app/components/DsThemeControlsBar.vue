@@ -144,22 +144,17 @@ const morphStyle = computed(() => ({
             :aria-hidden="!open"
           >
             <!-- Header -->
-            <div class="flex items-center justify-between px-5 pb-3 pt-5">
-              <div>
-                <h2 class="text-[14px] font-semibold text-pureBlack/90">
-                  Theme
-                </h2>
-                <p class="mt-0.5 text-[10px] text-pureBlack/50">
-                  Presets, colors, display, export
-                </p>
-              </div>
+            <div class="flex items-center justify-between px-5 pt-5 pb-2">
+              <h2 class="text-[17px] font-semibold tracking-tight text-pureBlack/90">
+                Appearance
+              </h2>
               <button
                 type="button"
-                class="theme-morph__close h-6 w-6 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureBlack/40 transition-colors hover:bg-pureBlack/8 hover:text-pureBlack/90"
+                class="theme-morph__close h-8 w-8 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-pureBlack/40 transition-colors hover:bg-pureBlack/8 hover:text-pureBlack/90"
                 aria-label="Close theme panel"
                 @click="open = false"
               >
-                <Icon name="ph:x-bold" class="h-3.5 w-3.5" aria-hidden="true" />
+                <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
 
@@ -216,9 +211,11 @@ const morphStyle = computed(() => ({
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
 }
 
-.theme-panel-font-lock input[type="text"],
 .theme-panel-font-lock textarea,
-.theme-panel-font-lock .tc-hex {
+.theme-panel-font-lock .font-mono,
+.theme-panel-font-lock .hex-value,
+.theme-panel-font-lock .hex-input,
+.theme-panel-font-lock input[type="number"] {
   font-family: 'Geist Mono', ui-monospace, monospace !important;
 }
 </style>

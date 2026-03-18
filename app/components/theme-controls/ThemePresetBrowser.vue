@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
+import { useDebounceFn } from '@vueuse/core'
 import ThemePresetCard from './ThemePresetCard.vue'
 
 const props = defineProps<{
@@ -13,14 +14,35 @@ const emit = defineEmits<{
 
 type FilterMode = 'all' | 'dark' | 'light'
 
+const searchQuery = ref('')
 const filterMode = ref<FilterMode>('all')
 const isExpanded = ref(false)
 
+const debouncedSearch = useDebounceFn((value: string) => {
+  searchQuery.value = value
+}, 150)
+
+function onSearchInput(event: Event) {
+  const target = event.target as HTMLInputElement
+  debouncedSearch(target.value)
+}
+
 const filteredPresets = computed(() => {
-  if (filterMode.value === 'all') {
-    return props.presets
+  let result = props.presets
+
+  if (filterMode.value !== 'all') {
+    result = result.filter(p => p.payload.variant === filterMode.value)
   }
-  return props.presets.filter(p => p.payload.variant === filterMode.value)
+
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim()
+    result = result.filter(p =>
+      p.label.toLowerCase().includes(query)
+      || p.id.toLowerCase().includes(query),
+    )
+  }
+
+  return result
 })
 
 const displayedPresets = computed(() => {
@@ -42,6 +64,21 @@ function handleSelect(entry: ThemePresetEntry) {
 
 <template>
   <div class="theme-preset-browser">
+    <!-- Search bar -->
+    <div class="relative mb-4">
+      <Icon
+        name="ph:magnifying-glass"
+        class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-pureBlack/40"
+      />
+      <input
+        type="text"
+        placeholder="Search themes..."
+        class="w-full rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10"
+        :value="searchQuery"
+        @input="onSearchInput"
+      >
+    </div>
+
     <!-- Filter badges -->
     <div class="flex gap-2 overflow-x-auto no-scrollbar pb-4 -mx-1 px-1">
       <button
@@ -90,7 +127,7 @@ function handleSelect(entry: ThemePresetEntry) {
       <button
         v-if="filteredPresets.length > 4"
         type="button"
-        class="text-[14px] text-pureBlack/50 hover:text-pureBlack/80 font-medium transition-colors"
+        class="show-all-btn text-[14px] text-pureBlack/50 hover:text-pureBlack/80 font-medium transition-colors"
         @click="isExpanded = !isExpanded"
       >
         {{ isExpanded ? 'Show less' : 'Show all' }}
@@ -116,7 +153,12 @@ function handleSelect(entry: ThemePresetEntry) {
       v-if="filteredPresets.length === 0"
       class="py-8 text-center text-[13px] text-pureBlack/40"
     >
-      No {{ filterMode }} themes found
+      <template v-if="searchQuery">
+        No themes found matching "{{ searchQuery }}"
+      </template>
+      <template v-else>
+        No {{ filterMode }} themes found
+      </template>
     </div>
   </div>
 </template>
@@ -124,6 +166,17 @@ function handleSelect(entry: ThemePresetEntry) {
 <style scoped>
 .theme-preset-browser {
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.theme-preset-browser input {
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.show-all-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .no-scrollbar::-webkit-scrollbar {
