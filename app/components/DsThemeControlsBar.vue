@@ -100,12 +100,11 @@ const morphStyle = computed(() => ({
   transitionDuration: `${MORPH_MS}ms`,
   transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
   borderRadius: open.value ? '1.25rem' : '9999px',
-  width: open.value ? 'min(420px, calc(100vw - 3rem))' : '132px',
+  width: open.value ? 'min(420px, calc(100vw - 3rem))' : '126px',
   height: open.value
     ? (typeof panelHeight.value === 'number' ? `${panelHeight.value}px` : 'auto')
-    : '44px',
-  maxHeight: open.value ? '85vh' : '44px',
-  overflow: 'hidden',
+    : '40px',
+  maxHeight: open.value ? '85vh' : '40px',
 }))
 </script>
 
@@ -115,7 +114,7 @@ const morphStyle = computed(() => ({
     <div class="fixed bottom-30 right-6 z-50">
       <div
         ref="containerRef"
-        class="relative border shadow-2xl shadow-black/20 transition-all bg-pureWhite border-pureBlack/10"
+        class="relative overflow-hidden border shadow-2xl shadow-black/20 transition-all bg-pureWhite border-pureBlack/10"
         :style="morphStyle"
         :role="open ? 'dialog' : undefined"
         :aria-modal="open ? 'true' : undefined"
@@ -125,7 +124,7 @@ const morphStyle = computed(() => ({
         <div
           class="absolute inset-0 flex cursor-pointer select-none items-center justify-center gap-2 transition-opacity"
           :class="open ? 'opacity-0 pointer-events-none' : 'opacity-100'"
-          :style="{ transitionDuration: '120ms' }"
+          style="font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important; transition-duration: 120ms;"
           role="button"
           tabindex="0"
           aria-label="Open theme panel"
@@ -137,7 +136,7 @@ const morphStyle = computed(() => ({
         </div>
 
         <!-- Panel content wrapper (ref for height measurement) -->
-        <div ref="panelRef" class="font-geist">
+        <div ref="panelRef" class="theme-panel-font-lock">
           <div
             class="transition-opacity"
             :class="contentVisible && open ? 'opacity-100' : 'opacity-0 pointer-events-none'"
@@ -210,5 +209,16 @@ const morphStyle = computed(() => ({
   width: 0;
   height: 0;
   flex-shrink: 0;
+}
+
+.theme-panel-font-lock,
+.theme-panel-font-lock * {
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.theme-panel-font-lock input[type="text"],
+.theme-panel-font-lock textarea,
+.theme-panel-font-lock .tc-hex {
+  font-family: 'Geist Mono', ui-monospace, monospace !important;
 }
 </style>

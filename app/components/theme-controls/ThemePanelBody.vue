@@ -108,7 +108,7 @@ function swatchValue(field: ColorField) {
 </script>
 
 <template>
-  <div class="theme-panel-body pb-6 pt-2 font-[var(--font-ui)] space-y-8">
+  <div class="theme-panel-body pb-6 pt-2 space-y-8">
     <!-- Presets -->
     <section>
       <p class="text-pureBlack/50 mb-3 text-[10px] font-medium tracking-[0.14em] uppercase">
@@ -149,7 +149,7 @@ function swatchValue(field: ColorField) {
             @input="onColorInput(row.field, $event)"
           >
           <input
-            class="tc-hex border-pureBlack/12 bg-pureBlack/4 text-pureBlack/90 focus:border-pureBlack/30 min-w-0 flex-1 border rounded-lg px-2.5 py-2 text-[13px] font-mono outline-none"
+            class="tc-hex border-pureBlack/12 bg-pureBlack/4 text-pureBlack/90 focus:border-pureBlack/30 min-w-0 flex-1 border rounded-lg px-2.5 py-2 text-[13px] outline-none"
             type="text"
             :value="swatchValue(row.field)"
             @change="onHexInput(row.field, $event)"
@@ -292,7 +292,7 @@ function swatchValue(field: ColorField) {
       </button>
       <div v-show="jsonOpen" class="mt-3 space-y-2">
         <textarea
-          class="border-pureBlack/12 bg-pureBlack/4 text-pureBlack/85 focus:border-pureBlack/25 min-h-52 w-full resize-y border rounded-lg p-3 text-[12px] leading-relaxed font-mono outline-none"
+          class="border-pureBlack/12 bg-pureBlack/4 text-pureBlack/85 focus:border-pureBlack/25 min-h-52 w-full resize-y border rounded-lg p-3 text-[12px] leading-relaxed outline-none"
           rows="10"
           :value="jsonValue"
           @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
