@@ -70,13 +70,15 @@ function handleSelect(entry: ThemePresetEntry) {
         name="ph:magnifying-glass"
         class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-pureBlack/40"
       />
-      <input
-        type="text"
-        placeholder="Search themes..."
-        class="w-full rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10"
-        :value="searchQuery"
-        @input="onSearchInput"
-      >
+     <div class="w-full">
+         <input
+           type="text"
+           placeholder="Search themes..."
+           class="rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10"
+           :value="searchQuery"
+           @input="onSearchInput"
+         >
+     </div>
     </div>
 
     <!-- Filter badges -->
