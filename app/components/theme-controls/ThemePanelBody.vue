@@ -133,7 +133,7 @@ const hexInputValue = computed(() => {
           class="relative transition-colors"
           :class="[
             index !== colorRows.length - 1 ? 'border-b border-pureBlack/6' : '',
-            expandedColor === row.field ? 'bg-pureBlack/3' : '',
+            expandedColor === row.field ? 'bg-pureBlack/6' : '',
           ]"
         >
           <!-- Left indicator for expanded -->
@@ -145,7 +145,7 @@ const hexInputValue = computed(() => {
           <!-- Color row -->
           <div
             class="flex items-center justify-between p-4 px-5 cursor-pointer transition-colors"
-            :class="expandedColor !== row.field ? 'hover:bg-pureBlack/3' : ''"
+            :class="expandedColor !== row.field ? 'hover:bg-pureBlack/6' : ''"
             @click="toggleColorExpand(row.field)"
           >
             <div class="flex items-center gap-3.5">
