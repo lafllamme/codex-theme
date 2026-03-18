@@ -1,5 +1,5 @@
 {
-  "codeThemeId": "electron-highlighter",
+  "codeThemeId": "monokai",
   "variant": "dark",
   "theme": {
     "accent": "#82aaff",

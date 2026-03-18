@@ -5,15 +5,20 @@
  * Usage:
  *   node scripts/convert-iterm2-themes.mjs
  * 
- * This script reads all .itermcolors files from tmp/iTerm2-Color-Schemes/schemes/
+ * This script reads all .itermcolors files from app/assets/themes-raw/
  * and outputs Codex-compatible JSON files to app/assets/theme-presets/
+ * 
+ * To add new themes:
+ *   1. Download .itermcolors files from https://github.com/mbadolato/iTerm2-Color-Schemes
+ *   2. Drop them into app/assets/themes-raw/
+ *   3. Run this script
  */
 
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const ITERM_SCHEMES_DIR = 'tmp/iTerm2-Color-Schemes/schemes'
+const ITERM_SCHEMES_DIR = 'app/assets/themes-raw'
 const OUTPUT_DIR = 'app/assets/theme-presets'
 
 // Get list of existing curated presets to avoid conflicts
@@ -98,10 +103,14 @@ function convertItermToCodex(itermPath) {
   const filename = path.basename(itermPath)
   const id = toKebabCase(filename)
   
+  // Use sensible default codeThemeId - these must be valid Codex built-in code themes
+  // Dark themes get "monokai", light themes get "github" (both are universally available)
+  const codeThemeId = variant === 'dark' ? 'monokai' : 'github'
+  
   return {
     id,
     payload: {
-      codeThemeId: id,
+      codeThemeId,
       variant,
       theme: {
         accent,
@@ -130,7 +139,7 @@ const itermFiles = fs.readdirSync(ITERM_SCHEMES_DIR)
 console.log(`Found ${itermFiles.length} iTerm2 color schemes to convert`)
 
 let converted = 0
-let skipped = 0
+let updated = 0
 let errors = 0
 
 for (const file of itermFiles) {
@@ -146,11 +155,17 @@ for (const file of itermFiles) {
     }
     
     const outputPath = path.join(OUTPUT_DIR, `${outputId}.json`)
+    const isUpdate = existingPresets.has(outputId)
     fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2) + '\n')
-    converted++
     
-    if (converted % 50 === 0) {
-      console.log(`  Converted ${converted}/${itermFiles.length}...`)
+    if (isUpdate) {
+      updated++
+    } else {
+      converted++
+    }
+    
+    if ((converted + updated) % 50 === 0) {
+      console.log(`  Processed ${converted + updated}/${itermFiles.length}...`)
     }
   } catch (err) {
     console.error(`  Error converting ${file}: ${err.message}`)
@@ -158,8 +173,11 @@ for (const file of itermFiles) {
   }
 }
 
+// Count actual files at the end
+const finalCount = fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.json')).length
+
 console.log(`\nDone!`)
-console.log(`  Converted: ${converted}`)
-console.log(`  Skipped: ${skipped}`)
+console.log(`  New themes: ${converted}`)
+console.log(`  Updated: ${updated}`)
 console.log(`  Errors: ${errors}`)
-console.log(`  Total presets: ${existingPresets.size + converted}`)
+console.log(`  Total presets: ${finalCount}`)
