@@ -106,6 +106,46 @@ const hexInputValue = computed(() => {
     return ''
   return swatchValue(expandedColor.value).replace('#', '')
 })
+
+const UI_FONT_OPTIONS: Array<{ label: string, value: string }> = [
+  { label: 'Default (Codex/System)', value: '' },
+  { label: 'Inter (Codex preset)', value: 'Inter' },
+  { label: 'Satoshi (Codex preset)', value: 'Satoshi' },
+  { label: 'System Mono UI (Codex preset)', value: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' },
+  { label: 'System Sans (recommended)', value: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif' },
+  { label: 'Arial / Helvetica', value: 'Arial, Helvetica, sans-serif' },
+  { label: 'Segoe UI stack', value: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif' },
+  { label: 'Helvetica stack', value: 'Helvetica, Arial, sans-serif' },
+  { label: 'Verdana stack', value: 'Verdana, Geneva, sans-serif' },
+  { label: 'Tahoma stack', value: 'Tahoma, Geneva, sans-serif' },
+  { label: 'Trebuchet stack', value: '"Trebuchet MS", Helvetica, sans-serif' },
+  { label: 'Georgia stack', value: 'Georgia, "Times New Roman", serif' },
+  { label: 'Times New Roman stack', value: '"Times New Roman", Times, serif' },
+]
+
+const CODE_FONT_OPTIONS: Array<{ label: string, value: string }> = [
+  { label: 'Default (Codex/System)', value: '' },
+  { label: 'System Mono (Codex preset)', value: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' },
+  { label: 'System Mono (recommended)', value: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace' },
+  { label: 'Consolas stack', value: 'Consolas, "Courier New", monospace' },
+  { label: 'Menlo / Monaco stack', value: 'Menlo, Monaco, "Courier New", monospace' },
+  { label: 'Courier New stack', value: '"Courier New", Courier, monospace' },
+  { label: 'Lucida Console stack', value: '"Lucida Console", Monaco, monospace' },
+]
+
+function onUiFontSelect(event: Event) {
+  const target = event.target as HTMLSelectElement | null
+  if (!target)
+    return
+  emit('setUiFont', target.value)
+}
+
+function onCodeFontSelect(event: Event) {
+  const target = event.target as HTMLSelectElement | null
+  if (!target)
+    return
+  emit('setCodeFont', target.value)
+}
 </script>
 
 <template>
@@ -227,24 +267,36 @@ const hexInputValue = computed(() => {
             <span class="px-1 text-[13px] text-pureBlack/50">UI font</span>
             <span class="px-1 text-[13px] text-pureBlack/50">Code font</span>
           </div>
-          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
+          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm divide-x divide-pureBlack/12">
             <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <input
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+              <select
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
                 :value="payload.theme.fonts.ui || ''"
-                placeholder="Geist"
-                type="text"
-                @input="emit('setUiFont', ($event.target as HTMLInputElement).value)"
+                @change="onUiFontSelect"
               >
+                <option
+                  v-for="option in UI_FONT_OPTIONS"
+                  :key="option.label"
+                  :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
             </div>
-            <div class="flex-1 min-w-0 border-l border-[#d5d5d5] bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <input
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <select
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
                 :value="payload.theme.fonts.code || ''"
-                placeholder="Geist Mono"
-                type="text"
-                @input="emit('setCodeFont', ($event.target as HTMLInputElement).value)"
+                @change="onCodeFontSelect"
               >
+                <option
+                  v-for="option in CODE_FONT_OPTIONS"
+                  :key="option.label"
+                  :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -256,24 +308,24 @@ const hexInputValue = computed(() => {
             type="button"
             role="switch"
             :aria-checked="translucentSidebar"
-            class="relative inline-flex h-7 w-[46px] items-center rounded-full transition-colors cursor-pointer focus:outline-none"
-            :class="translucentSidebar ? 'bg-pureBlack/20' : 'bg-pureBlack/10'"
+            class="h-[24px] w-[42px] rounded-full p-[2px] transition-colors duration-200 cursor-pointer flex items-center focus:outline-none"
+            :class="translucentSidebar ? 'justify-end bg-pureBlack/18' : 'justify-start bg-pureBlack/10'"
             @click="emit('setTranslucentSidebar', !translucentSidebar)"
           >
             <span
-              class="inline-block h-6 w-6 transform rounded-full shadow-sm transition-transform"
-              :class="translucentSidebar ? 'translate-x-[20px] bg-pureBlack' : 'translate-x-[2px] bg-pureWhite'"
+              class="h-[20px] w-[20px] rounded-full shadow-sm transition-colors"
+              :class="translucentSidebar ? 'bg-pureBlack' : 'bg-pureWhite ring-1 ring-pureBlack/10'"
             />
           </button>
         </div>
 
         <!-- Contrast slider -->
         <div class="flex items-center gap-4 py-1">
-          <span class="text-[15px] font-medium text-pureBlack/80 w-24 shrink-0">Contrast</span>
-          <div class="flex-1 relative flex items-center h-6 cursor-pointer group">
-            <div class="absolute w-full h-[3px] bg-pureBlack/10 rounded-full" />
+          <span class="text-[15px] font-medium text-pureBlack/80 w-[70px] shrink-0">Contrast</span>
+          <div class="flex-1 relative flex items-center h-6 group">
+            <div class="absolute w-full h-[3px] bg-pureBlack/12 rounded-full" />
             <div
-              class="absolute h-[3px] bg-blue-500 rounded-full"
+              class="absolute h-[3px] bg-[#0066FF] rounded-full"
               :style="{ width: `${payload.theme.contrast}%` }"
             />
             <input
@@ -285,11 +337,11 @@ const hexInputValue = computed(() => {
               @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
             >
             <div
-              class="absolute w-[18px] h-[18px] bg-blue-500 rounded-full shadow-md transition-transform group-hover:scale-110"
-              :style="{ left: `calc(${payload.theme.contrast}% - 9px)` }"
+              class="absolute w-4 h-4 bg-[#0066FF] rounded-full shadow-sm transform -translate-x-1/2 transition-transform group-hover:scale-110"
+              :style="{ left: `${payload.theme.contrast}%` }"
             />
           </div>
-          <span class="hex-value text-[15px] text-pureBlack/50 w-8 text-right">{{ payload.theme.contrast }}</span>
+          <span class="hex-value text-[14px] text-pureBlack/55 w-8 text-right">{{ payload.theme.contrast }}</span>
         </div>
 
         <!-- Size inputs -->
@@ -298,7 +350,7 @@ const hexInputValue = computed(() => {
             <span class="px-1 text-[13px] text-pureBlack/50">UI size (px)</span>
             <span class="px-1 text-[13px] text-pureBlack/50">Code size (px)</span>
           </div>
-          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
+          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm divide-x divide-pureBlack/12">
             <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
               <input
                 class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
@@ -309,7 +361,7 @@ const hexInputValue = computed(() => {
                 @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
               >
             </div>
-            <div class="flex-1 min-w-0 border-l border-[#d5d5d5] bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
               <input
                 class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
                 :value="codeFontSize"

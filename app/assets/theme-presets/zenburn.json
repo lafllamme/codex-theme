@@ -5,8 +5,8 @@
     "accent": "#506070",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": null,
+      "code": null
     },
     "ink": "#dcdccc",
     "opaqueWindows": true,

@@ -138,18 +138,19 @@ function handleSelect(entry: ThemePresetEntry) {
       </button>
     </div>
 
-    <!-- Header with Show all -->
-    <div class="flex justify-between items-baseline mb-4">
+    <!-- Header with View all -->
+    <div class="flex justify-between items-center mb-4">
       <h3 class="text-[22px] font-semibold tracking-tight text-pureBlack/90">
         Presets
       </h3>
       <button
         v-if="filteredPresets.length > 4"
         type="button"
-        class="show-all-btn text-[14px] text-pureBlack/50 hover:text-pureBlack/80 font-medium transition-colors"
+        class="inline-flex items-center gap-1.5 rounded-xl border border-pureBlack/10 bg-pureWhite px-3 py-1.5 text-[13px] font-semibold text-pureBlack/70 shadow-sm transition-all hover:bg-pureBlack/5 hover:text-pureBlack/90 active:scale-[0.98]"
         @click="toggleExpanded"
       >
-        {{ isExpanded ? 'Show less' : 'Show all' }}
+        <span>{{ isExpanded ? 'Show less' : 'View all' }}</span>
+        <Icon :name="isExpanded ? 'ph:caret-up' : 'ph:caret-right'" class="h-3 w-3" />
       </button>
     </div>
 
@@ -191,13 +192,6 @@ function handleSelect(entry: ThemePresetEntry) {
 
 .theme-preset-browser input {
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif !important;
-}
-
-.show-all-btn {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
 }
 
 .preset-grid {

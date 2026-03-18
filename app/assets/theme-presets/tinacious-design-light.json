@@ -5,8 +5,8 @@
     "accent": "#00cbff",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "Satoshi",
+      "code": "ui-monospace, \"SFMono-Regular\", \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
     },
     "ink": "#1d1d26",
     "opaqueWindows": true,

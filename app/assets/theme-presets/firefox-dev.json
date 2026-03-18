@@ -5,8 +5,8 @@
     "accent": "#359ddf",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "code": "Menlo, Monaco, \"Courier New\", monospace"
     },
     "ink": "#7c8fa4",
     "opaqueWindows": true,

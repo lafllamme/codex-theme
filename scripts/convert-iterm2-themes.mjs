@@ -17,9 +17,56 @@
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
+import { assignFontsForTheme } from './font-assignment.mjs'
 
 const ITERM_SCHEMES_DIR = 'app/assets/themes-raw'
 const OUTPUT_DIR = 'app/assets/theme-presets'
+const CURATED_PRESET_IDS = new Set([
+  'absolutely',
+  'ayu',
+  'catppuccin',
+  'codex',
+  'dracula',
+  'everforest',
+  'github',
+  'gruvbox',
+  'linear',
+  'lobster',
+  'material',
+  'matrix',
+  'monokai',
+  'night-owl',
+  'nord',
+  'notion',
+  'one',
+  'oscurange',
+  'rose-pine',
+  'sentry',
+  'solarized',
+  'temple',
+  'tokyo-night',
+  'vscode-plus',
+])
+
+/**
+ * Keep curated presets and remove previously generated iTerm outputs.
+ */
+function cleanupGeneratedPresets() {
+  const files = fs.readdirSync(OUTPUT_DIR).filter(f => f.endsWith('.json'))
+  let removed = 0
+
+  for (const file of files) {
+    const id = file.replace(/\.json$/, '')
+    if (!CURATED_PRESET_IDS.has(id)) {
+      fs.unlinkSync(path.join(OUTPUT_DIR, file))
+      removed++
+    }
+  }
+
+  console.log(`Cleaned ${removed} generated presets (kept curated: ${CURATED_PRESET_IDS.size})`)
+}
+
+cleanupGeneratedPresets()
 
 // Get list of existing curated presets to avoid conflicts
 const existingPresets = new Set(
@@ -102,6 +149,7 @@ function convertItermToCodex(itermPath) {
   
   const filename = path.basename(itermPath)
   const id = toKebabCase(filename)
+  const fonts = assignFontsForTheme(id, variant)
   
   // Use monokai as default codeThemeId - must be a valid Codex built-in code theme
   const codeThemeId = 'monokai'
@@ -114,10 +162,7 @@ function convertItermToCodex(itermPath) {
       theme: {
         accent,
         contrast: 60,
-        fonts: {
-          code: null,
-          ui: null
-        },
+        fonts,
         ink,
         opaqueWindows: true,
         semanticColors: {

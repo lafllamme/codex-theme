@@ -5,8 +5,8 @@
     "accent": "#61afef",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "\"Trebuchet MS\", Helvetica, sans-serif",
+      "code": "ui-monospace, \"SFMono-Regular\", \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
     },
     "ink": "#abb2bf",
     "opaqueWindows": true,

@@ -5,8 +5,8 @@
     "accent": "#8aadf4",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "Inter",
+      "code": "Consolas, \"Courier New\", monospace"
     },
     "ink": "#cad3f5",
     "opaqueWindows": true,

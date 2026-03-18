@@ -5,8 +5,8 @@
     "accent": "#1e80f0",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "ui-monospace, \"SFMono-Regular\", \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace",
+      "code": "ui-monospace, \"SFMono-Regular\", \"SF Mono\", Menlo, Consolas, \"Liberation Mono\", monospace"
     },
     "ink": "#c2c8d7",
     "opaqueWindows": true,

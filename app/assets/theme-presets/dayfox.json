@@ -5,8 +5,8 @@
     "accent": "#2848a9",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "\"Segoe UI\", Tahoma, Geneva, Verdana, sans-serif",
+      "code": null
     },
     "ink": "#3d2b5a",
     "opaqueWindows": true,

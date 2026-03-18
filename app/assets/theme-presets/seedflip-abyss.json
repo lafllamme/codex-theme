@@ -5,8 +5,8 @@
     "accent": "#6090d2",
     "contrast": 60,
     "fonts": {
-      "code": null,
-      "ui": null
+      "ui": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+      "code": null
     },
     "ink": "#e0e0f0",
     "opaqueWindows": true,
