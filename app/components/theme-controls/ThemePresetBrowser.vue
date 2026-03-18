@@ -92,7 +92,7 @@ function handleSelect(entry: ThemePresetEntry) {
       <input
         type="text"
         placeholder="Search themes..."
-        class="w-full rounded-xl border border-pureBlack/10 bg-pureWhite py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 outline-none transition-all placeholder:text-pureBlack/40 focus:border-pureBlack/20 focus:ring-1 focus:ring-pureBlack/10 box-border"
+        class="w-full rounded-xl border border-solid border-sand-9 focus:outline-none focus:border-solid focus:border-pureBlack py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 placeholder:text-pureBlack/40 box-border"
         :value="searchQuery"
         @input="onSearchInput"
       >
@@ -105,7 +105,7 @@ function handleSelect(entry: ThemePresetEntry) {
         class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'all'
-            ? 'bg-pureBlack text-pureWhite shadow-sm'
+            ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
             : 'bg-pureWhite border border-pureBlack/10 text-pureBlack/60 hover:bg-pureBlack/5',
         ]"
         @click="filterMode = 'all'"
@@ -117,7 +117,7 @@ function handleSelect(entry: ThemePresetEntry) {
         class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'dark'
-            ? 'bg-pureBlack text-pureWhite shadow-sm'
+            ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
             : 'bg-pureWhite border border-pureBlack/10 text-pureBlack/60 hover:bg-pureBlack/5',
         ]"
         @click="filterMode = 'dark'"
@@ -129,7 +129,7 @@ function handleSelect(entry: ThemePresetEntry) {
         class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'light'
-            ? 'bg-pureBlack text-pureWhite shadow-sm'
+            ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
             : 'bg-pureWhite border border-pureBlack/10 text-pureBlack/60 hover:bg-pureBlack/5',
         ]"
         @click="filterMode = 'light'"

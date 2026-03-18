@@ -130,23 +130,24 @@ const hexInputValue = computed(() => {
         <div
           v-for="(row, index) in colorRows"
           :key="row.field"
-          class="relative"
+          class="relative transition-colors"
+          :class="[
+            index !== colorRows.length - 1 ? 'border-b border-pureBlack/6' : '',
+            expandedColor === row.field ? 'bg-pureBlack/3' : '',
+          ]"
         >
+          <!-- Left indicator for expanded -->
+          <div
+            v-if="expandedColor === row.field"
+            class="absolute left-0 top-0 bottom-0 w-[3px] bg-pureBlack rounded-r-full"
+          />
+
           <!-- Color row -->
           <div
             class="flex items-center justify-between p-4 px-5 cursor-pointer transition-colors"
-            :class="[
-              index !== colorRows.length - 1 ? 'border-b border-pureBlack/6' : '',
-              expandedColor === row.field ? 'bg-pureBlack/3' : 'hover:bg-pureBlack/3',
-            ]"
+            :class="expandedColor !== row.field ? 'hover:bg-pureBlack/3' : ''"
             @click="toggleColorExpand(row.field)"
           >
-            <!-- Left indicator for expanded -->
-            <div
-              v-if="expandedColor === row.field"
-              class="absolute left-0 top-0 bottom-0 w-[3px] bg-pureBlack rounded-r-full"
-            />
-
             <div class="flex items-center gap-3.5">
               <div
                 class="w-8 h-8 rounded-full flex items-center justify-center"
@@ -180,7 +181,7 @@ const hexInputValue = computed(() => {
           <!-- Expanded color picker -->
           <div
             v-if="expandedColor === row.field"
-            class="px-5 pb-5 pl-14 bg-pureBlack/3 border-b border-pureBlack/6"
+            class="px-5 pb-5 pl-14"
           >
             <div class="flex items-center gap-3 mt-2">
               <div class="flex-1 flex items-center px-3.5 py-2.5 bg-pureWhite border border-pureBlack/10 rounded-xl shadow-sm focus-within:border-pureBlack/30 focus-within:ring-1 focus-within:ring-pureBlack/10 transition-all">

@@ -144,10 +144,18 @@ const morphStyle = computed(() => ({
             :aria-hidden="!open"
           >
             <!-- Header -->
-            <div class="flex items-center justify-center px-5 pt-5 pb-2">
-              <h2 class="text-[17px] font-semibold tracking-tight text-pureBlack/90">
+            <div class="relative flex items-center justify-center px-5 pt-5 pb-2">
+              <h2 class="text-[clamp(18px,4vw,22px)] font-bold tracking-tight text-pureBlack/90">
                 Appearance
               </h2>
+              <button
+                type="button"
+                class="absolute right-5 h-8 w-8 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-sand10 transition-colors hover:text-sand12 hover:bg-sand4"
+                aria-label="Close theme panel"
+                @click="open = false"
+              >
+                <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
+              </button>
             </div>
             
 
@@ -211,4 +219,5 @@ const morphStyle = computed(() => ({
 .theme-panel-font-lock input[type="number"] {
   font-family: 'Geist Mono', ui-monospace, monospace !important;
 }
+
 </style>
