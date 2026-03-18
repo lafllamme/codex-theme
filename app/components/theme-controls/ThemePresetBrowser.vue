@@ -17,6 +17,7 @@ type FilterMode = 'all' | 'dark' | 'light'
 const searchQuery = ref('')
 const filterMode = ref<FilterMode>('all')
 const isExpanded = ref(false)
+const gridRef = ref<HTMLElement | null>(null)
 
 const debouncedSearch = useDebounceFn((value: string) => {
   searchQuery.value = value
@@ -25,6 +26,24 @@ const debouncedSearch = useDebounceFn((value: string) => {
 function onSearchInput(event: Event) {
   const target = event.target as HTMLInputElement
   debouncedSearch(target.value)
+}
+
+function toggleExpanded() {
+  if (isExpanded.value) {
+    const grid = gridRef.value
+    if (grid && grid.scrollTop > 0) {
+      grid.scrollTo({ top: 0, behavior: 'smooth' })
+      setTimeout(() => {
+        isExpanded.value = false
+      }, 200)
+    }
+    else {
+      isExpanded.value = false
+    }
+  }
+  else {
+    isExpanded.value = true
+  }
 }
 
 const filteredPresets = computed(() => {
@@ -128,7 +147,7 @@ function handleSelect(entry: ThemePresetEntry) {
         v-if="filteredPresets.length > 4"
         type="button"
         class="show-all-btn text-[14px] text-pureBlack/50 hover:text-pureBlack/80 font-medium transition-colors"
-        @click="isExpanded = !isExpanded"
+        @click="toggleExpanded"
       >
         {{ isExpanded ? 'Show less' : 'Show all' }}
       </button>
@@ -136,6 +155,7 @@ function handleSelect(entry: ThemePresetEntry) {
 
     <!-- Theme grid -->
     <div
+      ref="gridRef"
       class="preset-grid grid grid-cols-2 gap-4"
       :class="isExpanded ? 'preset-grid--expanded' : ''"
     >
