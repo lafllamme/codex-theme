@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "crayon-pony-fish",
+  "variant": "dark",
+  "theme": {
+    "accent": "#8c87b0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#68525a",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#579524",
+      "diffRemoved": "#91002b",
+      "skill": "#692f50"
+    },
+    "surface": "#150707"
+  }
+}

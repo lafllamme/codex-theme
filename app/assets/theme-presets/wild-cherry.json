@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "wild-cherry",
+  "variant": "dark",
+  "theme": {
+    "accent": "#883cdc",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dafaff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#2ab250",
+      "diffRemoved": "#d94085",
+      "skill": "#ececec"
+    },
+    "surface": "#1f1726"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "abernathy",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1093f5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#eeeeec",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00cd00",
+      "diffRemoved": "#cd0000",
+      "skill": "#cd00cd"
+    },
+    "surface": "#111416"
+  }
+}

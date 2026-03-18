@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "nvim-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#004c73",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#14161b",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#005523",
+      "diffRemoved": "#590008",
+      "skill": "#470045"
+    },
+    "surface": "#e0e2ea"
+  }
+}

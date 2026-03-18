@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "doom-peacock",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2a6cc6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ede0ce",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#26a6a6",
+      "diffRemoved": "#cb4b16",
+      "skill": "#a9a1e1"
+    },
+    "surface": "#2b2a27"
+  }
+}

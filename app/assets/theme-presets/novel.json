@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "novel",
+  "variant": "light",
+  "theme": {
+    "accent": "#0000cc",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#3b2322",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#009600",
+      "diffRemoved": "#cc0000",
+      "skill": "#cc00cc"
+    },
+    "surface": "#dfdbc3"
+  }
+}

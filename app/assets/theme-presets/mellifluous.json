@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "mellifluous",
+  "variant": "dark",
+  "theme": {
+    "accent": "#a8a1be",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dadada",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#b3b393",
+      "diffRemoved": "#d29393",
+      "skill": "#b39fb0"
+    },
+    "surface": "#1a1a1a"
+  }
+}

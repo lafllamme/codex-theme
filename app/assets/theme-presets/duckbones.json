@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "duckbones",
+  "variant": "dark",
+  "theme": {
+    "accent": "#00a3cb",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ebefc0",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5dcd97",
+      "diffRemoved": "#e03600",
+      "skill": "#795ccc"
+    },
+    "surface": "#0e101a"
+  }
+}

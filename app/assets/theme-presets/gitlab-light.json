@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "gitlab-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#006cd8",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#303030",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#0a7f3d",
+      "diffRemoved": "#a31700",
+      "skill": "#583cac"
+    },
+    "surface": "#fafaff"
+  }
+}

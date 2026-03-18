@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "medallion",
+  "variant": "dark",
+  "theme": {
+    "accent": "#616bb0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#cac296",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7c8b16",
+      "diffRemoved": "#b64c00",
+      "skill": "#8c5a90"
+    },
+    "surface": "#1d1908"
+  }
+}

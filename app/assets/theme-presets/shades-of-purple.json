@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "shades-of-purple",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6943ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#3ad900",
+      "diffRemoved": "#d90429",
+      "skill": "#ff2c70"
+    },
+    "surface": "#1e1d40"
+  }
+}

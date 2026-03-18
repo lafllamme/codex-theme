@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "ardoise",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2465c2",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#eaeaea",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#588b35",
+      "diffRemoved": "#d3322d",
+      "skill": "#7332b4"
+    },
+    "surface": "#1e1e1e"
+  }
+}

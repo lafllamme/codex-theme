@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "sugarplum",
+  "variant": "dark",
+  "theme": {
+    "accent": "#db7ddd",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#db7ddd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#53b397",
+      "diffRemoved": "#5ca8dc",
+      "skill": "#d0beee"
+    },
+    "surface": "#111147"
+  }
+}

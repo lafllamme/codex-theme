@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "apple-system-colors",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0869cb",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#26a439",
+      "diffRemoved": "#cc372e",
+      "skill": "#9647bf"
+    },
+    "surface": "#1e1e1e"
+  }
+}

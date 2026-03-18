@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
+import ThemePresetBrowser from './ThemePresetBrowser.vue'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
 
@@ -114,18 +115,11 @@ function swatchValue(field: ColorField) {
       <p class="text-pureBlack/50 mb-3 text-[10px] font-medium tracking-[0.14em] uppercase">
         Presets
       </p>
-      <div class="flex flex-wrap gap-2">
-        <button
-          v-for="preset in themePresets"
-          :key="preset.id"
-          type="button"
-          class="border-pureBlack/12 bg-pureBlack/4 text-pureBlack/80 hover:border-pureBlack/20 border rounded-full px-3.5 py-2 text-[13px] font-[inherit] transition-colors"
-          :class="preset.id === activePresetId ? 'border-pureBlack/30 bg-pureBlack/10 text-pureBlack' : ''"
-          @click="emit('applyThemePreset', preset)"
-        >
-          {{ preset.label }}
-        </button>
-      </div>
+      <ThemePresetBrowser
+        :presets="themePresets"
+        :active-preset-id="activePresetId"
+        @select="emit('applyThemePreset', $event)"
+      />
     </section>
 
     <div class="bg-pureBlack/10 h-px" />

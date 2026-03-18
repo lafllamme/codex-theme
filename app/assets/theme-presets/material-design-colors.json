@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "material-design-colors",
+  "variant": "dark",
+  "theme": {
+    "accent": "#37b6ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e7ebed",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5cf19e",
+      "diffRemoved": "#fc3841",
+      "skill": "#fc226e"
+    },
+    "surface": "#1d262a"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "blue-berry-pie",
+  "variant": "dark",
+  "theme": {
+    "accent": "#90a5bd",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#babab9",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5cb1b3",
+      "diffRemoved": "#99246e",
+      "skill": "#9d54a7"
+    },
+    "surface": "#1c0c28"
+  }
+}

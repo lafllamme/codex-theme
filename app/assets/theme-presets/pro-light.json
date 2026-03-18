@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "pro-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#3b75ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#191919",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#50d148",
+      "diffRemoved": "#e5492b",
+      "skill": "#ed66e8"
+    },
+    "surface": "#ffffff"
+  }
+}

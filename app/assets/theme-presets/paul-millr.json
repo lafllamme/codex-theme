@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "paul-millr",
+  "variant": "dark",
+  "theme": {
+    "accent": "#396bd7",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f2f2f2",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#79ff0f",
+      "diffRemoved": "#ff0000",
+      "skill": "#b449be"
+    },
+    "surface": "#000000"
+  }
+}

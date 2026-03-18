@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "tomorrow-night-blue",
+  "variant": "dark",
+  "theme": {
+    "accent": "#bbdaff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#d1f1a9",
+      "diffRemoved": "#ff9da4",
+      "skill": "#ebbbff"
+    },
+    "surface": "#002451"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "cutie-pro",
+  "variant": "dark",
+  "theme": {
+    "accent": "#42d9c5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d5d0c9",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#bec975",
+      "diffRemoved": "#f56e7f",
+      "skill": "#d286b7"
+    },
+    "surface": "#181818"
+  }
+}

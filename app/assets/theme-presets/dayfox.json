@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "dayfox",
+  "variant": "light",
+  "theme": {
+    "accent": "#2848a9",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#3d2b5a",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#396847",
+      "diffRemoved": "#a5222f",
+      "skill": "#6e33ce"
+    },
+    "surface": "#f6f2ee"
+  }
+}

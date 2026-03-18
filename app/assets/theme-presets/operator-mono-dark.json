@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "operator-mono-dark",
+  "variant": "dark",
+  "theme": {
+    "accent": "#4387cf",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c3cac2",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#4d7b3a",
+      "diffRemoved": "#ca372d",
+      "skill": "#b86cb4"
+    },
+    "surface": "#191919"
+  }
+}

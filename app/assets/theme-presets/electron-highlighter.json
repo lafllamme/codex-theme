@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "electron-highlighter",
+  "variant": "dark",
+  "theme": {
+    "accent": "#82aaff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#a8b5d1",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#58ffc7",
+      "diffRemoved": "#f7768e",
+      "skill": "#d2a6ef"
+    },
+    "surface": "#24283b"
+  }
+}

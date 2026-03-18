@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "gruvbox-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#458588",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#3c3836",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#98971a",
+      "diffRemoved": "#cc241d",
+      "skill": "#b16286"
+    },
+    "surface": "#fbf1c7"
+  }
+}

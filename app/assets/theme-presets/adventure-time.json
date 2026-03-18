@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "adventure-time",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0f4ac6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f8dcc0",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#4ab118",
+      "diffRemoved": "#bd0013",
+      "skill": "#665993"
+    },
+    "surface": "#1f1d45"
+  }
+}

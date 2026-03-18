@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "ollie",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2d57ac",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#8a8dae",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#31ac61",
+      "diffRemoved": "#ac2e31",
+      "skill": "#b08528"
+    },
+    "surface": "#222125"
+  }
+}

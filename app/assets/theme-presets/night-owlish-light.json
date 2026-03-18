@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "night-owlish-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#4876d6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#403f53",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#2aa298",
+      "diffRemoved": "#d3423e",
+      "skill": "#403f53"
+    },
+    "surface": "#ffffff"
+  }
+}

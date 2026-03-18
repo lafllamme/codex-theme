@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "dimidium",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0575d8",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#bab7b6",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#60b442",
+      "diffRemoved": "#cf494c",
+      "skill": "#af5ed2"
+    },
+    "surface": "#141414"
+  }
+}

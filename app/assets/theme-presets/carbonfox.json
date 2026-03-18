@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "carbonfox",
+  "variant": "dark",
+  "theme": {
+    "accent": "#78a9ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f2f4f8",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#25be6a",
+      "diffRemoved": "#ee5396",
+      "skill": "#be95ff"
+    },
+    "surface": "#161616"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "rapture",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6c9bf5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c0c9e5",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7afde1",
+      "diffRemoved": "#fc644d",
+      "skill": "#ff4fa1"
+    },
+    "surface": "#111e2a"
+  }
+}

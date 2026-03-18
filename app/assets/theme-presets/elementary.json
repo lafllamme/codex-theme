@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "elementary",
+  "variant": "dark",
+  "theme": {
+    "accent": "#063b8c",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#efefef",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5aa513",
+      "diffRemoved": "#d71c15",
+      "skill": "#e40038"
+    },
+    "surface": "#181818"
+  }
+}

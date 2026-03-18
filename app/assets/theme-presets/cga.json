@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "cga",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0000aa",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#aaaaaa",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00aa00",
+      "diffRemoved": "#aa0000",
+      "skill": "#aa00aa"
+    },
+    "surface": "#000000"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "red-alert",
+  "variant": "dark",
+  "theme": {
+    "accent": "#489bee",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#71be6b",
+      "diffRemoved": "#d62e4e",
+      "skill": "#e979d7"
+    },
+    "surface": "#762423"
+  }
+}

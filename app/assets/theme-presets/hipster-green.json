@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "hipster-green",
+  "variant": "dark",
+  "theme": {
+    "accent": "#246eb2",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#84c138",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00a600",
+      "diffRemoved": "#b6214a",
+      "skill": "#b200b2"
+    },
+    "surface": "#100b05"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "konsolas",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2323a5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c8c1c1",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#18b218",
+      "diffRemoved": "#aa1717",
+      "skill": "#ad1edc"
+    },
+    "surface": "#060606"
+  }
+}

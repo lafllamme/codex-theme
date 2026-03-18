@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "idle-toes",
+  "variant": "dark",
+  "theme": {
+    "accent": "#4099ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7fe173",
+      "diffRemoved": "#d25252",
+      "skill": "#f680ff"
+    },
+    "surface": "#323232"
+  }
+}

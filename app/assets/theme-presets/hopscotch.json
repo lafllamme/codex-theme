@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "hopscotch",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1290bf",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#b9b5b8",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#8fc13e",
+      "diffRemoved": "#dd464c",
+      "skill": "#c85e7c"
+    },
+    "surface": "#322931"
+  }
+}

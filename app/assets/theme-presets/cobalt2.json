@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "cobalt2",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1460d2",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#38de21",
+      "diffRemoved": "#ff0000",
+      "skill": "#ff005d"
+    },
+    "surface": "#132738"
+  }
+}

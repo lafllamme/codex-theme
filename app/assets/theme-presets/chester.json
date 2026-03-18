@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "chester",
+  "variant": "dark",
+  "theme": {
+    "accent": "#288ad6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#16c98d",
+      "diffRemoved": "#fa5e5b",
+      "skill": "#d34590"
+    },
+    "surface": "#2c3643"
+  }
+}

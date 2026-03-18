@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "sakura",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6964ab",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dd7bdc",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#41af1a",
+      "diffRemoved": "#d52370",
+      "skill": "#c71fbf"
+    },
+    "surface": "#18131e"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "material-darker",
+  "variant": "dark",
+  "theme": {
+    "accent": "#82aaff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#eeffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#c3e88d",
+      "diffRemoved": "#ff5370",
+      "skill": "#c792ea"
+    },
+    "surface": "#212121"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "birds-of-paradise",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5a86ad",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e0dbb7",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#6ba18a",
+      "diffRemoved": "#be2d26",
+      "skill": "#ac80a6"
+    },
+    "surface": "#2a1f1d"
+  }
+}

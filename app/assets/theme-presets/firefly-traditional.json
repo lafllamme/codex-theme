@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "firefly-traditional",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5a63ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f5f5f5",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#33bc26",
+      "diffRemoved": "#c23720",
+      "skill": "#d53ad2"
+    },
+    "surface": "#000000"
+  }
+}

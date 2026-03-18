@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "dark-pastel",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5555ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#55ff55",
+      "diffRemoved": "#ff5555",
+      "skill": "#ff55ff"
+    },
+    "surface": "#000000"
+  }
+}

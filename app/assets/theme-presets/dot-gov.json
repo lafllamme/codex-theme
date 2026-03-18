@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "dot-gov",
+  "variant": "dark",
+  "theme": {
+    "accent": "#17b2e0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ebebeb",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#3d9751",
+      "diffRemoved": "#bf091d",
+      "skill": "#7830b0"
+    },
+    "surface": "#262c35"
+  }
+}

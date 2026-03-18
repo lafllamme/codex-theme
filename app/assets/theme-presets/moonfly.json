@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "moonfly",
+  "variant": "dark",
+  "theme": {
+    "accent": "#80a0ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#bdbdbd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#8cc85f",
+      "diffRemoved": "#ff5454",
+      "skill": "#cf87e8"
+    },
+    "surface": "#080808"
+  }
+}

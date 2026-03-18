@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "spiderman",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2c3fff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e3e3e3",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#e22928",
+      "diffRemoved": "#e60813",
+      "skill": "#2435db"
+    },
+    "surface": "#1b1d1e"
+  }
+}

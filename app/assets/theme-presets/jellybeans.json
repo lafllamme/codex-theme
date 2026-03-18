@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "jellybeans",
+  "variant": "dark",
+  "theme": {
+    "accent": "#97bedc",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dedede",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#94b979",
+      "diffRemoved": "#e27373",
+      "skill": "#e1c0fa"
+    },
+    "surface": "#121212"
+  }
+}

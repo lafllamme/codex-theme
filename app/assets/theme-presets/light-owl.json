@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "light-owl",
+  "variant": "light",
+  "theme": {
+    "accent": "#288ed7",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#403f53",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#08916a",
+      "diffRemoved": "#de3d3b",
+      "skill": "#d6438a"
+    },
+    "surface": "#fbfbfb"
+  }
+}

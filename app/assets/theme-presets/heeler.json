@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "heeler",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6da3ec",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#fdfdfd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#c1d041",
+      "diffRemoved": "#d3573b",
+      "skill": "#fd9bc1"
+    },
+    "surface": "#211f44"
+  }
+}

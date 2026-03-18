@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "iterm2-tango-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#427ab3",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#000000",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5ea702",
+      "diffRemoved": "#d81e00",
+      "skill": "#89658e"
+    },
+    "surface": "#ffffff"
+  }
+}

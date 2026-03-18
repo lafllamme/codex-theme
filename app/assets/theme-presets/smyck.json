@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "smyck",
+  "variant": "dark",
+  "theme": {
+    "accent": "#62a3c4",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f7f7f7",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7da900",
+      "diffRemoved": "#b84131",
+      "skill": "#ba8acc"
+    },
+    "surface": "#1b1b1b"
+  }
+}

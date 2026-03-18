@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "melange-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#7892bd",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#54433a",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#6e9b72",
+      "diffRemoved": "#c77b8b",
+      "skill": "#be79bb"
+    },
+    "surface": "#f1f1f1"
+  }
+}

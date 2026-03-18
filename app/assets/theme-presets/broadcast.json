@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "broadcast",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6d9cbe",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e6e1dc",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#519f50",
+      "diffRemoved": "#da4939",
+      "skill": "#d0d0ff"
+    },
+    "surface": "#2b2b2b"
+  }
+}

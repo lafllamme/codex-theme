@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "ir-black",
+  "variant": "dark",
+  "theme": {
+    "accent": "#96cafe",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f1f1f1",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#a8ff60",
+      "diffRemoved": "#fa6c60",
+      "skill": "#fa73fd"
+    },
+    "surface": "#000000"
+  }
+}

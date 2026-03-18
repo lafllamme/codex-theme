@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "wryan",
+  "variant": "dark",
+  "theme": {
+    "accent": "#395573",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#999993",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#287373",
+      "diffRemoved": "#8c4665",
+      "skill": "#5e468c"
+    },
+    "surface": "#101010"
+  }
+}

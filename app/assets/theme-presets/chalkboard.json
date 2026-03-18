@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "chalkboard",
+  "variant": "dark",
+  "theme": {
+    "accent": "#7372c3",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d9e6f2",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#72c373",
+      "diffRemoved": "#c37372",
+      "skill": "#c372c2"
+    },
+    "surface": "#29262f"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "zenburned",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6099c0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f0e4cf",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#819b69",
+      "diffRemoved": "#e3716e",
+      "skill": "#b279a7"
+    },
+    "surface": "#404040"
+  }
+}

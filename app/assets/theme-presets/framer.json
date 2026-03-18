@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "framer",
+  "variant": "dark",
+  "theme": {
+    "accent": "#00aaff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#777777",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#98ec65",
+      "diffRemoved": "#ff5555",
+      "skill": "#aa88ff"
+    },
+    "surface": "#111111"
+  }
+}

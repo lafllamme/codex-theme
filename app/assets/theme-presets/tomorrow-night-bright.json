@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "tomorrow-night-bright",
+  "variant": "dark",
+  "theme": {
+    "accent": "#7aa6da",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#eaeaea",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#b9ca4a",
+      "diffRemoved": "#d54e53",
+      "skill": "#c397d8"
+    },
+    "surface": "#000000"
+  }
+}

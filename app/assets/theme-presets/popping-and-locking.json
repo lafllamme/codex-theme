@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "popping-and-locking",
+  "variant": "dark",
+  "theme": {
+    "accent": "#458588",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ebdbb2",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#98971a",
+      "diffRemoved": "#cc241d",
+      "skill": "#b16286"
+    },
+    "surface": "#181921"
+  }
+}

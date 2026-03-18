@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "tango-adapted",
+  "variant": "light",
+  "theme": {
+    "accent": "#00a2ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#000000",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#59d600",
+      "diffRemoved": "#ff0000",
+      "skill": "#c17ecc"
+    },
+    "surface": "#ffffff"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "retro",
+  "variant": "dark",
+  "theme": {
+    "accent": "#13a10e",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#13a10e",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#13a10e",
+      "diffRemoved": "#13a10e",
+      "skill": "#13a10e"
+    },
+    "surface": "#000000"
+  }
+}

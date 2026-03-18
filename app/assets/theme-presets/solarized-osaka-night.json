@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "solarized-osaka-night",
+  "variant": "dark",
+  "theme": {
+    "accent": "#82a1f1",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c2caf1",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#a8cd76",
+      "diffRemoved": "#e77d8f",
+      "skill": "#b69bf1"
+    },
+    "surface": "#1a1b25"
+  }
+}

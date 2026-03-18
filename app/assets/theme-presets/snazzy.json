@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "snazzy",
+  "variant": "dark",
+  "theme": {
+    "accent": "#49baff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ebece6",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#50fb7c",
+      "diffRemoved": "#fc4346",
+      "skill": "#fc4cb4"
+    },
+    "surface": "#1e1f29"
+  }
+}

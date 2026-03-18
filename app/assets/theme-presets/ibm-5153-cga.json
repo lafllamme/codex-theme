@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "ibm-5153-cga",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1b1bd0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#cecece",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#1bd01b",
+      "diffRemoved": "#d03333",
+      "skill": "#d01bd0"
+    },
+    "surface": "#141414"
+  }
+}

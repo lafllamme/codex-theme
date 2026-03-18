@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "banana-blueberry",
+  "variant": "dark",
+  "theme": {
+    "accent": "#22e8df",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#cccccc",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00bd9c",
+      "diffRemoved": "#ff6b7f",
+      "skill": "#dc396a"
+    },
+    "surface": "#191323"
+  }
+}

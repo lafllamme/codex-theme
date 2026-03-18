@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "adwaita-dark",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1e78e4",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#2ec27e",
+      "diffRemoved": "#c01c28",
+      "skill": "#9841bb"
+    },
+    "surface": "#1d1d20"
+  }
+}

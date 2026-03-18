@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "terafox",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5a93aa",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e6eaea",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7aa4a1",
+      "diffRemoved": "#e85c51",
+      "skill": "#ad5c7c"
+    },
+    "surface": "#152528"
+  }
+}

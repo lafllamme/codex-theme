@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "builtin-tango-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#3465a4",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#000000",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#4e9a06",
+      "diffRemoved": "#cc0000",
+      "skill": "#75507b"
+    },
+    "surface": "#ffffff"
+  }
+}

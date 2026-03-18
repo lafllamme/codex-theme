@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "adventure",
+  "variant": "dark",
+  "theme": {
+    "accent": "#417ab3",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#feffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5da602",
+      "diffRemoved": "#d84a33",
+      "skill": "#e5c499"
+    },
+    "surface": "#040404"
+  }
+}

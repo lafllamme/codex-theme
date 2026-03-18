@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "espresso",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6c99bb",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#a5c261",
+      "diffRemoved": "#d25252",
+      "skill": "#d197d9"
+    },
+    "surface": "#323232"
+  }
+}

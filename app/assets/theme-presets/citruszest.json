@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "citruszest",
+  "variant": "dark",
+  "theme": {
+    "accent": "#00bfff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#bfbfbf",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00cc7a",
+      "diffRemoved": "#ff5454",
+      "skill": "#ff90fe"
+    },
+    "surface": "#121212"
+  }
+}

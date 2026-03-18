@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "vague",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6e94b2",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#cdcdcd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7fa563",
+      "diffRemoved": "#d8647e",
+      "skill": "#bb9dbd"
+    },
+    "surface": "#141415"
+  }
+}

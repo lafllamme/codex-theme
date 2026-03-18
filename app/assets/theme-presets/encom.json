@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "encom",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0081ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#00a595",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#008b00",
+      "diffRemoved": "#9f0000",
+      "skill": "#bc00ca"
+    },
+    "surface": "#000000"
+  }
+}

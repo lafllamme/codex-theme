@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "galaxy",
+  "variant": "dark",
+  "theme": {
+    "accent": "#589df6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#21b089",
+      "diffRemoved": "#f9555f",
+      "skill": "#944d95"
+    },
+    "surface": "#1d2837"
+  }
+}

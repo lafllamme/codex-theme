@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "brogrammer",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2a84d2",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d6dbe5",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#2dc55e",
+      "diffRemoved": "#f81118",
+      "skill": "#4e5ab7"
+    },
+    "surface": "#131313"
+  }
+}

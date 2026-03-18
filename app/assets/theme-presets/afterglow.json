@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "afterglow",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6c99bb",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d0d0d0",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7e8e50",
+      "diffRemoved": "#ac4142",
+      "skill": "#9f4e85"
+    },
+    "surface": "#212121"
+  }
+}

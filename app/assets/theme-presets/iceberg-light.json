@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "iceberg-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#2d539e",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#33374c",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#668e3d",
+      "diffRemoved": "#cc517a",
+      "skill": "#7759b4"
+    },
+    "surface": "#e8e9ec"
+  }
+}

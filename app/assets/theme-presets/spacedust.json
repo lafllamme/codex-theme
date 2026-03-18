@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "spacedust",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0f548b",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ecf0c1",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5cab96",
+      "diffRemoved": "#e35b00",
+      "skill": "#e35b00"
+    },
+    "surface": "#0a1e24"
+  }
+}

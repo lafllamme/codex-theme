@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "kitty-low-contrast",
+  "variant": "dark",
+  "theme": {
+    "accent": "#0d73cc",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#19cb00",
+      "diffRemoved": "#cc0403",
+      "skill": "#cb1ed1"
+    },
+    "surface": "#333333"
+  }
+}

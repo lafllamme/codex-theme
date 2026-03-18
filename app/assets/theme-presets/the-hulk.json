@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "the-hulk",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2525f5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#b5b5b5",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#13ce30",
+      "diffRemoved": "#269d1b",
+      "skill": "#641f74"
+    },
+    "surface": "#1b1d1e"
+  }
+}

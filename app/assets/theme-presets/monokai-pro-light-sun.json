@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "monokai-pro-light-sun",
+  "variant": "light",
+  "theme": {
+    "accent": "#d4572b",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#2c232e",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#218871",
+      "diffRemoved": "#ce4770",
+      "skill": "#6851a2"
+    },
+    "surface": "#f8efe7"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "flat",
+  "variant": "dark",
+  "theme": {
+    "accent": "#3167ac",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#2cc55d",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#32a548",
+      "diffRemoved": "#a82320",
+      "skill": "#781aa0"
+    },
+    "surface": "#002240"
+  }
+}

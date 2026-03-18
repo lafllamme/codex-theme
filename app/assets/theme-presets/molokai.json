@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "molokai",
+  "variant": "dark",
+  "theme": {
+    "accent": "#1080d0",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#bbbbbb",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#98e123",
+      "diffRemoved": "#fa2573",
+      "skill": "#8700ff"
+    },
+    "surface": "#121212"
+  }
+}

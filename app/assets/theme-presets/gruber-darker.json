@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "gruber-darker",
+  "variant": "dark",
+  "theme": {
+    "accent": "#96a6c8",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e4e4e4",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#73d936",
+      "diffRemoved": "#f43841",
+      "skill": "#9e95c7"
+    },
+    "surface": "#181818"
+  }
+}

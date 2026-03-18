@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "hot-dog-stand-mustard",
+  "variant": "light",
+  "theme": {
+    "accent": "#000000",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#000000",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#ea3323",
+      "diffRemoved": "#ea3323",
+      "skill": "#ea3323"
+    },
+    "surface": "#ffff54"
+  }
+}

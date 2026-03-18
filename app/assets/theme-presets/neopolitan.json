@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "neopolitan",
+  "variant": "dark",
+  "theme": {
+    "accent": "#253b76",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#61ce3c",
+      "diffRemoved": "#800000",
+      "skill": "#ff0080"
+    },
+    "surface": "#271f19"
+  }
+}

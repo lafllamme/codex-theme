@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "seoulbones-dark",
+  "variant": "dark",
+  "theme": {
+    "accent": "#97bdde",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dddddd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#98bd99",
+      "diffRemoved": "#e388a3",
+      "skill": "#a5a6c5"
+    },
+    "surface": "#4b4b4b"
+  }
+}

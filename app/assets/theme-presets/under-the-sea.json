@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "under-the-sea",
+  "variant": "dark",
+  "theme": {
+    "accent": "#459a86",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffffff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#00a941",
+      "diffRemoved": "#b2302d",
+      "skill": "#00599d"
+    },
+    "surface": "#011116"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "cobalt-next-minimal",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5a9bcf",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d8dee9",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#99c794",
+      "diffRemoved": "#ed6f7d",
+      "skill": "#c5a5c5"
+    },
+    "surface": "#0f1c23"
+  }
+}

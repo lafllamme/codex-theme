@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "nord-wave",
+  "variant": "dark",
+  "theme": {
+    "accent": "#81a1c1",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d8dee9",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#a3be8c",
+      "diffRemoved": "#bf616a",
+      "skill": "#b48ead"
+    },
+    "surface": "#212121"
+  }
+}

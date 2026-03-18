@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "argonaut",
+  "variant": "dark",
+  "theme": {
+    "accent": "#008df8",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#fffaf4",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#8ce10b",
+      "diffRemoved": "#ff000f",
+      "skill": "#6d43a6"
+    },
+    "surface": "#0e1019"
+  }
+}

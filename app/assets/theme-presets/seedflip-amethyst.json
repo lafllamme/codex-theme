@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "seedflip-amethyst",
+  "variant": "light",
+  "theme": {
+    "accent": "#0f58bd",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#1a0a2e",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#0fbd49",
+      "diffRemoved": "#bd0f0f",
+      "skill": "#bd0fbd"
+    },
+    "surface": "#f8f7f6"
+  }
+}

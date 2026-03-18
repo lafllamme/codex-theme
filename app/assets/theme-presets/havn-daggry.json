@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "havn-daggry",
+  "variant": "light",
+  "theme": {
+    "accent": "#40567a",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#3e4a77",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5c705b",
+      "diffRemoved": "#8f564b",
+      "skill": "#775d93"
+    },
+    "surface": "#f8f9fb"
+  }
+}

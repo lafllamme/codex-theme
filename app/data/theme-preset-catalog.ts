@@ -1,33 +1,8 @@
 import type { CodexThemePayload } from '~/types/codex-theme'
 
-/** Stable order for the preset strip (matches Codex-style names). */
-const ORDER = [
-  'absolutely',
-  'ayu',
-  'catppuccin',
-  'codex',
-  'dracula',
-  'everforest',
-  'github',
-  'gruvbox',
-  'linear',
-  'lobster',
-  'material',
-  'matrix',
-  'monokai',
-  'night-owl',
-  'nord',
-  'notion',
-  'one',
-  'oscurange',
-  'rose-pine',
-  'sentry',
-  'solarized',
-  'temple',
-  'tokyo-night',
-  'vscode-plus',
-] as const
-
+/**
+ * Special labels for themes that need custom formatting
+ */
 const LABELS: Record<string, string> = {
   'night-owl': 'Night Owl',
   'rose-pine': 'Rose Pine',
@@ -36,9 +11,16 @@ const LABELS: Record<string, string> = {
   'catppuccin': 'Catppuccin',
   'gruvbox': 'Gruvbox',
   'oscurange': 'Oscurange',
+  'c64': 'C64',
+  '3024-day': '3024 Day',
+  '3024-night': '3024 Night',
+  'vs-code': 'VS Code',
 }
 
-function labelForId(id: string) {
+/**
+ * Convert kebab-case ID to Title Case label
+ */
+function labelForId(id: string): string {
   if (LABELS[id])
     return LABELS[id]
   return id
@@ -47,15 +29,13 @@ function labelForId(id: string) {
     .join(' ')
 }
 
+/**
+ * Load all theme presets from the assets folder
+ */
 const modules = import.meta.glob('../assets/theme-presets/*.json', {
   eager: true,
   import: 'default',
 }) as Record<string, CodexThemePayload>
-
-function payloadForId(id: string): CodexThemePayload | null {
-  const hit = Object.entries(modules).find(([path]) => path.endsWith(`/${id}.json`))
-  return hit ? structuredClone(hit[1]) : null
-}
 
 export interface ThemePresetEntry {
   id: string
@@ -63,11 +43,16 @@ export interface ThemePresetEntry {
   payload: CodexThemePayload
 }
 
-export const themePresetEntries: ThemePresetEntry[] = ORDER
-  .map((id) => {
-    const payload = payloadForId(id)
-    if (!payload)
-      return null
-    return { id, label: labelForId(id), payload }
+/**
+ * All available theme presets, sorted alphabetically by label
+ */
+export const themePresetEntries: ThemePresetEntry[] = Object.entries(modules)
+  .map(([path, payload]) => {
+    const id = path.match(/([^/]+)\.json$/)?.[1] ?? ''
+    return {
+      id,
+      label: labelForId(id),
+      payload: structuredClone(payload),
+    }
   })
-  .filter((e): e is ThemePresetEntry => e !== null)
+  .sort((a, b) => a.label.localeCompare(b.label))

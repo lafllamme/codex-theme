@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "neutron",
+  "variant": "dark",
+  "theme": {
+    "accent": "#6a7c93",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e6e8ef",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#5ab977",
+      "diffRemoved": "#b54036",
+      "skill": "#a4799d"
+    },
+    "surface": "#1c1e22"
+  }
+}

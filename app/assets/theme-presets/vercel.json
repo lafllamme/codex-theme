@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "vercel",
+  "variant": "dark",
+  "theme": {
+    "accent": "#006aff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#fafafa",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#29a948",
+      "diffRemoved": "#fc0036",
+      "skill": "#f32882"
+    },
+    "surface": "#101010"
+  }
+}

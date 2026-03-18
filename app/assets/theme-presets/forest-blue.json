@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "forest-blue",
+  "variant": "dark",
+  "theme": {
+    "accent": "#8ed0ce",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e2d8cd",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#92d3a2",
+      "diffRemoved": "#f8818e",
+      "skill": "#5e468c"
+    },
+    "surface": "#051519"
+  }
+}

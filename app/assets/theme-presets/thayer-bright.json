@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "thayer-bright",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2757d6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f8f8f8",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#4df840",
+      "diffRemoved": "#f92672",
+      "skill": "#8c54fe"
+    },
+    "surface": "#1b1d1e"
+  }
+}

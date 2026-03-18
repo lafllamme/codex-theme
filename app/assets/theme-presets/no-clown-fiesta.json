@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "no-clown-fiesta",
+  "variant": "dark",
+  "theme": {
+    "accent": "#bad7ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e0e1e4",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#90a959",
+      "diffRemoved": "#b46958",
+      "skill": "#aa759f"
+    },
+    "surface": "#101010"
+  }
+}

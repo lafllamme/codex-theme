@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "tearout",
+  "variant": "dark",
+  "theme": {
+    "accent": "#b5955e",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#f4d2ae",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#97976d",
+      "diffRemoved": "#cc967b",
+      "skill": "#c9a554"
+    },
+    "surface": "#34392d"
+  }
+}

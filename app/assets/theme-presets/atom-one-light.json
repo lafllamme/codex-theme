@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "atom-one-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#2f5af3",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#2a2c33",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#3f953a",
+      "diffRemoved": "#de3e35",
+      "skill": "#950095"
+    },
+    "surface": "#f9f9f9"
+  }
+}

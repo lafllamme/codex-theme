@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "pierre-light",
+  "variant": "light",
+  "theme": {
+    "accent": "#216cab",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#070707",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#1d8138",
+      "diffRemoved": "#d52c36",
+      "skill": "#a631be"
+    },
+    "surface": "#ffffff"
+  }
+}

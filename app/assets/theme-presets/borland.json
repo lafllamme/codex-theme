@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "borland",
+  "variant": "dark",
+  "theme": {
+    "accent": "#96cbfe",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ffff4e",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#a8ff60",
+      "diffRemoved": "#ff6c60",
+      "skill": "#ff73fd"
+    },
+    "surface": "#0000a4"
+  }
+}

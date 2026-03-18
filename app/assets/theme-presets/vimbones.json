@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "vimbones",
+  "variant": "light",
+  "theme": {
+    "accent": "#286486",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#353535",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#4f6c31",
+      "diffRemoved": "#a8334c",
+      "skill": "#88507d"
+    },
+    "surface": "#f0f0ca"
+  }
+}

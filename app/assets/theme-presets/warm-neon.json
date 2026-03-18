@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "warm-neon",
+  "variant": "dark",
+  "theme": {
+    "accent": "#4261c5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#afdab6",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#39b13a",
+      "diffRemoved": "#e24346",
+      "skill": "#f920fb"
+    },
+    "surface": "#404040"
+  }
+}

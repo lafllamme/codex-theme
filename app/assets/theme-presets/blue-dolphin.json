@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "blue-dolphin",
+  "variant": "dark",
+  "theme": {
+    "accent": "#82aaff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c5f2ff",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#b4e88d",
+      "diffRemoved": "#ff8288",
+      "skill": "#e9c1ff"
+    },
+    "surface": "#006984"
+  }
+}

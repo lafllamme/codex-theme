@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "red-planet",
+  "variant": "dark",
+  "theme": {
+    "accent": "#69819e",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c2b790",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#728271",
+      "diffRemoved": "#8c3432",
+      "skill": "#896492"
+    },
+    "surface": "#222222"
+  }
+}

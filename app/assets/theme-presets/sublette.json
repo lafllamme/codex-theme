@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "sublette",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5588ff",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#ccced0",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#55ee77",
+      "diffRemoved": "#ee5577",
+      "skill": "#ff77cc"
+    },
+    "surface": "#202535"
+  }
+}

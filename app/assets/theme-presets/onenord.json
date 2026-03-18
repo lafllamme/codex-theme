@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "onenord",
+  "variant": "dark",
+  "theme": {
+    "accent": "#81a1c1",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#e5e9f0",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#9ec183",
+      "diffRemoved": "#e06c75",
+      "skill": "#b988b0"
+    },
+    "surface": "#2e3440"
+  }
+}

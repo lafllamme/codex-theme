@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "front-end-delight",
+  "variant": "dark",
+  "theme": {
+    "accent": "#2c70b7",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#adadad",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#565747",
+      "diffRemoved": "#f8511b",
+      "skill": "#f02e4f"
+    },
+    "surface": "#1b1c1d"
+  }
+}

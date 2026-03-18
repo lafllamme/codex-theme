@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "spring",
+  "variant": "light",
+  "theme": {
+    "accent": "#1dd3ee",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#4d4d4c",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#1f8c3b",
+      "diffRemoved": "#ff4d83",
+      "skill": "#8959a8"
+    },
+    "surface": "#ffffff"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "spacegray-eighties-dull",
+  "variant": "dark",
+  "theme": {
+    "accent": "#7c8fa5",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#c9c6bc",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#92b477",
+      "diffRemoved": "#b24a56",
+      "skill": "#a5789e"
+    },
+    "surface": "#222222"
+  }
+}

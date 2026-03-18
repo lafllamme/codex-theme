@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "wombat",
+  "variant": "dark",
+  "theme": {
+    "accent": "#5da9f6",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#dedacf",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#b1e969",
+      "diffRemoved": "#ff615a",
+      "skill": "#e86aff"
+    },
+    "surface": "#171717"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "codeThemeId": "blazer",
+  "variant": "dark",
+  "theme": {
+    "accent": "#7a7ab8",
+    "contrast": 60,
+    "fonts": {
+      "code": null,
+      "ui": null
+    },
+    "ink": "#d9e6f2",
+    "opaqueWindows": true,
+    "semanticColors": {
+      "diffAdded": "#7ab87a",
+      "diffRemoved": "#b87a7a",
+      "skill": "#b87ab8"
+    },
+    "surface": "#0d1926"
+  }
+}
