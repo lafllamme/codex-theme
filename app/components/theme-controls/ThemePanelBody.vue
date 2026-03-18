@@ -223,25 +223,29 @@ const hexInputValue = computed(() => {
       <div class="flex flex-col gap-5">
         <!-- Font inputs -->
         <div>
-          <div class="flex w-full mb-1.5 px-1">
-            <span class="flex-1 text-[13px] text-pureBlack/50">UI font</span>
-            <span class="flex-1 text-[13px] text-pureBlack/50 pl-3">Code font</span>
+          <div class="grid w-full grid-cols-2 gap-0 mb-1.5">
+            <span class="px-1 text-[13px] text-pureBlack/50">UI font</span>
+            <span class="px-1 text-[13px] text-pureBlack/50">Code font</span>
           </div>
-          <div class="flex w-full rounded-xl border border-pureBlack/10 bg-pureWhite shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-pureBlack/10 transition-shadow">
-            <input
-              class="flex-1 p-3 border-r border-pureBlack/8 bg-transparent outline-none text-[15px] text-pureBlack/90 placeholder-pureBlack/40"
-              :value="payload.theme.fonts.ui || ''"
-              placeholder="Geist"
-              type="text"
-              @input="emit('setUiFont', ($event.target as HTMLInputElement).value)"
-            >
-            <input
-              class="flex-1 p-3 bg-pureBlack/3 outline-none text-[15px] text-pureBlack/90 placeholder-pureBlack/40"
-              :value="payload.theme.fonts.code || ''"
-              placeholder="Geist Mono"
-              type="text"
-              @input="emit('setCodeFont', ($event.target as HTMLInputElement).value)"
-            >
+          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
+            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <input
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+                :value="payload.theme.fonts.ui || ''"
+                placeholder="Geist"
+                type="text"
+                @input="emit('setUiFont', ($event.target as HTMLInputElement).value)"
+              >
+            </div>
+            <div class="flex-1 min-w-0 border-l border-[#d5d5d5] bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <input
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+                :value="payload.theme.fonts.code || ''"
+                placeholder="Geist Mono"
+                type="text"
+                @input="emit('setCodeFont', ($event.target as HTMLInputElement).value)"
+              >
+            </div>
           </div>
         </div>
 
@@ -290,27 +294,31 @@ const hexInputValue = computed(() => {
 
         <!-- Size inputs -->
         <div>
-          <div class="flex w-full mb-1.5 px-1">
-            <span class="flex-1 text-[13px] text-pureBlack/50">UI size (px)</span>
-            <span class="flex-1 text-[13px] text-pureBlack/50 pl-3">Code size (px)</span>
+          <div class="grid w-full grid-cols-2 gap-0 mb-1.5">
+            <span class="px-1 text-[13px] text-pureBlack/50">UI size (px)</span>
+            <span class="px-1 text-[13px] text-pureBlack/50">Code size (px)</span>
           </div>
-          <div class="flex w-full rounded-xl border border-pureBlack/10 bg-pureWhite shadow-sm overflow-hidden focus-within:ring-1 focus-within:ring-pureBlack/10 transition-shadow">
-            <input
-              class="flex-1 p-3 border-r border-pureBlack/8 bg-transparent outline-none text-[15px] text-pureBlack/90"
-              :value="uiFontSize"
-              type="number"
-              min="12"
-              max="22"
-              @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
-            >
-            <input
-              class="flex-1 p-3 bg-pureBlack/3 outline-none text-[15px] text-pureBlack/90"
-              :value="codeFontSize"
-              type="number"
-              min="12"
-              max="24"
-              @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
-            >
+          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
+            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <input
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+                :value="uiFontSize"
+                type="number"
+                min="12"
+                max="22"
+                @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
+              >
+            </div>
+            <div class="flex-1 min-w-0 border-l border-[#d5d5d5] bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <input
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+                :value="codeFontSize"
+                type="number"
+                min="12"
+                max="24"
+                @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
+              >
+            </div>
           </div>
         </div>
       </div>
