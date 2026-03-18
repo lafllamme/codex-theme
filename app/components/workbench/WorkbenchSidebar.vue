@@ -158,6 +158,11 @@ function toggleRepo(repo: string) {
   display: none;
 }
 
+/* Buttons do not inherit font-family; force theme UI stack */
+.sidebar :where(button) {
+  font-family: var(--font-ui, 'Geist', ui-sans-serif, system-ui, sans-serif);
+}
+
 .sidebar {
   gap: 7px;
   transition:
