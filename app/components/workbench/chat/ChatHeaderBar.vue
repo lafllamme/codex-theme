@@ -18,33 +18,27 @@ const emit = defineEmits<{
   togglePip: []
 }>()
 
-interface EditorOption {
-  label: string
-  icon: string
-}
-
 interface CommitOption {
   label: string
   icon: string
   disabled?: boolean
 }
 
-const isEditorMenuOpen = ref(false)
 const isCommitMenuOpen = ref(false)
-const editorMenuRef = ref<HTMLElement | null>(null)
 const commitMenuRef = ref<HTMLElement | null>(null)
 
-const editorOptions: EditorOption[] = [
-  { label: 'Cursor', icon: '🧊' },
-  { label: 'Zed', icon: '🧩' },
-  { label: 'Windsurf', icon: '🌊' },
-  { label: 'Finder', icon: '🗂️' },
-  { label: 'Terminal', icon: '⌨️' },
-  { label: 'Ghostty', icon: '👻' },
-  { label: 'Xcode', icon: '🛠️' },
-  { label: 'Android Studio', icon: '🤖' },
-  { label: 'IntelliJ IDEA', icon: '💡' },
+const editorOptions = [
+  { label: 'Cursor', icon: 'simple-icons:cursor' },
+  { label: 'Zed', icon: 'simple-icons:zedindustries' },
+  { label: 'Windsurf', icon: 'simple-icons:windsurf' },
+  { label: 'Finder', icon: 'ph:folder-simple-fill' },
+  { label: 'Terminal', icon: 'simple-icons:gnometerminal' },
+  { label: 'Ghostty', icon: 'simple-icons:ghostty' },
+  { label: 'Xcode', icon: 'simple-icons:xcode' },
+  { label: 'Android Studio', icon: 'simple-icons:androidstudio' },
+  { label: 'IntelliJ IDEA', icon: 'simple-icons:intellijidea' },
 ]
+const selectedEditor = ref(editorOptions[0]?.label ?? 'Cursor')
 
 const commitOptions: CommitOption[] = [
   { label: 'Commit', icon: 'ph:git-commit' },
@@ -53,26 +47,13 @@ const commitOptions: CommitOption[] = [
   { label: 'Create branch', icon: 'ph:git-branch-bold' },
 ]
 
-function toggleEditorMenu() {
-  isEditorMenuOpen.value = !isEditorMenuOpen.value
-  if (isEditorMenuOpen.value)
-    isCommitMenuOpen.value = false
-}
-
 function toggleCommitMenu() {
   isCommitMenuOpen.value = !isCommitMenuOpen.value
-  if (isCommitMenuOpen.value)
-    isEditorMenuOpen.value = false
 }
 
 function closeMenus() {
-  isEditorMenuOpen.value = false
   isCommitMenuOpen.value = false
 }
-
-onClickOutside(editorMenuRef, () => {
-  isEditorMenuOpen.value = false
-})
 
 onClickOutside(commitMenuRef, () => {
   isCommitMenuOpen.value = false
@@ -86,7 +67,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <header
-    class="chat-header-bar h-[34px] grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-1"
+    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[34px] items-center gap-2 px-1"
     :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : 'chat-header-bar--expanded'"
   >
     <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
@@ -108,22 +89,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         <Icon name="ph:play-bold" class="h-[10px] w-[10px]" />
       </button>
 
-      <div ref="editorMenuRef" class="relative">
-        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-1.5 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleEditorMenu">
-          <span class="text-[10px] leading-none">🧩</span>
-          <Icon name="ph:caret-down-bold" class="h-[9px] w-[9px]" />
-        </button>
-        <div v-if="isEditorMenuOpen" class="absolute right-0 top-full z-30 mt-2 w-[410px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-popover-bg)] p-3 shadow-[0_26px_48px_rgba(0,0,0,0.45)] backdrop-blur-[16px]">
-          <ul class="grid gap-0.5">
-            <li v-for="option in editorOptions" :key="option.label">
-              <button class="h-11 w-full flex appearance-none items-center gap-3 rounded-[12px] border-none px-3 text-left text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
-                <span class="h-6 w-6 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-[7px] bg-[var(--wb-input-bg)] text-[12px]">{{ option.icon }}</span>
-                <span class="truncate font-medium">{{ option.label }}</span>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
       <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
         <Icon name="ph:arrows-left-right-bold" class="h-[10px] w-[10px]" />
