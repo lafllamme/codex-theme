@@ -56,17 +56,17 @@ function toggleRepo(repo: string) {
     <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-[color:var(--wb-border-1)] bg-[var(--wb-bg-sidebar)] px-[var(--wb-sidebar-pad-x)] py-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
       <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
         <div class="nav-stack">
-          <button class="nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
             <Icon name="ph:note-pencil" class="nav-row__icon h-[14px] w-[14px]" />
             <span class="sidebar-label truncate">New Thread</span>
           </button>
 
-          <button class="nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
             <Icon name="ph:clock" class="nav-row__icon h-[14px] w-[14px]" />
             <span class="sidebar-label truncate">Automations</span>
           </button>
 
-          <button class="nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
             <Icon name="ph:storefront" class="nav-row__icon h-[14px] w-[14px]" />
             <span class="sidebar-label truncate">Skills</span>
           </button>
@@ -162,6 +162,7 @@ function toggleRepo(repo: string) {
   --wb-sidebar-thread-row-h: 36px;
   --wb-sidebar-footer-h: 34px;
   --wb-sidebar-inner-gap-right: 22px;
+  --wb-sidebar-nav-gap-right: 30px;
   gap: 7px;
   transition:
     border-color 180ms ease,
@@ -218,6 +219,10 @@ function toggleRepo(repo: string) {
 
 .sidebar-lane-item {
   width: calc(100% - var(--wb-sidebar-inner-gap-right));
+}
+
+.sidebar-nav-lane-item {
+  width: calc(100% - var(--wb-sidebar-nav-gap-right));
 }
 
 .repo-items {

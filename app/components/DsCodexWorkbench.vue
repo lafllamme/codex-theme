@@ -321,7 +321,7 @@ function beginSidebarResize(event: MouseEvent) {
 .wb-control-lane {
   position: absolute;
   top: 14px;
-  left: 18px;
+  left: 26px;
   z-index: 48;
   display: inline-flex;
   align-items: center;
