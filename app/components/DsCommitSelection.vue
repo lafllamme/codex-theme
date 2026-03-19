@@ -12,6 +12,9 @@ const props = defineProps<{
   options: CommitOption[]
   menuTitle?: string
 }>()
+const emit = defineEmits<{
+  primaryAction: [key: string]
+}>()
 
 const selectedValue = defineModel<string>({ required: true })
 
@@ -33,6 +36,10 @@ function selectOption(option: CommitOption) {
   isOpen.value = false
 }
 
+function triggerPrimary() {
+  emit('primaryAction', selectedOption.value?.key ?? 'commit')
+}
+
 onClickOutside(rootRef, () => {
   isOpen.value = false
 })
@@ -46,12 +53,15 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 <template>
   <div ref="rootRef" class="relative inline-flex">
     <div class="h-8 inline-flex items-center border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset]">
-      <span class="inline-flex items-center gap-1 px-2">
+      <button
+        class="h-full inline-flex items-center gap-1 rounded-l-[10px] border-none bg-transparent px-2 text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]"
+        @click.stop="triggerPrimary"
+      >
         <Icon :name="selectedOption?.icon || 'ph:git-commit'" class="h-[14px] w-[14px]" />
         <span>{{ selectedOption?.label || 'Commit' }}</span>
-      </span>
+      </button>
       <button
-        class="h-full w-7 inline-flex items-center justify-center border-l border-l-[color:var(--wb-border-2)] rounded-r-[11px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]"
+        class="mr-1 h-[22px] w-[22px] inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         aria-label="Open commit actions"
         @click.stop="toggleOpen"
       >
@@ -61,7 +71,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
     <div
       v-if="isOpen"
-      class="absolute right-0 top-full z-40 mt-2 w-[250px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-bubble-bg)] p-2.5 backdrop-blur-[12px]"
+      class="absolute right-0 top-full z-40 mt-2 w-[140px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-bubble-bg)] p-2.5 backdrop-blur-[12px]"
     >
       <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold">
         {{ menuTitle || 'Git Actions' }}

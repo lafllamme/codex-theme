@@ -15,6 +15,7 @@ const emit = defineEmits<{
   toggleDiff: []
   togglePip: []
   openWorktree: []
+  openGitAction: [action: 'commit' | 'push']
 }>()
 
 interface CommitAction {
@@ -64,13 +65,18 @@ const commitActionMap: Record<string, CommitAction[]> = {
   ],
 }
 
-const selectedCommitAction = ref('push')
+const selectedCommitAction = ref('commit')
 
 const commitOptions = computed(() => {
   return commitActionMap[selectedCommitAction.value] ?? commitActionMap.commit
 })
 
 const commitMenuTitle = 'Git Actions'
+
+function handleCommitPrimaryAction(actionKey: string) {
+  if (actionKey === 'commit' || actionKey === 'push')
+    emit('openGitAction', actionKey)
+}
 </script>
 
 <template>
@@ -108,6 +114,7 @@ const commitMenuTitle = 'Git Actions'
         v-model="selectedCommitAction"
         :options="commitOptions"
         :menu-title="commitMenuTitle"
+        @primary-action="handleCommitPrimaryAction"
       />
 
       <span class="mx-[3px] h-[18px] w-px bg-[var(--wb-divider)]" />

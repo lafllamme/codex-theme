@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
 import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
@@ -39,6 +40,8 @@ const activeThreadId = ref('thread-1')
 const runEnabled = ref(false)
 const isWorktreeModalOpen = ref(false)
 const worktreeBranch = ref('codex/add-appearance-settings-view')
+const isGitActionModalOpen = ref(false)
+const gitActionType = ref<'commit' | 'push'>('commit')
 const sidebarWidth = ref(296)
 const minSidebarWidth = 260
 const maxSidebarWidth = 420
@@ -156,6 +159,11 @@ function beginSidebarResize(event: MouseEvent) {
   window.addEventListener('mousemove', onMouseMove)
   window.addEventListener('mouseup', onMouseUp)
 }
+
+function openGitActionModal(action: 'commit' | 'push') {
+  gitActionType.value = action
+  isGitActionModalOpen.value = true
+}
 </script>
 
 <template>
@@ -241,6 +249,7 @@ function beginSidebarResize(event: MouseEvent) {
                 @toggle-terminal="toggleTerminal"
                 @toggle-diff="toggleDiff"
                 @toggle-pip="togglePip"
+                @open-git-action="openGitActionModal"
               />
             </div>
             <div
@@ -267,6 +276,10 @@ function beginSidebarResize(event: MouseEvent) {
       <WorktreeModal
         v-model:open="isWorktreeModalOpen"
         v-model:branch="worktreeBranch"
+      />
+      <GitActionModal
+        v-model:open="isGitActionModalOpen"
+        v-model:action="gitActionType"
       />
     </section>
   </section>

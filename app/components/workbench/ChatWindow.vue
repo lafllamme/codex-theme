@@ -27,6 +27,7 @@ const emit = defineEmits<{
   toggleTerminal: []
   toggleDiff: []
   togglePip: []
+  openGitAction: [action: 'commit' | 'push']
 }>()
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
@@ -52,6 +53,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
         @toggle-diff="emit('toggleDiff')"
         @toggle-pip="emit('togglePip')"
         @open-worktree="isWorktreeModalOpen = true"
+        @open-git-action="emit('openGitAction', $event)"
       />
     </div>
 
