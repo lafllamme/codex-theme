@@ -51,7 +51,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         <section
           v-if="isOpen"
           ref="panelRef"
-          class="pointer-events-auto relative max-w-[560px] w-full border border-[color:var(--wb-border-2)] rounded-[28px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-7 text-[color:var(--wb-text-primary)] shadow-[0_24px_54px_rgba(0,0,0,0.34)]"
+          class="pointer-events-auto relative box-border max-w-[460px] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[28px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-7 text-[color:var(--wb-text-primary)]"
         >
           <div class="mb-5 flex items-start justify-between">
             <span class="h-12 w-12 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-[13px] bg-[color-mix(in_srgb,var(--wb-chip-bg)_76%,black_24%)]">
@@ -67,24 +67,26 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
           </div>
 
           <h2 class="mb-3 text-[24px] font-semibold leading-[1.15] tracking-[-0.02em]">
-            In Worktree verschieben
+            Move to Worktree
           </h2>
           <p class="mb-6 max-w-[500px] text-[13px] text-[color:var(--wb-text-muted)] leading-[1.45]">
-            Wähle einen Worktree-Branch-Namen aus. Codex verwendet ihn anstelle des Standard-Branch.
+            Choose a worktree branch name. Codex uses it instead of the default branch.
           </p>
 
           <label class="mb-2 block text-[16px] text-[color:var(--wb-text-primary)] font-semibold leading-none">
-            Worktree-Branch
+            Worktree Branch
           </label>
 
-          <input
-            v-model="branchName"
-            type="text"
-            class="mb-5 h-[48px] w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_74%,black_26%)] px-5 text-[14px] text-[color:var(--wb-text-primary)] font-semibold outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
-          >
+          <div class="max-w-full min-w-0 w-full">
+            <input
+              v-model="branchName"
+              type="text"
+              class="mb-5 box-border h-[48px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[14px] text-[color:var(--wb-text-primary)] font-semibold outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
+            >
+          </div>
 
-          <button class="h-[48px] w-full rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
-            Weiter
+          <button class="box-border h-[48px] max-w-full w-full rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
+            Continue
           </button>
         </section>
       </Transition>
