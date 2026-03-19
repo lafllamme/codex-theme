@@ -84,7 +84,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <header class="h-[34px] flex items-center justify-between gap-1 px-1">
+  <header class="chat-header-bar h-[34px] flex items-center justify-between gap-1 px-1">
     <div class="min-w-0 inline-flex items-center gap-1">
       <strong class="truncate text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-none">{{ title }}</strong>
       <span class="truncate text-[13px] text-[color:var(--wb-text-muted)] leading-none">{{ repo }}</span>

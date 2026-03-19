@@ -156,6 +156,13 @@ function beginSidebarResize(event: MouseEvent) {
       <div class="inline-flex items-center gap-0.5">
         <button
           class="wb-top-control-btn"
+          aria-label="Toggle Sidebar"
+          @click="toggleSidebar"
+        >
+          <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
+        </button>
+        <button
+          class="wb-top-control-btn"
           aria-label="Back"
         >
           <Icon name="ph:arrow-left-bold" class="h-[11px] w-[11px]" />
@@ -167,18 +174,12 @@ function beginSidebarResize(event: MouseEvent) {
           <Icon name="ph:arrow-right-bold" class="h-[11px] w-[11px]" />
         </button>
         <button
+          v-if="isSidebarCollapsed"
           class="wb-top-control-btn"
           aria-label="New Thread"
           @click="startNewThread"
         >
           <Icon name="ph:note-pencil" class="h-[12px] w-[12px]" />
-        </button>
-        <button
-          class="wb-top-control-btn"
-          aria-label="Toggle Sidebar"
-          @click="toggleSidebar"
-        >
-          <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
         </button>
       </div>
     </div>
@@ -201,48 +202,50 @@ function beginSidebarResize(event: MouseEvent) {
         @mousedown="beginSidebarResize"
       />
 
-      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
-        <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
-          <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
-            <ChatWindow
-              v-model:selected-model="selectedModel"
-              v-model:selected-thinking="selectedThinking"
-              v-model:compose-value="composeValue"
-              class="min-h-0 flex-1 transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-              :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
-              title="Open Vue-Bits Dither Sei..."
-              repo="codex-theme"
-              :run-enabled="runEnabled"
-              :is-terminal-open="isTerminalOpen"
-              :is-diff-open="isDiffOpen"
-              :is-pip-enabled="isPipEnabled"
-              :model-options="modelOptions"
-              :thinking-options="thinkingOptions"
-              :messages="activeMessages"
-              @toggle-run="runEnabled = !runEnabled"
-              @toggle-terminal="toggleTerminal"
-              @toggle-diff="toggleDiff"
-              @toggle-pip="togglePip"
-            />
+      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? 'wb-main-area--collapsed' : 'wb-main-area--open'">
+        <div class="wb-main-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
+          <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
+            <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
+              <ChatWindow
+                v-model:selected-model="selectedModel"
+                v-model:selected-thinking="selectedThinking"
+                v-model:compose-value="composeValue"
+                class="min-h-0 flex-1 transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
+                title="Open Vue-Bits Dither Sei..."
+                repo="codex-theme"
+                :run-enabled="runEnabled"
+                :is-terminal-open="isTerminalOpen"
+                :is-diff-open="isDiffOpen"
+                :is-pip-enabled="isPipEnabled"
+                :model-options="modelOptions"
+                :thinking-options="thinkingOptions"
+                :messages="activeMessages"
+                @toggle-run="runEnabled = !runEnabled"
+                @toggle-terminal="toggleTerminal"
+                @toggle-diff="toggleDiff"
+                @toggle-pip="togglePip"
+              />
+            </div>
+            <div
+              class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
+              :class="isDiffOpen ? 'diff-column--open' : ''"
+            >
+              <DiffDrawer
+                class="min-h-0 min-w-0 flex-1"
+                :open="isDiffOpen"
+                :accent="payload.theme.accent"
+                :contrast="payload.theme.contrast"
+              />
+            </div>
           </div>
-          <div
-            class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
-            :class="isDiffOpen ? 'diff-column--open' : ''"
-          >
-            <DiffDrawer
-              class="min-h-0 min-w-0 flex-1"
-              :open="isDiffOpen"
-              :accent="payload.theme.accent"
-              :contrast="payload.theme.contrast"
-            />
-          </div>
-        </div>
 
-        <TerminalDrawer
-          :open="isTerminalOpen"
-          :contrast="payload.theme.contrast"
-          :opaque-windows="payload.theme.opaqueWindows"
-        />
+          <TerminalDrawer
+            :open="isTerminalOpen"
+            :contrast="payload.theme.contrast"
+            :opaque-windows="payload.theme.opaqueWindows"
+          />
+        </div>
       </section>
     </section>
   </section>
@@ -289,6 +292,30 @@ function beginSidebarResize(event: MouseEvent) {
 .wb-main-area {
   position: relative;
   background: var(--wb-bg-panel);
+  transition: padding 260ms var(--wb-sidebar-ease);
+}
+
+.wb-main-area--open {
+  padding: 42px 8px 8px;
+}
+
+.wb-main-area--collapsed {
+  padding: 42px 10px 8px;
+}
+
+.wb-main-frame {
+  max-width: 1680px;
+  margin-inline: auto;
+}
+
+.wb-main-area--collapsed :deep(.chat-header-bar) {
+  padding-left: 124px;
+  transition: padding-left 260ms var(--wb-sidebar-ease);
+}
+
+.wb-main-area--open :deep(.chat-header-bar) {
+  padding-left: 0;
+  transition: padding-left 260ms var(--wb-sidebar-ease);
 }
 
 .wb-control-lane {
@@ -343,6 +370,15 @@ function beginSidebarResize(event: MouseEvent) {
 }
 
 @media (max-width: 1180px) {
+  .wb-main-area--open,
+  .wb-main-area--collapsed {
+    padding: 40px 6px 6px;
+  }
+
+  .wb-main-area--collapsed :deep(.chat-header-bar) {
+    padding-left: 108px;
+  }
+
   .sidebar-column {
     width: 0;
     margin-right: 0;
