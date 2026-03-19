@@ -147,6 +147,41 @@ function beginSidebarResize(event: MouseEvent) {
 
 <template>
   <section class="relative h-full min-h-0 w-full flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
+    <div class="wb-control-lane">
+      <div class="inline-flex items-center gap-[7px]">
+        <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
+        <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
+        <span class="h-3 w-3 rounded-full bg-[#28c840]" />
+      </div>
+      <div class="inline-flex items-center gap-0.5">
+        <button
+          class="wb-top-control-btn"
+          aria-label="Back"
+        >
+          <Icon name="ph:arrow-left-bold" class="h-[11px] w-[11px]" />
+        </button>
+        <button
+          class="wb-top-control-btn"
+          aria-label="Forward"
+        >
+          <Icon name="ph:arrow-right-bold" class="h-[11px] w-[11px]" />
+        </button>
+        <button
+          class="wb-top-control-btn"
+          aria-label="New Thread"
+          @click="startNewThread"
+        >
+          <Icon name="ph:note-pencil" class="h-[12px] w-[12px]" />
+        </button>
+        <button
+          class="wb-top-control-btn"
+          aria-label="Toggle Sidebar"
+          @click="toggleSidebar"
+        >
+          <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
+        </button>
+      </div>
+    </div>
     <section class="absolute inset-0 box-border min-h-0 flex flex-row items-stretch overflow-hidden">
       <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
         <WorkbenchSidebar
@@ -166,7 +201,7 @@ function beginSidebarResize(event: MouseEvent) {
         @mousedown="beginSidebarResize"
       />
 
-      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? '' : '-ml-px'">
+      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
         <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
           <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
             <ChatWindow
@@ -249,6 +284,44 @@ function beginSidebarResize(event: MouseEvent) {
 .sidebar-column--collapsed {
   width: 0;
   margin-right: 0;
+}
+
+.wb-main-area {
+  position: relative;
+  background: var(--wb-bg-panel);
+}
+
+.wb-control-lane {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 48;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.wb-top-control-btn {
+  height: 24px;
+  width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  padding: 0;
+  color: var(--wb-text-faint);
+  outline: none;
+  box-shadow: none;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.wb-top-control-btn:hover {
+  background: var(--wb-hover-bg);
+  color: var(--wb-text-secondary);
 }
 
 .diff-column {
