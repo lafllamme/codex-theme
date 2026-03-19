@@ -86,21 +86,21 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         :class="runEnabled ? 'bg-[var(--wb-hover-bg-strong)] text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleRun')"
       >
-        <Icon name="ph:play-bold" class="h-[12px] w-[12px]" />
+        <Icon name="ph:play-bold" class="h-[14px] w-[14px]" />
       </button>
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-8 inline-flex appearance-none items-center gap-1.5 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
-        <Icon name="ph:arrows-left-right" class="h-[12px] w-[12px]" />
+      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
+        <Icon name="ph:arrows-left-right" class="h-[14px] w-[14px]" />
         Move to Worktree
       </button>
 
       <div ref="commitMenuRef" class="relative">
-        <button class="h-8 inline-flex appearance-none items-center gap-1.5 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
-          <Icon name="ph:git-commit" class="h-[12px] w-[12px]" />
+        <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
+          <Icon name="ph:git-commit" class="h-[14px] w-[14px]" />
           Commit
-          <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px]" />
+          <Icon name="ph:caret-down-bold" class="h-[11px] w-[11px]" />
         </button>
         <div v-if="isCommitMenuOpen" class="absolute right-0 top-full z-30 mt-2 w-[250px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-popover-bg)] p-3 shadow-[0_26px_48px_rgba(0,0,0,0.45)] backdrop-blur-[16px]">
           <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-popover-muted)] font-semibold">
@@ -124,16 +124,16 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         :class="isTerminalOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleTerminal')"
       >
-        <Icon name="ph:terminal-window-bold" class="h-[12px] w-[12px]" />
+        <Icon name="hugeicons:computer-terminal-01" class="h-[14px] w-[14px]" />
       </button>
 
       <button
-        class="h-7 inline-flex appearance-none items-center gap-[3px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="h-7 inline-flex appearance-none items-center gap-[6px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="isDiffOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleDiff')"
       >
-        <Icon name="hugeicons:plus-minus-square-01" class="h-[12px] w-[12px]" />
-        <span class="text-[12px] leading-none font-[var(--font-ui)] tabular-nums">
+        <Icon name="hugeicons:plus-minus-square-01" class="h-[14px] w-[14px]" />
+        <span class="text-[11px] leading-none font-[var(--font-ui)] tabular-nums">
           <span class="text-[color:var(--wb-diff-delta-added)]">+836</span>
           <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">1.068</span>
@@ -144,7 +144,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         @click="emit('togglePip')"
       >
-        <Icon :name="isPipEnabled ? 'ph:arrow-square-out-bold' : 'ph:square-bold'" class="h-[12px] w-[12px]" />
+        <Icon name="hugeicons:copy-01" class="h-[14px] w-[14px]" />
       </button>
     </div>
   </header>
