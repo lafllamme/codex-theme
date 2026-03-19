@@ -73,7 +73,7 @@ function toggleRepo(repo: string) {
         </div>
 
         <div class="min-h-0 flex flex-1 flex-col">
-          <div class="sidebar-section-header sidebar-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[10px] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
+          <div class="sidebar-section-header sidebar-header-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[10px] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
             <span class="sidebar-label">Threads</span>
             <div class="inline-flex items-center gap-2">
               <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
@@ -111,7 +111,7 @@ function toggleRepo(repo: string) {
                 <button
                   v-for="thread in group.items"
                   :key="thread.id"
-                  class="sidebar-lane-item thread-row group relative grid grid-cols-[minmax(0,1fr)_auto_72px] items-center gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[13px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
+                  class="sidebar-lane-item thread-row group relative grid grid-cols-[minmax(0,1fr)_auto_max-content] items-center gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[13px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
                   :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
                   @click="emit('selectThread', thread.id)"
                 >
@@ -163,6 +163,7 @@ function toggleRepo(repo: string) {
   --wb-sidebar-footer-h: 34px;
   --wb-sidebar-inner-gap-right: 22px;
   --wb-sidebar-nav-gap-right: 30px;
+  --wb-sidebar-header-gap-right: 34px;
   gap: 7px;
   transition:
     border-color 180ms ease,
@@ -225,6 +226,10 @@ function toggleRepo(repo: string) {
   width: calc(100% - var(--wb-sidebar-nav-gap-right));
 }
 
+.sidebar-header-lane-item {
+  width: calc(100% - var(--wb-sidebar-header-gap-right));
+}
+
 .repo-items {
   display: flex;
   flex-direction: column;
@@ -268,7 +273,8 @@ function toggleRepo(repo: string) {
 }
 
 .sidebar-section-header {
-  margin-top: 14px;
+  margin-top: 16px;
+  margin-bottom: 8px;
 }
 
 .thread-row__title {
@@ -287,12 +293,14 @@ function toggleRepo(repo: string) {
 }
 
 .thread-row__time {
+  min-width: 72px;
   color: var(--wb-text-muted);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.2;
   text-align: right;
   white-space: nowrap;
+  transform: translateX(7px);
 }
 
 .settings-row {
