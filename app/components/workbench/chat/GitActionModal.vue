@@ -61,7 +61,8 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         <section
           v-if="isOpen"
           ref="panelRef"
-          class="pointer-events-auto relative box-border max-w-[760px] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[28px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-7 text-[color:var(--wb-text-primary)]"
+          class="pointer-events-auto relative box-border w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[28px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-7 text-[color:var(--wb-text-primary)]"
+          :class="action === 'push' ? 'max-w-[560px]' : 'max-w-[560px]'"
         >
           <div class="mb-4 flex items-start justify-between">
             <span class="h-12 w-12 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-[13px] bg-[color-mix(in_srgb,var(--wb-chip-bg)_76%,black_24%)]">
@@ -80,11 +81,11 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
           </h2>
 
           <div class="mb-3 flex items-center justify-between">
-            <div class="inline-flex items-center gap-2 text-[color:var(--wb-text-muted)]">
-              <Icon name="ph:git-branch-bold" class="h-5 w-5" />
-              <span class="text-[16px] font-medium">Branch</span>
-            </div>
-            <span class="text-[18px] text-[color:var(--wb-text-primary)] font-medium">main</span>
+            <span class="text-[16px] text-[color:var(--wb-text-muted)] font-medium">Branch</span>
+            <span class="inline-flex items-center gap-2 text-[18px] text-[color:var(--wb-text-primary)] font-medium">
+              <Icon name="ph:git-branch-bold" class="h-5 w-5 text-[color:var(--wb-text-muted)]" />
+              main
+            </span>
           </div>
 
           <template v-if="action === 'push'">
@@ -118,7 +119,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
               v-model="commitMessage"
               type="text"
               placeholder="Leave empty to auto-generate a commit message"
-              class="mb-6 box-border h-[52px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
+              class="mb-6 box-border h-[64px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
             >
 
             <h3 class="mb-2 text-[16px] text-[color:var(--wb-text-primary)] font-semibold">
@@ -126,7 +127,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
             </h3>
             <div class="mb-6 overflow-hidden border border-[color:var(--wb-border-2)] rounded-[16px]">
               <button
-                class="h-12 w-full flex items-center justify-between border-none bg-transparent px-4 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="h-11 w-full flex items-center justify-between border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="nextStep = 'commit'"
               >
                 <span class="inline-flex items-center gap-2">
@@ -137,7 +138,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
               </button>
               <div class="h-px bg-[var(--wb-border-2)]" />
               <button
-                class="h-12 w-full flex items-center gap-2 border-none bg-transparent px-4 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="h-11 w-full flex items-center gap-2 border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="nextStep = 'commit-push'"
               >
                 <Icon name="ph:arrow-up-bold" class="h-5 w-5" />
@@ -145,7 +146,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
               </button>
               <div class="h-px bg-[var(--wb-border-2)]" />
               <button
-                class="h-14 w-full flex items-center gap-2 border-none bg-transparent px-4 text-left text-[15px] text-[color:var(--wb-text-faint)]"
+                class="h-12 w-full flex items-center gap-2 border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-faint)]"
                 disabled
               >
                 <Icon name="ph:github-logo-fill" class="h-5 w-5" />
