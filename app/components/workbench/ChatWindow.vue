@@ -32,6 +32,8 @@ const emit = defineEmits<{
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', { required: true })
 const composeValue = defineModel<string>('composeValue', { required: true })
+const isWorktreeModalOpen = defineModel<boolean>('worktreeModalOpen', { required: true })
+const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true })
 </script>
 
 <template>
@@ -49,6 +51,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
         @toggle-terminal="emit('toggleTerminal')"
         @toggle-diff="emit('toggleDiff')"
         @toggle-pip="emit('togglePip')"
+        @open-worktree="isWorktreeModalOpen = true"
       />
     </div>
 
@@ -60,7 +63,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       v-model:compose-value="composeValue"
       :model-options="modelOptions"
       :thinking-options="thinkingOptions"
-      class="mx-[12.5%] max-[980px]:mx-[20px] mb-[10px] mt-2"
+      class="mx-[12.5%] mb-[10px] mt-2 max-[980px]:mx-[20px]"
     />
   </section>
 </template>

@@ -16,6 +16,7 @@ const emit = defineEmits<{
   toggleTerminal: []
   toggleDiff: []
   togglePip: []
+  openWorktree: []
 }>()
 
 interface CommitOption {
@@ -91,7 +92,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
+      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]" @click="emit('openWorktree')">
         <Icon name="ph:arrows-left-right" class="h-[14px] w-[14px]" />
         Move to Worktree
       </button>

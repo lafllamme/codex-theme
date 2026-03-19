@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
@@ -36,6 +37,8 @@ const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
 const runEnabled = ref(false)
+const isWorktreeModalOpen = ref(false)
+const worktreeBranch = ref('codex/add-appearance-settings-view')
 const sidebarWidth = ref(296)
 const minSidebarWidth = 260
 const maxSidebarWidth = 420
@@ -220,6 +223,8 @@ function beginSidebarResize(event: MouseEvent) {
                 v-model:selected-model="selectedModel"
                 v-model:selected-thinking="selectedThinking"
                 v-model:compose-value="composeValue"
+                v-model:worktree-modal-open="isWorktreeModalOpen"
+                v-model:worktree-branch="worktreeBranch"
                 class="min-h-0 flex-1 transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                 :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
                 title="Open Vue-Bits Dither Sei..."
@@ -258,6 +263,11 @@ function beginSidebarResize(event: MouseEvent) {
           />
         </div>
       </section>
+
+      <WorktreeModal
+        v-model:open="isWorktreeModalOpen"
+        v-model:branch="worktreeBranch"
+      />
     </section>
   </section>
 </template>
