@@ -15,7 +15,7 @@ const emit = defineEmits<{
   toggleDiff: []
   togglePip: []
   openWorktree: []
-  openGitAction: [action: 'commit' | 'push']
+  openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
 interface CommitAction {
@@ -74,7 +74,7 @@ const commitOptions = computed(() => {
 const commitMenuTitle = 'Git Actions'
 
 function handleCommitPrimaryAction(actionKey: string) {
-  if (actionKey === 'commit' || actionKey === 'push')
+  if (actionKey === 'commit' || actionKey === 'push' || actionKey === 'branch')
     emit('openGitAction', actionKey)
 }
 </script>

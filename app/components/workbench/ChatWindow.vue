@@ -27,7 +27,7 @@ const emit = defineEmits<{
   toggleTerminal: []
   toggleDiff: []
   togglePip: []
-  openGitAction: [action: 'commit' | 'push']
+  openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })

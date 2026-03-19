@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
 
-type GitAction = 'commit' | 'push'
+type GitAction = 'commit' | 'push' | 'branch'
 type CommitNextStep = 'commit' | 'commit-push' | 'commit-pr'
 
 const isOpen = defineModel<boolean>('open', { required: true })
@@ -12,10 +12,19 @@ const includeUnstaged = ref(true)
 const isDraft = ref(false)
 const commitMessage = ref('')
 const nextStep = ref<CommitNextStep>('commit')
+const branchName = ref('codex/add-appearance-settings-view')
 
 const title = computed(() => action.value === 'push' ? 'Push changes' : 'Commit changes')
 const ctaLabel = computed(() => action.value === 'push' ? 'Push' : 'Continue')
-const actionIcon = computed(() => action.value === 'push' ? 'ph:cloud-arrow-up-bold' : 'ph:git-commit')
+const actionIcon = computed(() => {
+  if (action.value === 'push')
+    return 'ph:cloud-arrow-up-bold'
+  if (action.value === 'branch')
+    return 'ph:git-branch-bold'
+  return 'ph:git-commit'
+})
+const branchTitle = computed(() => action.value === 'branch' ? 'Work Here' : title.value)
+const branchCtaLabel = computed(() => action.value === 'branch' ? 'Create' : ctaLabel.value)
 
 function closeModal() {
   isOpen.value = false
@@ -77,10 +86,34 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
           </div>
 
           <h2 class="mb-4 text-[24px] font-semibold leading-[1.15] tracking-[-0.02em]">
-            {{ title }}
+            {{ branchTitle }}
           </h2>
 
-          <div class="mb-3 flex items-center justify-between">
+          <template v-if="action === 'branch'">
+            <p class="mb-6 text-[16px] text-[color:var(--wb-text-muted)] leading-[1.42]">
+              Create a branch to commit and push changes from this worktree.
+              <a href="#" class="underline decoration-[color:var(--wb-text-muted)] underline-offset-2">Learn more</a>
+            </p>
+
+            <div class="mb-2 flex items-center justify-between">
+              <span class="text-[16px] text-[color:var(--wb-text-primary)] font-semibold">Branch Name</span>
+              <button class="border-none bg-transparent p-0 text-[16px] text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-primary)]">
+                Set Prefix
+              </button>
+            </div>
+
+            <input
+              v-model="branchName"
+              type="text"
+              class="mb-6 box-border h-[52px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[15px] text-[color:var(--wb-text-primary)] font-semibold outline-none transition-colors focus:border-[color:var(--wb-hover-border)]"
+            >
+
+            <button class="box-border h-[48px] max-w-full w-full rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
+              {{ branchCtaLabel }}
+            </button>
+          </template>
+
+          <div v-else class="mb-3 flex items-center justify-between">
             <span class="text-[16px] text-[color:var(--wb-text-muted)] font-medium">Branch</span>
             <span class="inline-flex items-center gap-2 text-[18px] text-[color:var(--wb-text-primary)] font-medium">
               <Icon name="ph:git-branch-bold" class="h-5 w-5 text-[color:var(--wb-text-muted)]" />
@@ -94,7 +127,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
             </p>
           </template>
 
-          <template v-else>
+          <template v-else-if="action === 'commit'">
             <div class="mb-3 flex items-center justify-between">
               <span class="text-[16px] text-[color:var(--wb-text-primary)] font-semibold">Changes</span>
               <span class="text-[16px] text-[color:var(--wb-text-muted)]">

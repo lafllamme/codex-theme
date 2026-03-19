@@ -41,7 +41,7 @@ const runEnabled = ref(false)
 const isWorktreeModalOpen = ref(false)
 const worktreeBranch = ref('codex/add-appearance-settings-view')
 const isGitActionModalOpen = ref(false)
-const gitActionType = ref<'commit' | 'push'>('commit')
+const gitActionType = ref<'commit' | 'push' | 'branch'>('commit')
 const sidebarWidth = ref(296)
 const minSidebarWidth = 260
 const maxSidebarWidth = 420
@@ -160,7 +160,7 @@ function beginSidebarResize(event: MouseEvent) {
   window.addEventListener('mouseup', onMouseUp)
 }
 
-function openGitActionModal(action: 'commit' | 'push') {
+function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   gitActionType.value = action
   isGitActionModalOpen.value = true
 }
