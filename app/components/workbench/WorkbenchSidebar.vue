@@ -66,7 +66,7 @@ function toggleRepo(repo: string) {
         </button>
 
         <button class="nav-row min-h-[36px] flex items-center gap-2 border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[13.5px] text-[color:var(--wb-text-primary)] font-medium transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-          <Icon name="ph:circles-four-bold" class="h-[14px] w-[14px]" />
+          <Icon name="ph:storefront" class="size-[14px]" />
           <span class="sidebar-label truncate">Skills</span>
         </button>
 

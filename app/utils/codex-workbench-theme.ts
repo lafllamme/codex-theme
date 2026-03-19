@@ -1,8 +1,11 @@
 import type { CodexThemePayload } from '~/types/codex-theme'
 
+const HEX_RGB_RE = /^[\da-f]{6}$/i
+
 /**
  * Maps codex-theme-v1 payload + page flags to CSS custom properties for the workbench replica.
- * Sidebar is always darker than `surface`; glass vs solid from translucentSidebar + opaqueWindows.
+ * App behavior prioritizes a stable four-surface ladder:
+ * - sidebar, container, bubble, input
  */
 export function codexWorkbenchCssVars(
   payload: CodexThemePayload,
@@ -12,15 +15,109 @@ export function codexWorkbenchCssVars(
   const variant = payload.variant
   const t = Math.min(100, Math.max(0, contrast)) / 100
 
-  const sidebarBase
-    = variant === 'light'
-      ? `color-mix(in srgb, ${surface} 88%, black 12%)`
-      : `color-mix(in srgb, ${surface} 74%, black 26%)`
+  const parseHexToRgb = (value: string): [number, number, number] | null => {
+    const hex = value.trim().replace('#', '')
+    if (!HEX_RGB_RE.test(hex))
+      return null
+    const int = Number.parseInt(hex, 16)
+    return [(int >> 16) & 0xFF, (int >> 8) & 0xFF, int & 0xFF]
+  }
+
+  const mixRgb = (
+    a: [number, number, number],
+    b: [number, number, number],
+    amount: number,
+  ): [number, number, number] => {
+    const p = Math.max(0, Math.min(1, amount))
+    return [
+      Math.round(a[0] * (1 - p) + b[0] * p),
+      Math.round(a[1] * (1 - p) + b[1] * p),
+      Math.round(a[2] * (1 - p) + b[2] * p),
+    ]
+  }
+
+  const rgbToHex = ([r, g, b]: [number, number, number]) => {
+    const toHex = (v: number) => v.toString(16).padStart(2, '0')
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+  }
+
+  const toGray = (rgb: [number, number, number]): [number, number, number] => {
+    const l = Math.round((rgb[0] * 0.299) + (rgb[1] * 0.587) + (rgb[2] * 0.114))
+    return [l, l, l]
+  }
+
+  const surfaceRgb = parseHexToRgb(surface)
+  const inkRgb = parseHexToRgb(ink)
+  const isLightSurface = surfaceRgb
+    ? ((surfaceRgb[0] * 0.299 + surfaceRgb[1] * 0.587 + surfaceRgb[2] * 0.114) / 255) >= 0.74
+    : variant === 'light'
+
+  const clamp = (value: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, value))
 
   const useGlass = translucentSidebar && !opaqueWindows
+
+  // Fallback if colors are not parseable.
+  const fallbackSidebar = variant === 'light'
+    ? `color-mix(in srgb, ${surface} 83%, ${ink} 17%)`
+    : `color-mix(in srgb, ${surface} 84%, black 16%)`
+
+  let sidebarSolid = fallbackSidebar
+  let chatInput = variant === 'dark'
+    ? `color-mix(in srgb, ${surface} 96%, ${ink} 4%)`
+    : `color-mix(in srgb, ${surface} 95.5%, ${ink} 4.5%)`
+  let chatBubble = variant === 'dark'
+    ? `color-mix(in srgb, ${surface} 95%, ${ink} 5%)`
+    : `color-mix(in srgb, ${surface} 95%, ${ink} 5%)`
+
+  if (surfaceRgb && inkRgb) {
+    if (isLightSurface) {
+      // App-calibrated light profile.
+      const sidebarMix = opaqueWindows
+        ? clamp(0.168 + (t * 0.003), 0.168, 0.171)
+        : clamp(0.30 + (t * 0.02), 0.30, 0.34)
+      const inputMix = opaqueWindows
+        ? clamp(0.046 + (t * 0.002), 0.046, 0.048)
+        : clamp(0.17 + (t * 0.02), 0.17, 0.21)
+      const bubbleMix = opaqueWindows
+        ? clamp(0.048 + (t * 0.002), 0.048, 0.05)
+        : clamp(0.045 + (t * 0.01), 0.045, 0.06)
+
+      const sidebarBaseRgb = mixRgb(surfaceRgb, inkRgb, sidebarMix)
+      const inputBaseRgb = mixRgb(surfaceRgb, inkRgb, inputMix)
+      const bubbleBaseRgb = mixRgb(surfaceRgb, inkRgb, bubbleMix)
+
+      const sidebarRgb = opaqueWindows
+        ? mixRgb(sidebarBaseRgb, toGray(sidebarBaseRgb), 0.04)
+        : sidebarBaseRgb
+      const inputRgb = opaqueWindows
+        ? mixRgb(inputBaseRgb, toGray(inputBaseRgb), 0.17)
+        : inputBaseRgb
+      const bubbleRgb = opaqueWindows
+        ? mixRgb(bubbleBaseRgb, toGray(bubbleBaseRgb), 0.05)
+        : bubbleBaseRgb
+
+      sidebarSolid = rgbToHex(sidebarRgb)
+      chatInput = rgbToHex(inputRgb)
+      chatBubble = rgbToHex(bubbleRgb)
+    }
+    else {
+      const darkSidebarRgb = mixRgb(surfaceRgb, [0, 0, 0], 0.16)
+      const darkInputRgb = mixRgb(surfaceRgb, inkRgb, clamp(0.038 + (t * 0.008), 0.038, 0.048))
+      const darkBubbleRgb = mixRgb(surfaceRgb, inkRgb, clamp(0.048 + (t * 0.01), 0.048, 0.06))
+
+      sidebarSolid = rgbToHex(darkSidebarRgb)
+      chatInput = rgbToHex(darkInputRgb)
+      chatBubble = rgbToHex(darkBubbleRgb)
+    }
+  }
+
   const sidebarBg = useGlass
-    ? `color-mix(in srgb, ${sidebarBase} 48%, transparent)`
-    : sidebarBase
+    ? `color-mix(in srgb, ${sidebarSolid} 48%, transparent)`
+    : sidebarSolid
+
+  const chatCanvas = surface
+  const chatElevated = chatCanvas
 
   const inkBorder = (base: number) =>
     variant === 'dark'
@@ -37,13 +134,9 @@ export function codexWorkbenchCssVars(
     '--theme-removed': diffRemoved,
     '--theme-skill': skill,
 
-    '--wb-bg-panel': surface,
-    '--wb-bg-panel-elevated': variant === 'dark'
-      ? `color-mix(in srgb, ${surface} 90%, black 10%)`
-      : `color-mix(in srgb, ${surface} 94%, black 6%)`,
-    '--wb-bg-composer': variant === 'dark'
-      ? `color-mix(in srgb, ${surface} 86%, black 14%)`
-      : `color-mix(in srgb, ${surface} 92%, black 8%)`,
+    '--wb-bg-panel': chatCanvas,
+    '--wb-bg-panel-elevated': chatElevated,
+    '--wb-bg-composer': chatElevated,
     '--wb-bg-sidebar': sidebarBg,
     '--wb-sidebar-backdrop-filter': useGlass ? 'blur(14px)' : 'none',
     '--wb-bg-diff-chrome': variant === 'dark'
@@ -74,9 +167,8 @@ export function codexWorkbenchCssVars(
     '--wb-chip-bg': variant === 'dark'
       ? `color-mix(in srgb, ${surface} 58%, black 42%)`
       : `color-mix(in srgb, ${surface} 85%, black 15%)`,
-    '--wb-input-bg': variant === 'dark'
-      ? `color-mix(in srgb, ${surface} 70%, black 30%)`
-      : `color-mix(in srgb, ${surface} 88%, black 12%)`,
+    '--wb-input-bg': chatInput,
+    '--wb-bubble-bg': chatBubble,
     '--wb-select-bg': `color-mix(in srgb, ${surface} 65%, black 35%)`,
 
     '--wb-diff-delta-added': diffAdded,

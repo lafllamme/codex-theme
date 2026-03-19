@@ -297,11 +297,11 @@ function beginSidebarResize(event: MouseEvent) {
 }
 
 .wb-main-area--open {
-  padding: 8px 8px 8px;
+  padding: 8px 14px 10px 14px;
 }
 
 .wb-main-area--collapsed {
-  padding: 8px 10px 8px 126px;
+  padding: 8px 14px 10px 126px;
 }
 
 .wb-main-frame {
@@ -362,11 +362,11 @@ function beginSidebarResize(event: MouseEvent) {
 
 @media (max-width: 1180px) {
   .wb-main-area--open {
-    padding: 7px 6px 6px;
+    padding: 7px 10px 8px 10px;
   }
 
   .wb-main-area--collapsed {
-    padding: 7px 6px 6px 98px;
+    padding: 7px 10px 8px 98px;
   }
 
   .wb-control-lane {

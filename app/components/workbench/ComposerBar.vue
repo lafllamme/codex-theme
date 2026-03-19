@@ -10,8 +10,8 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 </script>
 
 <template>
-  <footer class="border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-md)] bg-[var(--wb-bg-composer)] p-2">
-    <div class="border border-[color:var(--wb-border-2)] rounded-[11px] bg-[color-mix(in_srgb,var(--theme-ink)_4%,transparent)] px-2.5 py-2">
+  <footer class="border border-[color:var(--wb-border-2)] rounded-[var(--wb-r-md)] bg-[var(--wb-input-bg)] p-[6px]">
+    <div class="rounded-[10px] bg-transparent px-2.5 py-2">
       <div class="flex items-center gap-2">
         <input
           v-model="composeValue"
