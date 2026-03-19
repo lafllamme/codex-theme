@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside, useEventListener } from '@vueuse/core'
-
 defineProps<{
   title: string
   repo: string
@@ -19,14 +17,12 @@ const emit = defineEmits<{
   openWorktree: []
 }>()
 
-interface CommitOption {
+interface CommitAction {
+  key: string
   label: string
   icon: string
   disabled?: boolean
 }
-
-const isCommitMenuOpen = ref(false)
-const commitMenuRef = ref<HTMLElement | null>(null)
 
 const editorOptions = [
   { label: 'Cursor', icon: 'simple-icons:cursor' },
@@ -41,29 +37,40 @@ const editorOptions = [
 ]
 const selectedEditor = ref(editorOptions[0]?.label ?? 'Cursor')
 
-const commitOptions: CommitOption[] = [
-  { label: 'Commit', icon: 'ph:git-commit' },
-  { label: 'Push', icon: 'ph:git-pull-request-bold' },
-  { label: 'PR erstellen', icon: 'ph:github-logo-fill', disabled: true },
-  { label: 'Create branch', icon: 'ph:git-branch-bold' },
-]
-
-function toggleCommitMenu() {
-  isCommitMenuOpen.value = !isCommitMenuOpen.value
+const commitActionMap: Record<string, CommitAction[]> = {
+  commit: [
+    { key: 'commit', label: 'Commit', icon: 'ph:git-commit' },
+    { key: 'push', label: 'Push', icon: 'ph:cloud-arrow-up-bold' },
+    { key: 'pr', label: 'Create PR', icon: 'ph:github-logo-fill', disabled: true },
+    { key: 'branch', label: 'Create branch', icon: 'ph:git-branch-bold' },
+  ],
+  push: [
+    { key: 'push', label: 'Push', icon: 'ph:cloud-arrow-up-bold' },
+    { key: 'commit', label: 'Commit', icon: 'ph:git-commit' },
+    { key: 'pr', label: 'Create PR', icon: 'ph:github-logo-fill', disabled: true },
+    { key: 'branch', label: 'Create branch', icon: 'ph:git-branch-bold' },
+  ],
+  branch: [
+    { key: 'branch', label: 'Create branch', icon: 'ph:git-branch-bold' },
+    { key: 'commit', label: 'Commit', icon: 'ph:git-commit' },
+    { key: 'push', label: 'Push', icon: 'ph:cloud-arrow-up-bold' },
+    { key: 'pr', label: 'Create PR', icon: 'ph:github-logo-fill', disabled: true },
+  ],
+  pr: [
+    { key: 'pr', label: 'Create PR', icon: 'ph:github-logo-fill', disabled: true },
+    { key: 'commit', label: 'Commit', icon: 'ph:git-commit' },
+    { key: 'push', label: 'Push', icon: 'ph:cloud-arrow-up-bold' },
+    { key: 'branch', label: 'Create branch', icon: 'ph:git-branch-bold' },
+  ],
 }
 
-function closeMenus() {
-  isCommitMenuOpen.value = false
-}
+const selectedCommitAction = ref('push')
 
-onClickOutside(commitMenuRef, () => {
-  isCommitMenuOpen.value = false
+const commitOptions = computed(() => {
+  return commitActionMap[selectedCommitAction.value] ?? commitActionMap.commit
 })
 
-useEventListener(document, 'keydown', (event: KeyboardEvent) => {
-  if (event.key === 'Escape')
-    closeMenus()
-})
+const commitMenuTitle = 'Git Actions'
 </script>
 
 <template>
@@ -97,26 +104,11 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         Move to Worktree
       </button>
 
-      <div ref="commitMenuRef" class="relative">
-        <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
-          <Icon name="ph:git-commit" class="h-[14px] w-[14px]" />
-          Commit
-          <Icon name="ph:caret-down-bold" class="h-[11px] w-[11px]" />
-        </button>
-        <div v-if="isCommitMenuOpen" class="absolute right-0 top-full z-30 mt-2 w-[250px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-popover-bg)] p-3 shadow-[0_26px_48px_rgba(0,0,0,0.45)] backdrop-blur-[16px]">
-          <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-popover-muted)] font-semibold">
-            Git-Aktionen
-          </p>
-          <ul class="grid gap-0.5">
-            <li v-for="option in commitOptions" :key="option.label">
-              <button class="h-10 w-full flex appearance-none items-center gap-3 rounded-[11px] border-none px-2.5 text-left text-[11.5px] outline-none transition-colors" :class="option.disabled ? 'cursor-not-allowed text-[color:var(--wb-text-faint)]' : 'text-[color:var(--wb-text-primary)] hover:bg-[var(--wb-hover-bg)]'">
-                <Icon :name="option.icon" class="h-[14px] w-[14px]" />
-                <span class="truncate font-medium">{{ option.label }}</span>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <DsCommitSelection
+        v-model="selectedCommitAction"
+        :options="commitOptions"
+        :menu-title="commitMenuTitle"
+      />
 
       <span class="mx-[3px] h-[18px] w-px bg-[var(--wb-divider)]" />
 
@@ -145,7 +137,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         @click="emit('togglePip')"
       >
-        <Icon name="hugeicons:copy-01" class="h-[14px] w-[14px]" />
+        <Icon name="hugeicons:copy-02" class="h-[14px] w-[14px]" />
       </button>
     </div>
   </header>
