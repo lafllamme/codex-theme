@@ -12,17 +12,17 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 <template>
   <div class="flex flex-col gap-2">
     <footer class="border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]">
-      <div class="rounded-[10px] bg-transparent px-2.5 py-2">
+      <div class="rounded-[10px] bg-transparent px-2.5 py-3">
         <div class="flex items-center">
           <input
             v-model="composeValue"
-            class="h-[28px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
+            class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
             type="text"
             placeholder="Ask a follow-up"
           >
         </div>
 
-        <div class="mt-2 flex items-center justify-between gap-2 text-[12px]">
+        <div class="mt-4 flex items-center justify-between gap-2 text-[12px]">
           <div class="min-w-0 inline-flex items-center gap-1.5">
             <button class="h-[24px] w-[24px] inline-flex appearance-none items-center justify-center rounded-[7px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
               <Icon name="ph:plus-bold" class="h-[11px] w-[11px]" />
