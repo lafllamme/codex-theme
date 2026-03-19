@@ -4,6 +4,7 @@ import { onClickOutside, useEventListener } from '@vueuse/core'
 defineProps<{
   title: string
   repo: string
+  isSidebarCollapsed: boolean
   runEnabled: boolean
   isTerminalOpen: boolean
   isDiffOpen: boolean
@@ -84,16 +85,21 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <header class="chat-header-bar h-[34px] flex items-center justify-between gap-1 px-1">
-    <div class="min-w-0 inline-flex items-center gap-1">
-      <strong class="truncate text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-none">{{ title }}</strong>
-      <span class="truncate text-[13px] text-[color:var(--wb-text-muted)] leading-none">{{ repo }}</span>
-      <button class="h-5 w-5 inline-flex appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
+  <header
+    class="chat-header-bar h-[34px] grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-1"
+    :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : 'chat-header-bar--expanded'"
+  >
+    <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
+      <div class="min-w-0 inline-flex items-center gap-1 overflow-hidden">
+        <strong class="chat-header-title min-w-0 truncate text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-none">{{ title }}</strong>
+        <span class="chat-header-repo min-w-0 truncate text-[13px] text-[color:var(--wb-text-muted)] leading-none">{{ repo }}</span>
+      </div>
+      <button class="h-5 w-5 inline-flex shrink-0 appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
         <Icon name="ph:dots-three-bold" class="h-[13px] w-[13px]" />
       </button>
     </div>
 
-    <div class="inline-flex items-center gap-1">
+    <div class="chat-header-controls inline-flex items-center gap-1">
       <button
         class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="runEnabled ? 'bg-[var(--wb-hover-bg-strong)] text-[color:var(--wb-text-primary)]' : ''"
@@ -177,3 +183,57 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
     </div>
   </header>
 </template>
+
+<style scoped>
+.chat-header-title {
+  max-width: min(44vw, 540px);
+}
+
+.chat-header-repo {
+  max-width: min(24vw, 260px);
+}
+
+.chat-header-bar--collapsed .chat-header-title {
+  max-width: min(28vw, 320px);
+}
+
+.chat-header-bar--collapsed .chat-header-repo {
+  max-width: min(11vw, 124px);
+}
+
+.chat-header-bar--expanded {
+  padding-left: 4px;
+  transition: padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chat-header-bar--collapsed {
+  padding-left: 18px;
+  transition: padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 1180px) {
+  .chat-header-title {
+    max-width: min(50vw, 380px);
+  }
+
+  .chat-header-repo {
+    max-width: min(30vw, 190px);
+  }
+
+  .chat-header-bar--collapsed .chat-header-title {
+    max-width: min(39vw, 250px);
+  }
+
+  .chat-header-bar--collapsed .chat-header-repo {
+    max-width: min(19vw, 92px);
+  }
+
+  .chat-header-bar--expanded {
+    padding-left: 2px;
+  }
+
+  .chat-header-bar--collapsed {
+    padding-left: 12px;
+  }
+}
+</style>

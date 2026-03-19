@@ -12,6 +12,7 @@ interface ChatMessage {
 defineProps<{
   title: string
   repo: string
+  isSidebarCollapsed: boolean
   runEnabled: boolean
   isTerminalOpen: boolean
   isDiffOpen: boolean
@@ -39,6 +40,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
       <ChatHeaderBar
         :title="title"
         :repo="repo"
+        :is-sidebar-collapsed="isSidebarCollapsed"
         :run-enabled="runEnabled"
         :is-terminal-open="isTerminalOpen"
         :is-diff-open="isDiffOpen"

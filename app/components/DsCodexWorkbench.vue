@@ -214,6 +214,7 @@ function beginSidebarResize(event: MouseEvent) {
                 :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
                 title="Open Vue-Bits Dither Sei..."
                 repo="codex-theme"
+                :is-sidebar-collapsed="isSidebarCollapsed"
                 :run-enabled="runEnabled"
                 :is-terminal-open="isTerminalOpen"
                 :is-diff-open="isDiffOpen"
@@ -296,31 +297,21 @@ function beginSidebarResize(event: MouseEvent) {
 }
 
 .wb-main-area--open {
-  padding: 42px 8px 8px;
+  padding: 8px 8px 8px;
 }
 
 .wb-main-area--collapsed {
-  padding: 42px 10px 8px;
+  padding: 8px 10px 8px 126px;
 }
 
 .wb-main-frame {
-  max-width: 1680px;
+  max-width: 1540px;
   margin-inline: auto;
-}
-
-.wb-main-area--collapsed :deep(.chat-header-bar) {
-  padding-left: 124px;
-  transition: padding-left 260ms var(--wb-sidebar-ease);
-}
-
-.wb-main-area--open :deep(.chat-header-bar) {
-  padding-left: 0;
-  transition: padding-left 260ms var(--wb-sidebar-ease);
 }
 
 .wb-control-lane {
   position: absolute;
-  top: 12px;
+  top: 20px;
   left: 12px;
   z-index: 48;
   display: inline-flex;
@@ -370,13 +361,16 @@ function beginSidebarResize(event: MouseEvent) {
 }
 
 @media (max-width: 1180px) {
-  .wb-main-area--open,
-  .wb-main-area--collapsed {
-    padding: 40px 6px 6px;
+  .wb-main-area--open {
+    padding: 7px 6px 6px;
   }
 
-  .wb-main-area--collapsed :deep(.chat-header-bar) {
-    padding-left: 108px;
+  .wb-main-area--collapsed {
+    padding: 7px 6px 6px 98px;
+  }
+
+  .wb-control-lane {
+    top: 18px;
   }
 
   .sidebar-column {
