@@ -36,8 +36,8 @@ const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
 const runEnabled = ref(false)
-const sidebarWidth = ref(286)
-const minSidebarWidth = 248
+const sidebarWidth = ref(296)
+const minSidebarWidth = 260
 const maxSidebarWidth = 420
 
 const {
@@ -53,17 +53,26 @@ const {
   togglePip,
 } = useWorkbenchPanels()
 
-const defaultThread: ThreadItem = { id: 'thread-1', title: 'Make DsRing mobile friendly', repo: 'codex-theme', time: '54 Min.' }
+const defaultThread: ThreadItem = { id: 'thread-1', title: 'Investigate Codex token mismatch', repo: 'codex-theme', time: '50 Min.' }
 
 const threadItems: ThreadItem[] = [
-  { ...defaultThread, added: 0, removed: 0 },
-  { id: 'thread-2', title: 'Open Vue-Bits Dither page', repo: 'codex-theme', time: '17 Std.', added: 2, removed: 9 },
-  { id: 'thread-3', title: 'Load Codex controls refs', repo: 'codex-theme', time: '8 Std.', added: 7, removed: 9 },
-  { id: 'thread-4', title: 'Add thread list examples', repo: 'codex-theme', time: '17 Std.', added: 9, removed: 6 },
-  { id: 'thread-7', title: 'Review sidebar parity', repo: 'codex-theme', time: '11 Std.' },
-  { id: 'thread-5', title: 'Create fix for collapse', repo: 'personal-page', time: '1 Tag(e)' },
-  { id: 'thread-6', title: 'Review chat spacing', repo: 'personal-page', time: '5 Tag(e)' },
-  { id: 'thread-8', title: 'Refine card hover states', repo: 'personal-page', time: '6 Std.', added: 4, removed: 3 },
+  { ...defaultThread, added: 28, removed: 7 },
+  { id: 'thread-2', title: 'Open Vue-Bits Dither page', repo: 'codex-theme', time: '3 Day(s)', added: 71, removed: 24 },
+  { id: 'thread-3', title: 'Verify Geist font weight parity', repo: 'codex-theme', time: '19 Hrs.' },
+  { id: 'thread-4', title: 'Add appearance settings sections', repo: 'codex-theme', time: '23 Hrs.' },
+  { id: 'thread-7', title: 'Load Codex icon references', repo: 'codex-theme', time: '3 Day(s)' },
+  { id: 'thread-9', title: 'Add theme picker side panel', repo: 'codex-theme', time: '3 Day(s)' },
+  { id: 'thread-10', title: 'Make DsRing mobile friendly', repo: 'codex-theme', time: '3 Day(s)' },
+  { id: 'thread-5', title: 'Create fix strategy draft', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-6', title: 'Review Storybook divider spacing', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-8', title: 'Resolve icon alignment drift', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-11', title: 'Configure Codex full-access state', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-12', title: 'Audit animate.css access path', repo: 'personal-page', time: '1 Wk.' },
+  { id: 'thread-13', title: 'Create fix-strategy notes', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-14', title: 'Add Storybook snapshot script', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-15', title: 'Create GitHub pipeline proposal', repo: 'personal-page', time: '4 Day(s)' },
+  { id: 'thread-16', title: 'Analyze design-system checkboxes', repo: 'personal-page', time: '1 Wk.' },
+  { id: 'thread-17', title: 'Review checkbox behavior in layout', repo: 'personal-page', time: '1 Wk.' },
 ]
 
 const messagesByThread: Record<string, ChatMessage[]> = {
@@ -148,12 +157,12 @@ function beginSidebarResize(event: MouseEvent) {
 <template>
   <section class="relative h-full min-h-0 w-full flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
     <div class="wb-control-lane">
-      <div class="inline-flex items-center gap-[7px]">
+      <div class="inline-flex items-center gap-[9px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <div class="inline-flex items-center gap-0.5">
+      <div class="inline-flex items-center gap-[6px]">
         <button
           class="wb-top-control-btn"
           aria-label="Toggle Sidebar"
@@ -311,30 +320,32 @@ function beginSidebarResize(event: MouseEvent) {
 
 .wb-control-lane {
   position: absolute;
-  top: 20px;
-  left: 12px;
+  top: 14px;
+  left: 18px;
   z-index: 48;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   pointer-events: auto;
 }
 
 .wb-top-control-btn {
-  height: 24px;
-  width: 24px;
+  height: 22px;
+  width: 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   appearance: none;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   background: transparent;
   padding: 0;
   color: var(--wb-text-faint);
   outline: none;
   box-shadow: none;
-  transition: color 140ms ease, background-color 140ms ease;
+  transition:
+    color 140ms ease,
+    background-color 140ms ease;
 }
 
 .wb-top-control-btn:hover {
@@ -370,7 +381,8 @@ function beginSidebarResize(event: MouseEvent) {
   }
 
   .wb-control-lane {
-    top: 18px;
+    top: 13px;
+    left: 8px;
   }
 
   .sidebar-column {
