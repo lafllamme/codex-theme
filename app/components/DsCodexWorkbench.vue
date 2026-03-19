@@ -114,6 +114,7 @@ const shellStyle = computed(() => ({
   '--font-code': resolveThemeCodeFont(props.payload.theme.fonts.code, props.payload.theme.fonts.ui),
   '--ui-font-size': `${props.uiFontSize}px`,
   '--code-font-size': `${props.codeFontSize}px`,
+  '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
   '--wb-sidebar-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }))

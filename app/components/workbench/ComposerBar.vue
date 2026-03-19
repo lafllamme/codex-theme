@@ -10,7 +10,7 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 </script>
 
 <template>
-  <footer class="border border-[color:var(--wb-border-2)] rounded-[var(--wb-r-md)] bg-[var(--wb-input-bg)] p-[6px]">
+  <footer class="border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]">
     <div class="rounded-[10px] bg-transparent px-2.5 py-2">
       <div class="flex items-center gap-2">
         <input
