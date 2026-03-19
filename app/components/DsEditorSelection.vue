@@ -1,0 +1,72 @@
+<script setup lang="ts">
+import { onClickOutside, useEventListener } from '@vueuse/core'
+
+interface EditorOption {
+  label: string
+  icon: string
+}
+
+const props = defineProps<{
+  options: EditorOption[]
+}>()
+
+const selectedValue = defineModel<string>({ required: true })
+
+const isOpen = ref(false)
+const rootRef = ref<HTMLElement | null>(null)
+
+const selectedOption = computed(() => {
+  return props.options.find(option => option.label === selectedValue.value) ?? props.options[0]
+})
+
+function toggleOpen() {
+  isOpen.value = !isOpen.value
+}
+
+function selectOption(label: string) {
+  selectedValue.value = label
+  isOpen.value = false
+}
+
+onClickOutside(rootRef, () => {
+  isOpen.value = false
+})
+
+useEventListener(document, 'keydown', (event: KeyboardEvent) => {
+  if (event.key === 'Escape')
+    isOpen.value = false
+})
+</script>
+
+<template>
+  <div ref="rootRef" class="relative">
+    <button
+      class="h-7 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-chip-bg)] px-1.5 text-[10px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]"
+      @click.stop="toggleOpen"
+    >
+      <span class="h-[20px] w-[20px] inline-flex items-center justify-center rounded-[6px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">
+        <Icon :name="selectedOption?.icon || 'simple-icons:cursor'" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
+      </span>
+      <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:var(--wb-text-secondary)]" />
+    </button>
+
+    <div
+      v-if="isOpen"
+      class="absolute right-0 top-full z-40 mt-2 w-[168px] border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2.5 backdrop-blur-[16px]"
+    >
+      <ul class="grid m-0 list-none gap-1 p-0">
+        <li v-for="option in options" :key="option.label">
+          <button
+            class="h-11 w-full flex appearance-none items-center gap-2.5 rounded-[10px] border-none bg-transparent px-2.5 text-left text-[16px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+            @click="selectOption(option.label)"
+          >
+            <span class="h-[28px] w-[28px] inline-flex shrink-0 items-center justify-center rounded-[7px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_72%,black_28%)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_62%,transparent)_inset]">
+              <Icon :name="option.icon" class="h-[16px] w-[16px] text-[color:var(--wb-text-primary)]" />
+            </span>
+            <span class="truncate font-medium leading-none">{{ option.label }}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
