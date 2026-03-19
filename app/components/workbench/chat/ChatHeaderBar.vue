@@ -67,7 +67,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <header
-    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[34px] items-center gap-2 px-1"
+    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[42px] items-center gap-2 px-1"
     :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : 'chat-header-bar--expanded'"
   >
     <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
@@ -82,25 +82,25 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
     <div class="chat-header-controls inline-flex items-center gap-1">
       <button
-        class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="runEnabled ? 'bg-[var(--wb-hover-bg-strong)] text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleRun')"
       >
-        <Icon name="ph:play-bold" class="h-[10px] w-[10px]" />
+        <Icon name="ph:play-bold" class="h-[12px] w-[12px]" />
       </button>
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
-        <Icon name="ph:arrows-left-right-bold" class="h-[10px] w-[10px]" />
+      <button class="h-8 inline-flex appearance-none items-center gap-1.5 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]">
+        <Icon name="ph:arrows-left-right" class="h-[12px] w-[12px]" />
         Move to Worktree
       </button>
 
       <div ref="commitMenuRef" class="relative">
-        <button class="h-6 inline-flex appearance-none items-center gap-1 rounded-[8px] border-none bg-[var(--wb-chip-bg)] px-2 text-[10px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_80%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
-          <Icon name="ph:git-commit" class="h-[10px] w-[10px]" />
+        <button class="h-8 inline-flex appearance-none items-center gap-1.5 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]" @click.stop="toggleCommitMenu">
+          <Icon name="ph:git-commit" class="h-[12px] w-[12px]" />
           Commit
-          <Icon name="ph:caret-down-bold" class="h-[9px] w-[9px]" />
+          <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px]" />
         </button>
         <div v-if="isCommitMenuOpen" class="absolute right-0 top-full z-30 mt-2 w-[250px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-popover-bg)] p-3 shadow-[0_26px_48px_rgba(0,0,0,0.45)] backdrop-blur-[16px]">
           <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-popover-muted)] font-semibold">
@@ -117,23 +117,23 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         </div>
       </div>
 
-      <span class="mx-[2px] h-[14px] w-px bg-[var(--wb-divider)]" />
+      <span class="mx-[3px] h-[18px] w-px bg-[var(--wb-divider)]" />
 
       <button
-        class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="isTerminalOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleTerminal')"
       >
-        <Icon name="ph:terminal-window-bold" class="h-[10px] w-[10px]" />
+        <Icon name="ph:terminal-window-bold" class="h-[12px] w-[12px]" />
       </button>
 
       <button
-        class="h-6 inline-flex appearance-none items-center gap-[2px] rounded-[6px] border-none bg-transparent px-1 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="h-7 inline-flex appearance-none items-center gap-[3px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="isDiffOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleDiff')"
       >
-        <Icon name="ph:square-split-vertical-bold" class="h-[10px] w-[10px]" />
-        <span class="text-[10px] leading-none font-[var(--font-ui)] tabular-nums">
+        <Icon name="hugeicons:plus-minus-square-01" class="h-[12px] w-[12px]" />
+        <span class="text-[12px] leading-none font-[var(--font-ui)] tabular-nums">
           <span class="text-[color:var(--wb-diff-delta-added)]">+836</span>
           <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">1.068</span>
@@ -141,10 +141,10 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
       </button>
 
       <button
-        class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         @click="emit('togglePip')"
       >
-        <Icon :name="isPipEnabled ? 'ph:arrow-square-out-bold' : 'ph:square-bold'" class="h-[10px] w-[10px]" />
+        <Icon :name="isPipEnabled ? 'ph:arrow-square-out-bold' : 'ph:square-bold'" class="h-[12px] w-[12px]" />
       </button>
     </div>
   </header>
