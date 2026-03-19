@@ -73,7 +73,7 @@ function toggleRepo(repo: string) {
         </div>
 
         <div class="min-h-0 flex flex-1 flex-col">
-          <div class="sidebar-section-header mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[10px] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
+          <div class="sidebar-section-header sidebar-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[10px] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
             <span class="sidebar-label">Threads</span>
             <div class="inline-flex items-center gap-2">
               <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
@@ -87,7 +87,7 @@ function toggleRepo(repo: string) {
 
           <div class="mt-[1px] flex-1 overflow-y-auto pr-[2px]">
             <div v-for="group in groupedThreads" :key="group.repo" class="mt-[1px] flex flex-col gap-[2px]">
-              <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[13px] text-[color:var(--wb-text-secondary)] font-semibold shadow-none outline-none" @click="toggleRepo(group.repo)">
+              <button class="sidebar-lane-item group inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[13px] text-[color:var(--wb-text-secondary)] font-semibold shadow-none outline-none" @click="toggleRepo(group.repo)">
                 <span class="min-w-0 inline-flex items-center gap-2">
                   <span class="relative h-[15px] w-[15px] inline-flex items-center justify-center">
                     <Icon
@@ -111,7 +111,7 @@ function toggleRepo(repo: string) {
                 <button
                   v-for="thread in group.items"
                   :key="thread.id"
-                  class="thread-row group relative grid grid-cols-[minmax(0,1fr)_auto_72px] items-center gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[13px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
+                  class="sidebar-lane-item thread-row group relative grid grid-cols-[minmax(0,1fr)_auto_72px] items-center gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[13px] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
                   :class="thread.id === activeThreadId ? 'thread-row--active' : ''"
                   @click="emit('selectThread', thread.id)"
                 >
@@ -131,7 +131,7 @@ function toggleRepo(repo: string) {
           </div>
         </div>
 
-        <button class="settings-row mt-auto grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+        <button class="sidebar-lane-item settings-row mt-auto grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
           <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
           <span class="sidebar-label">Settings</span>
         </button>
@@ -161,6 +161,7 @@ function toggleRepo(repo: string) {
   --wb-sidebar-nav-row-h: 36px;
   --wb-sidebar-thread-row-h: 36px;
   --wb-sidebar-footer-h: 34px;
+  --wb-sidebar-inner-gap-right: 22px;
   gap: 7px;
   transition:
     border-color 180ms ease,
@@ -213,6 +214,10 @@ function toggleRepo(repo: string) {
 .nav-stack {
   display: grid;
   gap: 6px;
+}
+
+.sidebar-lane-item {
+  width: calc(100% - var(--wb-sidebar-inner-gap-right));
 }
 
 .repo-items {
