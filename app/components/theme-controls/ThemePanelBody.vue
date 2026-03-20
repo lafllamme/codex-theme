@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
+import DsSwitch from '~/components/ui/DsSwitch.vue'
 import ThemePresetBrowser from './ThemePresetBrowser.vue'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
@@ -304,19 +305,10 @@ function onCodeFontSelect(event: Event) {
         <!-- Translucent sidebar toggle -->
         <div class="flex items-center justify-between py-1">
           <span class="text-[15px] font-medium text-pureBlack/80">Translucent sidebar</span>
-          <button
-            type="button"
-            role="switch"
-            :aria-checked="translucentSidebar"
-            class="h-[24px] w-[42px] rounded-full p-[2px] transition-colors duration-200 cursor-pointer flex items-center focus:outline-none"
-            :class="translucentSidebar ? 'justify-end bg-pureBlack/18' : 'justify-start bg-pureBlack/10'"
-            @click="emit('setTranslucentSidebar', !translucentSidebar)"
-          >
-            <span
-              class="h-[20px] w-[20px] rounded-full shadow-sm transition-colors"
-              :class="translucentSidebar ? 'bg-pureBlack' : 'bg-pureWhite ring-1 ring-pureBlack/10'"
-            />
-          </button>
+          <DsSwitch
+            :model-value="translucentSidebar"
+            @update:model-value="emit('setTranslucentSidebar', $event)"
+          />
         </div>
 
         <!-- Contrast slider -->

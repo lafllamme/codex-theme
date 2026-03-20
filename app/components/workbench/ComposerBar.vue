@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ComposerDropdownMenu from "~/components/workbench/chat/ComposerDropdownMenu.vue";
+import DsSwitch from "~/components/ui/DsSwitch.vue";
 
 interface MenuOption {
     key: string;
@@ -138,10 +139,6 @@ function selectBranch(option: string) {
     closeMenus();
 }
 
-function togglePlanningMode() {
-    planningModeEnabled.value = !planningModeEnabled.value;
-}
-
 function toggleSpeedMenu() {
     isSpeedMenuOpen.value = !isSpeedMenuOpen.value;
 }
@@ -216,14 +213,17 @@ function selectSpeed(mode: "standard" | "fast") {
                                         />
                                         Planning mode
                                     </span>
-                                    <span
-                                        class="relative inline-flex h-[20px] w-[34px] items-center rounded-full p-[2px] transition-colors"
-                                        :class="planningModeEnabled ? 'bg-[color-mix(in_srgb,var(--wb-text-primary)_80%,transparent)] justify-end' : 'bg-[color-mix(in_srgb,var(--wb-text-secondary)_28%,transparent)] justify-start'"
-                                    >
-                                        <span
-                                            class="h-[16px] w-[16px] rounded-full bg-[var(--wb-bg-panel)]"
-                                        />
-                                    </span>
+                                    <DsSwitch
+                                        :model-value="planningModeEnabled"
+                                        :track-width="30"
+                                        :track-height="18"
+                                        :thumb-size="14"
+                                        on-class="bg-[color-mix(in_srgb,var(--wb-text-primary)_74%,transparent)]"
+                                        off-class="bg-[color-mix(in_srgb,var(--wb-text-secondary)_24%,transparent)]"
+                                        thumb-on-class="bg-[var(--wb-bg-panel)]"
+                                        thumb-off-class="bg-[var(--wb-bg-panel)]"
+                                        @update:model-value="planningModeEnabled = $event"
+                                    />
                                 </button>
 
                                 <div class="relative">
