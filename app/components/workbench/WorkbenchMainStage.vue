@@ -24,7 +24,7 @@ function blockKey(block: AssistantBlock, index: number) {
       <span class="h-px flex-1 bg-[var(--wb-divider)]" />
     </div>
 
-    <section class="min-h-0 overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
+    <section class="wb-mainstage-scroll min-h-0 overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
       <div class="flex flex-col gap-3">
         <article
           v-for="message in messages"
@@ -35,7 +35,7 @@ function blockKey(block: AssistantBlock, index: number) {
             : 'border-none bg-transparent'"
           :style="message.role === 'user' ? { borderColor: 'color-mix(in srgb, var(--theme-accent) 22%, var(--wb-border-3))' } : undefined"
         >
-          <p v-if="message.role === 'user'" class="whitespace-pre-line">
+          <p v-if="message.role === 'user'" class="m-0 whitespace-pre-line">
             {{ message.text }}
           </p>
           <div v-else-if="message.blocks?.length" class="flex flex-col gap-[4px]">
@@ -55,3 +55,16 @@ function blockKey(block: AssistantBlock, index: number) {
     </section>
   </main>
 </template>
+
+<style scoped>
+.wb-mainstage-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wb-mainstage-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+</style>
