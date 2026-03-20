@@ -3,8 +3,9 @@ import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 
-defineProps<{
+const props = defineProps<{
   messages: ChatMessage[]
+  isDiffOpen?: boolean
 }>()
 
 const copiedMessageId = ref<string | null>(null)
@@ -81,7 +82,10 @@ onBeforeUnmount(() => {
     </div>
 
     <section class="wb-mainstage-scroll min-h-0 overflow-x-hidden overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
-      <div class="flex flex-col gap-3">
+      <div
+        class="flex flex-col gap-3 transform-gpu transition-[transform,opacity] duration-220 [transition-timing-function:var(--wb-sidebar-ease)]"
+        :class="props.isDiffOpen ? 'opacity-[0.985] translate-x-[-1px]' : 'opacity-100 translate-x-0'"
+      >
         <div
           v-for="message in messages"
           :key="message.id"
@@ -100,10 +104,12 @@ onBeforeUnmount(() => {
             </p>
             <div v-else-if="message.blocks?.length" class="flex flex-col gap-1.5">
               <template v-for="(block, index) in message.blocks" :key="blockKey(block, index)">
-                <p v-if="block.type === 'text'" class="m-0 whitespace-pre-line leading-[1.5]">
+                <p v-if="block.type === 'text'" class="m-0 max-w-[min(78ch,100%)] whitespace-pre-line leading-[1.5]">
                   {{ block.text }}
                 </p>
-                <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
+                <div v-else-if="block.type === 'component_mention'" class="max-w-[min(78ch,100%)]">
+                  <ChatComponentMention :block="block" />
+                </div>
                 <div v-else-if="block.type === 'file_change_card'" class="mt-3">
                   <button
                     v-if="index === firstFileChangeCardIndex(message)"
@@ -116,7 +122,11 @@ onBeforeUnmount(() => {
                 </div>
               </template>
             </div>
-            <p v-else class="m-0 whitespace-pre-line">
+            <p
+              v-else
+              class="m-0 whitespace-pre-line"
+              :class="message.role === 'assistant' ? 'max-w-[min(78ch,100%)]' : ''"
+            >
               {{ message.text }}
             </p>
           </article>

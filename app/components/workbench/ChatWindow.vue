@@ -69,7 +69,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       />
     </div>
 
-    <WorkbenchMainStage :messages="messages" />
+    <WorkbenchMainStage :messages="messages" :is-diff-open="isDiffOpen" />
 
     <div class="mb-[10px] mt-2 [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] [padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))]">
       <ComposerBar
