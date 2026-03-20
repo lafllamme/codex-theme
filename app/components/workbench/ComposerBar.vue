@@ -173,7 +173,7 @@ function selectSpeed(mode: "standard" | "fast") {
                     <div class="min-w-0 inline-flex items-center gap-1.5">
                         <ComposerDropdownMenu
                             :open="openMenuKey === 'plus'"
-                            menu-class="w-[316px]"
+                            menu-class="w-[268px]"
                             align="left"
                             @toggle="toggleMenu('plus')"
                             @close="closeMenus"
@@ -190,58 +190,58 @@ function selectSpeed(mode: "standard" | "fast") {
                                 </button>
                             </template>
 
-                            <div class="grid gap-1">
+                            <div class="grid gap-0.5">
                                 <button
-                                    class="h-11 w-full flex items-center gap-2 rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                    class="h-9 w-full flex items-center gap-2 rounded-[9px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                 >
                                     <Icon
                                         name="ph:paperclip-bold"
-                                        class="h-[15px] w-[15px]"
+                                        class="h-[13px] w-[13px]"
                                     />
                                     Add photos and files
                                 </button>
 
                                 <div
-                                    class="h-px bg-[color:var(--wb-divider)] mx-1"
+                                    class="h-px bg-[color:var(--wb-divider)] mx-0.5 my-0.5"
                                 />
 
                                 <button
-                                    class="h-11 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                    class="h-9 w-full flex items-center justify-between rounded-[9px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                     @click="togglePlanningMode"
                                 >
                                     <span class="inline-flex items-center gap-2">
                                         <Icon
                                             name="ph:list-checks-bold"
-                                            class="h-[15px] w-[15px]"
+                                            class="h-[13px] w-[13px]"
                                         />
                                         Planning mode
                                     </span>
                                     <span
-                                        class="relative inline-flex h-[28px] w-[48px] items-center rounded-full p-[2px] transition-colors"
+                                        class="relative inline-flex h-[20px] w-[34px] items-center rounded-full p-[2px] transition-colors"
                                         :class="planningModeEnabled ? 'bg-[color-mix(in_srgb,var(--wb-text-primary)_80%,transparent)] justify-end' : 'bg-[color-mix(in_srgb,var(--wb-text-secondary)_28%,transparent)] justify-start'"
                                     >
                                         <span
-                                            class="h-[24px] w-[24px] rounded-full bg-[var(--wb-bg-panel)]"
+                                            class="h-[16px] w-[16px] rounded-full bg-[var(--wb-bg-panel)]"
                                         />
                                     </span>
                                 </button>
 
                                 <div class="relative">
                                     <button
-                                        class="h-11 w-full flex items-center justify-between rounded-[10px] border-none px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                        class="h-9 w-full flex items-center justify-between rounded-[9px] border-none px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                         :class="isSpeedMenuOpen ? 'bg-[var(--wb-hover-bg)]' : 'bg-transparent'"
                                         @click="toggleSpeedMenu"
                                     >
                                         <span class="inline-flex items-center gap-2">
                                             <Icon
                                                 name="ph:lightning-fill"
-                                                class="h-[15px] w-[15px]"
+                                                class="h-[13px] w-[13px]"
                                             />
                                             Speed
                                         </span>
                                         <Icon
                                             name="ph:caret-right-bold"
-                                            class="h-[12px] w-[12px]"
+                                            class="h-[10px] w-[10px]"
                                         />
                                     </button>
 
