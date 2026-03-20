@@ -26,7 +26,7 @@ const openMenuKey = ref<
 
 const executionOptions: MenuOption[] = [
     { key: "local", label: "Local Project", icon: "ph:laptop" },
-    { key: "cloud", label: "Cloud", icon: "ph:cloud-bold" },
+    { key: "cloud", label: "Cloud", icon: "ph:cloud" },
 ];
 
 const accessOptions: MenuOption[] = [
@@ -527,7 +527,7 @@ const contextUsedLabel = computed(() =>
                         >
                             <span class="inline-flex items-center gap-2.5">
                                 <Icon
-                                    name="ph:gauge-bold"
+                                    name="ph:speedometer"
                                     class="h-[14px] w-[14px]"
                                 />
                                 Remaining rate limits
