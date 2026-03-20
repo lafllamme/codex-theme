@@ -173,7 +173,9 @@ export function codexWorkbenchCssVars(
 
     '--wb-diff-delta-added': diffAdded,
     '--wb-diff-delta-removed': diffRemoved,
-    '--wb-access-warn': `color-mix(in srgb, ${accent} 55%, #f59f44 45%)`,
+    '--wb-access-warn': variant === 'dark'
+      ? `color-mix(in srgb, #f59f44 ${Math.round(82 - t * 12)}%, ${ink} ${Math.round(18 + t * 12)}%)`
+      : `color-mix(in srgb, #f59f44 ${Math.round(74 - t * 10)}%, ${ink} ${Math.round(26 + t * 10)}%)`,
     '--wb-row-active-bg': `color-mix(in srgb, ${ink} 10%, transparent)`,
     '--wb-row-active-border': `color-mix(in srgb, ${ink} 16%, transparent)`,
     '--wb-terminal-prompt': `color-mix(in srgb, ${ink} 52%, transparent)`,
