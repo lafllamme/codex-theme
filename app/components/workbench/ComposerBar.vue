@@ -56,6 +56,12 @@ const planningModeEnabled = ref(false);
 const selectedSpeed = ref<"standard" | "fast">("standard");
 const isSpeedMenuOpen = ref(false);
 const branchSearch = ref("");
+const contextUsagePercent = 87;
+const contextUsedTokens = 226000;
+const contextTotalTokens = 258000;
+const contextProgressStroke = computed(() =>
+    `${Math.max(0, Math.min(100, contextUsagePercent))} 100`,
+);
 
 const normalizedThinkingOptions = computed(() => {
     const defaults = ["Low", "Medium", "High", "Very high"];
@@ -147,6 +153,10 @@ function selectSpeed(mode: "standard" | "fast") {
     selectedSpeed.value = mode;
     isSpeedMenuOpen.value = false;
 }
+
+const contextUsedLabel = computed(() =>
+    `${Math.round(contextUsedTokens / 1000)}k / ${Math.round(contextTotalTokens / 1000)}k Tokens`,
+);
 </script>
 
 <template>
@@ -690,13 +700,64 @@ function selectSpeed(mode: "standard" | "fast") {
                     </div>
                 </ComposerDropdownMenu>
 
-                <span
-                    aria-hidden="true"
-                    class="relative inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[conic-gradient(from_24deg,color-mix(in_srgb,var(--wb-text-secondary)_42%,transparent)_0deg_302deg,color-mix(in_srgb,var(--wb-text-primary)_56%,var(--wb-text-secondary)_44%)_302deg_360deg)]"
-                >
+                <span class="relative inline-flex items-center">
                     <span
-                        class="h-[11px] w-[11px] rounded-full bg-[var(--wb-bg-panel)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-text-secondary)_20%,transparent)]"
-                    />
+                        class="group/context relative inline-flex h-[16px] w-[16px] items-center justify-center rounded-full"
+                    >
+                        <svg
+                            aria-hidden="true"
+                            viewBox="0 0 20 20"
+                            class="h-[16px] w-[16px] -rotate-90"
+                        >
+                            <circle
+                                cx="10"
+                                cy="10"
+                                r="7"
+                                fill="none"
+                                stroke-width="2.4"
+                                pathLength="100"
+                                style="stroke: color-mix(in srgb, var(--wb-text-secondary) 34%, transparent)"
+                                stroke-dasharray="100 100"
+                            />
+                            <circle
+                                cx="10"
+                                cy="10"
+                                r="7"
+                                fill="none"
+                                stroke-width="2.4"
+                                stroke-linecap="round"
+                                pathLength="100"
+                                :style="{ stroke: 'color-mix(in srgb, var(--wb-text-primary) 62%, var(--wb-text-secondary) 38%)' }"
+                                :stroke-dasharray="contextProgressStroke"
+                            />
+                        </svg>
+
+                        <span
+                            class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 min-w-[140px] max-w-[180px] border border-[color:var(--wb-border-2)] rounded-[16px] bg-[var(--wb-bubble-bg)] px-1 py-3 text-center opacity-0 shadow-[0_12px_28px_rgba(0,0,0,0.2)] backdrop-blur-[14px] transition-[opacity,transform] duration-150 -translate-x-1/2 -translate-y-1 group-hover/context:translate-y-0 group-hover/context:opacity-100"
+                        >
+                            <p class="m-0 text-[11px] leading-[1.25] text-[color:var(--wb-text-muted)]">
+                                Context window:
+                            </p>
+                            <p class="mt-1 m-0 text-[13px] leading-[1.25] text-[color:var(--wb-text-muted)]">
+                                {{ contextUsagePercent }}% full
+                            </p>
+                            <p class="mt-2 m-0 text-[13px] leading-[1.3] text-[color:var(--wb-text-primary)]">
+                                {{ contextUsedLabel }}
+                            </p>
+                            <p class="m-0 text-[13px] leading-[1.3] text-[color:var(--wb-text-primary)]">
+                                used
+                            </p>
+                            <p class="mt-2 m-0 text-[13px] leading-[1.3] text-[color:var(--wb-text-primary)]">
+                                Codex compresses
+                            </p>
+                            <p class="m-0 text-[13px] leading-[1.3] text-[color:var(--wb-text-primary)]">
+                                its context
+                            </p>
+                            <p class="m-0 text-[13px] leading-[1.3] text-[color:var(--wb-text-primary)]">
+                                automatically.
+                            </p>
+                        </span>
+                    </span>
                 </span>
             </span>
         </div>
