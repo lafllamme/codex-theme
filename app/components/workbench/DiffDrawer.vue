@@ -167,7 +167,14 @@ function lineMarkerStyle(line: DiffLine) {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  transition: border-color 180ms ease;
+  opacity: 0;
+  transform: translateX(12px);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color 180ms ease;
+  will-change: opacity, transform;
 }
 
 .diff-line-row {
@@ -183,6 +190,9 @@ function lineMarkerStyle(line: DiffLine) {
 }
 
 .diff-drawer--open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
   border-color: var(--wb-border-1);
 }
 
@@ -220,7 +230,7 @@ function lineMarkerStyle(line: DiffLine) {
     pointer-events: none;
     transition:
       opacity 220ms ease,
-      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
       border-color 180ms ease;
   }
 

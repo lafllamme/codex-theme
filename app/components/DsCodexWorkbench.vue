@@ -361,21 +361,35 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .diff-column {
+  --wb-diff-size: min(41vw, 520px);
   width: 0;
+  flex: 0 0 0;
+  flex-basis: 0;
   min-width: 0;
   max-width: 100%;
   margin-left: 0;
   flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(10px);
+  pointer-events: none;
   transition:
+    flex-basis 260ms var(--wb-sidebar-ease),
     width 260ms var(--wb-sidebar-ease),
-    margin-left 220ms var(--wb-sidebar-ease);
+    max-width 260ms var(--wb-sidebar-ease),
+    margin-left 220ms var(--wb-sidebar-ease),
+    opacity 220ms ease,
+    transform 260ms var(--wb-sidebar-ease);
 }
 
 .diff-column--open {
-  width: min(41vw, 520px);
+  width: var(--wb-diff-size);
   max-width: min(520px, 100%);
-  flex: 0 0 min(41vw, 520px);
+  flex: 0 0 var(--wb-diff-size);
+  flex-basis: var(--wb-diff-size);
   margin-left: -1px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
 }
 
 @media (max-width: 1180px) {
