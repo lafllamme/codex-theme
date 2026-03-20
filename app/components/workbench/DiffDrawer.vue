@@ -109,7 +109,7 @@ watch(
 </script>
 
 <template>
-  <aside class="diff-drawer max-w-full overflow-hidden border border-transparent rounded-[var(--wb-r-md)] bg-[var(--wb-bg-diff-chrome)]" :class="open ? 'diff-drawer--open' : ''">
+  <aside class="diff-drawer max-w-full overflow-hidden border-l border-l-[color:var(--wb-border-1)] rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
     <header class="h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:var(--wb-text-primary)]">
       <div class="inline-flex items-center gap-2">
         <span class="font-medium">Nicht gestagt</span>

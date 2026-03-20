@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
 import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
@@ -208,16 +209,9 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
       <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? 'wb-main-area--collapsed' : 'wb-main-area--open'">
         <div class="wb-main-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-          <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
-            <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
-              <ChatWindow
-                v-model:selected-model="selectedModel"
-                v-model:selected-thinking="selectedThinking"
-                v-model:compose-value="composeValue"
-                v-model:worktree-modal-open="isWorktreeModalOpen"
-                v-model:worktree-branch="worktreeBranch"
-                class="min-h-0 flex-1 transition-[border-radius,border-color] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                :class="isDiffOpen ? 'rounded-r-none border-r-0' : ''"
+          <section class="wb-chat-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
+            <div class="px-[12px] pt-[9px]">
+              <ChatHeaderBar
                 title="Open Vue-Bits Dither Sei..."
                 repo="codex-theme"
                 :is-sidebar-collapsed="isSidebarCollapsed"
@@ -225,28 +219,54 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
                 :is-terminal-open="isTerminalOpen"
                 :is-diff-open="isDiffOpen"
                 :is-pip-enabled="isPipEnabled"
-                :model-options="modelOptions"
-                :thinking-options="thinkingOptions"
-                :messages="activeMessages"
                 @toggle-run="runEnabled = !runEnabled"
                 @toggle-terminal="toggleTerminal"
                 @toggle-diff="toggleDiff"
                 @toggle-pip="togglePip"
+                @open-worktree="isWorktreeModalOpen = true"
                 @open-git-action="openGitActionModal"
               />
             </div>
-            <div
-              class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
-              :class="isDiffOpen ? 'diff-column--open' : ''"
-            >
-              <DiffDrawer
-                class="min-h-0 min-w-0 flex-1"
-                :open="isDiffOpen"
-                :accent="payload.theme.accent"
-                :contrast="payload.theme.contrast"
-              />
+            <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden border-t border-[color:var(--wb-border-1)]">
+              <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
+                <ChatWindow
+                  v-model:selected-model="selectedModel"
+                  v-model:selected-thinking="selectedThinking"
+                  v-model:compose-value="composeValue"
+                  v-model:worktree-modal-open="isWorktreeModalOpen"
+                  v-model:worktree-branch="worktreeBranch"
+                  class="min-h-0 flex-1"
+                  :show-header="false"
+                  title="Open Vue-Bits Dither Sei..."
+                  repo="codex-theme"
+                  :is-sidebar-collapsed="isSidebarCollapsed"
+                  :run-enabled="runEnabled"
+                  :is-terminal-open="isTerminalOpen"
+                  :is-diff-open="isDiffOpen"
+                  :is-pip-enabled="isPipEnabled"
+                  :model-options="modelOptions"
+                  :thinking-options="thinkingOptions"
+                  :messages="activeMessages"
+                  @toggle-run="runEnabled = !runEnabled"
+                  @toggle-terminal="toggleTerminal"
+                  @toggle-diff="toggleDiff"
+                  @toggle-pip="togglePip"
+                  @open-git-action="openGitActionModal"
+                />
+              </div>
+              <div
+                class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
+                :class="isDiffOpen ? 'diff-column--open' : ''"
+              >
+                <DiffDrawer
+                  class="min-h-0 min-w-0 flex-1"
+                  :open="isDiffOpen"
+                  :accent="payload.theme.accent"
+                  :contrast="payload.theme.contrast"
+                />
+              </div>
             </div>
-          </div>
+          </section>
 
           <TerminalDrawer
             :open="isTerminalOpen"

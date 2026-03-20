@@ -7,6 +7,7 @@ import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
 defineProps<{
   title: string
   repo: string
+  showHeader?: boolean
   isSidebarCollapsed: boolean
   runEnabled: boolean
   isTerminalOpen: boolean
@@ -33,8 +34,13 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 </script>
 
 <template>
-  <section class="wb-chat-window min-h-0 min-w-0 flex flex-1 flex-col border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
-    <div class="px-[12px] pt-[9px]">
+  <section
+    class="wb-chat-window min-h-0 min-w-0 flex flex-1 flex-col"
+    :class="showHeader !== false
+      ? 'border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]'
+      : 'bg-transparent'"
+  >
+    <div v-if="showHeader !== false" class="px-[12px] pt-[9px]">
       <ChatHeaderBar
         :title="title"
         :repo="repo"
