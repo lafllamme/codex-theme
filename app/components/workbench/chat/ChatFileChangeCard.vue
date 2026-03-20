@@ -30,6 +30,22 @@ function lineBackground(line: FileDiffLine) {
     return 'color-mix(in srgb, var(--wb-diff-delta-removed) 13%, transparent)'
   return 'transparent'
 }
+
+function lineMarkerClass(line: FileDiffLine) {
+  if (line.kind === 'add')
+    return 'border-l-2 border-l-[color:var(--wb-diff-delta-added)]'
+  if (line.kind === 'remove')
+    return 'border-l-2 border-l-[color:var(--wb-diff-delta-removed)]'
+  return 'border-l-2 border-l-transparent'
+}
+
+function lineMarkerStyle(line: FileDiffLine) {
+  if (line.kind === 'add')
+    return { borderLeftStyle: 'solid' }
+  if (line.kind === 'remove')
+    return { borderLeftStyle: 'dashed' }
+  return { borderLeftStyle: 'solid' }
+}
 </script>
 
 <template>
@@ -57,8 +73,7 @@ function lineBackground(line: FileDiffLine) {
           @click="selectFile(file)"
         >
           <div class="min-w-0 flex items-center gap-2">
-            <span class="truncate text-[12px] text-[color:var(--wb-text-secondary)]">{{ file.path }}</span>
-            <span class="text-[12px] text-[color:var(--wb-text-primary)] font-semibold">{{ file.fileName }}</span>
+            <span class="truncate text-[12px] text-[color:var(--wb-text-primary)]">{{ file.path }}</span>
           </div>
           <div class="ml-3 flex items-center gap-2">
             <span class="text-[11px] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
@@ -78,11 +93,11 @@ function lineBackground(line: FileDiffLine) {
           <div
             v-for="line in activeFile.lines"
             :key="`${file.id}-${line.left}-${line.right}-${line.text}`"
-            class="grid grid-cols-[36px_36px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
-            :style="{ background: lineBackground(line) }"
+            class="grid grid-cols-[44px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
+            :class="lineMarkerClass(line)"
+            :style="{ background: lineBackground(line), ...lineMarkerStyle(line) }"
           >
-            <span class="border-r border-[color:var(--wb-divider)] px-1.5 py-1 text-right text-[10px] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.left }}</span>
-            <span class="border-r border-[color:var(--wb-divider)] px-1.5 py-1 text-right text-[10px] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right }}</span>
+            <span class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[10px] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right || line.left }}</span>
             <span class="[overflow-wrap:anywhere] px-2 py-1 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
           </div>
         </div>
