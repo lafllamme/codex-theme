@@ -309,7 +309,7 @@ function selectSpeed(mode: "standard" | "fast") {
                         >
                             <template #trigger="{ toggle }">
                                 <button
-                                    class="h-[24px] inline-flex max-w-[220px] items-center gap-1 rounded-[7px] border border-solid border-transparent bg-transparent px-2 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] focus-visible:border-[color:var(--wb-hover-border)]"
+                                    class="h-[24px] inline-flex max-w-[220px] items-center gap-1 rounded-[999px] border border-solid border-transparent bg-transparent px-2.5 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] focus-visible:border-[color:var(--wb-hover-border)]"
                                     @click.stop="toggle"
                                 >
                                     <span class="truncate">{{
@@ -358,7 +358,7 @@ function selectSpeed(mode: "standard" | "fast") {
                         >
                             <template #trigger="{ toggle }">
                                 <button
-                                    class="h-[24px] inline-flex max-w-[160px] items-center gap-1 rounded-[7px] border border-transparent bg-transparent px-2 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] focus-visible:border-[color:var(--wb-hover-border)]"
+                                    class="h-[24px] inline-flex max-w-[160px] items-center gap-1 rounded-[999px] border border-transparent bg-transparent px-2.5 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] focus-visible:border-[color:var(--wb-hover-border)]"
                                     @click.stop="toggle"
                                 >
                                     <span class="truncate">{{
