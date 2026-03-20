@@ -28,7 +28,16 @@ const emit = defineEmits<{
 
 const RE_MD_HEADING = /^#+\s/
 const RE_STAGING = /zurücksetzen|stagen/i
+const RE_DELTA_PARTS = /[+-]\d+/g
 const titleHovered = ref(false)
+
+function deltaParts(delta: string) {
+  const matches = delta.match(RE_DELTA_PARTS) ?? []
+  return {
+    added: matches.find(part => part.startsWith('+')) ?? '',
+    removed: matches.find(part => part.startsWith('-')) ?? '',
+  }
+}
 
 function lineSyntaxVar(text: string) {
   const t = text.trim()
@@ -59,7 +68,7 @@ function lineMarkerStyle(line: DiffLine) {
 </script>
 
 <template>
-  <section class="mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-bubble-bg)] last:mb-0">
+  <section class="mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)] last:mb-0">
     <div class="group relative z-0">
       <span
         class="pointer-events-none absolute bottom-full z-[120] mb-1 max-w-[calc(100%-12px)] inline-flex translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160 -left-2"
@@ -74,13 +83,24 @@ function lineMarkerStyle(line: DiffLine) {
       >
         <div class="min-w-0 inline-flex items-center gap-2">
           <span
-            class="truncate text-[12px] text-[color:var(--wb-text-primary)]"
+            class="truncate text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-primary)]"
             @mouseenter.stop="titleHovered = true"
             @mouseleave.stop="titleHovered = false"
           >
             {{ section.path }}
           </span>
-          <span class="text-[12px] text-[var(--theme-added)] font-[var(--font-code)]">{{ section.delta }}</span>
+          <span
+            v-if="deltaParts(section.delta).added"
+            class="text-[length:var(--wb-ui-text-2xs)] text-[var(--theme-added)] font-[var(--font-code)]"
+          >
+            {{ deltaParts(section.delta).added }}
+          </span>
+          <span
+            v-if="deltaParts(section.delta).removed"
+            class="text-[length:var(--wb-ui-text-2xs)] text-[var(--theme-removed)] font-[var(--font-code)]"
+          >
+            {{ deltaParts(section.delta).removed }}
+          </span>
           <span
             v-if="showStatusDot ?? section.showDot"
             class="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--theme-accent)]"
@@ -113,7 +133,7 @@ function lineMarkerStyle(line: DiffLine) {
       <div
         v-for="line in section.lines"
         :key="`${section.path}-${line.left}-${line.right}-${line.text}`"
-        class="diff-line-row grid gap-0 px-0 text-[13px] leading-[1.65]"
+        class="diff-line-row grid gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
         :class="line.kind === 'added'
           ? 'bg-[color:color-mix(in_srgb,var(--theme-added)_17%,transparent)]'
           : line.kind === 'removed'

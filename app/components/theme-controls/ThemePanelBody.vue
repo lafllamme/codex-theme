@@ -8,6 +8,7 @@ type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | '
 
 const props = defineProps<{
   payload: CodexThemePayload
+  codeThemeOptions: string[]
   jsonValue: string
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
@@ -30,6 +31,7 @@ const emit = defineEmits<{
   setDiffAdded: [value: string]
   setDiffRemoved: [value: string]
   setSkill: [value: string]
+  setCodeThemeId: [value: string]
   setUiFont: [value: string]
   setCodeFont: [value: string]
   setContrast: [value: number]
@@ -146,6 +148,20 @@ function onCodeFontSelect(event: Event) {
   if (!target)
     return
   emit('setCodeFont', target.value)
+}
+
+function onCodeThemeSelect(event: Event) {
+  const target = event.target as HTMLSelectElement | null
+  if (!target)
+    return
+  emit('setCodeThemeId', target.value)
+}
+
+function onCodeThemeInput(event: Event) {
+  const target = event.target as HTMLInputElement | null
+  if (!target)
+    return
+  emit('setCodeThemeId', target.value)
 }
 </script>
 
@@ -336,6 +352,30 @@ function onCodeFontSelect(event: Event) {
           <span class="hex-value text-[14px] text-pureBlack/55 w-8 text-right">{{ payload.theme.contrast }}</span>
         </div>
 
+        <!-- Code theme selection -->
+        <div>
+          <div class="grid w-full grid-cols-1 gap-0 mb-1.5">
+            <span class="px-1 text-[13px] text-pureBlack/50">Code theme</span>
+          </div>
+          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
+            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
+              <select
+                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
+                :value="payload.codeThemeId"
+                @change="onCodeThemeSelect"
+              >
+                <option
+                  v-for="option in codeThemeOptions"
+                  :key="option"
+                  :value="option"
+                >
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- Size inputs -->
         <div>
           <div class="grid w-full grid-cols-2 gap-0 mb-1.5">
@@ -400,6 +440,18 @@ function onCodeFontSelect(event: Event) {
       </button>
 
       <div v-show="jsonOpen" class="space-y-2">
+        <div class="border border-pureBlack/10 bg-pureWhite text-pureBlack/75 rounded-xl px-3 py-2.5 font-mono text-[12px] shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="text-pureBlack/45">&quot;codeThemeId&quot;:</span>
+            <span class="text-pureBlack/45">&quot;</span>
+            <input
+              class="min-w-0 flex-1 bg-transparent border-none outline-none text-pureBlack/90 tracking-wide"
+              :value="payload.codeThemeId"
+              @input="onCodeThemeInput"
+            >
+            <span class="text-pureBlack/45">&quot;</span>
+          </div>
+        </div>
         <textarea
           class="border border-pureBlack/10 bg-pureWhite text-pureBlack/80 focus:border-pureBlack/20 min-h-52 w-full resize-y rounded-xl p-3 text-[12px] font-mono leading-relaxed outline-none shadow-sm"
           rows="10"
@@ -415,13 +467,13 @@ function onCodeFontSelect(event: Event) {
 </template>
 
 <style scoped>
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 </style>

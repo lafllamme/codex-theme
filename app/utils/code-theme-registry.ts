@@ -28,3 +28,11 @@ export const OFFICIAL_CODE_THEME_IDS = [
 export type OfficialCodeThemeId = (typeof OFFICIAL_CODE_THEME_IDS)[number]
 
 export const DEFAULT_CODE_THEME_ID: OfficialCodeThemeId = 'monokai'
+
+const OFFICIAL_CODE_THEME_SET = new Set<string>(OFFICIAL_CODE_THEME_IDS)
+
+export function isOfficialCodeThemeId(value: string | null | undefined): value is OfficialCodeThemeId {
+  if (!value)
+    return false
+  return OFFICIAL_CODE_THEME_SET.has(value)
+}

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import { themePresetEntries } from '~/data/theme-preset-catalog'
+import { isOfficialCodeThemeId, OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
 import { recommendCodeThemeId } from '~/utils/code-theme-syntax'
 import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
@@ -97,6 +98,7 @@ const scenarioOptions = [
   { id: 'high-contrast', label: 'High contrast' },
   { id: 'panel-combo', label: 'Panel combo' },
 ]
+const codeThemeOptions = [...OFFICIAL_CODE_THEME_IDS]
 
 const knownTopLevelKeys = new Set(['codeThemeId', 'theme', 'variant'])
 const knownThemeKeys = new Set(['accent', 'contrast', 'fonts', 'ink', 'opaqueWindows', 'semanticColors', 'surface'])
@@ -120,10 +122,12 @@ const themePageFontStyle = computed(() => ({
 }))
 
 function toExportObject() {
-  const normalizedCodeThemeId = recommendCodeThemeId(payload)
+  const exportCodeThemeId = isOfficialCodeThemeId(payload.codeThemeId)
+    ? payload.codeThemeId
+    : recommendCodeThemeId(payload)
   return {
     ...extraTopLevel.value,
-    codeThemeId: normalizedCodeThemeId,
+    codeThemeId: exportCodeThemeId,
     theme: {
       ...extraTheme.value,
       accent: payload.theme.accent,
@@ -221,7 +225,7 @@ function parsePayload(rawValue: string): {
 }
 
 function applyPayload(next: CodexThemePayload) {
-  payload.codeThemeId = recommendCodeThemeId(next)
+  payload.codeThemeId = next.codeThemeId
   payload.variant = next.variant
   payload.theme.accent = next.theme.accent
   payload.theme.contrast = next.theme.contrast
@@ -316,6 +320,10 @@ function setSkill(value: string) {
   payload.theme.semanticColors.skill = value
 }
 
+function setCodeThemeId(value: string) {
+  payload.codeThemeId = value.trim()
+}
+
 function setUiFont(value: string) {
   payload.theme.fonts.ui = value.trim() ? value.trim() : null
 }
@@ -393,9 +401,6 @@ function setScenario(next: string) {
 watch(
   payload,
   () => {
-    const recommendedCodeThemeId = recommendCodeThemeId(payload)
-    if (payload.codeThemeId !== recommendedCodeThemeId)
-      payload.codeThemeId = recommendedCodeThemeId
     syncJsonFromPayload()
   },
   { deep: true },
@@ -421,6 +426,7 @@ onMounted(() => {
         />
         <DsThemeControlsBar
           :payload="payload"
+          :code-theme-options="codeThemeOptions"
           :json-value="jsonValue"
           :json-error="jsonError"
           :copy-state="copyState"
@@ -441,6 +447,7 @@ onMounted(() => {
           @set-diff-added="setDiffAdded"
           @set-diff-removed="setDiffRemoved"
           @set-skill="setSkill"
+          @set-code-theme-id="setCodeThemeId"
           @set-ui-font="setUiFont"
           @set-code-font="setCodeFont"
           @set-contrast="setContrast"

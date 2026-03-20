@@ -1,6 +1,6 @@
 import type { CodexThemePayload } from '~/types/codex-theme'
 import type { OfficialCodeThemeId } from '~/utils/code-theme-registry'
-import { DEFAULT_CODE_THEME_ID, OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
+import { DEFAULT_CODE_THEME_ID, isOfficialCodeThemeId, OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
 
 export interface SyntaxTokenSet {
   default: string
@@ -242,5 +242,8 @@ export function recommendCodeThemeId(payload: CodexThemePayload): OfficialCodeTh
 }
 
 export function resolveSyntaxTokenSet(payload: CodexThemePayload): SyntaxTokenSet {
-  return normalizedTokens(payload, recommendCodeThemeId(payload))
+  const themeId = isOfficialCodeThemeId(payload.codeThemeId)
+    ? payload.codeThemeId
+    : recommendCodeThemeId(payload)
+  return normalizedTokens(payload, themeId)
 }

@@ -6,6 +6,7 @@ import ThemePanelBody from '~/components/theme-controls/ThemePanelBody.vue'
 
 defineProps<{
   payload: CodexThemePayload
+  codeThemeOptions: string[]
   jsonValue: string
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
@@ -28,6 +29,7 @@ const emit = defineEmits<{
   setDiffAdded: [value: string]
   setDiffRemoved: [value: string]
   setSkill: [value: string]
+  setCodeThemeId: [value: string]
   setUiFont: [value: string]
   setCodeFont: [value: string]
   setContrast: [value: number]
@@ -157,12 +159,12 @@ const morphStyle = computed(() => ({
                 <Icon name="ph:x-bold" class="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-            
 
             <!-- Scrollable body -->
             <div class="space-y-4 overflow-y-auto overflow-x-hidden px-5 pb-5" style="max-height: calc(85vh - 72px);">
               <ThemePanelBody
                 :payload="payload"
+                :code-theme-options="codeThemeOptions"
                 :json-value="jsonValue"
                 :json-error="jsonError"
                 :copy-state="copyState"
@@ -182,6 +184,7 @@ const morphStyle = computed(() => ({
                 @set-diff-added="emit('setDiffAdded', $event)"
                 @set-diff-removed="emit('setDiffRemoved', $event)"
                 @set-skill="emit('setSkill', $event)"
+                @set-code-theme-id="emit('setCodeThemeId', $event)"
                 @set-ui-font="emit('setUiFont', $event)"
                 @set-code-font="emit('setCodeFont', $event)"
                 @set-contrast="emit('setContrast', $event)"
@@ -216,8 +219,7 @@ const morphStyle = computed(() => ({
 .theme-panel-font-lock .font-mono,
 .theme-panel-font-lock .hex-value,
 .theme-panel-font-lock .hex-input,
-.theme-panel-font-lock input[type="number"] {
+.theme-panel-font-lock input[type='number'] {
   font-family: 'Geist Mono', ui-monospace, monospace !important;
 }
-
 </style>
