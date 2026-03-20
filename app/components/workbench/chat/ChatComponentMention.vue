@@ -8,9 +8,9 @@ defineProps<{
 
 <template>
   <div class="group relative py-0.5">
-    <div class="flex items-start gap-2.5">
-      <span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[color-mix(in_srgb,var(--theme-accent)_78%,white_22%)]" />
-      <p class="text-[13px] text-[color:var(--wb-text-primary)] leading-[1.45]">
+    <div class="flex items-baseline gap-2.5">
+      <span class="mt-[1px] h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-secondary)]" />
+      <p class="text-[13px] text-[color:var(--wb-text-primary)] leading-[1.5]">
         <span class="text-[color:var(--wb-text-secondary)]">{{ block.lead }}</span>
         <span class="mx-1 font-semibold text-[color:var(--theme-accent)]">{{ block.component }}</span>
         <span v-if="block.trail" class="text-[color:var(--wb-text-secondary)]">{{ block.trail }}</span>

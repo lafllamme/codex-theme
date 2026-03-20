@@ -29,8 +29,10 @@ function blockKey(block: AssistantBlock, index: number) {
         <article
           v-for="message in messages"
           :key="message.id"
-          class="max-w-[78%] border rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)] p-[12px_14px] text-[color:var(--wb-text-primary)] leading-[1.45]"
-          :class="message.role === 'user' ? 'self-end border-[color:var(--wb-border-3)]' : 'border-[color:var(--wb-border-2)]'"
+          class="max-w-[78%] rounded-[var(--wb-chat-bubble-radius)] p-[12px_14px] text-[color:var(--wb-text-primary)] leading-[1.45]"
+          :class="message.role === 'user'
+            ? 'self-end border border-[color:var(--wb-border-3)] bg-[var(--wb-bubble-bg)]'
+            : 'border-none bg-transparent'"
           :style="message.role === 'user' ? { borderColor: 'color-mix(in srgb, var(--theme-accent) 22%, var(--wb-border-3))' } : undefined"
         >
           <p v-if="message.role === 'user'" class="whitespace-pre-line">
