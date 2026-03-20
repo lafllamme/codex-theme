@@ -52,7 +52,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <div ref="rootRef" class="relative inline-flex">
-    <div class="group h-8 inline-flex items-center border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]">
+    <div class="group commit-chip-shell h-8 inline-flex items-center rounded-[11px] text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] transition-colors">
       <button
         class="h-full inline-flex items-center gap-1 rounded-l-[10px] border-none bg-transparent px-2 text-[color:var(--wb-text-primary)] outline-none transition-colors"
         @click.stop="triggerPrimary"
@@ -93,3 +93,15 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.commit-chip-shell {
+  border: 1px solid var(--wb-chip-ghost-border);
+  background: var(--wb-chip-ghost-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--wb-chip-ghost-border) 42%, transparent);
+}
+
+.commit-chip-shell:hover {
+  background: var(--wb-chip-ghost-bg-hover);
+}
+</style>
