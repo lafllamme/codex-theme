@@ -34,7 +34,7 @@ const modelOptions = [
   'GPT-5.1-Codex-Max',
   'GPT-5.1-Codex-Mini',
 ]
-const thinkingOptions = ['Low', 'Medium', 'High']
+const thinkingOptions = ['Low', 'Medium', 'High', 'Very high']
 
 const selectedModel = ref(
   modelOptions.find(option => option === 'GPT-5.3-Codex')

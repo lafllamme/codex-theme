@@ -8,7 +8,7 @@ interface MenuOption {
     disabled?: boolean;
 }
 
-defineProps<{
+const props = defineProps<{
     modelOptions: string[];
     thinkingOptions: string[];
 }>();
@@ -52,6 +52,16 @@ const selectedExecution = ref("local");
 const selectedAccess = ref("full");
 const selectedBranch = ref("main");
 const branchSearch = ref("");
+
+const normalizedThinkingOptions = computed(() => {
+    const defaults = ["Low", "Medium", "High", "Very high"];
+    const source = props.thinkingOptions.length ? props.thinkingOptions : defaults;
+    const merged = [...source];
+    for (const option of defaults) {
+        if (!merged.includes(option)) merged.push(option);
+    }
+    return merged;
+});
 
 const branchItems = [
     {
@@ -171,7 +181,7 @@ function selectBranch(option: string) {
                             </template>
 
                             <p
-                                class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold"
+                                class="mb-2 px-2 text-[17px] leading-[1.2] text-[color:var(--wb-text-muted)] font-normal"
                             >
                                 Select model
                             </p>
@@ -181,7 +191,7 @@ function selectBranch(option: string) {
                                     :key="option"
                                 >
                                     <button
-                                        class="h-9 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2 text-left text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                        class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                         @click="selectModel(option)"
                                     >
                                         <span class="truncate">{{
@@ -220,13 +230,13 @@ function selectBranch(option: string) {
                             </template>
 
                             <p
-                                class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold"
+                                class="mb-2 px-2 text-[17px] leading-[1.2] text-[color:var(--wb-text-muted)] font-normal"
                             >
                                 Select reasoning
                             </p>
                             <ul class="grid m-0 list-none gap-1 p-0">
                                 <li
-                                    v-for="option in thinkingOptions"
+                                    v-for="option in normalizedThinkingOptions"
                                     :key="option"
                                 >
                                     <button
