@@ -90,8 +90,8 @@ function handleCommitPrimaryAction(actionKey: string) {
   >
     <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
       <div class="min-w-0 inline-flex items-center gap-1 overflow-hidden">
-        <strong class="chat-header-title min-w-0 truncate text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-none">{{ title }}</strong>
-        <span class="chat-header-repo min-w-0 truncate text-[13px] text-[color:var(--wb-text-muted)] leading-none">{{ repo }}</span>
+        <strong class="chat-header-title min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none">{{ title }}</strong>
+        <span class="chat-header-repo min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-none">{{ repo }}</span>
       </div>
       <button class="h-5 w-5 inline-flex shrink-0 appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
         <Icon name="ph:dots-three-bold" class="h-[13px] w-[13px]" />
@@ -109,7 +109,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]" @click="emit('openWorktree')">
+      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]" @click="emit('openWorktree')">
         <Icon name="ph:arrows-left-right" class="h-[14px] w-[14px]" />
         Move to Worktree
       </button>
@@ -137,7 +137,7 @@ function handleCommitPrimaryAction(actionKey: string) {
         @click="emit('toggleDiff')"
       >
         <Icon name="hugeicons:plus-minus-square-01" class="h-[14px] w-[14px]" />
-        <span class="text-[11px] leading-none font-[var(--font-ui)] tabular-nums">
+        <span class="text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums">
           <span class="text-[color:var(--wb-diff-delta-added)]">+836</span>
           <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">1.068</span>

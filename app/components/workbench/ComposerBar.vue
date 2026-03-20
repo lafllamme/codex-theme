@@ -451,7 +451,7 @@ function selectSpeed(mode: "standard" | "fast") {
         </footer>
 
         <div
-            class="mt-1 flex items-center justify-between px-1 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
+            class="mt-1 flex items-center justify-between px-1 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
         >
             <div class="inline-flex items-center gap-3">
                 <ComposerDropdownMenu
@@ -470,7 +470,7 @@ function selectSpeed(mode: "standard" | "fast") {
                                 name="ph:laptop"
                                 class="h-[16px] w-[16px]"
                             />
-                            <span class="text-[12px]">{{
+                            <span>{{
                                 selectedExecutionLabel
                             }}</span>
                             <Icon
@@ -546,7 +546,7 @@ function selectSpeed(mode: "standard" | "fast") {
                                 name="ph:shield-warning"
                                 class="h-[16px] w-[16px]"
                             />
-                            <span class="text-[12px] font-normal">{{
+                            <span class="font-normal">{{
                                 selectedAccessLabel
                             }}</span>
                             <Icon
@@ -600,7 +600,7 @@ function selectSpeed(mode: "standard" | "fast") {
                                 name="ph:git-branch-bold"
                                 class="h-[16px] w-[16px]"
                             />
-                            <span class="text-[12px] font-normal">{{
+                            <span class="font-normal">{{
                                 selectedBranch
                             }}</span>
                             <Icon

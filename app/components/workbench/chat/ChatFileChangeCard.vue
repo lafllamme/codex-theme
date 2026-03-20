@@ -52,12 +52,12 @@ function lineMarkerStyle(line: FileDiffLine) {
 <template>
   <section class="overflow-visible border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)]">
     <div class="flex items-center justify-between border-b border-[color:var(--wb-divider)] px-3 py-2">
-      <div class="flex items-center gap-2 text-[12px] font-medium">
+      <div class="flex items-center gap-2 text-[length:var(--wb-ui-text-xs)] font-medium">
         <span class="text-[color:var(--wb-text-primary)]">{{ block.summaryLabel }}</span>
         <span class="text-[color:var(--wb-diff-delta-added)]">+{{ block.added }}</span>
         <span class="text-[color:var(--wb-diff-delta-removed)]">-{{ block.removed }}</span>
       </div>
-      <button class="inline-flex items-center gap-1 rounded-[7px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
+      <button class="inline-flex items-center gap-1 rounded-[7px] border-none bg-transparent px-1.5 py-1 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
         <Icon name="ph:arrow-counter-clockwise-bold" class="h-[11px] w-[11px]" />
         {{ block.revertLabel }}
       </button>
@@ -70,9 +70,9 @@ function lineMarkerStyle(line: FileDiffLine) {
         class="group relative z-0 border-b border-[color:var(--wb-divider)] last:border-b-0 hover:z-30"
       >
         <span
-          class="pointer-events-none absolute -left-2 bottom-full z-50 mb-1 inline-flex max-w-[calc(100%-12px)] translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160"
+          class="pointer-events-none absolute -left-2 bottom-full z-50 mb-1 inline-flex max-w-[calc(100%-12px)] translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160"
           :class="hoveredFileId === file.id ? 'translate-y-0 opacity-100' : ''"
-f        >
+        >
           {{ file.path }}
         </span>
         <button
@@ -82,14 +82,14 @@ f        >
         >
           <div class="min-w-0 flex items-center gap-2">
             <span
-              class="truncate text-[12px] text-[color:var(--wb-text-primary)]"
+              class="truncate text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-primary)]"
               @mouseenter.stop="hoveredFileId = file.id"
               @mouseleave.stop="hoveredFileId = ''"
             >
               {{ file.path }}
             </span>
-            <span class="shrink-0 text-[11px] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
-            <span class="shrink-0 text-[11px] text-[color:var(--wb-diff-delta-removed)]">-{{ file.removed }}</span>
+            <span class="shrink-0 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
+            <span class="shrink-0 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-diff-delta-removed)]">-{{ file.removed }}</span>
           </div>
           <div class="ml-3 flex items-center gap-2">
             <Icon
@@ -102,7 +102,7 @@ f        >
 
         <div
           v-if="file.id === openFileId && activeFile"
-          class="max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[color-mix(in_srgb,var(--wb-input-bg)_72%,transparent)] text-[12px] font-[var(--font-code)]"
+          class="max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[color-mix(in_srgb,var(--wb-input-bg)_72%,transparent)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
         >
           <div
             v-for="line in activeFile.lines"
@@ -111,7 +111,7 @@ f        >
             :class="lineMarkerClass(line)"
             :style="{ background: lineBackground(line), ...lineMarkerStyle(line) }"
           >
-            <span class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[10px] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right || line.left }}</span>
+            <span class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[length:calc(var(--wb-code-text)-2px)] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right || line.left }}</span>
             <span class="[overflow-wrap:anywhere] px-2 py-1 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
           </div>
         </div>
