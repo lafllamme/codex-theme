@@ -218,7 +218,7 @@ function selectSpeed(mode: "standard" | "fast") {
                                         :track-width="30"
                                         :track-height="18"
                                         :thumb-size="14"
-                                        on-class="bg-[color-mix(in_srgb,var(--wb-text-primary)_74%,transparent)]"
+                                        on-class="bg-[var(--wb-accent)]"
                                         off-class="bg-[color-mix(in_srgb,var(--wb-text-secondary)_24%,transparent)]"
                                         thumb-on-class="bg-[var(--wb-bg-panel)]"
                                         thumb-off-class="bg-[var(--wb-bg-panel)]"
@@ -407,6 +407,25 @@ function selectSpeed(mode: "standard" | "fast") {
                                 </li>
                             </ul>
                         </ComposerDropdownMenu>
+
+                        <div
+                            v-if="planningModeEnabled"
+                            class="ml-1 inline-flex items-center gap-2 pl-2"
+                        >
+                            <span
+                                aria-hidden="true"
+                                class="h-[22px] w-px bg-[color:var(--wb-divider)]"
+                            />
+                            <span
+                                class="inline-flex items-center gap-1.5 text-[13px] text-[var(--wb-accent)] font-normal"
+                            >
+                                <Icon
+                                    name="ph:list-checks-bold"
+                                    class="h-[14px] w-[14px] shrink-0 text-[var(--wb-accent)]"
+                                />
+                                Plan
+                            </span>
+                        </div>
                     </div>
 
                     <div class="inline-flex items-center gap-2">
