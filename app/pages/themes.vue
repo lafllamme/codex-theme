@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import { themePresetEntries } from '~/data/theme-preset-catalog'
+import { recommendCodeThemeId } from '~/utils/code-theme-syntax'
 import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
 definePageMeta({
@@ -119,9 +120,10 @@ const themePageFontStyle = computed(() => ({
 }))
 
 function toExportObject() {
+  const normalizedCodeThemeId = recommendCodeThemeId(payload)
   return {
     ...extraTopLevel.value,
-    codeThemeId: payload.codeThemeId,
+    codeThemeId: normalizedCodeThemeId,
     theme: {
       ...extraTheme.value,
       accent: payload.theme.accent,
@@ -219,7 +221,7 @@ function parsePayload(rawValue: string): {
 }
 
 function applyPayload(next: CodexThemePayload) {
-  payload.codeThemeId = next.codeThemeId
+  payload.codeThemeId = recommendCodeThemeId(next)
   payload.variant = next.variant
   payload.theme.accent = next.theme.accent
   payload.theme.contrast = next.theme.contrast
@@ -391,6 +393,9 @@ function setScenario(next: string) {
 watch(
   payload,
   () => {
+    const recommendedCodeThemeId = recommendCodeThemeId(payload)
+    if (payload.codeThemeId !== recommendedCodeThemeId)
+      payload.codeThemeId = recommendedCodeThemeId
     syncJsonFromPayload()
   },
   { deep: true },

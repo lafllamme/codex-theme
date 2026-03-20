@@ -1,4 +1,5 @@
 import type { CodexThemePayload } from '~/types/codex-theme'
+import { resolveSyntaxTokenSet } from '~/utils/code-theme-syntax'
 
 const HEX_RGB_RE = /^[\da-f]{6}$/i
 
@@ -12,6 +13,7 @@ export function codexWorkbenchCssVars(
   translucentSidebar: boolean,
 ): Record<string, string> {
   const { surface, ink, accent, contrast, opaqueWindows, semanticColors } = payload.theme
+  const syntax = resolveSyntaxTokenSet(payload)
   const variant = payload.variant
   const t = Math.min(100, Math.max(0, contrast)) / 100
 
@@ -188,14 +190,13 @@ export function codexWorkbenchCssVars(
       : `color-mix(in srgb, ${surface} 90%, black 10%)`,
     '--wb-popover-muted': `color-mix(in srgb, ${ink} 44%, transparent)`,
 
-    /* Code / diff line syntax — fallback from v1 until per-codeThemeId token JSON exists */
-    '--syntax-default': ink,
-    '--syntax-keyword': accent,
-    '--syntax-string': diffAdded,
-    '--syntax-comment': diffRemoved,
-    '--syntax-function': skill,
-    '--syntax-type': skill,
-    '--syntax-number': accent,
-    '--syntax-meta': `color-mix(in srgb, ${ink} 48%, transparent)`,
+    '--syntax-default': syntax.default,
+    '--syntax-keyword': syntax.keyword,
+    '--syntax-string': syntax.string,
+    '--syntax-comment': syntax.comment,
+    '--syntax-function': syntax.function,
+    '--syntax-type': syntax.type,
+    '--syntax-number': syntax.number,
+    '--syntax-meta': syntax.meta,
   }
 }

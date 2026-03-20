@@ -23,6 +23,20 @@ We convert themes from the popular [iTerm2-Color-Schemes](https://github.com/mba
 
 ## Adding New Themes
 
+### One-command workflow
+
+Run the complete theme pipeline with one command:
+
+```bash
+pnpm generate:themes
+```
+
+This executes:
+1. curated Codex preset generation
+2. iTerm2 conversion (with cleanup of previously generated non-curated presets)
+3. palette-based `codeThemeId` re-scoring across all presets
+4. resolver smoke test
+
 ### From iTerm2 Color Schemes
 
 1. Download `.itermcolors` files from [iTerm2-Color-Schemes/schemes](https://github.com/mbadolato/iTerm2-Color-Schemes/tree/master/schemes)
@@ -122,12 +136,15 @@ one           oscurange     rose-pine     sentry
 solarized     temple        tokyo-night   vscode-plus
 ```
 
-### Our Workaround
+### Current Mapping Strategy
 
-For all converted themes, we use:
-- **`"codeThemeId": "monokai"`** - a universally available Codex code theme
+We resolve `codeThemeId` by **color scoring**, not by preset name:
+- evaluate all 24 official themes
+- compute score from token contrast against `theme.surface`
+- add readability guard and semantic fit against `accent`, `diffAdded`, `diffRemoved`, `skill`
+- choose the highest-scoring official theme
 
-This allows themes to import successfully into Codex.
+This keeps imports valid in Codex and aligns syntax highlighting with the actual palette/contrast of the exported theme.
 
 ### Light-Colored Themes
 
@@ -171,10 +188,10 @@ codex-theme/
 
 **Cause:** Invalid `codeThemeId`
 
-**Fix:** Ensure `codeThemeId` is one of the valid values listed above. For custom themes, use `"monokai"` (dark) or `"github"` (light).
+**Fix:** Ensure `codeThemeId` is one of the valid values listed above. Use the palette-based resolver to auto-pick the best official theme.
 
 ### "Colors don't match the preview"
 
 **Cause:** The `codeThemeId` determines syntax highlighting independently of UI colors.
 
-**Explanation:** A theme can have a dark purple UI but still use `monokai` for syntax highlighting. This is a Codex architectural decision.
+**Explanation:** A theme can have one UI palette but another code-theme family for syntax highlighting. We now auto-map known families to reduce this mismatch while preserving Codex compatibility.

@@ -18,6 +18,7 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { assignFontsForTheme } from './font-assignment.mjs'
+import { recommendCodeThemeIdFromPayload } from './code-theme-resolver.mjs'
 
 const ITERM_SCHEMES_DIR = 'app/assets/themes-raw'
 const OUTPUT_DIR = 'app/assets/theme-presets'
@@ -151,28 +152,29 @@ function convertItermToCodex(itermPath) {
   const id = toKebabCase(filename)
   const fonts = assignFontsForTheme(id, variant)
   
-  // Use monokai as default codeThemeId - must be a valid Codex built-in code theme
-  const codeThemeId = 'monokai'
+  const themePayload = {
+    codeThemeId: 'monokai',
+    variant,
+    theme: {
+      accent,
+      contrast: 60,
+      fonts,
+      ink,
+      opaqueWindows: true,
+      semanticColors: {
+        diffAdded,
+        diffRemoved,
+        skill,
+      },
+      surface,
+    },
+  }
+  // Choose official code theme by token readability/contrast against this palette.
+  themePayload.codeThemeId = recommendCodeThemeIdFromPayload(themePayload)
   
   return {
     id,
-    payload: {
-      codeThemeId,
-      variant,
-      theme: {
-        accent,
-        contrast: 60,
-        fonts,
-        ink,
-        opaqueWindows: true,
-        semanticColors: {
-          diffAdded,
-          diffRemoved,
-          skill
-        },
-        surface
-      }
-    }
+    payload: themePayload,
   }
 }
 

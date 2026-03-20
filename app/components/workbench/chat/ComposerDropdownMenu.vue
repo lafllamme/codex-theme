@@ -5,9 +5,11 @@ const props = withDefaults(defineProps<{
   open: boolean
   menuClass?: string
   align?: 'left' | 'right'
+  direction?: 'up' | 'down'
 }>(), {
   menuClass: 'w-[220px]',
   align: 'left',
+  direction: 'up',
 })
 
 const emit = defineEmits<{
@@ -42,8 +44,12 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
     <div
       v-if="open"
-      class="absolute bottom-full z-40 mb-2 border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
-      :class="[align === 'right' ? 'right-0' : 'left-0', menuClass]"
+      class="absolute z-40 border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
+      :class="[
+        align === 'right' ? 'right-0' : 'left-0',
+        direction === 'up' ? 'bottom-full mb-2' : 'top-full mt-2',
+        menuClass,
+      ]"
     >
       <slot :close="close" />
     </div>

@@ -1,4 +1,5 @@
 import type { CodexThemePayload } from '~/types/codex-theme'
+import { recommendCodeThemeId } from '~/utils/code-theme-syntax'
 
 /**
  * Special labels for themes that need custom formatting
@@ -16,6 +17,7 @@ const LABELS: Record<string, string> = {
   '3024-night': '3024 Night',
   'vs-code': 'VS Code',
 }
+const PRESET_FILE_RE = /([^/]+)\.json$/
 
 /**
  * Convert kebab-case ID to Title Case label
@@ -48,11 +50,13 @@ export interface ThemePresetEntry {
  */
 export const themePresetEntries: ThemePresetEntry[] = Object.entries(modules)
   .map(([path, payload]) => {
-    const id = path.match(/([^/]+)\.json$/)?.[1] ?? ''
+    const id = path.match(PRESET_FILE_RE)?.[1] ?? ''
+    const normalizedPayload = structuredClone(payload)
+    normalizedPayload.codeThemeId = recommendCodeThemeId(normalizedPayload)
     return {
       id,
       label: labelForId(id),
-      payload: structuredClone(payload),
+      payload: normalizedPayload,
     }
   })
   .sort((a, b) => a.label.localeCompare(b.label))
