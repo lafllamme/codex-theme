@@ -35,6 +35,17 @@ function messageToPlainText(message: ChatMessage) {
   return message.text ?? ''
 }
 
+function firstFileChangeCardIndex(message: ChatMessage) {
+  if (!message.blocks?.length)
+    return -1
+  return message.blocks.findIndex(block => block.type === 'file_change_card')
+}
+
+function hasInlineCopyBeforeCard(message: ChatMessage) {
+  const firstCardIndex = firstFileChangeCardIndex(message)
+  return message.role === 'assistant' && firstCardIndex > 0
+}
+
 async function copyMessage(message: ChatMessage) {
   const payload = messageToPlainText(message).trim()
   if (!payload)
@@ -92,9 +103,16 @@ onBeforeUnmount(() => {
                 <p v-if="block.type === 'text'" class="m-0 whitespace-pre-line text-[13px] leading-[1.5]">
                   {{ block.text }}
                 </p>
-                <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
-                <div v-else-if="block.type === 'file_change_card'" class="my-3">
-                  <ChatFileChangeCard :block="block" />
+                <ChatComponentMention  v-else-if="block.type === 'component_mention'" :block="block" />
+                <div v-else-if="block.type === 'file_change_card'" class="mt-2">
+                  <button
+                    v-if="index === firstFileChangeCardIndex(message)"
+                    class=" inline-flex w-fit items-center rounded-[8px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-muted)] outline-none transition-[opacity,background-color,color] duration-150 hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
+                    @click="copyMessage(message)"
+                  >
+                    <Icon :name="copiedMessageId === message.id ? 'ph:check-bold' : 'ph:copy'" class="h-[13px] w-[13px]" />
+                  </button>
+                  <ChatFileChangeCard class="my-2" :block="block" />
                 </div>
               </template>
             </div>
@@ -104,14 +122,15 @@ onBeforeUnmount(() => {
           </article>
 
           <button
-            class="mt-1.5 inline-flex w-fit items-center gap-1 rounded-[8px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-muted)] outline-none transition-[opacity,background-color,color] duration-150 hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
-            :class="copiedMessageId === message.id ? 'opacity-100' : 'pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'"
+            v-if="!hasInlineCopyBeforeCard(message)"
+            class="inline-flex w-fit items-center gap-1 rounded-[8px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-muted)] outline-none transition-[opacity,background-color,color] duration-150 hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
+            :class="[
+              message.role === 'user' ? 'self-end' : 'self-start',
+              message.role === 'user' ? 'mt-0.5' : 'mt-0',
+            ]"
             @click="copyMessage(message)"
           >
             <Icon :name="copiedMessageId === message.id ? 'ph:check-bold' : 'ph:copy'" class="h-[13px] w-[13px]" />
-            <span class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-150 group-hover:max-w-[48px] group-hover:opacity-100">
-              Copy
-            </span>
           </button>
         </div>
       </div>
