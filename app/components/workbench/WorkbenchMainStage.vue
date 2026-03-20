@@ -44,7 +44,9 @@ function blockKey(block: AssistantBlock, index: number) {
                 {{ block.text }}
               </p>
               <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
-              <ChatFileChangeCard v-else-if="block.type === 'file_change_card'" :block="block" />
+              <div v-else-if="block.type === 'file_change_card'" class="my-2">
+                <ChatFileChangeCard :block="block" />
+              </div>
             </template>
           </div>
           <p v-else class="whitespace-pre-line">

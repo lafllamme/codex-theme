@@ -12,7 +12,7 @@ const activeFile = computed(() => {
 })
 
 function selectFile(file: FileChangeItem) {
-  openFileId.value = file.id
+  openFileId.value = openFileId.value === file.id ? '' : file.id
 }
 
 function lineTextColor(line: FileDiffLine) {
