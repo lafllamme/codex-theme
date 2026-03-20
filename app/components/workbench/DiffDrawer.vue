@@ -73,6 +73,22 @@ function lineSyntaxVar(text: string) {
     return 'var(--syntax-comment)'
   return 'var(--syntax-default)'
 }
+
+function lineMarkerClass(line: DiffLine) {
+  if (line.kind === 'added')
+    return 'border-l-2 border-l-[color:var(--theme-added)]'
+  if (line.kind === 'removed')
+    return 'border-l-2 border-l-[color:var(--theme-removed)]'
+  return 'border-l-2 border-l-transparent'
+}
+
+function lineMarkerStyle(line: DiffLine) {
+  if (line.kind === 'added')
+    return { borderLeftStyle: 'solid' }
+  if (line.kind === 'removed')
+    return { borderLeftStyle: 'dashed' }
+  return { borderLeftStyle: 'solid' }
+}
 </script>
 
 <template>
@@ -127,9 +143,9 @@ function lineSyntaxVar(text: string) {
               : line.kind === 'removed'
                 ? 'bg-[color:color-mix(in_srgb,var(--theme-removed)_16%,transparent)]'
                 : 'bg-transparent'"
+            :style="lineMarkerStyle(line)"
           >
-            <span class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums">{{ line.left }}</span>
-            <span class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right }}</span>
+            <span class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums" :class="lineMarkerClass(line)">{{ line.right || line.left }}</span>
             <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
           </div>
         </div>
@@ -155,7 +171,7 @@ function lineSyntaxVar(text: string) {
 }
 
 .diff-line-row {
-  grid-template-columns: 38px 38px minmax(0, 1fr);
+  grid-template-columns: 44px minmax(0, 1fr);
 }
 
 .diff-line-gutter {
