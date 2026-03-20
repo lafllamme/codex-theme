@@ -164,6 +164,10 @@ export function codexWorkbenchCssVars(
     '--wb-hover-bg': `color-mix(in srgb, ${ink} 8%, transparent)`,
     '--wb-hover-bg-strong': `color-mix(in srgb, ${ink} 11%, transparent)`,
     '--wb-hover-border': `color-mix(in srgb, ${ink} 14%, transparent)`,
+    '--wb-chip-ghost-bg': `color-mix(in srgb, ${ink} 6%, transparent)`,
+    '--wb-chip-ghost-bg-hover': `color-mix(in srgb, ${ink} 12%, transparent)`,
+    '--wb-chip-ghost-bg-active': `color-mix(in srgb, ${ink} 16%, transparent)`,
+    '--wb-chip-ghost-border': `color-mix(in srgb, ${ink} 18%, transparent)`,
     '--wb-chip-bg': variant === 'dark'
       ? `color-mix(in srgb, ${surface} 58%, black 42%)`
       : `color-mix(in srgb, ${surface} 85%, black 15%)`,

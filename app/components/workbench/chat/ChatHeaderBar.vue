@@ -101,7 +101,7 @@ function handleCommitPrimaryAction(actionKey: string) {
     <div class="chat-header-controls inline-flex items-center gap-1">
       <button
         class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
-        :class="runEnabled ? 'bg-[var(--wb-hover-bg-strong)] text-[color:var(--wb-text-primary)]' : ''"
+        :class="runEnabled ? 'bg-[var(--wb-chip-ghost-bg-active)] text-[color:var(--wb-text-primary)]' : ''"
         @click="emit('toggleRun')"
       >
         <Icon name="ph:play-bold" class="h-[14px] w-[14px]" />
@@ -109,7 +109,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-2 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-hover-bg-strong)]" @click="emit('openWorktree')">
+      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-2 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]" @click="emit('openWorktree')">
         <Icon name="ph:arrows-left-right" class="h-[14px] w-[14px]" />
         Move to Worktree
       </button>

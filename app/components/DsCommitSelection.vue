@@ -52,16 +52,16 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <div ref="rootRef" class="relative inline-flex">
-    <div class="h-8 inline-flex items-center border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset]">
+    <div class="group h-8 inline-flex items-center border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]">
       <button
-        class="h-full inline-flex items-center gap-1 rounded-l-[10px] border-none bg-transparent px-2 text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]"
+        class="h-full inline-flex items-center gap-1 rounded-l-[10px] border-none bg-transparent px-2 text-[color:var(--wb-text-primary)] outline-none transition-colors"
         @click.stop="triggerPrimary"
       >
         <Icon :name="selectedOption?.icon || 'ph:git-commit'" class="h-[14px] w-[14px]" />
         <span>{{ selectedOption?.label || 'Commit' }}</span>
       </button>
       <button
-        class="mr-1 h-[22px] w-[22px] inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        class="mr-1 h-[22px] w-[22px] inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors group-hover:text-[color:var(--wb-text-primary)]"
         aria-label="Open commit actions"
         @click.stop="toggleOpen"
       >

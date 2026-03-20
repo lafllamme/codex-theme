@@ -41,7 +41,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 <template>
   <div ref="rootRef" class="relative">
     <button
-      class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-border-2)] rounded-[11px] bg-[var(--wb-chip-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-border-2)_38%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-hover-bg-strong)]"
+      class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
       @click.stop="toggleOpen"
     >
       <span class="h-[24px] w-[24px] inline-flex items-center justify-center rounded-[7px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">

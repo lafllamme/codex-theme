@@ -11,24 +11,24 @@ const emit = defineEmits<{
 <template>
   <div class="inline-flex items-center gap-2">
     <button
-      class="border-white/[0.08] bg-black/[0.42] text-white/[0.75] hover:bg-white/[0.07] hover:text-white h-8 w-8 inline-flex items-center justify-center border rounded-[7px] transition-colors"
-      :class="runEnabled ? 'text-white bg-white/[0.09]' : ''"
+      class="h-8 w-8 inline-flex items-center justify-center border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)] hover:text-[color:var(--wb-text-primary)]"
+      :class="runEnabled ? 'text-[color:var(--wb-text-primary)] bg-[var(--wb-chip-ghost-bg-active)]' : ''"
       @click="emit('toggleRun')"
     >
       <Icon name="ph:play-bold" class="h-[14px] w-[14px]" />
     </button>
 
-    <button class="border-white/[0.1] bg-white/[0.03] text-white/[0.9] h-8 inline-flex items-center gap-1 border rounded-[8px] px-2 text-[12px]">
+    <button class="h-8 inline-flex items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-2 text-[12px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]">
       <Icon name="ph:caret-down-bold" class="h-3 w-3" />
       <Icon name="ph:waves-bold" class="h-3 w-3" />
     </button>
 
-    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] font-[var(--font-ui)] max-[1180px]:hidden">
+    <button class="h-8 inline-flex items-center gap-1.5 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] transition-colors max-[1180px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]">
       <Icon name="ph:arrows-left-right-bold" class="h-[13px] w-[13px]" />
       In Worktree verschieben
     </button>
 
-    <button class="border-white/[0.12] bg-white/[0.92] text-black/[0.9] h-8 inline-flex items-center gap-1.5 border rounded-[8px] px-2.5 text-[12px] font-[var(--font-ui)] max-[1180px]:hidden">
+    <button class="h-8 inline-flex items-center gap-1.5 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-2.5 text-[12px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] transition-colors max-[1180px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]">
       Commit
       <Icon name="ph:caret-down-bold" class="h-3 w-3" />
     </button>

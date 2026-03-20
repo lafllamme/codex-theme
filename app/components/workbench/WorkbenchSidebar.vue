@@ -123,7 +123,10 @@ function toggleRepo(repo: string) {
                       <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
                     </template>
                   </span>
-                  <span class="thread-row__time sidebar-label">{{ thread.time }}</span>
+                  <span class="sidebar-label relative inline-flex min-w-[72px] translate-x-[6px] items-center justify-end whitespace-nowrap text-right">
+                    <span class="text-[color:var(--wb-text-muted)] text-[length:var(--wb-sidebar-meta-size)] leading-[1.25] transition-opacity duration-150 group-hover:opacity-0">{{ thread.time }}</span>
+                    <Icon name="ph:archive" class="pointer-events-none absolute right-0 top-1/2 h-[14px] w-[14px] -translate-y-1/2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+                  </span>
                   <span class="thread-dot" />
                 </button>
               </div>
@@ -298,17 +301,6 @@ function toggleRepo(repo: string) {
 .thread-row__delta {
   min-height: 1em;
   text-align: right;
-}
-
-.thread-row__time {
-  min-width: 72px;
-  color: var(--wb-text-muted);
-  font-size: var(--wb-sidebar-meta-size);
-  font-weight: 400;
-  line-height: 1.25;
-  text-align: right;
-  white-space: nowrap;
-  transform: translateX(6px);
 }
 
 .settings-row {
