@@ -73,20 +73,20 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="grid grid-rows-[auto_1fr] min-h-0 min-w-0 flex-1 gap-2 px-[12.5%] max-[980px]:px-[20px] pb-[8px] pt-[8px]">
+  <main class="grid grid-rows-[auto_1fr] min-h-0 min-w-0 flex-1 gap-2 px-[var(--wb-chat-lane-inset)] pb-[8px] pt-[8px]">
     <div class="flex items-center gap-3 px-1 text-[12px] text-[color:var(--wb-text-faint)]">
       <span class="h-px flex-1 bg-[var(--wb-divider)]" />
       <span class="font-medium">1 previous message</span>
       <span class="h-px flex-1 bg-[var(--wb-divider)]" />
     </div>
 
-    <section class="wb-mainstage-scroll min-h-0 overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
+    <section class="wb-mainstage-scroll min-h-0 overflow-x-hidden overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
       <div class="flex flex-col gap-3">
         <div
           v-for="message in messages"
           :key="message.id"
-          class="group max-w-[78%] flex flex-col"
-          :class="message.role === 'user' ? 'self-end' : ''"
+          class="group flex flex-col"
+          :class="message.role === 'user' ? 'max-w-[78%] self-end' : 'w-full max-w-none self-start'"
         >
           <article
             class="rounded-[var(--wb-chat-bubble-radius)] p-[12px_14px] text-[color:var(--wb-text-primary)] leading-[1.45]"
@@ -98,21 +98,21 @@ onBeforeUnmount(() => {
             <p v-if="message.role === 'user'" class="m-0 whitespace-pre-line">
               {{ message.text }}
             </p>
-            <div v-else-if="message.blocks?.length" class="flex flex-col gap-[4px]">
+            <div v-else-if="message.blocks?.length" class="flex flex-col gap-1.5">
               <template v-for="(block, index) in message.blocks" :key="blockKey(block, index)">
                 <p v-if="block.type === 'text'" class="m-0 whitespace-pre-line text-[13px] leading-[1.5]">
                   {{ block.text }}
                 </p>
-                <ChatComponentMention  v-else-if="block.type === 'component_mention'" :block="block" />
-                <div v-else-if="block.type === 'file_change_card'" class="mt-2">
+                <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
+                <div v-else-if="block.type === 'file_change_card'" class="mt-3">
                   <button
                     v-if="index === firstFileChangeCardIndex(message)"
-                    class=" inline-flex w-fit items-center rounded-[8px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-muted)] outline-none transition-[opacity,background-color,color] duration-150 hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
+                    class="inline-flex w-fit items-center rounded-[8px] border-none bg-transparent px-1.5 py-1 text-[11px] text-[color:var(--wb-text-muted)] outline-none transition-[opacity,background-color,color] duration-150 hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)] pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100"
                     @click="copyMessage(message)"
                   >
                     <Icon :name="copiedMessageId === message.id ? 'ph:check-bold' : 'ph:copy'" class="h-[13px] w-[13px]" />
                   </button>
-                  <ChatFileChangeCard class="my-2" :block="block" />
+                  <ChatFileChangeCard class="my-1.5 w-full" :block="block" />
                 </div>
               </template>
             </div>

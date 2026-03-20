@@ -33,7 +33,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 </script>
 
 <template>
-  <section class="min-h-0 min-w-0 flex flex-1 flex-col border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
+  <section class="wb-chat-window min-h-0 min-w-0 flex flex-1 flex-col border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
     <div class="px-[12px] pt-[9px]">
       <ChatHeaderBar
         :title="title"
@@ -60,7 +60,19 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       v-model:compose-value="composeValue"
       :model-options="modelOptions"
       :thinking-options="thinkingOptions"
-      class="mx-[12.5%] mb-[10px] mt-2 max-[980px]:mx-[20px]"
+      class="mx-[var(--wb-chat-lane-inset)] mb-[10px] mt-2"
     />
   </section>
 </template>
+
+<style scoped>
+.wb-chat-window {
+  --wb-chat-lane-inset: 15%;
+}
+
+@media (max-width: 980px) {
+  .wb-chat-window {
+    --wb-chat-lane-inset: 24px;
+  }
+}
+</style>
