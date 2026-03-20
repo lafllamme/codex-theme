@@ -56,18 +56,18 @@ function toggleRepo(repo: string) {
     <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-[color:var(--wb-border-1)] bg-[var(--wb-bg-sidebar)] px-[var(--wb-sidebar-pad-x)] py-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
       <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
         <div class="nav-stack">
-          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
-            <Icon name="ph:note-pencil" class="nav-row__icon h-[14px] w-[14px]" />
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
+            <Icon name="ph:note-pencil" class="nav-row__icon h-[15px] w-[15px]" />
             <span class="sidebar-label truncate">New Thread</span>
           </button>
 
-          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:clock" class="nav-row__icon h-[14px] w-[14px]" />
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+            <Icon name="ph:clock" class="nav-row__icon h-[15px] w-[15px]" />
             <span class="sidebar-label truncate">Automations</span>
           </button>
 
-          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:storefront" class="nav-row__icon h-[14px] w-[14px]" />
+          <button class="sidebar-nav-lane-item nav-row grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+            <Icon name="ph:storefront" class="nav-row__icon h-[15px] w-[15px]" />
             <span class="sidebar-label truncate">Skills</span>
           </button>
         </div>
@@ -87,7 +87,7 @@ function toggleRepo(repo: string) {
 
           <div class="mt-[1px] flex-1 overflow-y-auto pr-[2px]">
             <div v-for="group in groupedThreads" :key="group.repo" class="mt-[1px] flex flex-col gap-[2px]">
-              <button class="sidebar-lane-item group inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-semibold shadow-none outline-none" @click="toggleRepo(group.repo)">
+              <button class="sidebar-lane-item repo-row group inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] shadow-none outline-none" @click="toggleRepo(group.repo)">
                 <span class="min-w-0 inline-flex items-center gap-2">
                   <span class="relative h-[15px] w-[15px] inline-flex items-center justify-center">
                     <Icon
@@ -131,8 +131,8 @@ function toggleRepo(repo: string) {
           </div>
         </div>
 
-        <button class="sidebar-lane-item settings-row mt-auto grid grid-cols-[16px_minmax(0,1fr)] items-center gap-[12px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-          <Icon name="ph:gear-six-bold" class="h-[14px] w-[14px]" />
+        <button class="sidebar-lane-item settings-row mt-auto grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <Icon name="ph:gear-six" class="h-[15px] w-[15px]" />
           <span class="sidebar-label">Settings</span>
         </button>
       </div>
@@ -156,7 +156,7 @@ function toggleRepo(repo: string) {
 
 .sidebar {
   --wb-sidebar-text-size: var(--wb-ui-text, var(--ui-font-size));
-  --wb-sidebar-meta-size: var(--wb-ui-text-sm, calc(var(--ui-font-size) - 1px));
+  --wb-sidebar-meta-size: calc(var(--wb-ui-text, var(--ui-font-size)) - 2px);
   --wb-sidebar-pad-x: 14px;
   --wb-sidebar-pad-top: 38px;
   --wb-sidebar-section-gap: 10px;
@@ -266,12 +266,18 @@ function toggleRepo(repo: string) {
 .nav-row {
   min-height: var(--wb-sidebar-nav-row-h);
   font-size: var(--wb-sidebar-text-size);
-  font-weight: 500;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.25;
 }
 
 .nav-row__icon {
   color: var(--wb-text-secondary);
+  transform: translateY(0.2px);
+}
+
+.repo-row {
+  font-weight: 400;
+  line-height: 1.2;
 }
 
 .sidebar-section-header {
@@ -285,8 +291,8 @@ function toggleRepo(repo: string) {
   text-overflow: ellipsis;
   transform: translateX(1px);
   font-size: var(--wb-sidebar-text-size);
-  font-weight: 500;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.25;
 }
 
 .thread-row__delta {
@@ -298,18 +304,18 @@ function toggleRepo(repo: string) {
   min-width: 72px;
   color: var(--wb-text-muted);
   font-size: var(--wb-sidebar-meta-size);
-  font-weight: 500;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.25;
   text-align: right;
   white-space: nowrap;
-  transform: translateX(7px);
+  transform: translateX(6px);
 }
 
 .settings-row {
   min-height: var(--wb-sidebar-footer-h);
   font-size: var(--wb-sidebar-text-size);
-  font-weight: 500;
-  line-height: 1.2;
+  font-weight: 400;
+  line-height: 1.25;
 }
 
 .thread-dot {
@@ -323,6 +329,10 @@ function toggleRepo(repo: string) {
 .thread-row--active {
   background: var(--wb-row-active-bg);
   border-color: color-mix(in srgb, var(--wb-row-active-border) 76%, transparent);
+}
+
+.thread-row--active .thread-row__title {
+  font-weight: 500;
 }
 
 @media (max-width: 1180px) {
