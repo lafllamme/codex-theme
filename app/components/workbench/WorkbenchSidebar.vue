@@ -73,8 +73,8 @@ function toggleRepo(repo: string) {
         </div>
 
         <div class="min-h-0 flex flex-1 flex-col">
-          <div class="sidebar-section-header sidebar-header-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
-            <span class="sidebar-label">Threads</span>
+          <div class="sidebar-section-header sidebar-header-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
+            <span class="sidebar-label !capitalize !tracking-normal">Threads</span>
             <div class="inline-flex items-center gap-2">
               <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
                 <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />

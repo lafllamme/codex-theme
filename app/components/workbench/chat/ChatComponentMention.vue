@@ -13,12 +13,12 @@ const isHovered = ref(false)
     <div class="flex items-baseline gap-2.5">
       <span class="mt-0 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-primary)]" />
       <p
-        class="m-0 text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.5]"
+        class="m-0 text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.5] font-normal"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
       >
         <span>{{ block.lead }}</span>
-        <span class="mx-1 font-semibold text-[color:var(--theme-accent)]">{{ block.component }}</span>
+        <span class="mx-1 font-normal text-[color:var(--theme-accent)]">{{ block.component }}</span>
         <span v-if="block.trail">{{ block.trail }}</span>
       </p>
     </div>
