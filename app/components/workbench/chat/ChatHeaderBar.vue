@@ -36,7 +36,11 @@ const editorOptions = [
   { label: 'Android Studio', icon: 'simple-icons:androidstudio' },
   { label: 'IntelliJ IDEA', icon: 'simple-icons:intellijidea' },
 ]
-const selectedEditor = ref(editorOptions[0]?.label ?? 'Cursor')
+const selectedEditor = ref(
+  editorOptions.find(option => option.label === 'Zed')?.label
+  ?? editorOptions[0]?.label
+  ?? 'Zed',
+)
 
 const commitActionMap: Record<string, CommitAction[]> = {
   commit: [

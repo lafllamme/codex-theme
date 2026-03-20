@@ -71,7 +71,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
     <div
       v-if="isOpen"
-      class="absolute right-0 top-full z-40 mt-2 w-[140px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-bubble-bg)] p-2.5 backdrop-blur-[12px]"
+      class="absolute right-0 top-full z-40 mt-2 w-[140px] border border-[color:var(--wb-border-2)] rounded-[22px] bg-[var(--wb-bubble-bg)] p-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[12px]"
     >
       <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold">
         {{ menuTitle || 'Git Actions' }}
