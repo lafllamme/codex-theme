@@ -45,6 +45,8 @@ const emit = defineEmits<{
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
 const jsonOpen = ref(false)
 const expandedColor = ref<ColorField | null>(null)
+const codeThemeInfoOpen = ref(false)
+let codeThemeInfoCloseTimer: ReturnType<typeof setTimeout> | null = null
 
 const colorRows: Array<{ field: ColorField, label: string, icon: string }> = [
   { field: 'surface', label: 'Background', icon: 'ph:squares-four' },
@@ -157,12 +159,29 @@ function onCodeThemeSelect(event: Event) {
   emit('setCodeThemeId', target.value)
 }
 
-function onCodeThemeInput(event: Event) {
-  const target = event.target as HTMLInputElement | null
-  if (!target)
-    return
-  emit('setCodeThemeId', target.value)
+function openCodeThemeInfo() {
+  if (codeThemeInfoCloseTimer) {
+    clearTimeout(codeThemeInfoCloseTimer)
+    codeThemeInfoCloseTimer = null
+  }
+  codeThemeInfoOpen.value = true
 }
+
+function closeCodeThemeInfo() {
+  if (codeThemeInfoCloseTimer)
+    clearTimeout(codeThemeInfoCloseTimer)
+
+  // Small delay so users can move from the icon to the tooltip/link.
+  codeThemeInfoCloseTimer = setTimeout(() => {
+    codeThemeInfoOpen.value = false
+    codeThemeInfoCloseTimer = null
+  }, 140)
+}
+
+onBeforeUnmount(() => {
+  if (codeThemeInfoCloseTimer)
+    clearTimeout(codeThemeInfoCloseTimer)
+})
 </script>
 
 <template>
@@ -354,8 +373,41 @@ function onCodeThemeInput(event: Event) {
 
         <!-- Code theme selection -->
         <div>
-          <div class="grid w-full grid-cols-1 gap-0 mb-1.5">
-            <span class="px-1 text-[13px] text-pureBlack/50">Code theme</span>
+          <div class="mb-1.5 px-1">
+            <div
+              class="relative inline-flex items-center gap-1.5"
+              @mouseenter="openCodeThemeInfo"
+              @mouseleave="closeCodeThemeInfo"
+            >
+              <span class="text-[13px] leading-none text-pureBlack/50">Code theme</span>
+              <Icon
+                name="ph:info-bold"
+                class="mt-[1px] h-4 w-4 cursor-help text-pureBlack/55 transition-colors hover:text-pureBlack/75"
+                aria-label="Code theme limitation info"
+                @focus="openCodeThemeInfo"
+                @blur="closeCodeThemeInfo"
+              />
+              <div
+                class="absolute left-0 top-full z-20 mt-2 w-[240px] rounded-xl border border-pureBlack/14 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
+                :class="codeThemeInfoOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible pointer-events-none -translate-y-1'"
+                @mouseenter="openCodeThemeInfo"
+                @mouseleave="closeCodeThemeInfo"
+              >
+                <p>
+                  Codex currently enforces built-in syntax highlighting mappings for some code themes.
+                  Until this is fixed upstream, fully custom syntax highlighting cannot always be applied.
+                </p>
+                <a
+                  href="https://github.com/openai/codex/issues/14766"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
+                >
+                  GitHub issue #14766
+                  <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
+                </a>
+              </div>
+            </div>
           </div>
           <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
             <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
@@ -440,18 +492,6 @@ function onCodeThemeInput(event: Event) {
       </button>
 
       <div v-show="jsonOpen" class="space-y-2">
-        <div class="border border-pureBlack/10 bg-pureWhite text-pureBlack/75 rounded-xl px-3 py-2.5 font-mono text-[12px] shadow-sm">
-          <div class="flex items-center gap-2">
-            <span class="text-pureBlack/45">&quot;codeThemeId&quot;:</span>
-            <span class="text-pureBlack/45">&quot;</span>
-            <input
-              class="min-w-0 flex-1 bg-transparent border-none outline-none text-pureBlack/90 tracking-wide"
-              :value="payload.codeThemeId"
-              @input="onCodeThemeInput"
-            >
-            <span class="text-pureBlack/45">&quot;</span>
-          </div>
-        </div>
         <textarea
           class="border border-pureBlack/10 bg-pureWhite text-pureBlack/80 focus:border-pureBlack/20 min-h-52 w-full resize-y rounded-xl p-3 text-[12px] font-mono leading-relaxed outline-none shadow-sm"
           rows="10"

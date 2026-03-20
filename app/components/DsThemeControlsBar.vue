@@ -161,7 +161,7 @@ const morphStyle = computed(() => ({
             </div>
 
             <!-- Scrollable body -->
-            <div class="space-y-4 overflow-y-auto overflow-x-hidden px-5 pb-5" style="max-height: calc(85vh - 72px);">
+            <div class="space-y-4 overflow-y-auto overflow-x-visible px-5 pb-5" style="max-height: calc(85vh - 72px);">
               <ThemePanelBody
                 :payload="payload"
                 :code-theme-options="codeThemeOptions"
