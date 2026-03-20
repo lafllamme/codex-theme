@@ -51,6 +51,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
               fileName: 'ChatComponentMention.vue',
               added: 2,
               removed: 2,
+              showDot: true,
               lines: [
                 { left: 11, right: 11, text: '<div class="flex items-baseline gap-2.5">', kind: 'context' },
                 { left: 12, right: '', text: '<span class="mt-[1px] h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-secondary)]" />', kind: 'remove' },
@@ -135,6 +136,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
               fileName: 'workbench-chat-mock.ts',
               added: 2,
               removed: 2,
+              showDot: true,
               lines: [
                 { left: 25, right: '', text: 'summaryLabel: \'1 file changed\',', kind: 'remove' },
                 { left: 26, right: '', text: 'added: 2, removed: 2,', kind: 'remove' },

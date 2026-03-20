@@ -24,6 +24,7 @@ export interface FileChangeItem {
   fileName: string
   added: number
   removed: number
+  showDot?: boolean
   lines: FileDiffLine[]
 }
 

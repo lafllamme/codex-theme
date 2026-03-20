@@ -57,9 +57,9 @@ function lineMarkerStyle(line: FileDiffLine) {
         <span class="text-[color:var(--wb-diff-delta-added)]">+{{ block.added }}</span>
         <span class="text-[color:var(--wb-diff-delta-removed)]">-{{ block.removed }}</span>
       </div>
-      <button class="inline-flex items-center gap-1 rounded-[7px] border-none bg-transparent px-1.5 py-1 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
-        <Icon name="ph:arrow-counter-clockwise-bold" class="h-[11px] w-[11px]" />
+      <button class="inline-flex items-center gap-1 rounded-full border-none bg-transparent px-2 py-1 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
         {{ block.revertLabel }}
+        <Icon name="ph:arrow-u-up-left" class="h-[11px] w-[11px]" />
       </button>
     </div>
 
@@ -90,6 +90,10 @@ function lineMarkerStyle(line: FileDiffLine) {
             </span>
             <span class="shrink-0 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
             <span class="shrink-0 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-diff-delta-removed)]">-{{ file.removed }}</span>
+            <span
+              v-if="file.showDot"
+              class="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--theme-accent)]"
+            />
           </div>
           <div class="ml-3 flex items-center gap-2">
             <Icon
