@@ -7,10 +7,10 @@ defineProps<{
 </script>
 
 <template>
-  <div class="group relative py-0.5">
+  <div class="group relative py-0">
     <div class="flex items-baseline gap-2.5">
-      <span class="mt-[1px] h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-secondary)]" />
-      <p class="text-[13px] text-[color:var(--wb-text-primary)] leading-[1.5]">
+      <span class="mt-0 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-secondary)]" />
+      <p class="m-0 text-[13px] text-[color:var(--wb-text-primary)] leading-[1.5]">
         <span class="text-[color:var(--wb-text-secondary)]">{{ block.lead }}</span>
         <span class="mx-1 font-semibold text-[color:var(--theme-accent)]">{{ block.component }}</span>
         <span v-if="block.trail" class="text-[color:var(--wb-text-secondary)]">{{ block.trail }}</span>

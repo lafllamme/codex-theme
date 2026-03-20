@@ -38,9 +38,9 @@ function blockKey(block: AssistantBlock, index: number) {
           <p v-if="message.role === 'user'" class="whitespace-pre-line">
             {{ message.text }}
           </p>
-          <div v-else-if="message.blocks?.length" class="flex flex-col gap-2.5">
+          <div v-else-if="message.blocks?.length" class="flex flex-col gap-[4px]">
             <template v-for="(block, index) in message.blocks" :key="blockKey(block, index)">
-              <p v-if="block.type === 'text'" class="whitespace-pre-line text-[13px] leading-[1.5]">
+              <p v-if="block.type === 'text'" class="m-0 whitespace-pre-line text-[13px] leading-[1.5]">
                 {{ block.text }}
               </p>
               <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
