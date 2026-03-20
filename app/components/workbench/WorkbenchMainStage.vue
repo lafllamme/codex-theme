@@ -1,13 +1,19 @@
 <script setup lang="ts">
-interface ChatMessage {
-  id: string
-  role: 'assistant' | 'user'
-  text: string
-}
+import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
+import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
+import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 
 defineProps<{
   messages: ChatMessage[]
 }>()
+
+function blockKey(block: AssistantBlock, index: number) {
+  if (block.type === 'text')
+    return `text-${index}-${block.text.slice(0, 12)}`
+  if (block.type === 'component_mention')
+    return `mention-${index}-${block.component}`
+  return `change-${index}-${block.summaryLabel}`
+}
 </script>
 
 <template>
@@ -23,11 +29,25 @@ defineProps<{
         <article
           v-for="message in messages"
           :key="message.id"
-          class="max-w-[78%] whitespace-pre-line border rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)] p-[12px_14px] text-[color:var(--wb-text-primary)] leading-[1.45]"
+          class="max-w-[78%] border rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)] p-[12px_14px] text-[color:var(--wb-text-primary)] leading-[1.45]"
           :class="message.role === 'user' ? 'self-end border-[color:var(--wb-border-3)]' : 'border-[color:var(--wb-border-2)]'"
           :style="message.role === 'user' ? { borderColor: 'color-mix(in srgb, var(--theme-accent) 22%, var(--wb-border-3))' } : undefined"
         >
-          {{ message.text }}
+          <p v-if="message.role === 'user'" class="whitespace-pre-line">
+            {{ message.text }}
+          </p>
+          <div v-else-if="message.blocks?.length" class="flex flex-col gap-2.5">
+            <template v-for="(block, index) in message.blocks" :key="blockKey(block, index)">
+              <p v-if="block.type === 'text'" class="whitespace-pre-line text-[13px] leading-[1.5]">
+                {{ block.text }}
+              </p>
+              <ChatComponentMention v-else-if="block.type === 'component_mention'" :block="block" />
+              <ChatFileChangeCard v-else-if="block.type === 'file_change_card'" :block="block" />
+            </template>
+          </div>
+          <p v-else class="whitespace-pre-line">
+            {{ message.text }}
+          </p>
         </article>
       </div>
     </section>

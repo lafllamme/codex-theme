@@ -1,0 +1,46 @@
+export interface TextBlock {
+  type: 'text'
+  text: string
+}
+
+export interface ComponentMentionBlock {
+  type: 'component_mention'
+  lead: string
+  component: string
+  trail?: string
+  path: string
+}
+
+export interface FileDiffLine {
+  left: number | string
+  right: number | string
+  text: string
+  kind: 'context' | 'add' | 'remove'
+}
+
+export interface FileChangeItem {
+  id: string
+  path: string
+  fileName: string
+  added: number
+  removed: number
+  lines: FileDiffLine[]
+}
+
+export interface FileChangeCardBlock {
+  type: 'file_change_card'
+  summaryLabel: string
+  added: number
+  removed: number
+  revertLabel: string
+  files: FileChangeItem[]
+}
+
+export type AssistantBlock = TextBlock | ComponentMentionBlock | FileChangeCardBlock
+
+export interface ChatMessage {
+  id: string
+  role: 'assistant' | 'user'
+  text?: string
+  blocks?: AssistantBlock[]
+}

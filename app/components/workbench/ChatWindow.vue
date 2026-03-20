@@ -1,13 +1,8 @@
 <script setup lang="ts">
+import type { ChatMessage } from '~/types/workbench-chat'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerBar from '~/components/workbench/ComposerBar.vue'
 import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
-
-interface ChatMessage {
-  id: string
-  role: 'assistant' | 'user'
-  text: string
-}
 
 defineProps<{
   title: string

@@ -5,6 +5,7 @@ import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
+import { workbenchMessagesByThread } from '~/data/workbench-chat-mock'
 import { codexWorkbenchCssVars } from '~/utils/codex-workbench-theme'
 import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
@@ -15,12 +16,6 @@ interface ThreadItem {
   time: string
   added?: number
   removed?: number
-}
-
-interface ChatMessage {
-  id: string
-  role: 'assistant' | 'user'
-  text: string
 }
 
 const props = defineProps<{
@@ -81,38 +76,7 @@ const threadItems: ThreadItem[] = [
   { id: 'thread-17', title: 'Review checkbox behavior in layout', repo: 'personal-page', time: '1 Wk.' },
 ]
 
-const messagesByThread: Record<string, ChatMessage[]> = {
-  'thread-1': [
-    { id: 'a1', role: 'assistant', text: '1 file changed\napp/components/DsCodexWorkbench.vue +94 -34' },
-    { id: 'u1', role: 'user', text: 'Can you make a clean mismatch list and rebuild the header 1:1?' },
-    { id: 'a2', role: 'assistant', text: 'Yes. I will isolate the chat header and align the full top hierarchy.' },
-  ],
-  'thread-2': [
-    { id: 'a3', role: 'assistant', text: 'Build is successful. Header spacing and hierarchy are now closer to Codex.' },
-    { id: 'u2', role: 'user', text: 'Please keep theme controls outside the replica layer.' },
-    { id: 'a4', role: 'assistant', text: 'Done. Theme controls are now detached and remain above the replica.' },
-  ],
-  'thread-3': [
-    { id: 'a5', role: 'assistant', text: 'Sidebar lane and row geometry updated for Codex-like density.' },
-    { id: 'u3', role: 'user', text: 'Keep the section title subtle and keep active rows restrained.' },
-    { id: 'a6', role: 'assistant', text: 'Applied: lower-contrast section label and softer active state.' },
-  ],
-  'thread-4': [
-    { id: 'a7', role: 'assistant', text: 'Terminal and diff controls now use subtle ghost hover.' },
-    { id: 'u4', role: 'user', text: 'Great, keep the hover understated.' },
-    { id: 'a8', role: 'assistant', text: 'Confirmed. Hover remains low-intensity with no layout shift.' },
-  ],
-  'thread-7': [
-    { id: 'a9', role: 'assistant', text: 'Codex-theme sidebar checks are in good shape for this pass.' },
-    { id: 'u9', role: 'user', text: 'Looks good, keep this one without diff counters.' },
-  ],
-  'thread-8': [
-    { id: 'a10', role: 'assistant', text: 'Personal-page card states updated with balanced hover contrast.' },
-    { id: 'u10', role: 'user', text: 'Nice, keep plus/minus visible for this task.' },
-  ],
-}
-
-const activeMessages = computed(() => messagesByThread[activeThreadId.value] || [])
+const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
 
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
