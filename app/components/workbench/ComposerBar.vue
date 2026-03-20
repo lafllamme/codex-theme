@@ -180,7 +180,7 @@ const contextUsedLabel = computed(() =>
                     <div class="min-w-0 inline-flex items-center gap-1.5">
                         <ComposerDropdownMenu
                             :open="openMenuKey === 'plus'"
-                            menu-class="w-[268px]"
+                            menu-class="w-[244px]"
                             align="left"
                             @toggle="toggleMenu('plus')"
                             @close="closeMenus"
@@ -199,7 +199,7 @@ const contextUsedLabel = computed(() =>
 
                             <div class="grid gap-0.5">
                                 <button
-                                    class="h-9 w-full flex items-center gap-2 rounded-[9px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                    class="h-[34px] w-full flex items-center gap-2 rounded-[9px] border-none bg-transparent px-2 text-left text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                 >
                                     <Icon
                                         name="ph:paperclip-bold"
@@ -209,11 +209,11 @@ const contextUsedLabel = computed(() =>
                                 </button>
 
                                 <div
-                                    class="h-px bg-[color:var(--wb-divider)] mx-0.5 my-0.5"
+                                    class="h-px bg-[color:var(--wb-divider)] mx-0.5 my-[2px]"
                                 />
 
                                 <button
-                                    class="h-9 w-full flex items-center justify-between rounded-[9px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                    class="h-[34px] w-full flex items-center justify-between rounded-[9px] border-none bg-transparent px-2 text-left text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                     @click="togglePlanningMode"
                                 >
                                     <span class="inline-flex items-center gap-2">
@@ -238,7 +238,7 @@ const contextUsedLabel = computed(() =>
 
                                 <div class="relative">
                                     <button
-                                        class="h-9 w-full flex items-center justify-between rounded-[9px] border-none px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                        class="h-[34px] w-full flex items-center justify-between rounded-[9px] border-none px-2 text-left text-[12px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                         :class="isSpeedMenuOpen ? 'bg-[var(--wb-hover-bg)]' : 'bg-transparent'"
                                         @click="toggleSpeedMenu"
                                     >
@@ -257,20 +257,20 @@ const contextUsedLabel = computed(() =>
 
                                     <div
                                         v-if="isSpeedMenuOpen"
-                                        class="absolute left-full top-0 z-50 ml-2 w-[330px] border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2.5 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
+                                        class="absolute left-full top-0 z-50 ml-2 w-[300px] border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
                                     >
                                         <ul class="grid m-0 list-none gap-1 p-0">
                                             <li>
                                                 <button
-                                                    class="w-full rounded-[10px] border-none bg-transparent px-2.5 py-2 text-left outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                                    class="w-full rounded-[10px] border-none bg-transparent px-2 py-1.5 text-left outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                                     @click="selectSpeed('standard')"
                                                 >
                                                     <div class="flex items-start justify-between gap-2">
                                                         <div class="min-w-0">
-                                                            <p class="m-0 text-[17px] leading-[1.2] text-[color:var(--wb-text-primary)] font-medium">
+                                                            <p class="m-0 text-[15px] leading-[1.2] text-[color:var(--wb-text-primary)] font-medium">
                                                                 Standard
                                                             </p>
-                                                            <p class="mt-1 m-0 text-[14px] leading-[1.25] text-[color:var(--wb-text-muted)]">
+                                                            <p class="mt-1 m-0 text-[13px] leading-[1.25] text-[color:var(--wb-text-muted)]">
                                                                 Default speed with normal credit usage
                                                             </p>
                                                         </div>
@@ -284,15 +284,15 @@ const contextUsedLabel = computed(() =>
                                             </li>
                                             <li>
                                                 <button
-                                                    class="w-full rounded-[10px] border-none bg-transparent px-2.5 py-2 text-left outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                                    class="w-full rounded-[10px] border-none bg-transparent px-2 py-1.5 text-left outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                                     @click="selectSpeed('fast')"
                                                 >
                                                     <div class="flex items-start justify-between gap-2">
                                                         <div class="min-w-0">
-                                                            <p class="m-0 text-[17px] leading-[1.2] text-[color:var(--wb-text-primary)] font-medium">
+                                                            <p class="m-0 text-[15px] leading-[1.2] text-[color:var(--wb-text-primary)] font-medium">
                                                                 Fast
                                                             </p>
-                                                            <p class="mt-1 m-0 text-[14px] leading-[1.25] text-[color:var(--wb-text-muted)]">
+                                                            <p class="mt-1 m-0 text-[13px] leading-[1.25] text-[color:var(--wb-text-muted)]">
                                                                 About 1.5x faster, with credits used at 2x
                                                             </p>
                                                         </div>
