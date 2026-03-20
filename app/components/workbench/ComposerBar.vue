@@ -24,7 +24,7 @@ const openMenuKey = ref<
 >(null);
 
 const executionOptions: MenuOption[] = [
-    { key: "local", label: "Local Project", icon: "ph:laptop-bold" },
+    { key: "local", label: "Local Project", icon: "ph:laptop" },
     { key: "cloud", label: "Cloud", icon: "ph:cloud-bold" },
 ];
 
@@ -32,9 +32,9 @@ const accessOptions: MenuOption[] = [
     {
         key: "standard",
         label: "Standard permissions",
-        icon: "ph:shield-check-bold",
+        icon: "ph:shield-check",
     },
-    { key: "full", label: "Full access", icon: "ph:shield-warning-bold" },
+    { key: "full", label: "Full access", icon: "ph:shield-warning" },
 ];
 
 const thinkingOptionIcons: Record<string, string> = {
@@ -74,10 +74,13 @@ const branchItems = [
 ];
 
 const selectedExecutionLabel = computed(
-    () =>
-        executionOptions.find(
+    () => {
+        const selected = executionOptions.find(
             (option) => option.key === selectedExecution.value,
-        )?.label ?? "Local Project",
+        );
+        if (!selected || selected.key === "local") return "Local";
+        return selected.label;
+    },
 );
 
 const selectedAccessLabel = computed(
@@ -295,7 +298,7 @@ function selectBranch(option: string) {
             <div class="inline-flex items-center gap-3">
                 <ComposerDropdownMenu
                     :open="openMenuKey === 'local'"
-                    menu-class="w-[290px]"
+                    menu-class="w-[203px]"
                     align="left"
                     @toggle="toggleMenu('local')"
                     @close="closeMenus"
@@ -306,8 +309,8 @@ function selectBranch(option: string) {
                             @click.stop="toggle"
                         >
                             <Icon
-                                name="ph:laptop-bold"
-                                class="h-[12px] w-[12px]"
+                                name="ph:laptop"
+                                class="h-[16px] w-[16px]"
                             />
                             <span class="text-[12px]">{{
                                 selectedExecutionLabel
@@ -320,7 +323,7 @@ function selectBranch(option: string) {
                     </template>
 
                     <p
-                        class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold"
+                        class="mb-2 px-2 text-[17px] leading-[1.2] text-[color:var(--wb-text-muted)] font-normal"
                     >
                         Continue in
                     </p>
@@ -335,8 +338,8 @@ function selectBranch(option: string) {
                             >
                                 <span class="inline-flex items-center gap-2.5">
                                     <Icon
-                                        :name="option.icon || 'ph:laptop-bold'"
-                                        class="h-[14px] w-[14px]"
+                                        :name="option.icon || 'ph:laptop'"
+                                        class="h-[16px] w-[16px]"
                                     />
                                     {{ option.label }}
                                 </span>
@@ -371,21 +374,21 @@ function selectBranch(option: string) {
 
                 <ComposerDropdownMenu
                     :open="openMenuKey === 'access'"
-                    menu-class="w-[300px]"
+                    menu-class="w-[210px]"
                     align="left"
                     @toggle="toggleMenu('access')"
                     @close="closeMenus"
                 >
                     <template #trigger="{ toggle }">
                         <button
-                            class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-access-warn)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                            class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-access-warn)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                             @click.stop="toggle"
                         >
                             <Icon
-                                name="ph:shield-warning-bold"
-                                class="h-[12px] w-[12px]"
+                                name="ph:shield-warning"
+                                class="h-[16px] w-[16px]"
                             />
-                            <span class="text-[12px]">{{
+                            <span class="text-[12px] font-normal">{{
                                 selectedAccessLabel
                             }}</span>
                             <Icon
@@ -398,16 +401,16 @@ function selectBranch(option: string) {
                     <ul class="grid m-0 list-none gap-1 p-0">
                         <li v-for="option in accessOptions" :key="option.key">
                             <button
-                                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                                 @click="selectAccess(option.key)"
                             >
                                 <span class="inline-flex items-center gap-2.5">
                                     <Icon
                                         :name="
                                             option.icon ||
-                                            'ph:shield-warning-bold'
+                                            'ph:shield-warning'
                                         "
-                                        class="h-[14px] w-[14px]"
+                                        class="h-[16px] w-[16px]"
                                     />
                                     {{ option.label }}
                                 </span>
@@ -432,14 +435,14 @@ function selectBranch(option: string) {
                 >
                     <template #trigger="{ toggle }">
                         <button
-                            class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+                            class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-text-secondary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
                             @click.stop="toggle"
                         >
                             <Icon
                                 name="ph:git-branch-bold"
-                                class="h-[12px] w-[12px]"
+                                class="h-[16px] w-[16px]"
                             />
-                            <span class="text-[12px]">{{
+                            <span class="text-[12px] font-normal">{{
                                 selectedBranch
                             }}</span>
                             <Icon
