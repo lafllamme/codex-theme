@@ -733,7 +733,7 @@ const contextUsedLabel = computed(() =>
                         </svg>
 
                         <span
-                            class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 min-w-[140px] max-w-[180px] border border-[color:var(--wb-border-2)] rounded-[16px] bg-[var(--wb-bubble-bg)] px-1 py-3 text-center opacity-0 shadow-[0_12px_28px_rgba(0,0,0,0.2)] backdrop-blur-[14px] transition-[opacity,transform] duration-150 -translate-x-1/2 -translate-y-1 group-hover/context:translate-y-0 group-hover/context:opacity-100"
+                            class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 min-w-[140px] flex flex-col gap-0.5 max-w-[180px] border border-[color:var(--wb-border-2)] rounded-[16px] bg-[var(--wb-bubble-bg)] px-1 py-3 text-center opacity-0 shadow-[0_12px_28px_rgba(0,0,0,0.2)] backdrop-blur-[14px] transition-[opacity,transform] duration-150 -translate-x-1/2 -translate-y-1 group-hover/context:translate-y-0 group-hover/context:opacity-100"
                         >
                             <p class="m-0 text-[11px] leading-[1.25] text-[color:var(--wb-text-muted)]">
                                 Context window:
