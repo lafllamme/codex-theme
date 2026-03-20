@@ -27,10 +27,14 @@ const emit = defineEmits<{
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
-const laneVars = computed(() => ({
-  '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-inset)',
-  '--wb-chat-lane-inset-right': props.isDiffOpen ? '4px' : 'var(--wb-chat-lane-inset)',
-}))
+const laneVars = computed(() => {
+  const openInset = 'calc(var(--wb-chat-lane-inset) * 0.15)'
+
+  return {
+    '--wb-chat-lane-inset-left': props.isDiffOpen ? openInset : 'var(--wb-chat-lane-inset)',
+    '--wb-chat-lane-inset-right': props.isDiffOpen ? openInset : 'var(--wb-chat-lane-inset)',
+  }
+})
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', { required: true })
