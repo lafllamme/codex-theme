@@ -370,15 +370,13 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   margin-left: 0;
   flex-shrink: 0;
   opacity: 0;
-  transform: translateX(10px);
   pointer-events: none;
   transition:
-    flex-basis 260ms var(--wb-sidebar-ease),
     width 260ms var(--wb-sidebar-ease),
+    flex-basis 260ms var(--wb-sidebar-ease),
     max-width 260ms var(--wb-sidebar-ease),
     margin-left 220ms var(--wb-sidebar-ease),
-    opacity 220ms ease,
-    transform 260ms var(--wb-sidebar-ease);
+    opacity 220ms ease;
 }
 
 .diff-column--open {
@@ -388,7 +386,6 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   flex-basis: var(--wb-diff-size);
   margin-left: -1px;
   opacity: 1;
-  transform: translateX(0);
   pointer-events: auto;
 }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   open: boolean
   accent: string
   contrast: number
@@ -21,8 +21,6 @@ interface DiffSection {
   delta: string
   lines: DiffLine[]
 }
-
-const collapsedSections = ref<Set<string>>(new Set())
 
 const diffSections: DiffSection[] = [
   {
@@ -48,6 +46,10 @@ const diffSections: DiffSection[] = [
     ],
   },
 ]
+
+// Default: sections are open. State persists while drawer stays mounted.
+const collapsedSections = ref<Set<string>>(new Set())
+const suspendAccordionMotion = ref(false)
 
 function isSectionCollapsed(path: string) {
   return collapsedSections.value.has(path)
@@ -89,6 +91,21 @@ function lineMarkerStyle(line: DiffLine) {
     return { borderLeftStyle: 'dashed' }
   return { borderLeftStyle: 'solid' }
 }
+
+watch(
+  () => props.open,
+  (isOpen) => {
+    if (!isOpen)
+      return
+    // Prevent replayed accordion transitions when drawer itself animates in.
+    suspendAccordionMotion.value = true
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        suspendAccordionMotion.value = false
+      })
+    })
+  },
+)
 </script>
 
 <template>
@@ -133,7 +150,13 @@ function lineMarkerStyle(line: DiffLine) {
           </div>
         </button>
 
-        <div class="diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]" :class="isSectionCollapsed(section.path) ? 'diff-section-body--collapsed' : 'diff-section-body--expanded'">
+        <div
+          class="diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]"
+          :class="[
+            isSectionCollapsed(section.path) ? 'diff-section-body--collapsed' : 'diff-section-body--expanded',
+            suspendAccordionMotion ? 'diff-section-body--no-motion' : '',
+          ]"
+        >
           <div
             v-for="line in section.lines"
             :key="`${section.path}-${line.left}-${line.right}-${line.text}`"
@@ -160,9 +183,10 @@ function lineMarkerStyle(line: DiffLine) {
 
 <style scoped>
 .diff-drawer {
-  width: 100%;
+  width: var(--wb-diff-size, min(41vw, 520px));
+  flex: 0 0 auto;
   min-width: 0;
-  max-width: 100%;
+  max-width: min(520px, 100%);
   height: 100%;
   min-height: 0;
   display: flex;
@@ -216,6 +240,10 @@ function lineMarkerStyle(line: DiffLine) {
   opacity: 0;
   transform: translateY(-4px);
   pointer-events: none;
+}
+
+.diff-section-body--no-motion {
+  transition: none;
 }
 
 @media (max-width: 1180px) {
