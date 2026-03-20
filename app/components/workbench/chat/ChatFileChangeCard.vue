@@ -70,9 +70,9 @@ function lineMarkerStyle(line: FileDiffLine) {
         class="group relative z-0 border-b border-[color:var(--wb-divider)] last:border-b-0 hover:z-30"
       >
         <span
-          class="pointer-events-none absolute -left-2 top-0 z-50 inline-flex max-w-[calc(100%-16px)] -translate-y-[calc(100%+6px)] items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[11px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-150"
-          :class="hoveredFileId === file.id ? '-translate-y-[calc(100%+4px)] opacity-100' : ''"
-        >
+          class="pointer-events-none absolute -left-2 bottom-full z-50 mb-1 inline-flex max-w-[calc(100%-12px)] translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160"
+          :class="hoveredFileId === file.id ? 'translate-y-0 opacity-100' : ''"
+f        >
           {{ file.path }}
         </span>
         <button

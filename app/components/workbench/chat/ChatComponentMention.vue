@@ -16,7 +16,7 @@ defineProps<{
         <span v-if="block.trail">{{ block.trail }}</span>
       </p>
     </div>
-    <span class="pointer-events-none absolute left-[20px] bottom-full z-10 mt-1 inline-flex max-w-[88%] translate-y-1 items-center border border-[color:var(--wb-border-2)] rounded-[9px] bg-[var(--wb-input-bg)] px-2.5 py-1 text-[11px] text-[color:var(--wb-text-primary)] opacity-0 transition-[opacity,transform] duration-160 group-hover:translate-y-0 group-hover:opacity-100">
+    <span class="pointer-events-none absolute left-0 top-0 z-50 inline-flex max-w-[calc(100%-12px)] -translate-y-[calc(100%+6px)] items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-150 group-hover:-translate-y-[calc(100%+4px)] group-hover:opacity-100">
       <span class="truncate">{{ block.path }}</span>
     </span>
   </div>
