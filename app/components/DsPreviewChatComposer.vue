@@ -33,7 +33,7 @@ defineProps<{
         <input
           class="composer-input"
           type="text"
-          value="Tune accent + semantic colors"
+          value="Ask for follow-up changes"
           readonly
           :style="{ color: payload.theme.ink }"
         >

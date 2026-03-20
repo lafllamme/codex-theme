@@ -158,7 +158,7 @@ function selectSpeed(mode: "standard" | "fast") {
                 <div class="flex items-center">
                     <input
                         v-model="composeValue"
-                        class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] font-light outline-none placeholder:text-[color:var(--wb-text-faint)]"
+                        class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[17px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] font-light outline-none placeholder:text-[color:var(--wb-text-faint)]"
                         type="text"
                         placeholder="Ask for follow-up changes"
                     />
@@ -218,7 +218,7 @@ function selectSpeed(mode: "standard" | "fast") {
                                         :track-width="30"
                                         :track-height="18"
                                         :thumb-size="14"
-                                        on-class="bg-[var(--wb-accent)]"
+                                        on-class="bg-[color:var(--theme-accent)]"
                                         off-class="bg-[color-mix(in_srgb,var(--wb-text-secondary)_24%,transparent)]"
                                         thumb-on-class="bg-[var(--wb-bg-panel)]"
                                         thumb-off-class="bg-[var(--wb-bg-panel)]"
@@ -417,11 +417,11 @@ function selectSpeed(mode: "standard" | "fast") {
                                 class="h-[22px] w-px bg-[color:var(--wb-divider)]"
                             />
                             <span
-                                class="inline-flex items-center gap-1.5 text-[13px] text-[var(--wb-accent)] font-normal"
+                                class="inline-flex items-center gap-1.5 text-[13px] text-[color:var(--theme-accent)] font-normal"
                             >
                                 <Icon
                                     name="ph:list-checks-bold"
-                                    class="h-[14px] w-[14px] shrink-0 text-[var(--wb-accent)]"
+                                    class="h-[14px] w-[14px] shrink-0 text-[color:var(--theme-accent)]"
                                 />
                                 Plan
                             </span>

@@ -42,7 +42,7 @@ const selectedModel = ref(
   ?? '',
 )
 const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
-const composeValue = ref('Tune accent + semantic colors')
+const composeValue = ref('Ask for follow-up changes')
 const activeThreadId = ref('thread-1')
 const runEnabled = ref(false)
 const isWorktreeModalOpen = ref(false)
