@@ -6,6 +6,7 @@ const props = defineProps<{
 }>()
 
 const openFileId = ref(props.block.files[0]?.id ?? '')
+const hoveredFileId = ref('')
 
 const activeFile = computed(() => {
   return props.block.files.find(file => file.id === openFileId.value)
@@ -49,7 +50,7 @@ function lineMarkerStyle(line: FileDiffLine) {
 </script>
 
 <template>
-  <section class="overflow-hidden border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)]">
+  <section class="overflow-visible border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)]">
     <div class="flex items-center justify-between border-b border-[color:var(--wb-divider)] px-3 py-2">
       <div class="flex items-center gap-2 text-[12px] font-medium">
         <span class="text-[color:var(--wb-text-primary)]">{{ block.summaryLabel }}</span>
@@ -62,22 +63,35 @@ function lineMarkerStyle(line: FileDiffLine) {
       </button>
     </div>
 
-    <div class="max-h-[320px] overflow-y-auto">
+    <div class="overflow-visible">
       <div
         v-for="file in block.files"
         :key="file.id"
-        class="border-b border-[color:var(--wb-divider)] last:border-b-0"
+        class="group relative z-0 border-b border-[color:var(--wb-divider)] last:border-b-0 hover:z-30"
       >
+        <span
+          class="pointer-events-none absolute -left-2 top-0 z-50 inline-flex max-w-[calc(100%-16px)] -translate-y-[calc(100%+6px)] items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[11px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-150"
+          :class="hoveredFileId === file.id ? '-translate-y-[calc(100%+4px)] opacity-100' : ''"
+        >
+          {{ file.path }}
+        </span>
         <button
           class="group w-full flex items-center justify-between border-none bg-transparent px-3 py-2 text-left transition-colors hover:bg-[var(--wb-hover-bg)]"
+          :class="block.files[block.files.length - 1]?.id === file.id && file.id !== openFileId ? 'rounded-b-[calc(var(--wb-chat-bubble-radius)-2px)]' : ''"
           @click="selectFile(file)"
         >
           <div class="min-w-0 flex items-center gap-2">
-            <span class="truncate text-[12px] text-[color:var(--wb-text-primary)]">{{ file.path }}</span>
+            <span
+              class="truncate text-[12px] text-[color:var(--wb-text-primary)]"
+              @mouseenter.stop="hoveredFileId = file.id"
+              @mouseleave.stop="hoveredFileId = ''"
+            >
+              {{ file.path }}
+            </span>
+            <span class="shrink-0 text-[11px] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
+            <span class="shrink-0 text-[11px] text-[color:var(--wb-diff-delta-removed)]">-{{ file.removed }}</span>
           </div>
           <div class="ml-3 flex items-center gap-2">
-            <span class="text-[11px] text-[color:var(--wb-diff-delta-added)]">+{{ file.added }}</span>
-            <span class="text-[11px] text-[color:var(--wb-diff-delta-removed)]">-{{ file.removed }}</span>
             <Icon
               name="ph:caret-down-bold"
               class="h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-[opacity,transform] duration-150 group-hover:opacity-100"
