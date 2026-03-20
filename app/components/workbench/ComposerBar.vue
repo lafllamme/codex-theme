@@ -131,7 +131,7 @@ function selectBranch(option: string) {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col">
         <footer
             class="border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]"
         >
@@ -290,7 +290,7 @@ function selectBranch(option: string) {
         </footer>
 
         <div
-            class="mt-2 flex items-center justify-between px-1 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
+            class="mt-1 flex items-center justify-between px-1 text-[12px] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
         >
             <div class="inline-flex items-center gap-3">
                 <ComposerDropdownMenu
