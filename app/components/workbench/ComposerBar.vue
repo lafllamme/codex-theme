@@ -20,13 +20,13 @@ const composeValue = defineModel<string>('composeValue', { required: true })
 const openMenuKey = ref<null | 'model' | 'thinking' | 'local' | 'access' | 'branch'>(null)
 
 const executionOptions: MenuOption[] = [
-  { key: 'local', label: 'Lokales Projekt', icon: 'ph:laptop-bold' },
+  { key: 'local', label: 'Local Project', icon: 'ph:laptop-bold' },
   { key: 'cloud', label: 'Cloud', icon: 'ph:cloud-bold' },
 ]
 
 const accessOptions: MenuOption[] = [
-  { key: 'standard', label: 'Standardberechtigungen', icon: 'ph:shield-check-bold' },
-  { key: 'full', label: 'Vollzugriff', icon: 'ph:shield-warning-bold' },
+  { key: 'standard', label: 'Standard permissions', icon: 'ph:shield-check-bold' },
+  { key: 'full', label: 'Full access', icon: 'ph:shield-warning-bold' },
 ]
 
 const thinkingOptionIcons: Record<string, string> = {
@@ -46,15 +46,15 @@ const selectedBranch = ref('main')
 const branchSearch = ref('')
 
 const branchItems = [
-  { key: 'main', label: 'main', status: 'Nicht committet: 2 Dateien', added: '+5', removed: '-3' },
+  { key: 'main', label: 'main', status: 'Not committed: 2 files', added: '+5', removed: '-3' },
 ]
 
 const selectedExecutionLabel = computed(() =>
-  executionOptions.find(option => option.key === selectedExecution.value)?.label ?? 'Lokales Projekt',
+  executionOptions.find(option => option.key === selectedExecution.value)?.label ?? 'Local Project',
 )
 
 const selectedAccessLabel = computed(() =>
-  accessOptions.find(option => option.key === selectedAccess.value)?.label ?? 'Vollzugriff',
+  accessOptions.find(option => option.key === selectedAccess.value)?.label ?? 'Full access',
 )
 
 const filteredBranches = computed(() => {
@@ -105,9 +105,9 @@ function selectBranch(option: string) {
         <div class="flex items-center">
           <input
             v-model="composeValue"
-            class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
+            class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[20px] text-[color:var(--wb-text-muted)] font-[var(--font-ui)] font-light outline-none placeholder:text-[color:var(--wb-text-faint)]"
             type="text"
-            placeholder="Ask a follow-up"
+            placeholder="Ask for follow-up changes"
           >
         </div>
 
@@ -135,7 +135,7 @@ function selectBranch(option: string) {
               </template>
 
               <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold">
-                Modell auswählen
+                Select model
               </p>
               <ul class="grid m-0 list-none gap-1 p-0">
                 <li v-for="option in modelOptions" :key="option">
@@ -168,7 +168,7 @@ function selectBranch(option: string) {
               </template>
 
               <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold">
-                Reasoning auswählen
+                Select reasoning
               </p>
               <ul class="grid m-0 list-none gap-1 p-0">
                 <li v-for="option in thinkingOptions" :key="option">
@@ -220,7 +220,7 @@ function selectBranch(option: string) {
           </template>
 
           <p class="mb-2 px-2 text-[11px] text-[color:var(--wb-text-muted)] font-semibold">
-            Weiter in
+            Continue in
           </p>
           <ul class="grid m-0 list-none gap-1 p-0">
             <li v-for="option in executionOptions" :key="option.key">
@@ -240,7 +240,7 @@ function selectBranch(option: string) {
             <button class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
               <span class="inline-flex items-center gap-2.5">
                 <Icon name="ph:gauge-bold" class="h-[14px] w-[14px]" />
-                Verbleibende Ratenlimits
+                Remaining rate limits
               </span>
               <Icon name="ph:caret-right-bold" class="h-[12px] w-[12px]" />
             </button>
@@ -307,7 +307,7 @@ function selectBranch(option: string) {
               v-model="branchSearch"
               class="h-full min-w-0 flex-1 border-none bg-transparent p-0 text-[14px] text-[color:var(--wb-text-primary)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
               type="text"
-              placeholder="Branches durchsuchen"
+              placeholder="Search branches"
             >
           </div>
 
@@ -338,7 +338,7 @@ function selectBranch(option: string) {
           <div class="mt-1 border-t border-[color:var(--wb-divider)] pt-1">
             <button class="h-10 w-full flex items-center gap-2 rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]">
               <Icon name="ph:plus-bold" class="h-[14px] w-[14px]" />
-              Neuen Branch erstellen und auschecken...
+              Create and checkout new branch...
             </button>
           </div>
         </ComposerDropdownMenu>

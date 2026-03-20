@@ -25,10 +25,22 @@ const props = defineProps<{
   translucentSidebar: boolean
 }>()
 
-const modelOptions = ['GPT-5.3-Codex', 'GPT-5.2-Codex', 'o3']
+const modelOptions = [
+  'GPT-5.4',
+  'GPT-5.4-Mini',
+  'GPT-5.3-Codex',
+  'GPT-5.2-Codex',
+  'GPT-5.2',
+  'GPT-5.1-Codex-Max',
+  'GPT-5.1-Codex-Mini',
+]
 const thinkingOptions = ['Low', 'Medium', 'High']
 
-const selectedModel = ref(modelOptions[0] ?? '')
+const selectedModel = ref(
+  modelOptions.find(option => option === 'GPT-5.3-Codex')
+  ?? modelOptions[0]
+  ?? '',
+)
 const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
 const composeValue = ref('Tune accent + semantic colors')
 const activeThreadId = ref('thread-1')
