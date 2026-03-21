@@ -46,6 +46,8 @@ const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
 const jsonOpen = ref(true)
 const expandedColor = ref<ColorField | null>(null)
 const codeThemeInfoOpen = ref(false)
+const uiSizeInputRef = ref<HTMLInputElement | null>(null)
+const codeSizeInputRef = ref<HTMLInputElement | null>(null)
 let codeThemeInfoCloseTimer: ReturnType<typeof setTimeout> | null = null
 
 const colorRows: Array<{ field: ColorField, label: string, icon: string }> = [
@@ -54,7 +56,7 @@ const colorRows: Array<{ field: ColorField, label: string, icon: string }> = [
   { field: 'accent', label: 'Accent', icon: 'ph:drop' },
   { field: 'diffAdded', label: 'Diff Added', icon: 'ph:plus-circle' },
   { field: 'diffRemoved', label: 'Diff Removed', icon: 'ph:minus-circle' },
-  { field: 'skill', label: 'Skill', icon: 'ph:sparkle' },
+  { field: 'skill', label: 'Skill', icon: 'ph:cube' },
 ]
 
 function normalizeHex(value: string, fallback: string) {
@@ -138,15 +140,15 @@ const CODE_FONT_OPTIONS: Array<{ label: string, value: string }> = [
   { label: 'Lucida Console stack', value: '"Lucida Console", Monaco, monospace' },
 ]
 
-function optionLabel(options: Array<{ label: string, value: string }>, value: string) {
+function optionLabel(options: Array<{ label: string, value: string }>, value: string, fallbackLabel: string) {
   const match = options.find(opt => opt.value === value)
   if (!match)
-    return value || 'Default'
+    return value || fallbackLabel
   return match.label.replace(/\s*\(.*\)\s*$/, '')
 }
 
-const uiFontLabel = computed(() => optionLabel(UI_FONT_OPTIONS, props.payload.theme.fonts.ui || ''))
-const codeFontLabel = computed(() => optionLabel(CODE_FONT_OPTIONS, props.payload.theme.fonts.code || ''))
+const uiFontLabel = computed(() => optionLabel(UI_FONT_OPTIONS, props.payload.theme.fonts.ui || '', 'Geist'))
+const codeFontLabel = computed(() => optionLabel(CODE_FONT_OPTIONS, props.payload.theme.fonts.code || '', 'Geist Mono'))
 
 function onUiFontSelect(event: Event) {
   const target = event.target as HTMLSelectElement | null
@@ -174,13 +176,23 @@ function clampSize(value: number, min: number, max: number) {
 }
 
 function stepUiSize(delta: number) {
-  const next = clampSize(uiFontSize.value + delta, 12, 22)
+  const next = clampSize(props.uiFontSize + delta, 12, 22)
   emit('setUiFontSize', next)
 }
 
 function stepCodeSize(delta: number) {
-  const next = clampSize(codeFontSize.value + delta, 12, 24)
+  const next = clampSize(props.codeFontSize + delta, 12, 24)
   emit('setCodeFontSize', next)
+}
+
+function focusSizeInput(which: 'ui' | 'code', event: MouseEvent) {
+  const target = event.target as HTMLElement | null
+  if (target?.closest('button') || target?.closest('input'))
+    return
+
+  const inputEl = which === 'ui' ? uiSizeInputRef.value : codeSizeInputRef.value
+  inputEl?.focus()
+  inputEl?.select()
 }
 
 function openCodeThemeInfo() {
@@ -320,242 +332,264 @@ onBeforeUnmount(() => {
       <h3 class="mb-4 text-[22px] font-semibold tracking-tight text-pureBlack/90">
         Display
       </h3>
-      <div class="overflow-visible rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
-        <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
-          <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
-            UI Font Family
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="text-[15px] font-medium text-pureBlack/90">{{ uiFontLabel }}</span>
-            <Icon name="ph:caret-right" class="h-3.5 w-3.5 text-pureBlack/35" />
-          </div>
-          <select
-            class="absolute inset-0 cursor-pointer opacity-0"
-            :value="payload.theme.fonts.ui || ''"
-            aria-label="UI font family"
-            @change="onUiFontSelect"
-          >
-            <option
-              v-for="option in UI_FONT_OPTIONS"
-              :key="option.label"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-
-        <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
-          <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
-            Code Font Family
-          </div>
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-[15px] font-medium text-pureBlack/90">{{ codeFontLabel }}</span>
-            <Icon name="ph:caret-right" class="h-3.5 w-3.5 text-pureBlack/35" />
-          </div>
-          <select
-            class="absolute inset-0 cursor-pointer opacity-0"
-            :value="payload.theme.fonts.code || ''"
-            aria-label="Code font family"
-            @change="onCodeFontSelect"
-          >
-            <option
-              v-for="option in CODE_FONT_OPTIONS"
-              :key="option.label"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-
-        <div class="flex items-center justify-between border-b border-pureBlack/8 px-5 py-4">
-          <span class="text-[15px] font-medium text-pureBlack/90">Translucent Sidebar</span>
-          <DsSwitch
-            :model-value="translucentSidebar"
-            @update:model-value="emit('setTranslucentSidebar', $event)"
-          />
-        </div>
-
-        <div class="flex items-center justify-between gap-4 border-b border-pureBlack/8 px-5 py-4">
-          <span class="text-[15px] font-medium text-pureBlack/90">Contrast</span>
-          <div class="ml-4 flex flex-1 items-center gap-3">
-            <div class="relative h-4 flex-1">
-              <div class="absolute top-1/2 h-[4px] w-full -translate-y-1/2 rounded-full bg-pureBlack/12" />
-              <div
-                class="absolute top-1/2 h-[4px] -translate-y-1/2 rounded-full bg-pureBlack/90"
-                :style="{ width: `${payload.theme.contrast}%` }"
-              />
-              <input
-                type="range"
-                min="0"
-                max="100"
-                :value="payload.theme.contrast"
-                class="absolute inset-0 h-4 w-full cursor-pointer opacity-0"
-                aria-label="Contrast"
-                @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
+      <div class="space-y-5">
+        <div>
+          <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
+            Typography
+          </p>
+          <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
+            <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
+              <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+                UI Font
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-[15px] font-medium text-pureBlack/90">{{ uiFontLabel }}</span>
+                <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
+              </div>
+              <select
+                class="absolute inset-0 cursor-pointer opacity-0"
+                :value="payload.theme.fonts.ui || ''"
+                aria-label="UI font family"
+                @change="onUiFontSelect"
               >
-              <div
-                class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/18 bg-pureWhite shadow-sm"
-                :style="{ left: `${payload.theme.contrast}%` }"
+                <option
+                  v-for="option in UI_FONT_OPTIONS"
+                  :key="option.label"
+                  :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="relative px-5 py-4 transition-colors hover:bg-pureBlack/3">
+              <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+                Code Font
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="font-mono text-[15px] font-medium text-pureBlack/90">{{ codeFontLabel }}</span>
+                <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
+              </div>
+              <select
+                class="absolute inset-0 cursor-pointer opacity-0"
+                :value="payload.theme.fonts.code || ''"
+                aria-label="Code font family"
+                @change="onCodeFontSelect"
+              >
+                <option
+                  v-for="option in CODE_FONT_OPTIONS"
+                  :key="option.label"
+                  :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
+            Interface
+          </p>
+          <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
+            <div class="flex items-center justify-between border-b border-pureBlack/8 px-5 py-4">
+              <span class="text-[15px] font-medium text-pureBlack/90">Translucent Sidebar</span>
+              <DsSwitch
+                :model-value="translucentSidebar"
+                @update:model-value="emit('setTranslucentSidebar', $event)"
               />
             </div>
-            <span class="hex-value rounded-md border border-pureBlack/10 bg-pureBlack/5 px-2 py-0.5 text-[12px] font-medium text-pureBlack/60">
-              {{ payload.theme.contrast }}%
-            </span>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
-          <div
-            class="relative flex items-center gap-1.5"
-            @mouseenter="openCodeThemeInfo"
-            @mouseleave="closeCodeThemeInfo"
-          >
-            <span class="text-[15px] font-medium text-pureBlack/90">Code Theme</span>
-            <Icon
-              name="ph:info"
-              class="h-4 w-4 cursor-help text-pureBlack/42 transition-colors hover:text-pureBlack/65"
-              aria-label="Code theme limitation info"
-              @focus="openCodeThemeInfo"
-              @blur="closeCodeThemeInfo"
-            />
-            <div
-              class="absolute left-0 top-full z-30 mt-2 w-[230px] rounded-xl border border-pureBlack/12 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
-              :class="codeThemeInfoOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0 pointer-events-none'"
-              @mouseenter="openCodeThemeInfo"
-              @mouseleave="closeCodeThemeInfo"
-            >
-              <p>
-                Codex currently enforces built-in syntax highlighting mappings for some code themes.
-              </p>
-              <p class="mt-1.5">
-                Until this is fixed upstream, fully custom syntax highlighting cannot always be applied.
-              </p>
-              <a
-                href="https://github.com/openai/codex/issues/14766"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
-              >
-                GitHub issue #14766
-                <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
-              </a>
-            </div>
-          </div>
-          <div class="relative min-w-[166px]">
-            <select
-              class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
-              :value="payload.codeThemeId"
-              aria-label="Code theme"
-              @change="onCodeThemeSelect"
-            >
-              <option
-                v-for="option in codeThemeOptions"
-                :key="option"
-                :value="option"
-              >
-                {{ option }}
-              </option>
-            </select>
-            <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 border-b border-pureBlack/8">
-          <div class="border-r border-pureBlack/8 px-5 py-4">
-            <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
-              UI Size
-            </div>
-            <div class="flex items-center justify-between gap-2">
-              <div class="inline-flex items-center gap-2">
-                <input
-                  class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
-                  :value="uiFontSize"
-                  type="number"
-                  min="12"
-                  max="22"
-                  step="1"
-                  aria-label="UI size in pixels"
-                  @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
-                >
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="hidden inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8">
-                  <button
-                    type="button"
-                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
-                    aria-label="Increase UI size"
-                    @click="stepUiSize(1)"
+            <div class="flex items-center justify-between gap-4 px-5 py-4">
+              <span class="text-[15px] font-medium text-pureBlack/90">Contrast</span>
+              <div class="ml-4 flex flex-1 items-center gap-3">
+                <div class="relative h-4 flex-1">
+                  <div class="absolute top-1/2 h-[4px] w-full -translate-y-1/2 rounded-full bg-pureBlack/12" />
+                  <div
+                    class="absolute top-1/2 h-[4px] -translate-y-1/2 rounded-full bg-pureBlack/90"
+                    :style="{ width: `${payload.theme.contrast}%` }"
+                  />
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    :value="payload.theme.contrast"
+                    class="absolute inset-0 h-4 w-full cursor-pointer opacity-0"
+                    aria-label="Contrast"
+                    @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
                   >
-                    <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
-                  </button>
-                  <button
-                    type="button"
-                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
-                    aria-label="Decrease UI size"
-                    @click="stepUiSize(-1)"
-                  >
-                    <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
-                  </button>
+                  <div
+                    class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/18 bg-pureWhite shadow-sm"
+                    :style="{ left: `${payload.theme.contrast}%` }"
+                  />
                 </div>
-                <span class="text-[15px] font-medium uppercase text-pureBlack/40">PX</span>
-              </div>
-            </div>
-          </div>
-          <div class="px-5 py-4">
-            <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
-              Code Size
-            </div>
-            <div class="flex items-center justify-between gap-2">
-              <div class="inline-flex items-center gap-2">
-                <input
-                  class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
-                  :value="codeFontSize"
-                  type="number"
-                  min="12"
-                  max="24"
-                  step="1"
-                  aria-label="Code size in pixels"
-                  @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
-                >
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8">
-                  <button
-                    type="button"
-                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
-                    aria-label="Increase code size"
-                    @click="stepCodeSize(1)"
-                  >
-                    <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
-                  </button>
-                  <button
-                    type="button"
-                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
-                    aria-label="Decrease code size"
-                    @click="stepCodeSize(-1)"
-                  >
-                    <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
-                  </button>
-                </div>
-                <span class="hex-value text-[15px] font-medium uppercase text-pureBlack/40">PX</span>
+                <span class="hex-value rounded-md border border-pureBlack/10 bg-pureBlack/5 px-2 py-0.5 text-[12px] font-medium text-pureBlack/60">
+                  {{ payload.theme.contrast }}%
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-pureBlack/2 px-5 py-4">
+        <div>
+          <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
+            Advanced
+          </p>
+          <div class="overflow-visible rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
+            <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
+              <div
+                class="relative flex items-center gap-1.5"
+                @mouseenter="openCodeThemeInfo"
+                @mouseleave="closeCodeThemeInfo"
+              >
+                <span class="text-[15px] font-medium text-pureBlack/90">Code Theme</span>
+                <Icon
+                  name="ph:info"
+                  class="h-4 w-4 cursor-help text-pureBlack/42 transition-colors hover:text-pureBlack/65"
+                  aria-label="Code theme limitation info"
+                  @focus="openCodeThemeInfo"
+                  @blur="closeCodeThemeInfo"
+                />
+                <div
+                  class="absolute left-0 top-full z-30 mt-2 w-[230px] rounded-xl border border-pureBlack/12 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
+                  :class="codeThemeInfoOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0 pointer-events-none'"
+                  @mouseenter="openCodeThemeInfo"
+                  @mouseleave="closeCodeThemeInfo"
+                >
+                  <p>
+                    Codex currently enforces built-in syntax highlighting mappings for some code themes.
+                  </p>
+                  <p class="mt-1.5">
+                    Until this is fixed upstream, fully custom syntax highlighting cannot always be applied.
+                  </p>
+                  <a
+                    href="https://github.com/openai/codex/issues/14766"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
+                  >
+                    GitHub issue #14766
+                    <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
+                  </a>
+                </div>
+              </div>
+              <div class="relative min-w-[166px]">
+                <select
+                  class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
+                  :value="payload.codeThemeId"
+                  aria-label="Code theme"
+                  @change="onCodeThemeSelect"
+                >
+                  <option
+                    v-for="option in codeThemeOptions"
+                    :key="option"
+                    :value="option"
+                  >
+                    {{ option }}
+                  </option>
+                </select>
+                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2">
+              <div class="border-r border-pureBlack/8 px-5 py-4">
+                <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+                  UI Size
+                </div>
+                <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('ui', $event)">
+                  <div class="inline-flex items-center gap-2">
+                    <input
+                      ref="uiSizeInputRef"
+                      class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                      :value="uiFontSize"
+                      type="number"
+                      min="12"
+                      max="22"
+                      step="1"
+                      aria-label="UI size in pixels"
+                      @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
+                    >
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8 opacity-0 translate-y-0.5 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                      <button
+                        type="button"
+                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        aria-label="Increase UI size"
+                        @click="stepUiSize(1)"
+                      >
+                        <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
+                      </button>
+                      <button
+                        type="button"
+                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        aria-label="Decrease UI size"
+                        @click="stepUiSize(-1)"
+                      >
+                        <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                    <span class="text-[12px] font-semibold uppercase tracking-[0.08em] text-pureBlack/36">PX</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-5 py-4">
+                <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+                  Code Size
+                </div>
+                <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('code', $event)">
+                  <div class="inline-flex items-center gap-2">
+                    <input
+                      ref="codeSizeInputRef"
+                      class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                      :value="codeFontSize"
+                      type="number"
+                      min="12"
+                      max="24"
+                      step="1"
+                      aria-label="Code size in pixels"
+                      @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
+                    >
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8 opacity-0 translate-y-0.5 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                      <button
+                        type="button"
+                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        aria-label="Increase code size"
+                        @click="stepCodeSize(1)"
+                      >
+                        <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
+                      </button>
+                      <button
+                        type="button"
+                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        aria-label="Decrease code size"
+                        @click="stepCodeSize(-1)"
+                      >
+                        <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                    <span class="hex-value text-[12px] font-semibold uppercase tracking-[0.08em] text-pureBlack/36">PX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
           <button
             type="button"
-            class="mb-4 flex w-full items-center justify-between border-none bg-transparent p-0 text-left shadow-none outline-none"
+            class="flex w-full items-center justify-between border-none border-b border-pureBlack/8 bg-transparent px-5 py-4 text-left shadow-none outline-none"
             @click="jsonOpen = !jsonOpen"
           >
             <span class="text-[15px] font-semibold text-pureBlack/90">Live JSON</span>
             <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-pureBlack/34" />
           </button>
 
-          <div v-show="jsonOpen" class="space-y-2">
+          <div v-show="jsonOpen" class="space-y-2 p-4">
             <textarea
               class="hex-value h-56 w-full resize-none overflow-auto rounded-2xl border border-[#1a2740] bg-[#08152f] p-4 text-[12px] leading-relaxed text-[#d4e3ff] outline-none shadow-inner"
               rows="10"
