@@ -210,7 +210,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
       <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? 'wb-main-area--collapsed' : 'wb-main-area--open'">
         <div class="wb-main-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
           <section class="wb-chat-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
-            <div class="px-[12px] pt-[9px]">
+            <div class="px-[8px] pt-0">
               <ChatHeaderBar
                 title="Open Vue-Bits Dither Sei..."
                 repo="codex-theme"
@@ -333,11 +333,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .wb-main-area--open {
-  padding: 8px 14px 0 14px;
+  padding: 2px 14px 0 14px;
 }
 
 .wb-main-area--collapsed {
-  padding: 8px 14px 0 126px;
+  padding: 2px 14px 0 126px;
 }
 
 .wb-main-frame {
@@ -347,7 +347,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 .wb-control-lane {
   position: absolute;
-  top: 14px;
+  top: 8px;
   left: 26px;
   z-index: 48;
   display: inline-flex;
@@ -411,15 +411,15 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 @media (max-width: 1180px) {
   .wb-main-area--open {
-    padding: 7px 10px 0 10px;
+    padding: 2px 10px 0 10px;
   }
 
   .wb-main-area--collapsed {
-    padding: 7px 10px 0 98px;
+    padding: 2px 10px 0 98px;
   }
 
   .wb-control-lane {
-    top: 13px;
+    top: 8px;
     left: 8px;
   }
 

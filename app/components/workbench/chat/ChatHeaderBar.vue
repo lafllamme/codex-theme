@@ -85,8 +85,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 
 <template>
   <header
-    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[42px] items-center gap-2 px-1"
-    :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : 'chat-header-bar--expanded'"
+    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-1.5 px-0.5"
   >
     <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
       <div class="min-w-0 inline-flex items-center gap-1 overflow-hidden">
@@ -171,16 +170,6 @@ function handleCommitPrimaryAction(actionKey: string) {
   max-width: min(11vw, 124px);
 }
 
-.chat-header-bar--expanded {
-  padding-left: 4px;
-  transition: padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.chat-header-bar--collapsed {
-  padding-left: 18px;
-  transition: padding-left 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 @media (max-width: 1180px) {
   .chat-header-title {
     max-width: min(50vw, 380px);
@@ -198,12 +187,5 @@ function handleCommitPrimaryAction(actionKey: string) {
     max-width: min(19vw, 92px);
   }
 
-  .chat-header-bar--expanded {
-    padding-left: 2px;
-  }
-
-  .chat-header-bar--collapsed {
-    padding-left: 12px;
-  }
 }
 </style>

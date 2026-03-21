@@ -74,6 +74,40 @@ function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
   return line.kind !== 'unchanged_chunk'
 }
 
+function isChangedLine(line: FileDiffLine) {
+  if (!isCodeLine(line))
+    return false
+  return line.kind === 'added' || line.kind === 'add' || line.kind === 'removed' || line.kind === 'remove'
+}
+
+function hasChangedBefore(index: number) {
+  for (let i = index - 1; i >= 0; i--) {
+    if (isChangedLine(props.section.lines[i]!))
+      return true
+  }
+  return false
+}
+
+function hasChangedAfter(index: number) {
+  for (let i = index + 1; i < props.section.lines.length; i++) {
+    if (isChangedLine(props.section.lines[i]!))
+      return true
+  }
+  return false
+}
+
+function chunkCaretIcon(index: number) {
+  const before = hasChangedBefore(index)
+  const after = hasChangedAfter(index)
+  if (before && after)
+    return 'ph:caret-up-down'
+  if (!before && after)
+    return 'ph:caret-up'
+  if (before && !after)
+    return 'ph:caret-down'
+  return 'ph:caret-up-down'
+}
+
 function lineNumberDigits(value: number | string) {
   const parsed = Number(value)
   if (!Number.isFinite(parsed))
@@ -213,6 +247,7 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
           <DrawerChangeTab
             v-else
             :count="Math.max(1, line.count)"
+            :icon="chunkCaretIcon(lineIndex)"
             @toggle="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
           />
         </div>
