@@ -243,7 +243,10 @@ watch(
         </button>
       </div>
     </header>
-    <div class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-2 pb-2 pt-8 text-[13px] font-[var(--font-code)]">
+    <div
+      class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-2 pt-8 text-[13px] font-[var(--font-code)]"
+      :class="showBulkActions ? 'pb-[72px]' : 'pb-2'"
+    >
       <DrawerChangeCard
         v-for="section in diffSections"
         :key="section.path"
@@ -256,7 +259,7 @@ watch(
     </div>
     <div
       v-if="showBulkActions"
-      class="pointer-events-none absolute bottom-[14px] left-1/2 z-[260] -translate-x-1/2"
+      class="pointer-events-none absolute bottom-[18px] left-1/2 z-[260] -translate-x-1/2"
     >
       <div class="pointer-events-auto">
         <DsBulkActions />

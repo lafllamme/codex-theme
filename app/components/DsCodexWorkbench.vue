@@ -333,11 +333,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .wb-main-area--open {
-  padding: 8px 14px 10px 14px;
+  padding: 8px 14px 0 14px;
 }
 
 .wb-main-area--collapsed {
-  padding: 8px 14px 10px 126px;
+  padding: 8px 14px 0 126px;
 }
 
 .wb-main-frame {
@@ -411,11 +411,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 @media (max-width: 1180px) {
   .wb-main-area--open {
-    padding: 7px 10px 8px 10px;
+    padding: 7px 10px 0 10px;
   }
 
   .wb-main-area--collapsed {
-    padding: 7px 10px 8px 98px;
+    padding: 7px 10px 0 98px;
   }
 
   .wb-control-lane {
