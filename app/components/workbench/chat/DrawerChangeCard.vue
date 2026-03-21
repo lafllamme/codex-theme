@@ -99,7 +99,7 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
 
 <template>
   <section
-    class="[--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-card-surface)_94%,var(--wb-text-primary)_6%)] [--wb-card-surface:color-mix(in_srgb,var(--wb-bubble-bg)_90%,var(--wb-bg-panel)_10%)] [--wb-unmodified-strip-bg:color-mix(in_srgb,var(--wb-card-surface)_88%,var(--wb-text-primary)_12%)] mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-surface)] last:mb-0"
+    class="[--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-card-surface)_94%,var(--wb-text-primary)_6%)] [--wb-card-surface:color-mix(in_srgb,var(--wb-bubble-bg)_90%,var(--wb-bg-panel)_10%)] [--wb-row-divider:var(--wb-card-surface)] [--wb-unmodified-strip-bg:color-mix(in_srgb,var(--wb-card-surface)_88%,var(--wb-text-primary)_12%)] mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-surface)] last:mb-0"
   >
     <div class="group relative z-0 hover:z-40">
       <span
@@ -163,7 +163,7 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
     </div>
 
     <div
-      class="diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]"
+      class="diff-lines-shell diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]"
       :class="[
         collapsed ? 'diff-section-body--collapsed' : 'diff-section-body--expanded rounded-b-[8px]',
         suspendAccordionMotion ? 'diff-section-body--no-motion' : '',
@@ -184,11 +184,11 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
               class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
             >
               <span
-                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="diff-line-gutter py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
                 :style="lineMarkerStyle(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
             </div>
           </template>
 
@@ -199,11 +199,11 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
               class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
             >
               <span
-                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="diff-line-gutter py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
                 :style="lineMarkerStyle(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
             </div>
           </template>
           <button
@@ -212,7 +212,7 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
             type="button"
             @click="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
           >
-            <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
+            <span class="h-10 inline-flex items-center justify-center">
               <Icon
                 name="ph:caret-up-down"
                 class="h-[12px] w-[12px]"
@@ -230,11 +230,11 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
               class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
             >
               <span
-                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="diff-line-gutter py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
                 :style="lineMarkerStyle(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
             </div>
           </template>
         </div>
@@ -248,11 +248,11 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
               : 'bg-transparent'"
         >
           <span
-            class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+            class="diff-line-gutter py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
             :class="isCodeLine(line) ? lineMarkerClass(line) : ''"
             :style="isCodeLine(line) ? lineMarkerStyle(line) : undefined"
           >{{ line.right || line.left }}</span>
-          <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
+          <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
         </div>
       </template>
 
@@ -261,16 +261,16 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
         class="px-2 py-1.5"
       >
         <button
-          class="w-full flex items-center overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+          class="diff-line-row grid w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
           type="button"
         >
-          <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
+          <span class="h-10 inline-flex items-center justify-center">
             <Icon
-              name="ph:caret-up-down-bold"
+              name="ph:caret-up-down"
               class="h-[12px] w-[12px]"
             />
           </span>
-          <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium font-[var(--font-ui)]">
+          <span class="h-10 inline-flex items-center truncate px-3 text-[length:var(--wb-ui-text)] font-medium leading-none font-[var(--font-ui)]">
             {{ unmodifiedLabel }}
           </span>
         </button>
@@ -309,14 +309,38 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
 }
 
 .diff-line-row {
-  grid-template-columns: 44px minmax(0, 1fr);
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  position: relative;
+}
+
+.diff-lines-shell {
+  --wb-gutter-width: 56px;
+  --wb-row-divider-offset: 4px;
+  position: relative;
+}
+
+.diff-lines-shell::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--wb-gutter-width) + var(--wb-row-divider-offset));
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--wb-row-divider);
+  pointer-events: none;
+  z-index: 5;
 }
 
 .diff-line-gutter {
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .diff-line-text {
   word-break: break-word;
+  position: relative;
+  z-index: 2;
 }
 </style>

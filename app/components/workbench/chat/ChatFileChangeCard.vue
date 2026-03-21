@@ -68,7 +68,7 @@ function lineMarkerStyle(line: FileDiffCodeLine) {
 
 <template>
   <section
-    class="[--wb-card-content-bg:var(--wb-bubble-bg)] [--wb-card-summary-bg:color-mix(in_srgb,var(--wb-bubble-bg)_96%,var(--wb-text-primary)_4%)] [--wb-card-tab-bg:color-mix(in_srgb,var(--wb-bubble-bg)_98%,var(--wb-text-primary)_2%)] overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-content-bg)]"
+    class="[--wb-card-content-bg:var(--wb-bubble-bg)] [--wb-card-summary-bg:color-mix(in_srgb,var(--wb-bubble-bg)_96%,var(--wb-text-primary)_4%)] [--wb-card-tab-bg:color-mix(in_srgb,var(--wb-bubble-bg)_98%,var(--wb-text-primary)_2%)] [--wb-row-divider:var(--wb-card-content-bg)] overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-content-bg)]"
   >
     <div class="flex items-center justify-between border-b border-[color:var(--wb-divider)] rounded-t-[8px] bg-[var(--wb-card-summary-bg)] px-3 py-2">
       <div class="flex items-center gap-2 text-[length:var(--wb-ui-text-xs)] font-medium">
@@ -125,26 +125,63 @@ function lineMarkerStyle(line: FileDiffCodeLine) {
 
         <div
           v-if="file.id === diffStore.activeFileId(block.id) && activeFile"
-          class="max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
+          class="diff-lines-shell max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
           :class="index === block.files.length - 1 ? 'rounded-b-[8px] overflow-hidden' : ''"
         >
           <div
             v-for="line in visibleDiffLines(activeFile)"
             :key="`${file.id}-${line.left}-${line.right}-${line.text}`"
-            class="grid grid-cols-[44px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
+            class="diff-line-row border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
             :style="{ background: lineBackground(line) }"
           >
             <span
-              class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
+              class="diff-line-gutter py-1 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
               :class="lineMarkerClass(line)"
               :style="lineMarkerStyle(line)"
             >
               {{ line.right || line.left }}
             </span>
-            <span class="[overflow-wrap:anywhere] px-2 py-1 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
+            <span class="diff-line-text [overflow-wrap:anywhere] py-1 pl-4 pr-2 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.diff-line-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  position: relative;
+}
+
+.diff-lines-shell {
+  --wb-gutter-width: 56px;
+  --wb-row-divider-offset: 4px;
+  position: relative;
+}
+
+.diff-lines-shell::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--wb-gutter-width) + var(--wb-row-divider-offset));
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--wb-row-divider);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.diff-line-gutter {
+  position: relative;
+  z-index: 2;
+}
+
+.diff-line-text {
+  position: relative;
+  z-index: 2;
+  word-break: break-word;
+}
+</style>
