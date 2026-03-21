@@ -12,6 +12,7 @@ const props = defineProps<{
   jsonValue: string
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
+  exportState: 'idle' | 'ok'
   uiFontSize: number
   codeFontSize: number
   translucentSidebar: boolean
@@ -579,31 +580,32 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="overflow-hidden rounded-[20px] border border-[#132a4d] bg-[#0b1f42] shadow-[0_18px_36px_-18px_rgba(7,15,31,0.75)]">
+        <div class="overflow-hidden rounded-[20px] border border-pureBlack/14 bg-pureBlack shadow-[0_12px_24px_-16px_rgba(0,0,0,0.5)]">
           <button
             type="button"
             class="flex w-full items-center justify-between border-none bg-transparent px-5 py-4 text-left shadow-none outline-none"
             @click="jsonOpen = !jsonOpen"
           >
             <div class="flex items-center gap-3">
-              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#223559] text-[#f4f8ff]">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-pureWhite/10 text-pureWhite">
                 <Icon name="ph:brackets-curly-bold" class="h-5 w-5" />
               </span>
-              <span class="text-[15px] font-semibold text-[#f4f8ff]">JSON Preview</span>
+              <span class="text-[15px] font-semibold text-pureWhite">JSON Preview</span>
             </div>
-            <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-[#b7c7de]" />
+            <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-pureWhite/60" />
           </button>
 
           <div v-show="jsonOpen" class="space-y-2 px-5 pb-5">
-            <div class="overflow-hidden rounded-2xl border border-[#1f3458] bg-[#020c22] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <div class="json-editor-shell relative overflow-hidden rounded-2xl border border-pureWhite/12 bg-pureWhite/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
               <textarea
-                class="hex-value block h-56 w-full resize-none overflow-auto border-none bg-transparent p-5 text-[12px] leading-relaxed text-[#cfe0ff] outline-none"
+                class="json-editor-textarea hex-value block h-56 w-full resize-none overflow-auto bg-transparent border-none p-5 text-[12px] leading-relaxed text-pureWhite/90 outline-none"
                 rows="10"
                 :value="jsonValue"
                 @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
               />
+              <div class="pointer-events-none absolute inset-0 rounded-2xl" />
             </div>
-            <p v-if="jsonError" class="text-[12px] text-red-300/90">
+            <p v-if="jsonError" class="text-[12px] text-red-300">
               {{ jsonError }}
             </p>
           </div>
@@ -611,18 +613,16 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <div class="bg-pureBlack/8 h-px" />
-
     <!-- Export -->
     <section class="space-y-4">
-      <div class="flex gap-3">
+      <div class="flex gap-3 my-4">
         <button
           type="button"
           class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-pureBlack/10 bg-pureWhite py-3 text-[14px] font-semibold text-pureBlack/80 shadow-sm transition-all hover:bg-pureBlack/5 active:scale-[0.98]"
           @click="emit('exportTheme')"
         >
           <Icon name="ph:export-bold" class="h-4.5 w-4.5" />
-          Export Config
+          {{ exportState === 'ok' ? 'Exported!' : 'Export' }}
         </button>
         <button
           type="button"
@@ -630,7 +630,7 @@ onBeforeUnmount(() => {
           @click="emit('copyExport')"
         >
           <Icon name="ph:copy-bold" class="h-4.5 w-4.5" />
-          {{ copyState === 'ok' ? 'Copied!' : 'Copy string' }}
+          {{ copyState === 'ok' ? 'Copied!' : 'Copy' }}
         </button>
       </div>
     </section>
@@ -646,5 +646,21 @@ onBeforeUnmount(() => {
 
 .size-input {
   -moz-appearance: textfield;
+}
+
+.json-editor-shell {
+  isolation: isolate;
+  contain: paint;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Reinforces clipping at rounded corners during momentum scroll. */
+  clip-path: inset(0 round 1rem);
+}
+
+.json-editor-textarea {
+  border-radius: inherit;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background-clip: padding-box;
 }
 </style>

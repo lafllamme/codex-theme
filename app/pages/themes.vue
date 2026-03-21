@@ -88,9 +88,12 @@ const payload = reactive<CodexThemePayload>(structuredClone(presetMap['adventure
 const jsonValue = ref('')
 const jsonError = ref('')
 const copyState = ref<'idle' | 'ok' | 'error'>('idle')
+const exportState = ref<'idle' | 'ok'>('idle')
 const isApplyingJson = ref(false)
 const scenarioId = ref('neutral')
 const activePresetId = ref<string | null>(null)
+let copyStateResetTimer: ReturnType<typeof setTimeout> | null = null
+let exportStateResetTimer: ReturnType<typeof setTimeout> | null = null
 
 const scenarioOptions = [
   { id: 'neutral', label: 'Neutral' },
@@ -278,10 +281,21 @@ function setJsonValue(value: string) {
 function exportTheme() {
   jsonError.value = ''
   jsonValue.value = toExportString()
+  exportState.value = 'ok'
+  if (exportStateResetTimer)
+    clearTimeout(exportStateResetTimer)
+  exportStateResetTimer = setTimeout(() => {
+    exportState.value = 'idle'
+    exportStateResetTimer = null
+  }, 3000)
 }
 
 async function copyExport() {
   copyState.value = 'idle'
+  if (copyStateResetTimer) {
+    clearTimeout(copyStateResetTimer)
+    copyStateResetTimer = null
+  }
   if (!process.client || !navigator.clipboard) {
     copyState.value = 'error'
     return
@@ -290,6 +304,10 @@ async function copyExport() {
   try {
     await navigator.clipboard.writeText(toCodexThemeString())
     copyState.value = 'ok'
+    copyStateResetTimer = setTimeout(() => {
+      copyState.value = 'idle'
+      copyStateResetTimer = null
+    }, 3000)
   }
   catch {
     copyState.value = 'error'
@@ -409,6 +427,13 @@ watch(
 onMounted(() => {
   syncJsonFromPayload()
 })
+
+onBeforeUnmount(() => {
+  if (copyStateResetTimer)
+    clearTimeout(copyStateResetTimer)
+  if (exportStateResetTimer)
+    clearTimeout(exportStateResetTimer)
+})
 </script>
 
 <template>
@@ -430,6 +455,7 @@ onMounted(() => {
           :json-value="jsonValue"
           :json-error="jsonError"
           :copy-state="copyState"
+          :export-state="exportState"
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
           :translucent-sidebar="!payload.theme.opaqueWindows"

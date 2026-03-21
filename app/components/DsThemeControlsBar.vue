@@ -10,6 +10,7 @@ defineProps<{
   jsonValue: string
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
+  exportState: 'idle' | 'ok'
   uiFontSize: number
   codeFontSize: number
   translucentSidebar: boolean
@@ -168,6 +169,7 @@ const morphStyle = computed(() => ({
                 :json-value="jsonValue"
                 :json-error="jsonError"
                 :copy-state="copyState"
+                :export-state="exportState"
                 :ui-font-size="uiFontSize"
                 :code-font-size="codeFontSize"
                 :translucent-sidebar="translucentSidebar"
