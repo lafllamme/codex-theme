@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 interface DiffLine {
-  kind: 'added' | 'removed' | 'context'
+  kind: 'added' | 'removed' | 'context' | 'unchanged'
   left: string
   right: string
   text: string
+  hiddenLines?: number
 }
 
 interface DiffSection {
@@ -15,7 +16,7 @@ interface DiffSection {
   lines: DiffLine[]
 }
 
-defineProps<{
+const props = defineProps<{
   section: DiffSection
   showStatusDot?: boolean
   collapsed: boolean
@@ -26,10 +27,34 @@ const emit = defineEmits<{
   toggle: []
 }>()
 
+const section = computed(() => props.section)
+const showStatusDot = computed(() => props.showStatusDot)
+const collapsed = computed(() => props.collapsed)
+const suspendAccordionMotion = computed(() => props.suspendAccordionMotion)
+
 const RE_MD_HEADING = /^#+\s/
 const RE_STAGING = /zurücksetzen|stagen/i
 const RE_DELTA_PARTS = /[+-]\d+/g
 const titleHovered = ref(false)
+const showUnmodifiedChunk = ref(false)
+
+const unmodifiedChunk = computed(() =>
+  props.section.lines.find(line => line.kind === 'unchanged' || (line.hiddenLines ?? 0) > 0),
+)
+
+const unmodifiedCount = computed(() => {
+  const line = unmodifiedChunk.value
+  if (!line)
+    return 7
+  return Math.max(1, line.hiddenLines ?? 0)
+})
+
+const hasUnmodifiedChunk = computed(() => Boolean(unmodifiedChunk.value))
+
+const unmodifiedLabel = computed(() => {
+  const count = unmodifiedCount.value
+  return `${count} unmodified ${count === 1 ? 'line' : 'lines'}`
+})
 
 function deltaParts(delta: string) {
   const matches = delta.match(RE_DELTA_PARTS) ?? []
@@ -69,7 +94,7 @@ function lineMarkerStyle(line: DiffLine) {
 
 <template>
   <section
-    class="mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-bubble-bg)] last:mb-0 [--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-bubble-bg)_98%,var(--wb-text-primary)_2%)]"
+    class="[--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-card-surface)_94%,var(--wb-text-primary)_6%)] [--wb-card-surface:color-mix(in_srgb,var(--wb-bubble-bg)_90%,var(--wb-bg-panel)_10%)] [--wb-unmodified-strip-bg:color-mix(in_srgb,var(--wb-card-surface)_88%,var(--wb-text-primary)_12%)] mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-surface)] last:mb-0"
   >
     <div class="group relative z-0 hover:z-40">
       <span
@@ -139,22 +164,73 @@ function lineMarkerStyle(line: DiffLine) {
         suspendAccordionMotion ? 'diff-section-body--no-motion' : '',
       ]"
     >
-      <div
+      <template
         v-for="line in section.lines"
         :key="`${section.path}-${line.left}-${line.right}-${line.text}`"
-        class="diff-line-row grid gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
-        :class="line.kind === 'added'
-          ? 'bg-[color:color-mix(in_srgb,var(--theme-added)_17%,transparent)]'
-          : line.kind === 'removed'
-            ? 'bg-[color:color-mix(in_srgb,var(--theme-removed)_16%,transparent)]'
-            : 'bg-transparent'"
       >
-        <span
-          class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
-          :class="lineMarkerClass(line)"
-          :style="lineMarkerStyle(line)"
-        >{{ line.right || line.left }}</span>
-        <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
+        <div
+          v-if="line.kind === 'unchanged'"
+          class="px-2 py-1.5"
+        >
+          <button
+            class="w-full flex items-center overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+            type="button"
+            @click="showUnmodifiedChunk = !showUnmodifiedChunk"
+          >
+            <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
+              <Icon
+                :name="showUnmodifiedChunk ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+                class="h-[12px] w-[12px]"
+              />
+            </span>
+            <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium">
+              {{ `${Math.max(1, line.hiddenLines ?? 0)} unmodified ${Math.max(1, line.hiddenLines ?? 0) === 1 ? 'line' : 'lines'}` }}
+            </span>
+          </button>
+          <div
+            v-if="showUnmodifiedChunk"
+            class="mt-1 border border-[color:var(--wb-divider)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-card-surface)_96%,var(--wb-text-primary)_4%)] px-2 py-1.5"
+          >
+            <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
+          </div>
+        </div>
+        <div
+          v-else
+          class="diff-line-row grid gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+          :class="line.kind === 'added'
+            ? 'bg-[color:color-mix(in_srgb,var(--theme-added)_17%,transparent)]'
+            : line.kind === 'removed'
+              ? 'bg-[color:color-mix(in_srgb,var(--theme-removed)_16%,transparent)]'
+              : 'bg-transparent'"
+        >
+          <span
+            class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+            :class="lineMarkerClass(line)"
+            :style="lineMarkerStyle(line)"
+          >{{ line.right || line.left }}</span>
+          <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
+        </div>
+      </template>
+
+      <div
+        v-if="!hasUnmodifiedChunk && !collapsed"
+        class="px-2 py-1.5"
+      >
+        <button
+          class="w-full flex items-center overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+          type="button"
+          @click="showUnmodifiedChunk = !showUnmodifiedChunk"
+        >
+          <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
+            <Icon
+              :name="showUnmodifiedChunk ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+              class="h-[12px] w-[12px]"
+            />
+          </span>
+          <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium">
+            {{ unmodifiedLabel }}
+          </span>
+        </button>
       </div>
     </div>
   </section>

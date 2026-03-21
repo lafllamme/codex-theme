@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import DsBulkActions from '../DsBulkActions.vue'
 import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 import DrawerChangeCard from './chat/DrawerChangeCard.vue'
 
@@ -93,6 +94,12 @@ const selectedStatusCount = computed(() => {
   return 0
 })
 
+const showBulkActions = computed(() => {
+  if (diffSections.length <= 1)
+    return false
+  return diffSections.some(section => !collapsedSections.value.has(section.path))
+})
+
 function toggleMenu(key: 'status') {
   openMenuKey.value = openMenuKey.value === key ? null : key
 }
@@ -136,7 +143,7 @@ watch(
 </script>
 
 <template>
-  <aside class="diff-drawer max-w-full overflow-x-hidden overflow-y-visible border-l border-l-[color:color-mix(in_srgb,var(--wb-divider)_86%,transparent)] rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
+  <aside class="diff-drawer relative max-w-full overflow-x-hidden overflow-y-visible border-l border-l-[color:color-mix(in_srgb,var(--wb-divider)_86%,transparent)] rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
     <header class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]">
       <ComposerDropdownMenu
         :open="openMenuKey === 'status'"
@@ -246,6 +253,14 @@ watch(
         :suspend-accordion-motion="suspendAccordionMotion"
         @toggle="toggleSection(section.path)"
       />
+    </div>
+    <div
+      v-if="showBulkActions"
+      class="pointer-events-none absolute bottom-[14px] left-1/2 z-[260] -translate-x-1/2"
+    >
+      <div class="pointer-events-auto">
+        <DsBulkActions />
+      </div>
     </div>
   </aside>
 </template>
