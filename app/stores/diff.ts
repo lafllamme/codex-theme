@@ -1,4 +1,4 @@
-import type { FileChangeItem } from '~/types/workbench-chat'
+import type { FileChangeItem, FileDiffCodeLine, FileDiffLine } from '~/types/workbench-chat'
 import { createSharedDiffFiles, createSharedDrawerSections } from '~/data/workbench-diff-shared'
 
 export interface DrawerSectionView {
@@ -16,6 +16,7 @@ export const useDiffStore = defineStore('diff', () => {
   const collapsedSectionIds = ref<string[]>([])
   const openFileByCardId = ref<Record<string, string>>({})
   const expandedChunkIdsByFile = ref<Record<string, string[]>>({})
+  const PREVIEW_CONTEXT_LINES = 2
 
   function upsertFiles(files: FileChangeItem[]) {
     for (const file of files)
@@ -76,6 +77,78 @@ export const useDiffStore = defineStore('diff', () => {
     expandedChunkIdsByFile.value[fileId] = [...current, chunkId]
   }
 
+  function isChangedLine(line: FileDiffCodeLine) {
+    return line.kind === 'add' || line.kind === 'added' || line.kind === 'remove' || line.kind === 'removed'
+  }
+
+  function flattenLines(lines: FileDiffLine[]) {
+    const flattened: FileDiffCodeLine[] = []
+    for (const line of lines) {
+      if (line.kind === 'unchanged_chunk') {
+        flattened.push(...line.lines.map(inner => ({ ...inner })))
+        continue
+      }
+      flattened.push({ ...line })
+    }
+    return flattened
+  }
+
+  function normalizeDrawerLines(fileId: string, lines: FileDiffLine[]) {
+    const flattened = flattenLines(lines)
+    if (!flattened.length)
+      return [] as FileDiffLine[]
+
+    const changedIndexes = flattened
+      .map((line, index) => (isChangedLine(line) ? index : -1))
+      .filter(index => index >= 0)
+
+    if (!changedIndexes.length) {
+      return [{
+        kind: 'unchanged_chunk',
+        id: `${fileId}-chunk-all`,
+        count: flattened.length,
+        lines: flattened,
+      }]
+    }
+
+    const keep = new Set<number>()
+    for (const changedIndex of changedIndexes) {
+      const start = Math.max(0, changedIndex - PREVIEW_CONTEXT_LINES)
+      const end = Math.min(flattened.length - 1, changedIndex + PREVIEW_CONTEXT_LINES)
+      for (let index = start; index <= end; index++)
+        keep.add(index)
+    }
+
+    const normalized: FileDiffLine[] = []
+    let chunkStart = -1
+
+    function pushChunk(endExclusive: number) {
+      if (chunkStart < 0 || endExclusive <= chunkStart)
+        return
+      const chunkLines = flattened.slice(chunkStart, endExclusive)
+      normalized.push({
+        kind: 'unchanged_chunk',
+        id: `${fileId}-chunk-${chunkStart}-${endExclusive - 1}`,
+        count: chunkLines.length,
+        lines: chunkLines,
+      })
+      chunkStart = -1
+    }
+
+    for (let index = 0; index < flattened.length; index++) {
+      if (keep.has(index)) {
+        pushChunk(index)
+        normalized.push(flattened[index]!)
+        continue
+      }
+      if (chunkStart < 0)
+        chunkStart = index
+    }
+    pushChunk(flattened.length)
+
+    return normalized
+  }
+
   const resolvedDrawerSections = computed<DrawerSectionView[]>(() => {
     return drawerSections.value
       .map((section) => {
@@ -84,7 +157,7 @@ export const useDiffStore = defineStore('diff', () => {
           return null
         return {
           ...section,
-          lines: file.lines,
+          lines: normalizeDrawerLines(file.id, file.lines),
         }
       })
       .filter(Boolean) as DrawerSectionView[]

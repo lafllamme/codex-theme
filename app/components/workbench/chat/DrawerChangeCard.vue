@@ -3,6 +3,7 @@ import type { DrawerSectionView } from '~/stores/diff'
 import type { FileDiffCodeLine, FileDiffLine, FileDiffUnchangedChunkLine } from '~/types/workbench-chat'
 import { computed, ref } from 'vue'
 import { useDiffStore } from '~/stores/diff'
+import DrawerChangeTab from './DrawerChangeTab.vue'
 
 const props = defineProps<{
   section: DrawerSectionView
@@ -24,26 +25,13 @@ const diffStore = useDiffStore()
 const RE_MD_HEADING = /^#+\s/
 const RE_STAGING = /zurücksetzen|stagen/i
 const RE_DELTA_PARTS = /[+-]\d+/g
-const UNMODIFIED_PREVIEW_CONTEXT = 2
 const titleHovered = ref(false)
 
 const unmodifiedChunk = computed(() =>
   props.section.lines.find(line => line.kind === 'unchanged_chunk') as FileDiffUnchangedChunkLine | undefined,
 )
 
-const unmodifiedCount = computed(() => {
-  const line = unmodifiedChunk.value
-  if (!line)
-    return 0
-  return Math.max(1, line.count)
-})
-
 const hasUnmodifiedChunk = computed(() => Boolean(unmodifiedChunk.value))
-
-const unmodifiedLabel = computed(() => {
-  const count = unmodifiedCount.value
-  return `${count} unmodified ${count === 1 ? 'line' : 'lines'}`
-})
 const sectionLineDigits = computed(() => maxSectionLineDigits(props.section.lines))
 const sectionLineColumns = computed(() => maxSectionLineColumns(props.section.lines))
 
@@ -84,18 +72,6 @@ function lineBackgroundClass(line: FileDiffCodeLine) {
 
 function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
   return line.kind !== 'unchanged_chunk'
-}
-
-function previewLeadingLines(chunk: FileDiffUnchangedChunkLine) {
-  if (chunk.lines.length <= UNMODIFIED_PREVIEW_CONTEXT * 2)
-    return chunk.lines
-  return chunk.lines.slice(0, UNMODIFIED_PREVIEW_CONTEXT)
-}
-
-function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
-  if (chunk.lines.length <= UNMODIFIED_PREVIEW_CONTEXT * 2)
-    return []
-  return chunk.lines.slice(-UNMODIFIED_PREVIEW_CONTEXT)
 }
 
 function lineNumberDigits(value: number | string) {
@@ -220,21 +196,6 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
           v-if="line.kind === 'unchanged_chunk'"
           class="py-1.5"
         >
-          <template v-if="!diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
-            <div
-              v-for="chunkLine in previewLeadingLines(line)"
-              :key="`${section.fileId}-${line.id}-lead-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
-              class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
-              :class="lineBackgroundClass(chunkLine)"
-            >
-              <span
-                class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
-                :class="lineMarkerClass(chunkLine)"
-              >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
-            </div>
-          </template>
-
           <template v-if="diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
             <div
               v-for="chunkLine in line.lines"
@@ -249,37 +210,11 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
               <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
             </div>
           </template>
-          <button
+          <DrawerChangeTab
             v-else
-            class="relative z-[2] grid grid-cols-[var(--wb-gutter-width)_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] hover:text-[color:var(--wb-text-primary)] before:content-['']"
-            type="button"
-            @click="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
-          >
-            <span class="h-10 inline-flex items-center justify-center">
-              <Icon
-                name="ph:caret-up-down"
-                class="h-[12px] w-[12px]"
-              />
-            </span>
-            <span class="h-10 inline-flex items-center truncate px-3 text-[length:var(--wb-ui-text)] font-medium leading-none font-[var(--font-ui)]">
-              {{ `${Math.max(1, line.count)} unmodified ${Math.max(1, line.count) === 1 ? 'line' : 'lines'}` }}
-            </span>
-          </button>
-
-          <template v-if="!diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
-            <div
-              v-for="chunkLine in previewTrailingLines(line)"
-              :key="`${section.fileId}-${line.id}-trail-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
-              class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
-              :class="lineBackgroundClass(chunkLine)"
-            >
-              <span
-                class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
-                :class="lineMarkerClass(chunkLine)"
-              >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
-            </div>
-          </template>
+            :count="Math.max(1, line.count)"
+            @toggle="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
+          />
         </div>
         <div
           v-else
@@ -294,25 +229,7 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
         </div>
       </template>
 
-      <div
-        v-if="!hasUnmodifiedChunk && !collapsed"
-        class="px-2 py-1.5"
-      >
-        <button
-          class="relative z-[2] grid grid-cols-[var(--wb-gutter-width)_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] hover:text-[color:var(--wb-text-primary)] before:content-['']"
-          type="button"
-        >
-          <span class="h-10 inline-flex items-center justify-center">
-            <Icon
-              name="ph:caret-up-down"
-              class="h-[12px] w-[12px]"
-            />
-          </span>
-          <span class="h-10 inline-flex items-center truncate px-3 text-[length:var(--wb-ui-text)] font-medium leading-none font-[var(--font-ui)]">
-            {{ unmodifiedLabel }}
-          </span>
-        </button>
-      </div>
+      <div v-if="!hasUnmodifiedChunk && !collapsed" class="px-2 py-1.5" />
     </div>
   </section>
 </template>
