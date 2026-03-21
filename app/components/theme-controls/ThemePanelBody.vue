@@ -335,7 +335,7 @@ onBeforeUnmount(() => {
             Typography
           </p>
           <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
-            <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
+            <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/6">
               <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
                 UI Font
               </div>
@@ -359,7 +359,7 @@ onBeforeUnmount(() => {
               </select>
             </div>
 
-            <div class="relative px-5 py-4 transition-colors hover:bg-pureBlack/3">
+            <div class="relative px-5 py-4 transition-colors hover:bg-pureBlack/6">
               <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
                 Code Font
               </div>

@@ -126,12 +126,12 @@ watch(
       >
         <template #trigger="{ toggle }">
           <button
-            class="h-7 inline-flex appearance-none items-center gap-2 rounded-full border-none bg-[color:color-mix(in_srgb,var(--wb-input-bg)_58%,transparent)] px-3 text-[13px] text-[color:var(--wb-text-primary)] font-medium outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+            class="h-7 inline-flex appearance-none items-center gap-2 rounded-full border-none bg-transparent px-3 text-[13px] text-[color:var(--wb-text-primary)] font-medium outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
             @click.stop="toggle"
           >
             <span>Unstaged</span>
-            <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--wb-input-bg)_88%,white)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
-            <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_76%,transparent)]" />
+            <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+            <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:var(--wb-text-secondary)]" />
           </button>
         </template>
 
@@ -141,10 +141,10 @@ watch(
             :class="selectedStatusKey === 'unstaged' ? 'text-[color:var(--wb-text-primary)]' : 'text-[color:var(--wb-text-secondary)]'"
             @click="selectStatus('unstaged')"
           >
-            <span class="inline-flex items-center gap-2">
-              <span>Unstaged</span>
-              <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--wb-input-bg)_88%,white)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
-            </span>
+              <span class="inline-flex items-center gap-2">
+                <span>Unstaged</span>
+                <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+              </span>
             <Icon v-if="selectedStatusKey === 'unstaged'" name="ph:check-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
           </button>
 
@@ -153,10 +153,10 @@ watch(
             :class="selectedStatusKey === 'staged' ? 'text-[color:var(--wb-text-primary)]' : 'text-[color:var(--wb-text-secondary)]'"
             @click="selectStatus('staged')"
           >
-            <span class="inline-flex items-center gap-2">
-              <span>Staged</span>
-              <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--wb-input-bg)_88%,white)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
-            </span>
+              <span class="inline-flex items-center gap-2">
+                <span>Staged</span>
+                <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+              </span>
             <Icon v-if="selectedStatusKey === 'staged'" name="ph:check-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
           </button>
 
@@ -183,14 +183,14 @@ watch(
         </div>
       </ComposerDropdownMenu>
 
-      <div class="inline-flex items-center gap-2 text-[color:color-mix(in_srgb,var(--wb-text-primary)_74%,transparent)]">
-        <button class="h-5 w-5 inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:text-[color:var(--wb-text-primary)]">
+      <div class="inline-flex items-center gap-1 text-[color:color-mix(in_srgb,var(--wb-text-primary)_74%,transparent)]">
+        <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
           <Icon name="ph:dots-three" class="h-[12px] w-[12px]" />
         </button>
-        <button class="h-5 w-5 inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:text-[color:var(--wb-text-primary)]">
+        <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
           <Icon name="ph:folders" class="h-[12px] w-[12px]" />
         </button>
-        <button class="h-5 w-5 inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:text-[color:var(--wb-text-primary)]">
+        <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
           <Icon name="ph:arrows-out-simple" class="h-[12px] w-[12px]" />
         </button>
       </div>
