@@ -30,5 +30,5 @@ export default defineNuxtConfig({
     ],
   },
   css: ['~/assets/styles/fonts.scss', '~/assets/styles/workbench-tokens.css'],
-  modules: ['@nuxt/fonts', '@nuxt/icon', '@unocss/nuxt'],
+  modules: ['@nuxt/fonts', '@nuxt/icon', '@pinia/nuxt', '@unocss/nuxt'],
 })

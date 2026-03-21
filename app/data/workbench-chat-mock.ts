@@ -1,4 +1,5 @@
 import type { ChatMessage } from '~/types/workbench-chat'
+import { createSharedDiffFiles } from '~/data/workbench-diff-shared'
 
 export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
   'thread-1': [
@@ -23,45 +24,12 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
         },
         {
           type: 'file_change_card',
-          summaryLabel: '2 files changed',
-          added: 4,
-          removed: 4,
+          id: 'card-diff-primary',
+          summaryLabel: '3 files changed',
+          added: 86,
+          removed: 33,
           revertLabel: 'Revert',
-          files: [
-            {
-              id: 'f1',
-              path: 'app/components/workbench/WorkbenchMainStage.vue',
-              fileName: 'WorkbenchMainStage.vue',
-              added: 2,
-              removed: 2,
-              lines: [
-                { left: 11, right: 11, text: 'interface ChatMessage {', kind: 'context' },
-                { left: 12, right: 12, text: '  role: \'assistant\' | \'user\'', kind: 'context' },
-                { left: 13, right: '', text: '  text: string', kind: 'remove' },
-                { left: '', right: 13, text: '  text?: string', kind: 'add' },
-                { left: '', right: 14, text: '  blocks?: AssistantBlock[]', kind: 'add' },
-                { left: 14, right: 15, text: '}', kind: 'context' },
-                { left: 15, right: '', text: 'const messages = ref<ChatMessage[]>([])', kind: 'remove' },
-                { left: 16, right: 16, text: 'const openFile = ref(\'\')', kind: 'context' },
-              ],
-            },
-            {
-              id: 'f2',
-              path: 'app/components/workbench/chat/ChatComponentMention.vue',
-              fileName: 'ChatComponentMention.vue',
-              added: 2,
-              removed: 2,
-              showDot: true,
-              lines: [
-                { left: 11, right: 11, text: '<div class="flex items-baseline gap-2.5">', kind: 'context' },
-                { left: 12, right: '', text: '<span class="mt-[1px] h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-secondary)]" />', kind: 'remove' },
-                { left: '', right: 12, text: '<span class="mt-0 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-primary)]" />', kind: 'add' },
-                { left: 13, right: '', text: '<p class="text-[13px] text-[color:var(--wb-text-primary)] leading-[1.5]">', kind: 'remove' },
-                { left: '', right: 13, text: '<p class="m-0 text-[13px] text-[color:var(--wb-text-primary)] leading-[1.5]">', kind: 'add' },
-                { left: 14, right: 14, text: '<span class="mx-1 font-semibold text-[color:var(--theme-accent)]">{{ block.component }}</span>', kind: 'context' },
-              ],
-            },
-          ],
+          files: createSharedDiffFiles(),
         },
       ],
     },
@@ -94,6 +62,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
         },
         {
           type: 'file_change_card',
+          id: 'card-chat-secondary',
           summaryLabel: '3 files changed',
           added: 9,
           removed: 5,

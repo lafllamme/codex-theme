@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { useDiffStore } from '~/stores/diff'
 import DsBulkActions from '../DsBulkActions.vue'
 import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 import DrawerChangeCard from './chat/DrawerChangeCard.vue'
@@ -8,66 +9,9 @@ const props = defineProps<{
   open: boolean
 }>()
 
-interface DiffLine {
-  kind: 'added' | 'removed' | 'context'
-  left: string
-  right: string
-  text: string
-}
+const diffStore = useDiffStore()
+const diffSections = computed(() => diffStore.resolvedDrawerSections)
 
-interface DiffSection {
-  path: string
-  delta: string
-  showDot?: boolean
-  lines: DiffLine[]
-}
-
-const diffSections: DiffSection[] = [
-  {
-    path: 'app/components/workbench/ChatWindow.vue',
-    delta: '+18 -6',
-    lines: [
-      { kind: 'context', left: '28', right: '28', text: 'const laneVars = computed(() => ({' },
-      { kind: 'removed', left: '31', right: '', text: '\'--wb-chat-lane-inset-left\': \'13%\',' },
-      { kind: 'removed', left: '32', right: '', text: '\'--wb-chat-lane-inset-right\': \'13%\',' },
-      { kind: 'added', left: '', right: '31', text: '\'--wb-chat-lane-inset-left\': props.isDiffOpen ? \'11.5%\' : \'13%\',' },
-      { kind: 'added', left: '', right: '32', text: '\'--wb-chat-lane-inset-right\': props.isDiffOpen ? \'11.5%\' : \'13%\',' },
-      { kind: 'context', left: '47', right: '47', text: '})' },
-      { kind: 'added', left: '', right: '52', text: '// keep lane visually stable while drawer animates in' },
-    ],
-  },
-  {
-    path: 'app/components/workbench/chat/DrawerChangeCard.vue',
-    delta: '+27 -9',
-    showDot: true,
-    lines: [
-      { kind: 'context', left: '18', right: '18', text: '<section class="... bg-[var(--wb-bubble-bg)]">' },
-      { kind: 'removed', left: '36', right: '', text: '<span class="text-[12px]">{{ section.delta }}</span>' },
-      { kind: 'added', left: '', right: '36', text: '<span class="text-[length:var(--wb-ui-text-2xs)] text-[var(--theme-added)]">{{ + }}</span>' },
-      { kind: 'added', left: '', right: '37', text: '<span class="text-[length:var(--wb-ui-text-2xs)] text-[var(--theme-removed)]">{{ - }}</span>' },
-      { kind: 'context', left: '51', right: '51', text: '<Icon name="ph:arrow-u-up-left" ... />' },
-      { kind: 'added', left: '', right: '66', text: 'line.kind === \'removed\' ? borderLeftStyle: \'dashed\' : \'solid\'' },
-      { kind: 'context', left: '78', right: '78', text: 'class="diff-line-row grid gap-0 ..."' },
-    ],
-  },
-  {
-    path: 'app/components/workbench/DiffDrawer.vue',
-    delta: '+41 -18',
-    lines: [
-      { kind: 'context', left: '102', right: '102', text: '<ComposerDropdownMenu :open="openMenuKey === \'status\'" ...>' },
-      { kind: 'added', left: '', right: '111', text: '<span class="...">Unstaged</span>' },
-      { kind: 'added', left: '', right: '112', text: '<span class="... rounded-full ...">1</span>' },
-      { kind: 'context', left: '129', right: '129', text: '<button @click="selectStatus(\'unstaged\')">' },
-      { kind: 'added', left: '', right: '148', text: '<span class="text-[12px] text-[color:var(--wb-text-muted)]">main -> origin/main</span>' },
-      { kind: 'removed', left: '176', right: '', text: 'border-l-[color:var(--wb-border-2)]' },
-      { kind: 'added', left: '', right: '176', text: 'border-l-[color:color-mix(in_srgb,var(--wb-divider)_86%,transparent)]' },
-      { kind: 'context', left: '212', right: '212', text: '.diff-drawer--open { opacity: 1; transform: translateX(0); }' },
-    ],
-  },
-]
-
-// Default: sections are open. State persists while drawer stays mounted.
-const collapsedSections = ref<Set<string>>(new Set())
 const suspendAccordionMotion = ref(false)
 const openMenuKey = ref<null | 'status'>(null)
 const selectedStatusKey = ref<'unstaged' | 'staged' | 'all' | 'last-round'>('unstaged')
@@ -95,9 +39,9 @@ const selectedStatusCount = computed(() => {
 })
 
 const showBulkActions = computed(() => {
-  if (diffSections.length <= 1)
+  if (diffSections.value.length <= 1)
     return false
-  return diffSections.some(section => !collapsedSections.value.has(section.path))
+  return diffSections.value.some(section => !diffStore.isSectionCollapsed(section.id))
 })
 
 function toggleMenu(key: 'status') {
@@ -114,16 +58,11 @@ function selectStatus(key: 'unstaged' | 'staged' | 'all' | 'last-round') {
 }
 
 function isSectionCollapsed(path: string) {
-  return collapsedSections.value.has(path)
+  return diffStore.isSectionCollapsed(path)
 }
 
 function toggleSection(path: string) {
-  const next = new Set(collapsedSections.value)
-  if (next.has(path))
-    next.delete(path)
-  else
-    next.add(path)
-  collapsedSections.value = next
+  diffStore.toggleSection(path)
 }
 
 watch(
@@ -249,12 +188,12 @@ watch(
     >
       <DrawerChangeCard
         v-for="section in diffSections"
-        :key="section.path"
+        :key="section.id"
         :section="section"
         :show-status-dot="section.showDot"
-        :collapsed="isSectionCollapsed(section.path)"
+        :collapsed="isSectionCollapsed(section.id)"
         :suspend-accordion-motion="suspendAccordionMotion"
-        @toggle="toggleSection(section.path)"
+        @toggle="toggleSection(section.id)"
       />
     </div>
     <div

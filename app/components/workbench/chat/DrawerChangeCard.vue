@@ -1,23 +1,11 @@
 <script setup lang="ts">
+import type { DrawerSectionView } from '~/stores/diff'
+import type { FileDiffCodeLine, FileDiffLine, FileDiffUnchangedChunkLine } from '~/types/workbench-chat'
 import { computed, ref } from 'vue'
-
-interface DiffLine {
-  kind: 'added' | 'removed' | 'context' | 'unchanged'
-  left: string
-  right: string
-  text: string
-  hiddenLines?: number
-}
-
-interface DiffSection {
-  path: string
-  delta: string
-  showDot?: boolean
-  lines: DiffLine[]
-}
+import { useDiffStore } from '~/stores/diff'
 
 const props = defineProps<{
-  section: DiffSection
+  section: DrawerSectionView
   showStatusDot?: boolean
   collapsed: boolean
   suspendAccordionMotion?: boolean
@@ -31,22 +19,22 @@ const section = computed(() => props.section)
 const showStatusDot = computed(() => props.showStatusDot)
 const collapsed = computed(() => props.collapsed)
 const suspendAccordionMotion = computed(() => props.suspendAccordionMotion)
+const diffStore = useDiffStore()
 
 const RE_MD_HEADING = /^#+\s/
 const RE_STAGING = /zurücksetzen|stagen/i
 const RE_DELTA_PARTS = /[+-]\d+/g
 const titleHovered = ref(false)
-const showUnmodifiedChunk = ref(false)
 
 const unmodifiedChunk = computed(() =>
-  props.section.lines.find(line => line.kind === 'unchanged' || (line.hiddenLines ?? 0) > 0),
+  props.section.lines.find(line => line.kind === 'unchanged_chunk') as FileDiffUnchangedChunkLine | undefined,
 )
 
 const unmodifiedCount = computed(() => {
   const line = unmodifiedChunk.value
   if (!line)
-    return 7
-  return Math.max(1, line.hiddenLines ?? 0)
+    return 0
+  return Math.max(1, line.count)
 })
 
 const hasUnmodifiedChunk = computed(() => Boolean(unmodifiedChunk.value))
@@ -75,20 +63,24 @@ function lineSyntaxVar(text: string) {
   return 'var(--syntax-default)'
 }
 
-function lineMarkerClass(line: DiffLine) {
-  if (line.kind === 'added')
+function lineMarkerClass(line: FileDiffCodeLine) {
+  if (line.kind === 'added' || line.kind === 'add')
     return 'border-l-2 border-l-[color:var(--theme-added)]'
-  if (line.kind === 'removed')
+  if (line.kind === 'removed' || line.kind === 'remove')
     return 'border-l-2 border-l-[color:var(--theme-removed)]'
   return 'border-l-2 border-l-transparent'
 }
 
-function lineMarkerStyle(line: DiffLine) {
-  if (line.kind === 'added')
-    return { borderLeftStyle: 'solid' }
-  if (line.kind === 'removed')
-    return { borderLeftStyle: 'dashed' }
-  return { borderLeftStyle: 'solid' }
+function lineMarkerStyle(line: FileDiffCodeLine) {
+  if (line.kind === 'added' || line.kind === 'add')
+    return { borderLeftStyle: 'solid' as const }
+  if (line.kind === 'removed' || line.kind === 'remove')
+    return { borderLeftStyle: 'dashed' as const }
+  return { borderLeftStyle: 'solid' as const }
+}
+
+function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
+  return line.kind !== 'unchanged_chunk'
 }
 </script>
 
@@ -165,48 +157,57 @@ function lineMarkerStyle(line: DiffLine) {
       ]"
     >
       <template
-        v-for="line in section.lines"
-        :key="`${section.path}-${line.left}-${line.right}-${line.text}`"
+        v-for="(line, lineIndex) in section.lines"
+        :key="`${section.path}-${line.kind}-${lineIndex}`"
       >
         <div
-          v-if="line.kind === 'unchanged'"
-          class="px-2 py-1.5"
+          v-if="line.kind === 'unchanged_chunk'"
+          class="py-1.5"
         >
+          <template v-if="diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
+            <div
+              v-for="chunkLine in line.lines"
+              :key="`${section.fileId}-${line.id}-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
+              class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+            >
+              <span
+                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                :class="lineMarkerClass(chunkLine)"
+                :style="lineMarkerStyle(chunkLine)"
+              >{{ chunkLine.right || chunkLine.left }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+            </div>
+          </template>
           <button
-            class="w-full flex items-center overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+            v-else
+            class="diff-line-row grid w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
             type="button"
-            @click="showUnmodifiedChunk = !showUnmodifiedChunk"
+            @click="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
           >
             <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
               <Icon
-                :name="showUnmodifiedChunk ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+                name="ph:caret-up-down-bold"
                 class="h-[12px] w-[12px]"
               />
             </span>
-            <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium">
-              {{ `${Math.max(1, line.hiddenLines ?? 0)} unmodified ${Math.max(1, line.hiddenLines ?? 0) === 1 ? 'line' : 'lines'}` }}
+            <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium font-[var(--font-ui)]">
+              {{ `${Math.max(1, line.count)} unmodified ${Math.max(1, line.count) === 1 ? 'line' : 'lines'}` }}
             </span>
           </button>
-          <div
-            v-if="showUnmodifiedChunk"
-            class="mt-1 border border-[color:var(--wb-divider)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-card-surface)_96%,var(--wb-text-primary)_4%)] px-2 py-1.5"
-          >
-            <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
-          </div>
         </div>
         <div
           v-else
           class="diff-line-row grid gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
-          :class="line.kind === 'added'
+          :class="isCodeLine(line) && (line.kind === 'added' || line.kind === 'add')
             ? 'bg-[color:color-mix(in_srgb,var(--theme-added)_17%,transparent)]'
-            : line.kind === 'removed'
+            : isCodeLine(line) && (line.kind === 'removed' || line.kind === 'remove')
               ? 'bg-[color:color-mix(in_srgb,var(--theme-removed)_16%,transparent)]'
               : 'bg-transparent'"
         >
           <span
             class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
-            :class="lineMarkerClass(line)"
-            :style="lineMarkerStyle(line)"
+            :class="isCodeLine(line) ? lineMarkerClass(line) : ''"
+            :style="isCodeLine(line) ? lineMarkerStyle(line) : undefined"
           >{{ line.right || line.left }}</span>
           <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5" :style="{ color: lineSyntaxVar(line.text) }">{{ line.text }}</span>
         </div>
@@ -219,15 +220,14 @@ function lineMarkerStyle(line: DiffLine) {
         <button
           class="w-full flex items-center overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
           type="button"
-          @click="showUnmodifiedChunk = !showUnmodifiedChunk"
         >
           <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
             <Icon
-              :name="showUnmodifiedChunk ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+              name="ph:caret-up-down-bold"
               class="h-[12px] w-[12px]"
             />
           </span>
-          <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium">
+          <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium font-[var(--font-ui)]">
             {{ unmodifiedLabel }}
           </span>
         </button>
@@ -250,6 +250,8 @@ function lineMarkerStyle(line: DiffLine) {
   max-height: 420px;
   opacity: 1;
   transform: translateY(0);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .diff-section-body--collapsed {

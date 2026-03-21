@@ -11,12 +11,21 @@ export interface ComponentMentionBlock {
   path: string
 }
 
-export interface FileDiffLine {
+export interface FileDiffCodeLine {
   left: number | string
   right: number | string
   text: string
-  kind: 'context' | 'add' | 'remove'
+  kind: 'context' | 'add' | 'remove' | 'added' | 'removed'
 }
+
+export interface FileDiffUnchangedChunkLine {
+  kind: 'unchanged_chunk'
+  id: string
+  count: number
+  lines: FileDiffCodeLine[]
+}
+
+export type FileDiffLine = FileDiffCodeLine | FileDiffUnchangedChunkLine
 
 export interface FileChangeItem {
   id: string
@@ -30,6 +39,7 @@ export interface FileChangeItem {
 
 export interface FileChangeCardBlock {
   type: 'file_change_card'
+  id: string
   summaryLabel: string
   added: number
   removed: number
