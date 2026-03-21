@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 import DrawerChangeCard from './chat/DrawerChangeCard.vue'
 
@@ -70,6 +70,28 @@ const collapsedSections = ref<Set<string>>(new Set())
 const suspendAccordionMotion = ref(false)
 const openMenuKey = ref<null | 'status'>(null)
 const selectedStatusKey = ref<'unstaged' | 'staged' | 'all' | 'last-round'>('unstaged')
+const statusCounts = {
+  unstaged: 1,
+  staged: 0,
+} as const
+
+const selectedStatusLabel = computed(() => {
+  if (selectedStatusKey.value === 'staged')
+    return 'Staged'
+  if (selectedStatusKey.value === 'all')
+    return 'All branch changes'
+  if (selectedStatusKey.value === 'last-round')
+    return 'Last round changes'
+  return 'Unstaged'
+})
+
+const selectedStatusCount = computed(() => {
+  if (selectedStatusKey.value === 'staged')
+    return statusCounts.staged
+  if (selectedStatusKey.value === 'unstaged')
+    return statusCounts.unstaged
+  return 0
+})
 
 function toggleMenu(key: 'status') {
   openMenuKey.value = openMenuKey.value === key ? null : key
@@ -119,7 +141,7 @@ watch(
       <ComposerDropdownMenu
         :open="openMenuKey === 'status'"
         direction="down"
-        menu-class="w-[300px]"
+        menu-class="w-[176px]"
         align="left"
         @toggle="toggleMenu('status')"
         @close="closeMenus"
@@ -129,8 +151,13 @@ watch(
             class="h-7 inline-flex appearance-none items-center gap-2 rounded-full border-none bg-transparent px-3 text-[13px] text-[color:var(--wb-text-primary)] font-medium outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
             @click.stop="toggle"
           >
-            <span>Unstaged</span>
-            <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+            <span class="truncate">{{ selectedStatusLabel }}</span>
+            <span
+              v-if="selectedStatusCount > 0"
+              class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-medium font-[var(--font-ui)] tabular-nums"
+            >
+              {{ selectedStatusCount }}
+            </span>
             <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:var(--wb-text-secondary)]" />
           </button>
         </template>
@@ -141,10 +168,15 @@ watch(
             :class="selectedStatusKey === 'unstaged' ? 'text-[color:var(--wb-text-primary)]' : 'text-[color:var(--wb-text-secondary)]'"
             @click="selectStatus('unstaged')"
           >
-              <span class="inline-flex items-center gap-2">
-                <span>Unstaged</span>
-                <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+            <span class="inline-flex items-center gap-2">
+              <span>Unstaged</span>
+              <span
+                v-if="statusCounts.unstaged > 0"
+                class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-medium font-[var(--font-ui)] tabular-nums"
+              >
+                {{ statusCounts.unstaged }}
               </span>
+            </span>
             <Icon v-if="selectedStatusKey === 'unstaged'" name="ph:check-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
           </button>
 
@@ -153,10 +185,15 @@ watch(
             :class="selectedStatusKey === 'staged' ? 'text-[color:var(--wb-text-primary)]' : 'text-[color:var(--wb-text-secondary)]'"
             @click="selectStatus('staged')"
           >
-              <span class="inline-flex items-center gap-2">
-                <span>Staged</span>
-                <span class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] font-medium tabular-nums">1</span>
+            <span class="inline-flex items-center gap-2">
+              <span>Staged</span>
+              <span
+                v-if="statusCounts.staged > 0"
+                class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-medium font-[var(--font-ui)] tabular-nums"
+              >
+                {{ statusCounts.staged }}
               </span>
+            </span>
             <Icon v-if="selectedStatusKey === 'staged'" name="ph:check-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
           </button>
 
@@ -167,7 +204,11 @@ watch(
           >
             <span class="grid">
               <span class="leading-[1.2]">All branch changes</span>
-              <span class="mt-0.5 text-[12px] text-[color:var(--wb-text-muted)] leading-[1.2]">main -> origin/main</span>
+              <span class="mt-0.5 inline-flex items-center gap-1 text-[12px] text-[color:var(--wb-text-muted)] leading-[1.2]">
+                <span>main</span>
+                <Icon name="ph:arrow-right" class="h-[10px] w-[10px]" />
+                <span>origin/main</span>
+              </span>
             </span>
             <Icon v-if="selectedStatusKey === 'all'" name="ph:check-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-primary)]" />
           </button>
