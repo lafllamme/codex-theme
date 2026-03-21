@@ -131,15 +131,7 @@ const UI_FONT_OPTIONS: Array<{ label: string, value: string }> = [
   { label: 'Times New Roman stack', value: '"Times New Roman", Times, serif' },
 ]
 
-const CODE_FONT_OPTIONS: Array<{ label: string, value: string }> = [
-  { label: 'Default (Codex/System)', value: '' },
-  { label: 'System Mono (Codex preset)', value: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' },
-  { label: 'System Mono (recommended)', value: 'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", "Courier New", monospace' },
-  { label: 'Consolas stack', value: 'Consolas, "Courier New", monospace' },
-  { label: 'Menlo / Monaco stack', value: 'Menlo, Monaco, "Courier New", monospace' },
-  { label: 'Courier New stack', value: '"Courier New", Courier, monospace' },
-  { label: 'Lucida Console stack', value: '"Lucida Console", Monaco, monospace' },
-]
+const CODE_FONT_OPTIONS: Array<{ label: string, value: string }> = [...UI_FONT_OPTIONS]
 
 function optionLabel(options: Array<{ label: string, value: string }>, value: string, fallbackLabel: string) {
   const match = options.find(opt => opt.value === value)
@@ -245,10 +237,14 @@ onBeforeUnmount(() => {
           :key="row.field"
           class="relative transition-colors"
           :class="[
-            index !== colorRows.length - 1 ? 'border-b border-pureBlack/6' : '',
             expandedColor === row.field ? 'bg-pureBlack/6' : '',
           ]"
         >
+          <div
+            v-if="index !== colorRows.length - 1"
+            class="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-sand-12"
+          />
+
           <!-- Left indicator for expanded -->
           <div
             v-if="expandedColor === row.field"
@@ -281,7 +277,7 @@ onBeforeUnmount(() => {
                 {{ swatchValue(row.field) }}
               </span>
               <div
-                class="w-7 h-7 rounded-full shadow-inner ring-1 ring-black/5"
+                class="w-7 h-7 rounded-full shadow-inner"
                 :style="{ backgroundColor: swatchValue(row.field) }"
               />
               <Icon
@@ -420,7 +416,7 @@ onBeforeUnmount(() => {
                     @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
                   >
                   <div
-                    class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/18 bg-pureWhite shadow-sm"
+                    class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/22 bg-sand-6 shadow-sm"
                     :style="{ left: `${payload.theme.contrast}%` }"
                   />
                 </div>
@@ -499,7 +495,7 @@ onBeforeUnmount(() => {
                   UI Size
                 </div>
                 <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('ui', $event)">
-                  <div class="inline-flex items-center gap-2">
+                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-hover:bg-pureBlack/6 group-focus-within:bg-pureBlack/6">
                     <input
                       ref="uiSizeInputRef"
                       class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
@@ -540,7 +536,7 @@ onBeforeUnmount(() => {
                   Code Size
                 </div>
                 <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('code', $event)">
-                  <div class="inline-flex items-center gap-2">
+                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-hover:bg-pureBlack/6 group-focus-within:bg-pureBlack/6">
                     <input
                       ref="codeSizeInputRef"
                       class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
@@ -587,8 +583,8 @@ onBeforeUnmount(() => {
             @click="jsonOpen = !jsonOpen"
           >
             <div class="flex items-center gap-3">
-              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-pureWhite/10 text-pureWhite">
-                <Icon name="ph:brackets-curly-bold" class="h-5 w-5" />
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sand-3 text-pureWhite">
+                <Icon name="ph:brackets-curly-bold" class="size-5" />
               </span>
               <span class="text-[15px] font-semibold text-pureWhite">JSON Preview</span>
             </div>
