@@ -35,34 +35,26 @@ function visibleDiffLines(file: FileChangeItem | undefined) {
 
 function lineTextColor(line: FileDiffCodeLine) {
   if (line.kind === 'add' || line.kind === 'added')
-    return 'var(--wb-diff-delta-added)'
+    return 'text-[color:var(--wb-diff-delta-added)]'
   if (line.kind === 'remove' || line.kind === 'removed')
-    return 'var(--wb-diff-delta-removed)'
-  return 'var(--syntax-default)'
+    return 'text-[color:var(--wb-diff-delta-removed)]'
+  return 'text-[color:var(--syntax-default)]'
 }
 
 function lineBackground(line: FileDiffCodeLine) {
   if (line.kind === 'add' || line.kind === 'added')
-    return 'color-mix(in srgb, var(--wb-diff-delta-added) 13%, transparent)'
+    return 'bg-[color:color-mix(in_srgb,var(--wb-diff-delta-added)_13%,transparent)]'
   if (line.kind === 'remove' || line.kind === 'removed')
-    return 'color-mix(in srgb, var(--wb-diff-delta-removed) 13%, transparent)'
-  return 'transparent'
+    return 'bg-[color:color-mix(in_srgb,var(--wb-diff-delta-removed)_13%,transparent)]'
+  return 'bg-transparent'
 }
 
 function lineMarkerClass(line: FileDiffCodeLine) {
   if (line.kind === 'add' || line.kind === 'added')
-    return 'border-l-2 border-l-[color:var(--wb-diff-delta-added)]'
+    return 'border-l-2 border-l-solid border-l-[color:var(--wb-diff-delta-added)]'
   if (line.kind === 'remove' || line.kind === 'removed')
-    return 'border-l-2 border-l-[color:var(--wb-diff-delta-removed)]'
-  return 'border-l-2 border-l-transparent'
-}
-
-function lineMarkerStyle(line: FileDiffCodeLine) {
-  if (line.kind === 'add' || line.kind === 'added')
-    return { borderLeftStyle: 'solid' as const }
-  if (line.kind === 'remove' || line.kind === 'removed')
-    return { borderLeftStyle: 'dashed' as const }
-  return { borderLeftStyle: 'solid' as const }
+    return 'border-l-2 border-l-dashed border-l-[color:var(--wb-diff-delta-removed)]'
+  return 'border-l-2 border-l-solid border-l-transparent'
 }
 </script>
 
@@ -125,63 +117,25 @@ function lineMarkerStyle(line: FileDiffCodeLine) {
 
         <div
           v-if="file.id === diffStore.activeFileId(block.id) && activeFile"
-          class="diff-lines-shell max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
+          class="[--wb-gutter-width:56px] [--wb-row-divider-offset:4px] relative max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)] before:pointer-events-none before:absolute before:bottom-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:top-0 before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
           :class="index === block.files.length - 1 ? 'rounded-b-[8px] overflow-hidden' : ''"
         >
           <div
             v-for="line in visibleDiffLines(activeFile)"
             :key="`${file.id}-${line.left}-${line.right}-${line.text}`"
-            class="diff-line-row border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
-            :style="{ background: lineBackground(line) }"
+            class="relative grid grid-cols-[56px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
+            :class="lineBackground(line)"
           >
             <span
-              class="diff-line-gutter py-1 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
+              class="relative z-[2] py-1 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
               :class="lineMarkerClass(line)"
-              :style="lineMarkerStyle(line)"
             >
               {{ line.right || line.left }}
             </span>
-            <span class="diff-line-text [overflow-wrap:anywhere] py-1 pl-4 pr-2 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
+            <span class="[overflow-wrap:anywhere] relative z-[2] py-1 pl-4 pr-2 leading-[1.5]" :class="lineTextColor(line)">{{ line.text }}</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
-
-<style scoped>
-.diff-line-row {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr);
-  position: relative;
-}
-
-.diff-lines-shell {
-  --wb-gutter-width: 56px;
-  --wb-row-divider-offset: 4px;
-  position: relative;
-}
-
-.diff-lines-shell::before {
-  content: '';
-  position: absolute;
-  left: calc(var(--wb-gutter-width) + var(--wb-row-divider-offset));
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--wb-row-divider);
-  pointer-events: none;
-  z-index: 5;
-}
-
-.diff-line-gutter {
-  position: relative;
-  z-index: 2;
-}
-
-.diff-line-text {
-  position: relative;
-  z-index: 2;
-  word-break: break-word;
-}
-</style>
