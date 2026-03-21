@@ -579,24 +579,31 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
+        <div class="overflow-hidden rounded-[20px] border border-[#132a4d] bg-[#0b1f42] shadow-[0_18px_36px_-18px_rgba(7,15,31,0.75)]">
           <button
             type="button"
-            class="flex w-full items-center justify-between border-none border-b border-pureBlack/8 bg-transparent px-5 py-4 text-left shadow-none outline-none"
+            class="flex w-full items-center justify-between border-none bg-transparent px-5 py-4 text-left shadow-none outline-none"
             @click="jsonOpen = !jsonOpen"
           >
-            <span class="text-[15px] font-semibold text-pureBlack/90">Live JSON</span>
-            <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-pureBlack/34" />
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#223559] text-[#f4f8ff]">
+                <Icon name="ph:brackets-curly-bold" class="h-5 w-5" />
+              </span>
+              <span class="text-[15px] font-semibold text-[#f4f8ff]">JSON Preview</span>
+            </div>
+            <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-[#b7c7de]" />
           </button>
 
-          <div v-show="jsonOpen" class="space-y-2 p-4">
-            <textarea
-              class="hex-value h-56 w-full resize-none overflow-auto rounded-2xl border border-[#1a2740] bg-[#08152f] p-4 text-[12px] leading-relaxed text-[#d4e3ff] outline-none shadow-inner"
-              rows="10"
-              :value="jsonValue"
-              @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
-            />
-            <p v-if="jsonError" class="text-[12px] text-red-600/90">
+          <div v-show="jsonOpen" class="space-y-2 px-5 pb-5">
+            <div class="overflow-hidden rounded-2xl border border-[#1f3458] bg-[#020c22] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <textarea
+                class="hex-value block h-56 w-full resize-none overflow-auto border-none bg-transparent p-5 text-[12px] leading-relaxed text-[#cfe0ff] outline-none"
+                rows="10"
+                :value="jsonValue"
+                @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
+              />
+            </div>
+            <p v-if="jsonError" class="text-[12px] text-red-300/90">
               {{ jsonError }}
             </p>
           </div>
