@@ -24,6 +24,7 @@ const diffStore = useDiffStore()
 const RE_MD_HEADING = /^#+\s/
 const RE_STAGING = /zurücksetzen|stagen/i
 const RE_DELTA_PARTS = /[+-]\d+/g
+const UNMODIFIED_PREVIEW_CONTEXT = 2
 const titleHovered = ref(false)
 
 const unmodifiedChunk = computed(() =>
@@ -81,6 +82,18 @@ function lineMarkerStyle(line: FileDiffCodeLine) {
 
 function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
   return line.kind !== 'unchanged_chunk'
+}
+
+function previewLeadingLines(chunk: FileDiffUnchangedChunkLine) {
+  if (chunk.lines.length <= UNMODIFIED_PREVIEW_CONTEXT * 2)
+    return chunk.lines
+  return chunk.lines.slice(0, UNMODIFIED_PREVIEW_CONTEXT)
+}
+
+function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
+  if (chunk.lines.length <= UNMODIFIED_PREVIEW_CONTEXT * 2)
+    return []
+  return chunk.lines.slice(-UNMODIFIED_PREVIEW_CONTEXT)
 }
 </script>
 
@@ -164,6 +177,21 @@ function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
           v-if="line.kind === 'unchanged_chunk'"
           class="py-1.5"
         >
+          <template v-if="!diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
+            <div
+              v-for="chunkLine in previewLeadingLines(line)"
+              :key="`${section.fileId}-${line.id}-lead-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
+              class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+            >
+              <span
+                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                :class="lineMarkerClass(chunkLine)"
+                :style="lineMarkerStyle(chunkLine)"
+              >{{ chunkLine.right || chunkLine.left }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+            </div>
+          </template>
+
           <template v-if="diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
             <div
               v-for="chunkLine in line.lines"
@@ -186,14 +214,29 @@ function isCodeLine(line: FileDiffLine): line is FileDiffCodeLine {
           >
             <span class="h-10 w-10 inline-flex shrink-0 items-center justify-center border-r border-r-[color:var(--wb-divider)]">
               <Icon
-                name="ph:caret-up-down-bold"
+                name="ph:caret-up-down"
                 class="h-[12px] w-[12px]"
               />
             </span>
-            <span class="truncate px-3 text-[length:var(--wb-ui-text)] font-medium font-[var(--font-ui)]">
+            <span class="h-10 inline-flex items-center truncate px-3 text-[length:var(--wb-ui-text)] font-medium leading-none font-[var(--font-ui)]">
               {{ `${Math.max(1, line.count)} unmodified ${Math.max(1, line.count) === 1 ? 'line' : 'lines'}` }}
             </span>
           </button>
+
+          <template v-if="!diffStore.isUnmodifiedChunkExpanded(section.fileId, line.id)">
+            <div
+              v-for="chunkLine in previewTrailingLines(line)"
+              :key="`${section.fileId}-${line.id}-trail-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
+              class="diff-line-row grid gap-0 bg-transparent px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+            >
+              <span
+                class="diff-line-gutter border-r border-[color:var(--wb-divider)] px-2 py-1.5 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                :class="lineMarkerClass(chunkLine)"
+                :style="lineMarkerStyle(chunkLine)"
+              >{{ chunkLine.right || chunkLine.left }}</span>
+              <span class="diff-line-text [overflow-wrap:anywhere] min-w-0 whitespace-pre-wrap break-words px-2 py-1.5 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :style="{ color: lineSyntaxVar(chunkLine.text) }">{{ chunkLine.text }}</span>
+            </div>
+          </template>
         </div>
         <div
           v-else
