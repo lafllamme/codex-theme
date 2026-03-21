@@ -18,6 +18,8 @@ diffStore.upsertFiles(props.block.files)
 diffStore.ensureCardState(props.block.id, props.block.files.map(file => file.id))
 
 const activeFile = computed(() => diffStore.activeFile(props.block.id))
+const activeFileLineDigits = computed(() => maxLineDigits(activeFile.value))
+const activeFileLineColumns = computed(() => maxLineColumns(activeFile.value))
 
 function selectFile(file: FileChangeItem) {
   diffStore.toggleCardFile(props.block.id, file.id)
@@ -31,6 +33,38 @@ function visibleDiffLines(file: FileChangeItem | undefined) {
   if (!file)
     return []
   return file.lines.filter(isCodeLine)
+}
+
+function lineNumberDigits(value: number | string) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed))
+    return 1
+  return String(Math.max(0, Math.trunc(Math.abs(parsed)))).length
+}
+
+function maxLineDigits(file: FileChangeItem | undefined) {
+  const lines = visibleDiffLines(file)
+  if (!lines.length)
+    return 2
+
+  let maxDigits = 2
+  for (const line of lines) {
+    if (line.left)
+      maxDigits = Math.max(maxDigits, lineNumberDigits(line.left))
+    if (line.right)
+      maxDigits = Math.max(maxDigits, lineNumberDigits(line.right))
+  }
+  return maxDigits
+}
+
+function maxLineColumns(file: FileChangeItem | undefined) {
+  const lines = visibleDiffLines(file)
+  if (!lines.length)
+    return 24
+  let maxColumns = 24
+  for (const line of lines)
+    maxColumns = Math.max(maxColumns, line.text.length)
+  return maxColumns
 }
 
 function lineTextColor(line: FileDiffCodeLine) {
@@ -51,10 +85,10 @@ function lineBackground(line: FileDiffCodeLine) {
 
 function lineMarkerClass(line: FileDiffCodeLine) {
   if (line.kind === 'add' || line.kind === 'added')
-    return 'border-l-2 border-l-solid border-l-[color:var(--wb-diff-delta-added)]'
+    return 'border-l-[2px] border-l-solid border-l-[color:var(--wb-diff-delta-added)]'
   if (line.kind === 'remove' || line.kind === 'removed')
-    return 'border-l-2 border-l-dashed border-l-[color:var(--wb-diff-delta-removed)]'
-  return 'border-l-2 border-l-solid border-l-transparent'
+    return 'border-l-[2px] border-l-dashed border-l-[color:var(--wb-diff-delta-removed)]'
+  return 'border-l-[2px] border-l-solid border-l-transparent'
 }
 </script>
 
@@ -117,22 +151,23 @@ function lineMarkerClass(line: FileDiffCodeLine) {
 
         <div
           v-if="file.id === diffStore.activeFileId(block.id) && activeFile"
-          class="[--wb-gutter-width:56px] [--wb-row-divider-offset:4px] relative max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)] before:pointer-events-none before:absolute before:bottom-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:top-0 before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
+          class="[--wb-gutter-width:max(66px,calc(var(--wb-line-digits)*1ch+52px))] [--wb-row-divider-offset:0px] relative max-h-[190px] overflow-x-auto overflow-y-auto overscroll-contain border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
+          :style="{ '--wb-line-digits': activeFileLineDigits, '--wb-line-columns': activeFileLineColumns }"
           :class="index === block.files.length - 1 ? 'rounded-b-[8px] overflow-hidden' : ''"
         >
           <div
             v-for="line in visibleDiffLines(activeFile)"
             :key="`${file.id}-${line.left}-${line.right}-${line.text}`"
-            class="relative grid grid-cols-[56px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
+            class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px last:border-b-0 before:bg-[var(--wb-row-divider)] before:content-['']"
             :class="lineBackground(line)"
           >
             <span
-              class="relative z-[2] py-1 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
+              class="relative z-[2] py-1 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] text-[length:calc(var(--wb-code-text)-2px)] tabular-nums"
               :class="lineMarkerClass(line)"
             >
               {{ line.right || line.left }}
             </span>
-            <span class="[overflow-wrap:anywhere] relative z-[2] py-1 pl-4 pr-2 leading-[1.5]" :class="lineTextColor(line)">{{ line.text }}</span>
+            <span class="relative z-[2] whitespace-pre py-1 pl-4 pr-2 leading-[1.5]" :class="lineTextColor(line)">{{ line.text }}</span>
           </div>
         </div>
       </div>

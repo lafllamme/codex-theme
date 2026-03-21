@@ -183,7 +183,7 @@ watch(
       </div>
     </header>
     <div
-      class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-2 pt-8 text-[13px] font-[var(--font-code)]"
+      class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto px-2 pt-8 text-[13px] font-[var(--font-code)]"
       :class="showBulkActions ? 'pb-[72px]' : 'pb-2'"
     >
       <DrawerChangeCard

@@ -44,6 +44,8 @@ const unmodifiedLabel = computed(() => {
   const count = unmodifiedCount.value
   return `${count} unmodified ${count === 1 ? 'line' : 'lines'}`
 })
+const sectionLineDigits = computed(() => maxSectionLineDigits(props.section.lines))
+const sectionLineColumns = computed(() => maxSectionLineColumns(props.section.lines))
 
 function deltaParts(delta: string) {
   const matches = delta.match(RE_DELTA_PARTS) ?? []
@@ -66,10 +68,10 @@ function lineSyntaxVar(text: string) {
 
 function lineMarkerClass(line: FileDiffCodeLine) {
   if (line.kind === 'added' || line.kind === 'add')
-    return 'border-l-2 border-l-solid border-l-[color:var(--theme-added)]'
+    return 'border-l-[2px] border-l-solid border-l-[color:var(--theme-added)]'
   if (line.kind === 'removed' || line.kind === 'remove')
-    return 'border-l-2 border-l-dashed border-l-[color:var(--theme-removed)]'
-  return 'border-l-2 border-l-solid border-l-transparent'
+    return 'border-l-[2px] border-l-dashed border-l-[color:var(--theme-removed)]'
+  return 'border-l-[2px] border-l-solid border-l-transparent'
 }
 
 function lineBackgroundClass(line: FileDiffCodeLine) {
@@ -94,6 +96,46 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
   if (chunk.lines.length <= UNMODIFIED_PREVIEW_CONTEXT * 2)
     return []
   return chunk.lines.slice(-UNMODIFIED_PREVIEW_CONTEXT)
+}
+
+function lineNumberDigits(value: number | string) {
+  const parsed = Number(value)
+  if (!Number.isFinite(parsed))
+    return 1
+  return String(Math.max(0, Math.trunc(Math.abs(parsed)))).length
+}
+
+function maxSectionLineDigits(lines: FileDiffLine[]) {
+  let maxDigits = 2
+  for (const line of lines) {
+    if (line.kind === 'unchanged_chunk') {
+      for (const nestedLine of line.lines) {
+        if (nestedLine.left)
+          maxDigits = Math.max(maxDigits, lineNumberDigits(nestedLine.left))
+        if (nestedLine.right)
+          maxDigits = Math.max(maxDigits, lineNumberDigits(nestedLine.right))
+      }
+      continue
+    }
+    if (line.left)
+      maxDigits = Math.max(maxDigits, lineNumberDigits(line.left))
+    if (line.right)
+      maxDigits = Math.max(maxDigits, lineNumberDigits(line.right))
+  }
+  return maxDigits
+}
+
+function maxSectionLineColumns(lines: FileDiffLine[]) {
+  let maxColumns = 24
+  for (const line of lines) {
+    if (line.kind === 'unchanged_chunk') {
+      for (const nestedLine of line.lines)
+        maxColumns = Math.max(maxColumns, nestedLine.text.length)
+      continue
+    }
+    maxColumns = Math.max(maxColumns, line.text.length)
+  }
+  return maxColumns
 }
 </script>
 
@@ -163,9 +205,10 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
     </div>
 
     <div
-      class="[--wb-gutter-width:56px] [--wb-row-divider-offset:4px] [transition-duration:240ms,170ms,240ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1),ease,cubic-bezier(0.22,1,0.36,1)] relative min-w-0 origin-top overflow-hidden transition-[max-height,opacity,transform] before:pointer-events-none before:absolute before:bottom-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:top-0 before:z-[5] before:w-px divide-y divide-[color:var(--wb-divider)] before:bg-[var(--wb-row-divider)] before:content-['']"
+      class="[--wb-gutter-width:max(66px,calc(var(--wb-line-digits)*1ch+52px))] [--wb-row-divider-offset:0px] [transition-duration:240ms,170ms,240ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1),ease,cubic-bezier(0.22,1,0.36,1)] relative min-w-0 origin-top transition-[max-height,opacity,transform] divide-y divide-[color:var(--wb-divider)]"
+      :style="{ '--wb-line-digits': sectionLineDigits, '--wb-line-columns': sectionLineColumns }"
       :class="[
-        collapsed ? 'max-h-0 -translate-y-1 opacity-0 pointer-events-none' : 'max-h-[420px] translate-y-0 opacity-100 overflow-x-hidden overflow-y-auto rounded-b-[8px]',
+        collapsed ? 'max-h-0 -translate-y-1 opacity-0 pointer-events-none overflow-hidden' : 'max-h-[420px] translate-y-0 opacity-100 overflow-x-auto overflow-y-auto rounded-b-[8px]',
         suspendAccordionMotion ? '!transition-none' : '',
       ]"
     >
@@ -181,14 +224,14 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
             <div
               v-for="chunkLine in previewLeadingLines(line)"
               :key="`${section.fileId}-${line.id}-lead-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
-              class="relative grid grid-cols-[56px_minmax(0,1fr)] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+              class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
               :class="lineBackgroundClass(chunkLine)"
             >
               <span
-                class="relative z-[2] py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="[overflow-wrap:anywhere] relative z-[2] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
+              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
             </div>
           </template>
 
@@ -196,19 +239,19 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
             <div
               v-for="chunkLine in line.lines"
               :key="`${section.fileId}-${line.id}-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
-              class="relative grid grid-cols-[56px_minmax(0,1fr)] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+              class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
               :class="lineBackgroundClass(chunkLine)"
             >
               <span
-                class="relative z-[2] py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="[overflow-wrap:anywhere] relative z-[2] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
+              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
             </div>
           </template>
           <button
             v-else
-            class="relative z-[2] grid grid-cols-[56px_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+            class="relative z-[2] grid grid-cols-[var(--wb-gutter-width)_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] hover:text-[color:var(--wb-text-primary)] before:content-['']"
             type="button"
             @click="diffStore.toggleUnmodifiedChunk(section.fileId, line.id)"
           >
@@ -227,27 +270,27 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
             <div
               v-for="chunkLine in previewTrailingLines(line)"
               :key="`${section.fileId}-${line.id}-trail-${chunkLine.left}-${chunkLine.right}-${chunkLine.text}`"
-              class="relative grid grid-cols-[56px_minmax(0,1fr)] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+              class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
               :class="lineBackgroundClass(chunkLine)"
             >
               <span
-                class="relative z-[2] py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+                class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="[overflow-wrap:anywhere] relative z-[2] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
+              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
             </div>
           </template>
         </div>
         <div
           v-else
-          class="relative grid grid-cols-[56px_minmax(0,1fr)] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+          class="relative grid grid-cols-[var(--wb-gutter-width)_max-content] w-[max(100%,calc(var(--wb-gutter-width)+var(--wb-line-columns)*1ch+28px))] gap-0 px-0 text-[length:var(--wb-code-text-sm)] leading-[1.6] before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] before:content-['']"
           :class="isCodeLine(line) ? lineBackgroundClass(line) : 'bg-transparent'"
         >
           <span
-            class="relative z-[2] py-1.5 pl-7 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
+            class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
             :class="isCodeLine(line) ? lineMarkerClass(line) : ''"
           >{{ line.right || line.left }}</span>
-          <span class="[overflow-wrap:anywhere] relative z-[2] min-w-0 whitespace-pre-wrap break-words py-1.5 pl-4 pr-2" :class="lineSyntaxVar(line.text)">{{ line.text }}</span>
+          <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2" :class="lineSyntaxVar(line.text)">{{ line.text }}</span>
         </div>
       </template>
 
@@ -256,7 +299,7 @@ function previewTrailingLines(chunk: FileDiffUnchangedChunkLine) {
         class="px-2 py-1.5"
       >
         <button
-          class="relative z-[2] grid grid-cols-[56px_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]"
+          class="relative z-[2] grid grid-cols-[var(--wb-gutter-width)_minmax(0,1fr)] w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-unmodified-strip-bg)] p-0 text-left text-[color:var(--wb-text-secondary)] transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-[calc(var(--wb-gutter-width)+var(--wb-row-divider-offset))] before:z-[5] before:w-px before:bg-[var(--wb-row-divider)] hover:text-[color:var(--wb-text-primary)] before:content-['']"
           type="button"
         >
           <span class="h-10 inline-flex items-center justify-center">
