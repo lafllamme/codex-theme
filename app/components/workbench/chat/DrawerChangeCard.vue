@@ -68,17 +68,22 @@ function lineMarkerStyle(line: DiffLine) {
 </script>
 
 <template>
-  <section class="mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)] last:mb-0">
-    <div class="group relative z-0">
+  <section
+    class="mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-bubble-bg)] last:mb-0 [--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-bubble-bg)_98%,var(--wb-text-primary)_2%)]"
+  >
+    <div class="group relative z-0 hover:z-40">
       <span
-        class="pointer-events-none absolute bottom-full z-[120] mb-1 max-w-[calc(100%-12px)] inline-flex translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160 -left-2"
+        class="pointer-events-none absolute bottom-full z-[220] mb-1 max-w-[calc(100%-12px)] inline-flex translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160 -left-2"
         :class="titleHovered ? 'translate-y-0 opacity-100' : ''"
       >
         {{ section.path }}
       </span>
 
       <button
-        class="group w-full flex items-center justify-between border-b border-[color:var(--wb-divider)] border-none bg-transparent px-3 py-2 text-left outline-none transition-colors"
+        class="group w-full flex items-center justify-between border-none bg-[var(--wb-accordion-header-bg)] px-3 py-2 text-left outline-none transition-colors"
+        :class="collapsed
+          ? 'rounded-[8px]'
+          : 'rounded-t-[8px]'"
         @click="emit('toggle')"
       >
         <div class="min-w-0 inline-flex items-center gap-2">
@@ -121,12 +126,16 @@ function lineMarkerStyle(line: DiffLine) {
           </span>
         </div>
       </button>
+      <div
+        v-if="!collapsed"
+        class="h-px bg-[color:var(--wb-divider)]"
+      />
     </div>
 
     <div
       class="diff-section-body min-w-0 divide-y divide-[color:var(--wb-divider)]"
       :class="[
-        collapsed ? 'diff-section-body--collapsed' : 'diff-section-body--expanded',
+        collapsed ? 'diff-section-body--collapsed' : 'diff-section-body--expanded rounded-b-[8px]',
         suspendAccordionMotion ? 'diff-section-body--no-motion' : '',
       ]"
     >

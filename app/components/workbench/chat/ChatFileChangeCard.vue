@@ -50,8 +50,10 @@ function lineMarkerStyle(line: FileDiffLine) {
 </script>
 
 <template>
-  <section class="overflow-visible border border-[color:var(--wb-border-2)] rounded-[var(--wb-chat-bubble-radius)] bg-[var(--wb-bubble-bg)]">
-    <div class="flex items-center justify-between border-b border-[color:var(--wb-divider)] px-3 py-2">
+  <section
+    class="overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-content-bg)] [--wb-card-content-bg:var(--wb-bubble-bg)] [--wb-card-tab-bg:color-mix(in_srgb,var(--wb-bubble-bg)_98%,var(--wb-text-primary)_2%)] [--wb-card-summary-bg:color-mix(in_srgb,var(--wb-bubble-bg)_96%,var(--wb-text-primary)_4%)]"
+  >
+    <div class="rounded-t-[8px] flex items-center justify-between border-b border-[color:var(--wb-divider)] bg-[var(--wb-card-summary-bg)] px-3 py-2">
       <div class="flex items-center gap-2 text-[length:var(--wb-ui-text-xs)] font-medium">
         <span class="text-[color:var(--wb-text-primary)]">{{ block.summaryLabel }}</span>
         <span class="text-[color:var(--wb-diff-delta-added)]">+{{ block.added }}</span>
@@ -65,9 +67,9 @@ function lineMarkerStyle(line: FileDiffLine) {
 
     <div class="overflow-visible">
       <div
-        v-for="file in block.files"
+        v-for="(file, index) in block.files"
         :key="file.id"
-        class="group relative z-0 border-b border-[color:var(--wb-divider)] last:border-b-0 hover:z-30"
+        class="group relative z-0 border-b border-[color:var(--wb-divider)] last:border-b-0 hover:z-40"
       >
         <span
           class="pointer-events-none absolute -left-2 bottom-full z-50 mb-1 inline-flex max-w-[calc(100%-12px)] translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160"
@@ -76,8 +78,8 @@ function lineMarkerStyle(line: FileDiffLine) {
           {{ file.path }}
         </span>
         <button
-          class="group w-full flex items-center justify-between border-none bg-transparent px-3 py-2 text-left transition-colors hover:bg-[var(--wb-hover-bg)]"
-          :class="block.files[block.files.length - 1]?.id === file.id && file.id !== openFileId ? 'rounded-b-[calc(var(--wb-chat-bubble-radius)-2px)]' : ''"
+          class="group w-full flex items-center justify-between border-none bg-[var(--wb-card-tab-bg)] px-3 py-2 text-left transition-colors"
+          :class="index === block.files.length - 1 && file.id !== openFileId ? 'rounded-b-[8px]' : ''"
           @click="selectFile(file)"
         >
           <div class="min-w-0 flex items-center gap-2">
@@ -106,16 +108,22 @@ function lineMarkerStyle(line: FileDiffLine) {
 
         <div
           v-if="file.id === openFileId && activeFile"
-          class="max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[color-mix(in_srgb,var(--wb-input-bg)_72%,transparent)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
+          class="max-h-[190px] overflow-auto border-t border-[color:var(--wb-divider)] bg-[var(--wb-card-content-bg)] text-[length:var(--wb-code-text-sm)] font-[var(--font-code)]"
+          :class="index === block.files.length - 1 ? 'rounded-b-[8px] overflow-hidden' : ''"
         >
           <div
             v-for="line in activeFile.lines"
             :key="`${file.id}-${line.left}-${line.right}-${line.text}`"
             class="grid grid-cols-[44px_minmax(0,1fr)] border-b border-[color:color-mix(in_srgb,var(--wb-divider)_72%,transparent)] last:border-b-0"
-            :class="lineMarkerClass(line)"
-            :style="{ background: lineBackground(line), ...lineMarkerStyle(line) }"
+            :style="{ background: lineBackground(line) }"
           >
-            <span class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[length:calc(var(--wb-code-text)-2px)] text-[color:var(--wb-text-faint)] tabular-nums">{{ line.right || line.left }}</span>
+            <span
+              class="border-r border-[color:var(--wb-divider)] px-2 py-1 text-right text-[length:calc(var(--wb-code-text)-2px)] text-[color:var(--wb-text-faint)] tabular-nums"
+              :class="lineMarkerClass(line)"
+              :style="lineMarkerStyle(line)"
+            >
+              {{ line.right || line.left }}
+            </span>
             <span class="[overflow-wrap:anywhere] px-2 py-1 leading-[1.5]" :style="{ color: lineTextColor(line) }">{{ line.text }}</span>
           </div>
         </div>
