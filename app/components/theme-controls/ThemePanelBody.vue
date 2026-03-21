@@ -169,6 +169,20 @@ function onCodeThemeSelect(event: Event) {
   emit('setCodeThemeId', target.value)
 }
 
+function clampSize(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function stepUiSize(delta: number) {
+  const next = clampSize(uiFontSize.value + delta, 12, 22)
+  emit('setUiFontSize', next)
+}
+
+function stepCodeSize(delta: number) {
+  const next = clampSize(codeFontSize.value + delta, 12, 24)
+  emit('setCodeFontSize', next)
+}
+
 function openCodeThemeInfo() {
   if (codeThemeInfoCloseTimer) {
     clearTimeout(codeThemeInfoCloseTimer)
@@ -454,19 +468,39 @@ onBeforeUnmount(() => {
               UI Size
             </div>
             <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-0.5">
+              <div class="inline-flex items-center gap-2">
                 <input
-                  class="w-[2.6ch] appearance-none border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                  class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
                   :value="uiFontSize"
                   type="number"
                   min="12"
                   max="22"
+                  step="1"
                   aria-label="UI size in pixels"
                   @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
                 >
-                <span class="text-[15px] font-semibold text-pureBlack/90">px</span>
               </div>
-              <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
+              <div class="flex items-center gap-2">
+                <div class="hidden inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8">
+                  <button
+                    type="button"
+                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                    aria-label="Increase UI size"
+                    @click="stepUiSize(1)"
+                  >
+                    <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
+                  </button>
+                  <button
+                    type="button"
+                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                    aria-label="Decrease UI size"
+                    @click="stepUiSize(-1)"
+                  >
+                    <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
+                  </button>
+                </div>
+                <span class="text-[15px] font-medium uppercase text-pureBlack/40">PX</span>
+              </div>
             </div>
           </div>
           <div class="px-5 py-4">
@@ -474,19 +508,39 @@ onBeforeUnmount(() => {
               Code Size
             </div>
             <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-0.5">
+              <div class="inline-flex items-center gap-2">
                 <input
-                  class="hex-value w-[2.6ch] appearance-none border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                  class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
                   :value="codeFontSize"
                   type="number"
                   min="12"
                   max="24"
+                  step="1"
                   aria-label="Code size in pixels"
                   @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
                 >
-                <span class="hex-value text-[15px] font-semibold text-pureBlack/90">px</span>
               </div>
-              <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
+              <div class="flex items-center gap-2">
+                <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8">
+                  <button
+                    type="button"
+                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                    aria-label="Increase code size"
+                    @click="stepCodeSize(1)"
+                  >
+                    <Icon name="ph:caret-up-fill" class="h-2.5 w-2.5" />
+                  </button>
+                  <button
+                    type="button"
+                    class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                    aria-label="Decrease code size"
+                    @click="stepCodeSize(-1)"
+                  >
+                    <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
+                  </button>
+                </div>
+                <span class="hex-value text-[15px] font-medium uppercase text-pureBlack/40">PX</span>
+              </div>
             </div>
           </div>
         </div>
@@ -543,13 +597,13 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+.size-input::-webkit-inner-spin-button,
+.size-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type='number'] {
+.size-input {
   -moz-appearance: textfield;
 }
 </style>
