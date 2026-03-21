@@ -43,7 +43,7 @@ const emit = defineEmits<{
 }>()
 
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
-const jsonOpen = ref(false)
+const jsonOpen = ref(true)
 const expandedColor = ref<ColorField | null>(null)
 const codeThemeInfoOpen = ref(false)
 let codeThemeInfoCloseTimer: ReturnType<typeof setTimeout> | null = null
@@ -137,6 +137,16 @@ const CODE_FONT_OPTIONS: Array<{ label: string, value: string }> = [
   { label: 'Courier New stack', value: '"Courier New", Courier, monospace' },
   { label: 'Lucida Console stack', value: '"Lucida Console", Monaco, monospace' },
 ]
+
+function optionLabel(options: Array<{ label: string, value: string }>, value: string) {
+  const match = options.find(opt => opt.value === value)
+  if (!match)
+    return value || 'Default'
+  return match.label.replace(/\s*\(.*\)\s*$/, '')
+}
+
+const uiFontLabel = computed(() => optionLabel(UI_FONT_OPTIONS, props.payload.theme.fonts.ui || ''))
+const codeFontLabel = computed(() => optionLabel(CODE_FONT_OPTIONS, props.payload.theme.fonts.code || ''))
 
 function onUiFontSelect(event: Event) {
   const target = event.target as HTMLSelectElement | null
@@ -293,168 +303,214 @@ onBeforeUnmount(() => {
 
     <!-- Display -->
     <section>
-      <h3 class="text-[22px] font-semibold tracking-tight text-pureBlack/90 mb-4">
+      <h3 class="mb-4 text-[22px] font-semibold tracking-tight text-pureBlack/90">
         Display
       </h3>
-      <div class="flex flex-col gap-5">
-        <!-- Font inputs -->
-        <div>
-          <div class="grid w-full grid-cols-2 gap-0 mb-1.5">
-            <span class="px-1 text-[13px] text-pureBlack/50">UI font</span>
-            <span class="px-1 text-[13px] text-pureBlack/50">Code font</span>
+      <div class="overflow-visible rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
+        <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
+          <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+            UI Font Family
           </div>
-          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm divide-x divide-pureBlack/12">
-            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <select
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
-                :value="payload.theme.fonts.ui || ''"
-                @change="onUiFontSelect"
-              >
-                <option
-                  v-for="option in UI_FONT_OPTIONS"
-                  :key="option.label"
-                  :value="option.value"
-                >
-                  {{ option.label }}
-                </option>
-              </select>
-            </div>
-            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <select
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
-                :value="payload.theme.fonts.code || ''"
-                @change="onCodeFontSelect"
-              >
-                <option
-                  v-for="option in CODE_FONT_OPTIONS"
-                  :key="option.label"
-                  :value="option.value"
-                >
-                  {{ option.label }}
-                </option>
-              </select>
-            </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[15px] font-medium text-pureBlack/90">{{ uiFontLabel }}</span>
+            <Icon name="ph:caret-right" class="h-3.5 w-3.5 text-pureBlack/35" />
           </div>
+          <select
+            class="absolute inset-0 cursor-pointer opacity-0"
+            :value="payload.theme.fonts.ui || ''"
+            aria-label="UI font family"
+            @change="onUiFontSelect"
+          >
+            <option
+              v-for="option in UI_FONT_OPTIONS"
+              :key="option.label"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
         </div>
 
-        <!-- Translucent sidebar toggle -->
-        <div class="flex items-center justify-between py-1">
-          <span class="text-[15px] font-medium text-pureBlack/80">Translucent sidebar</span>
+        <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/3">
+          <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+            Code Font Family
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[15px] font-medium text-pureBlack/90">{{ codeFontLabel }}</span>
+            <Icon name="ph:caret-right" class="h-3.5 w-3.5 text-pureBlack/35" />
+          </div>
+          <select
+            class="absolute inset-0 cursor-pointer opacity-0"
+            :value="payload.theme.fonts.code || ''"
+            aria-label="Code font family"
+            @change="onCodeFontSelect"
+          >
+            <option
+              v-for="option in CODE_FONT_OPTIONS"
+              :key="option.label"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-pureBlack/8 px-5 py-4">
+          <span class="text-[15px] font-medium text-pureBlack/90">Translucent Sidebar</span>
           <DsSwitch
             :model-value="translucentSidebar"
             @update:model-value="emit('setTranslucentSidebar', $event)"
           />
         </div>
 
-        <!-- Contrast slider -->
-        <div class="flex items-center gap-4 py-1">
-          <span class="text-[15px] font-medium text-pureBlack/80 w-[70px] shrink-0">Contrast</span>
-          <div class="flex-1 relative flex items-center h-6 group">
-            <div class="absolute w-full h-[3px] bg-pureBlack/12 rounded-full" />
-            <div
-              class="absolute h-[3px] bg-[#0066FF] rounded-full"
-              :style="{ width: `${payload.theme.contrast}%` }"
-            />
-            <input
-              type="range"
-              min="0"
-              max="100"
-              :value="payload.theme.contrast"
-              class="absolute w-full h-6 opacity-0 cursor-pointer"
-              @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
-            >
-            <div
-              class="absolute w-4 h-4 bg-[#0066FF] rounded-full shadow-sm transform -translate-x-1/2 transition-transform group-hover:scale-110"
-              :style="{ left: `${payload.theme.contrast}%` }"
-            />
+        <div class="flex items-center justify-between gap-4 border-b border-pureBlack/8 px-5 py-4">
+          <span class="text-[15px] font-medium text-pureBlack/90">Contrast</span>
+          <div class="ml-4 flex flex-1 items-center gap-3">
+            <div class="relative h-4 flex-1">
+              <div class="absolute top-1/2 h-[4px] w-full -translate-y-1/2 rounded-full bg-pureBlack/12" />
+              <div
+                class="absolute top-1/2 h-[4px] -translate-y-1/2 rounded-full bg-pureBlack/90"
+                :style="{ width: `${payload.theme.contrast}%` }"
+              />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                :value="payload.theme.contrast"
+                class="absolute inset-0 h-4 w-full cursor-pointer opacity-0"
+                aria-label="Contrast"
+                @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
+              >
+              <div
+                class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/18 bg-pureWhite shadow-sm"
+                :style="{ left: `${payload.theme.contrast}%` }"
+              />
+            </div>
+            <span class="hex-value rounded-md border border-pureBlack/10 bg-pureBlack/5 px-2 py-0.5 text-[12px] font-medium text-pureBlack/60">
+              {{ payload.theme.contrast }}%
+            </span>
           </div>
-          <span class="hex-value text-[14px] text-pureBlack/55 w-8 text-right">{{ payload.theme.contrast }}</span>
         </div>
 
-        <!-- Code theme selection -->
-        <div>
-          <div class="mb-1.5 px-1">
+        <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
+          <div
+            class="relative flex items-center gap-1.5"
+            @mouseenter="openCodeThemeInfo"
+            @mouseleave="closeCodeThemeInfo"
+          >
+            <span class="text-[15px] font-medium text-pureBlack/90">Code Theme</span>
+            <Icon
+              name="ph:info"
+              class="h-4 w-4 cursor-help text-pureBlack/42 transition-colors hover:text-pureBlack/65"
+              aria-label="Code theme limitation info"
+              @focus="openCodeThemeInfo"
+              @blur="closeCodeThemeInfo"
+            />
             <div
-              class="relative inline-flex items-center gap-1.5"
+              class="absolute left-0 top-full z-30 mt-2 w-[230px] rounded-xl border border-pureBlack/12 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
+              :class="codeThemeInfoOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0 pointer-events-none'"
               @mouseenter="openCodeThemeInfo"
               @mouseleave="closeCodeThemeInfo"
             >
-              <span class="text-[13px] leading-none text-pureBlack/50">Code theme</span>
-              <Icon
-                name="ph:info-bold"
-                class="mt-[1px] h-4 w-4 cursor-help text-pureBlack/55 transition-colors hover:text-pureBlack/75"
-                aria-label="Code theme limitation info"
-                @focus="openCodeThemeInfo"
-                @blur="closeCodeThemeInfo"
-              />
-              <div
-                class="absolute left-0 top-full z-20 mt-2 w-[240px] rounded-xl border border-pureBlack/14 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
-                :class="codeThemeInfoOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible pointer-events-none -translate-y-1'"
-                @mouseenter="openCodeThemeInfo"
-                @mouseleave="closeCodeThemeInfo"
+              <p>
+                Codex currently enforces built-in syntax highlighting mappings for some code themes.
+              </p>
+              <p class="mt-1.5">
+                Until this is fixed upstream, fully custom syntax highlighting cannot always be applied.
+              </p>
+              <a
+                href="https://github.com/openai/codex/issues/14766"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
               >
-                <p>
-                  Codex currently enforces built-in syntax highlighting mappings for some code themes.
-                  Until this is fixed upstream, fully custom syntax highlighting cannot always be applied.
-                </p>
-                <a
-                  href="https://github.com/openai/codex/issues/14766"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
-                >
-                  GitHub issue #14766
-                  <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
-                </a>
-              </div>
+                GitHub issue #14766
+                <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
+              </a>
             </div>
           </div>
-          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm">
-            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <select
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 pr-8 text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
-                :value="payload.codeThemeId"
-                @change="onCodeThemeSelect"
+          <div class="relative min-w-[166px]">
+            <select
+              class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
+              :value="payload.codeThemeId"
+              aria-label="Code theme"
+              @change="onCodeThemeSelect"
+            >
+              <option
+                v-for="option in codeThemeOptions"
+                :key="option"
+                :value="option"
               >
-                <option
-                  v-for="option in codeThemeOptions"
-                  :key="option"
-                  :value="option"
+                {{ option }}
+              </option>
+            </select>
+            <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 border-b border-pureBlack/8">
+          <div class="border-r border-pureBlack/8 px-5 py-4">
+            <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+              UI Size
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-0.5">
+                <input
+                  class="w-[2.6ch] appearance-none border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                  :value="uiFontSize"
+                  type="number"
+                  min="12"
+                  max="22"
+                  aria-label="UI size in pixels"
+                  @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
                 >
-                  {{ option }}
-                </option>
-              </select>
+                <span class="text-[15px] font-semibold text-pureBlack/90">px</span>
+              </div>
+              <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
+            </div>
+          </div>
+          <div class="px-5 py-4">
+            <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+              Code Size
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-0.5">
+                <input
+                  class="hex-value w-[2.6ch] appearance-none border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                  :value="codeFontSize"
+                  type="number"
+                  min="12"
+                  max="24"
+                  aria-label="Code size in pixels"
+                  @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
+                >
+                <span class="hex-value text-[15px] font-semibold text-pureBlack/90">px</span>
+              </div>
+              <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
             </div>
           </div>
         </div>
 
-        <!-- Size inputs -->
-        <div>
-          <div class="grid w-full grid-cols-2 gap-0 mb-1.5">
-            <span class="px-1 text-[13px] text-pureBlack/50">UI size (px)</span>
-            <span class="px-1 text-[13px] text-pureBlack/50">Code size (px)</span>
-          </div>
-          <div class="flex w-full min-w-0 overflow-hidden rounded-xl border border-pureBlack/14 bg-pureWhite shadow-sm divide-x divide-pureBlack/12">
-            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <input
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
-                :value="uiFontSize"
-                type="number"
-                min="12"
-                max="22"
-                @input="emit('setUiFontSize', Number(($event.target as HTMLInputElement).value))"
-              >
-            </div>
-            <div class="flex-1 min-w-0 bg-pureWhite transition-colors hover:bg-pureBlack/8 focus-within:bg-pureBlack/8">
-              <input
-                class="block w-full min-w-0 border-0 bg-transparent px-4 py-3 appearance-none text-[15px] font-medium text-pureBlack/90 outline-none ring-0 focus:ring-0"
-                :value="codeFontSize"
-                type="number"
-                min="12"
-                max="24"
-                @input="emit('setCodeFontSize', Number(($event.target as HTMLInputElement).value))"
-              >
-            </div>
+        <div class="bg-pureBlack/2 px-5 py-4">
+          <button
+            type="button"
+            class="mb-4 flex w-full items-center justify-between border-none bg-transparent p-0 text-left shadow-none outline-none"
+            @click="jsonOpen = !jsonOpen"
+          >
+            <span class="text-[15px] font-semibold text-pureBlack/90">Live JSON</span>
+            <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-pureBlack/34" />
+          </button>
+
+          <div v-show="jsonOpen" class="space-y-2">
+            <textarea
+              class="hex-value h-56 w-full resize-none overflow-auto rounded-2xl border border-[#1a2740] bg-[#08152f] p-4 text-[12px] leading-relaxed text-[#d4e3ff] outline-none shadow-inner"
+              rows="10"
+              :value="jsonValue"
+              @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
+            />
+            <p v-if="jsonError" class="text-[12px] text-red-600/90">
+              {{ jsonError }}
+            </p>
           </div>
         </div>
       </div>
@@ -467,40 +523,20 @@ onBeforeUnmount(() => {
       <div class="flex gap-3">
         <button
           type="button"
-          class="flex-1 py-3 bg-pureWhite border border-pureBlack/10 text-pureBlack/80 rounded-xl text-[14px] font-medium hover:bg-pureBlack/5 shadow-sm active:scale-[0.98] transition-all"
+          class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-pureBlack/10 bg-pureWhite py-3 text-[14px] font-semibold text-pureBlack/80 shadow-sm transition-all hover:bg-pureBlack/5 active:scale-[0.98]"
           @click="emit('exportTheme')"
         >
-          Export
+          <Icon name="ph:export-bold" class="h-4.5 w-4.5" />
+          Export Config
         </button>
         <button
           type="button"
-          class="flex-1 py-3 bg-pureWhite border border-pureBlack/10 text-pureBlack/60 rounded-xl text-[14px] font-medium hover:bg-pureBlack/5 shadow-sm active:scale-[0.98] transition-all"
+          class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-pureBlack/10 bg-pureWhite py-3 text-[14px] font-semibold text-pureBlack/80 shadow-sm transition-all hover:bg-pureBlack/5 active:scale-[0.98]"
           @click="emit('copyExport')"
         >
+          <Icon name="ph:copy-bold" class="h-4.5 w-4.5" />
           {{ copyState === 'ok' ? 'Copied!' : 'Copy string' }}
         </button>
-      </div>
-
-      <!-- Advanced JSON -->
-      <button
-        type="button"
-        class="w-full flex items-center justify-between p-4 bg-pureWhite border border-pureBlack/10 rounded-xl shadow-sm hover:bg-pureBlack/3 transition-colors"
-        @click="jsonOpen = !jsonOpen"
-      >
-        <span class="text-[14px] font-medium text-pureBlack/70">Advanced · Live JSON</span>
-        <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="w-4 h-4 text-pureBlack/40" />
-      </button>
-
-      <div v-show="jsonOpen" class="space-y-2">
-        <textarea
-          class="border border-pureBlack/10 bg-pureWhite text-pureBlack/80 focus:border-pureBlack/20 min-h-52 w-full resize-y rounded-xl p-3 text-[12px] font-mono leading-relaxed outline-none shadow-sm"
-          rows="10"
-          :value="jsonValue"
-          @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
-        />
-        <p v-if="jsonError" class="text-red-600/90 text-[12px]">
-          {{ jsonError }}
-        </p>
       </div>
     </section>
   </div>
