@@ -337,7 +337,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .wb-main-area--collapsed {
-  padding: 2px 14px 0 126px;
+  padding: 2px 14px 0 calc(var(--wb-sidebar-width) - 72px);
 }
 
 .wb-main-frame {

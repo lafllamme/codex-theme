@@ -256,8 +256,8 @@ const contextUsedLabel = computed(() =>
                                     </button>
 
                                     <div
-                                        v-if="isSpeedMenuOpen"
-                                        class="absolute left-full top-0 z-50 ml-2 w-[300px] border border-[color:var(--wb-border-2)] rounded-[20px] bg-[var(--wb-bubble-bg)] p-2 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
+                                            v-if="isSpeedMenuOpen"
+                                        class="absolute left-full top-0 z-50 ml-2 w-[300px] border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
                                     >
                                         <ul class="grid m-0 list-none gap-1 p-0">
                                             <li>

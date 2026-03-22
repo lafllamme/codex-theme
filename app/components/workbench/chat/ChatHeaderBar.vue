@@ -112,6 +112,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 <template>
     <header
         class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-2 px-0.5"
+        :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : ''"
     >
         <div
             class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden"
@@ -225,11 +226,11 @@ function handleCommitPrimaryAction(actionKey: string) {
 }
 
 .chat-header-bar--collapsed .chat-header-title {
-    max-width: min(28vw, 320px);
+    max-width: min(24vw, 280px);
 }
 
 .chat-header-bar--collapsed .chat-header-repo {
-    max-width: min(11vw, 124px);
+    max-width: min(10vw, 110px);
 }
 
 @media (max-width: 1180px) {
