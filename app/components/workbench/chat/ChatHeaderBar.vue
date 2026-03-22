@@ -45,34 +45,34 @@ const selectedEditor = ref(
 const commitActionMap: Record<string, CommitAction[]> = {
     commit: [
         { key: "commit", label: "Commit", icon: "ph:git-commit" },
-        { key: "push", label: "Push", icon: "ph:cloud-arrow-up-bold" },
+        { key: "push", label: "Push", icon: "stash:cloud-arrow-up" },
         {
             key: "pr",
             label: "Create PR",
-            icon: "ph:github-logo-fill",
+            icon: "mdi:github-circle",
             disabled: true,
         },
-        { key: "branch", label: "Create branch", icon: "ph:git-branch-bold" },
+        { key: "branch", label: "Create branch", icon: "ph:git-branch" },
     ],
     push: [
-        { key: "push", label: "Push", icon: "ph:cloud-arrow-up-bold" },
+        { key: "push", label: "Push", icon: "stash:cloud-arrow-up" },
         { key: "commit", label: "Commit", icon: "ph:git-commit" },
         {
             key: "pr",
             label: "Create PR",
-            icon: "ph:github-logo-fill",
+            icon: "mdi:github-circle",
             disabled: true,
         },
-        { key: "branch", label: "Create branch", icon: "ph:git-branch-bold" },
+        { key: "branch", label: "Create branch", icon: "ph:git-branch" },
     ],
     branch: [
-        { key: "branch", label: "Create branch", icon: "ph:git-branch-bold" },
+        { key: "branch", label: "Create branch", icon: "ph:git-branch" },
         { key: "commit", label: "Commit", icon: "ph:git-commit" },
         { key: "push", label: "Push", icon: "ph:cloud-arrow-up-bold" },
         {
             key: "pr",
             label: "Create PR",
-            icon: "ph:github-logo-fill",
+            icon: "mdi:github-circle",
             disabled: true,
         },
     ],
@@ -80,12 +80,12 @@ const commitActionMap: Record<string, CommitAction[]> = {
         {
             key: "pr",
             label: "Create PR",
-            icon: "ph:github-logo-fill",
+            icon: "mdi:github-circle",
             disabled: true,
         },
         { key: "commit", label: "Commit", icon: "ph:git-commit" },
         { key: "push", label: "Push", icon: "ph:cloud-arrow-up-bold" },
-        { key: "branch", label: "Create branch", icon: "ph:git-branch-bold" },
+        { key: "branch", label: "Create branch", icon: "ph:git-branch" },
     ],
 };
 

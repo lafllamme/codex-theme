@@ -86,7 +86,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
               : 'text-[color:var(--wb-text-primary)] hover:bg-[var(--wb-hover-bg)]'"
             @click="selectOption(option)"
           >
-            <Icon :name="option.icon" class="h-[12px] w-[12px]" />
+            <Icon :name="option.icon" class="size-4" />
             <span class="truncate font-medium">{{ option.label }}</span>
           </button>
         </li>
