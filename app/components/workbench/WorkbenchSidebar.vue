@@ -57,7 +57,7 @@ function toggleRepo(repo: string) {
       <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
         <div class="nav-stack">
           <button class="sidebar-nav-lane-item nav-row grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
-            <Icon name="ph:note-pencil" class="nav-row__icon h-[15px] w-[15px]" />
+            <Icon name="heroicons-outline:pencil-alt" class="nav-row__icon h-[15px] w-[15px]" />
             <span class="sidebar-label truncate">New Thread</span>
           </button>
 
@@ -103,7 +103,7 @@ function toggleRepo(repo: string) {
                 </span>
                 <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                   <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
-                  <Icon name="ph:note-pencil" class="h-[16px] w-[16px]" />
+                  <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
                 </span>
               </button>
 

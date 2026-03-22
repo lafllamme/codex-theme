@@ -158,25 +158,25 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <div class="inline-flex items-center gap-[6px]">
+      <div class="inline-flex items-center gap-1">
         <button
           class="wb-top-control-btn"
           aria-label="Toggle Sidebar"
           @click="toggleSidebar"
         >
-          <Icon name="ph:sidebar-simple-light" class="h-[13px] w-[13px]" />
+          <Icon name="cuida:sidebar-collapse-outline" class="size-4" />
         </button>
         <button
           class="wb-top-control-btn"
           aria-label="Back"
         >
-          <Icon name="ph:arrow-left-bold" class="h-[11px] w-[11px]" />
+          <Icon name="ph:arrow-left-light" class="size-4" />
         </button>
         <button
           class="wb-top-control-btn"
           aria-label="Forward"
         >
-          <Icon name="ph:arrow-right-bold" class="h-[11px] w-[11px]" />
+          <Icon name="ph:arrow-right-light" class="size-4" />
         </button>
         <button
           v-if="isSidebarCollapsed"
@@ -184,7 +184,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
           aria-label="New Thread"
           @click="startNewThread"
         >
-          <Icon name="ph:note-pencil" class="h-[12px] w-[12px]" />
+          <Icon name="heroicons-outline:pencil-alt" class="size-4" />
         </button>
       </div>
     </div>

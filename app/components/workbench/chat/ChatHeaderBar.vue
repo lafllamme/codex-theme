@@ -153,7 +153,7 @@ function handleCommitPrimaryAction(actionKey: string) {
             />
 
             <button
-                class="h-[26px] flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] px-1.5 font-[var(--font-ui) text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]"
+                class="h-[26px] flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11.5px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] leading-none outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]"
                 @click="emit('openWorktree')"
             >
                 <Icon name="ph:arrows-left-right" class="size-5" />
