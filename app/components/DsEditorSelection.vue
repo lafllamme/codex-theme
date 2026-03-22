@@ -40,15 +40,24 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <div ref="rootRef" class="relative">
-    <button
-      class="h-[26px] inline-flex appearance-none items-center gap-2.5 border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] pl-2 pr-1.5 text-[10.5px] text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
-      @click.stop="toggleOpen"
-    >
-      <span class="h-[16px] w-[16px] inline-flex items-center justify-center rounded-[5px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">
-        <Icon :name="selectedOption?.icon || 'simple-icons:cursor'" class="h-[10px] w-[10px] text-[color:var(--wb-text-primary)]" />
-      </span>
-      <Icon name="ph:caret-down-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-secondary)]" />
-    </button>
+    <div class="h-[26px] inline-flex items-center overflow-hidden border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] text-[10.5px] text-[color:var(--wb-text-primary)] leading-none shadow-[inset_0_0_0_1px_var(--wb-chip-ghost-border)]">
+      <button
+        aria-label="Open editor selection"
+        class="h-full inline-flex items-center rounded-l-[9px] border-none bg-transparent pl-2 pr-1.5 outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
+        @click.stop="toggleOpen"
+      >
+        <span class="h-[16px] w-[16px] inline-flex items-center justify-center rounded-[5px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">
+          <Icon :name="selectedOption?.icon || 'simple-icons:cursor'" class="h-[10px] w-[10px] text-[color:var(--wb-text-primary)]" />
+        </span>
+      </button>
+      <button
+        aria-label="Open editor selection"
+        class="h-full inline-flex items-center justify-center rounded-r-[9px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)] hover:text-[color:var(--wb-text-primary)]"
+        @click.stop="toggleOpen"
+      >
+        <Icon name="ph:caret-down-bold" class="h-[12px] w-[12px]" />
+      </button>
+    </div>
 
     <div
       v-if="isOpen"
