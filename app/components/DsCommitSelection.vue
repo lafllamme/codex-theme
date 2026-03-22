@@ -53,12 +53,12 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
 <template>
   <div ref="rootRef" class="relative inline-flex">
-    <div class="commit-chip-shell h-[24px] flex items-center overflow-hidden rounded-[9px] text-[10.5px] text-[color:var(--wb-text-primary)] leading-none font-[var(--font-ui)]">
+    <div class="commit-chip-shell h-[24px] flex items-center overflow-hidden rounded-[10px] text-[color:var(--wb-text-primary)] leading-none font-[var(--font-ui)]">
       <button
         class="h-full flex items-center rounded-l-[8px] border-none bg-transparent px-1 text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
         @click.stop="triggerPrimary"
       >
-        <Icon :name="selectedOption?.icon || 'ph:git-commit-bold'" class="mx-2 size-5" />
+        <Icon :name="selectedOption?.icon || 'ph:git-commit-bold'" class="ml-1 mr-2 size-5" />
         <span>{{ selectedOption?.label || 'Commit' }}</span>
       </button>
       <button
@@ -72,7 +72,7 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 
     <div
       v-if="isOpen"
-      class="absolute right-0 top-full z-40 mt-1.5 w-[142px] border border-[color:color-mix(in_srgb,var(--wb-border-2)_62%,transparent)] rounded-[17px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_82%,transparent)] p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.24)] backdrop-blur-[12px]"
+      class="absolute right-0 top-full z-40 mt-1.5 w-[142px] border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[17px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.24)] backdrop-blur-[16px]"
     >
       <p class="mb-1 px-1.5 text-[10px] text-[color:var(--wb-text-muted)] font-semibold leading-none">
         {{ menuTitle || 'Git Actions' }}
