@@ -108,7 +108,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-[25px] inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[9px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[10.5px] text-[color:var(--wb-text-primary)] leading-none font-[var(--font-ui)] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]" @click="emit('openWorktree')">
+      <button class="h-[24px] inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[9px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] leading-none font-[var(--font-ui)] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]" @click="emit('openWorktree')">
         <Icon name="ph:arrows-left-right" class="h-[13px] w-[13px]" />
         Move to Worktree
       </button>
