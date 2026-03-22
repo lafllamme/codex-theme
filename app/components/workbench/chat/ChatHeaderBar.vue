@@ -85,7 +85,7 @@ function handleCommitPrimaryAction(actionKey: string) {
 
 <template>
   <header
-    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-1.5 px-0.5"
+    class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-2 px-0.5"
   >
     <div class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden">
       <div class="min-w-0 inline-flex items-center gap-1 overflow-hidden">
@@ -97,7 +97,7 @@ function handleCommitPrimaryAction(actionKey: string) {
       </button>
     </div>
 
-    <div class="chat-header-controls inline-flex items-center gap-1">
+    <div class="chat-header-controls inline-flex items-center gap-1.5">
       <button
         class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="runEnabled ? 'bg-[var(--wb-chip-ghost-bg-active)] text-[color:var(--wb-text-primary)]' : ''"
@@ -108,8 +108,8 @@ function handleCommitPrimaryAction(actionKey: string) {
 
       <DsEditorSelection v-model="selectedEditor" :options="editorOptions" />
 
-      <button class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-2 text-[length:var(--wb-ui-text-2xs)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]" @click="emit('openWorktree')">
-        <Icon name="ph:arrows-left-right" class="h-[14px] w-[14px]" />
+      <button class="h-[25px] inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[9px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[10.5px] text-[color:var(--wb-text-primary)] leading-none font-[var(--font-ui)] outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]" @click="emit('openWorktree')">
+        <Icon name="ph:arrows-left-right" class="h-[13px] w-[13px]" />
         Move to Worktree
       </button>
 
@@ -120,7 +120,7 @@ function handleCommitPrimaryAction(actionKey: string) {
         @primary-action="handleCommitPrimaryAction"
       />
 
-      <span class="mx-[3px] h-[18px] w-px bg-[var(--wb-divider)]" />
+      <span class="mx-1 h-[18px] w-px bg-[var(--wb-divider)]" />
 
       <button
         class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
@@ -186,6 +186,5 @@ function handleCommitPrimaryAction(actionKey: string) {
   .chat-header-bar--collapsed .chat-header-repo {
     max-width: min(19vw, 92px);
   }
-
 }
 </style>

@@ -41,13 +41,13 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 <template>
   <div ref="rootRef" class="relative">
     <button
-      class="h-8 inline-flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[11px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] shadow-[0_0_0_1px_color-mix(in_srgb,var(--wb-chip-ghost-border)_42%,transparent)_inset] outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
+      class="h-[25px] inline-flex appearance-none items-center gap-2.5 border border-[color:var(--wb-chip-ghost-border)] rounded-[9px] bg-[var(--wb-chip-ghost-bg)] pl-2 pr-1.5 text-[10.5px] text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors hover:bg-[var(--wb-chip-ghost-bg-hover)]"
       @click.stop="toggleOpen"
     >
-      <span class="h-[24px] w-[24px] inline-flex items-center justify-center rounded-[7px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">
-        <Icon :name="selectedOption?.icon || 'simple-icons:cursor'" class="h-[14px] w-[14px] text-[color:var(--wb-text-primary)]" />
+      <span class="h-[16px] w-[16px] inline-flex items-center justify-center rounded-[5px] bg-[color-mix(in_srgb,var(--wb-bg-panel)_52%,black_48%)]">
+        <Icon :name="selectedOption?.icon || 'simple-icons:cursor'" class="h-[10px] w-[10px] text-[color:var(--wb-text-primary)]" />
       </span>
-      <Icon name="ph:caret-down-bold" class="h-[12px] w-[12px] text-[color:var(--wb-text-secondary)]" />
+      <Icon name="ph:caret-down-bold" class="h-[8px] w-[8px] text-[color:var(--wb-text-secondary)]" />
     </button>
 
     <div

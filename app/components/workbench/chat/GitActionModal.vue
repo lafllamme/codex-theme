@@ -70,34 +70,34 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
         <section
           v-if="isOpen"
           ref="panelRef"
-          class="pointer-events-auto relative box-border w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[28px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-7 text-[color:var(--wb-text-primary)]"
+          class="pointer-events-auto relative box-border w-full overflow-hidden border border-[color:var(--wb-border-2)] rounded-[22px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] p-5 text-[color:var(--wb-text-primary)]"
           :class="action === 'push' ? 'max-w-[560px]' : 'max-w-[560px]'"
         >
-          <div class="mb-4 flex items-start justify-between">
-            <span class="h-12 w-12 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-[13px] bg-[color-mix(in_srgb,var(--wb-chip-bg)_76%,black_24%)]">
-              <Icon :name="actionIcon" class="h-7 w-7 text-[color:var(--wb-text-primary)]" />
+          <div class="mb-3 flex items-start justify-between">
+            <span class="h-10 w-10 inline-flex items-center justify-center border border-[color:var(--wb-border-2)] rounded-[11px] bg-[color-mix(in_srgb,var(--wb-chip-bg)_76%,black_24%)]">
+              <Icon :name="actionIcon" class="h-6 w-6 text-[color:var(--wb-text-primary)]" />
             </span>
             <button
-              class="h-8 w-8 inline-flex items-center justify-center rounded-[9px] border-none bg-transparent text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+              class="h-7 w-7 inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
               @click="closeModal"
             >
-              <Icon name="ph:x" class="h-5 w-5" />
+              <Icon name="ph:x" class="h-4 w-4" />
             </button>
           </div>
 
-          <h2 class="mb-4 text-[24px] font-semibold leading-[1.15] tracking-[-0.02em]">
+          <h2 class="mb-3 text-[21px] font-semibold leading-[1.15] tracking-[-0.02em]">
             {{ branchTitle }}
           </h2>
 
           <template v-if="action === 'branch'">
-            <p class="mb-6 text-[16px] text-[color:var(--wb-text-muted)] leading-[1.42]">
+            <p class="mb-5 text-[14px] text-[color:var(--wb-text-muted)] leading-[1.42]">
               Create a branch to commit and push changes from this worktree.
               <a href="#" class="underline decoration-[color:var(--wb-text-muted)] underline-offset-2">Learn more</a>
             </p>
 
             <div class="mb-2 flex items-center justify-between">
-              <span class="text-[16px] text-[color:var(--wb-text-primary)] font-semibold">Branch Name</span>
-              <button class="border-none bg-transparent p-0 text-[16px] text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-primary)]">
+              <span class="text-[14px] text-[color:var(--wb-text-primary)] font-semibold">Branch Name</span>
+              <button class="border-none bg-transparent p-0 text-[14px] text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-primary)]">
                 Set Prefix
               </button>
             </div>
@@ -105,32 +105,32 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
             <input
               v-model="branchName"
               type="text"
-              class="mb-6 box-border h-[52px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[15px] text-[color:var(--wb-text-primary)] font-semibold outline-none transition-colors focus:border-[color:var(--wb-hover-border)]"
+              class="mb-5 box-border h-[44px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[12px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-4 text-[14px] text-[color:var(--wb-text-primary)] font-semibold outline-none transition-colors focus:border-[color:var(--wb-hover-border)]"
             >
 
-            <button class="box-border h-[48px] max-w-full w-full rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
+            <button class="box-border h-[42px] max-w-full w-full rounded-[12px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[15px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
               {{ branchCtaLabel }}
             </button>
           </template>
 
           <div v-else class="mb-3 flex items-center justify-between">
-            <span class="text-[16px] text-[color:var(--wb-text-muted)] font-medium">Branch</span>
-            <span class="inline-flex items-center gap-2 text-[18px] text-[color:var(--wb-text-primary)] font-medium">
-              <Icon name="ph:git-branch-bold" class="h-5 w-5 text-[color:var(--wb-text-muted)]" />
+            <span class="text-[14px] text-[color:var(--wb-text-muted)] font-medium">Branch</span>
+            <span class="inline-flex items-center gap-2 text-[15px] text-[color:var(--wb-text-primary)] font-medium">
+              <Icon name="ph:git-branch-bold" class="h-4 w-4 text-[color:var(--wb-text-muted)]" />
               main
             </span>
           </div>
 
           <template v-if="action === 'push'">
-            <p class="mb-7 max-w-[520px] text-[16px] text-[color:var(--wb-text-muted)] leading-[1.4]">
+            <p class="mb-6 max-w-[520px] text-[14px] text-[color:var(--wb-text-muted)] leading-[1.4]">
               Push your latest commits to the remote repository.
             </p>
           </template>
 
           <template v-else-if="action === 'commit'">
             <div class="mb-3 flex items-center justify-between">
-              <span class="text-[16px] text-[color:var(--wb-text-primary)] font-semibold">Changes</span>
-              <span class="text-[16px] text-[color:var(--wb-text-muted)]">
+              <span class="text-[14px] text-[color:var(--wb-text-primary)] font-semibold">Changes</span>
+              <span class="text-[14px] text-[color:var(--wb-text-muted)]">
                 1 file
                 <span class="ml-2 text-[color:var(--wb-diff-delta-added)] font-semibold">+85</span>
                 <span class="ml-1 text-[color:var(--wb-diff-delta-removed)] font-semibold">-0</span>
@@ -138,76 +138,76 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
             </div>
 
             <button
-              class="mb-6 inline-flex items-center gap-3 rounded-[12px] border-none bg-transparent px-1 py-1 text-[16px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              class="mb-5 inline-flex items-center gap-2 rounded-[10px] border-none bg-transparent px-1 py-1 text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
               @click="includeUnstaged = !includeUnstaged"
             >
-              <span class="h-7 w-12 inline-flex items-center rounded-full p-[3px] transition-colors" :class="includeUnstaged ? 'justify-end bg-[var(--wb-accent)]' : 'justify-start bg-[color:var(--wb-border-2)]'">
-                <span class="h-[22px] w-[22px] rounded-full bg-white" />
+              <span class="h-6 w-10 inline-flex items-center rounded-full p-[3px] transition-colors" :class="includeUnstaged ? 'justify-end bg-[var(--wb-accent)]' : 'justify-start bg-[color:var(--wb-border-2)]'">
+                <span class="bg-white h-[18px] w-[18px] rounded-full" />
               </span>
               Include unstaged changes
             </button>
 
-            <label class="mb-2 block text-[16px] text-[color:var(--wb-text-primary)] font-semibold">Commit Message</label>
+            <label class="mb-2 block text-[14px] text-[color:var(--wb-text-primary)] font-semibold">Commit Message</label>
             <input
               v-model="commitMessage"
               type="text"
               placeholder="Leave empty to auto-generate a commit message"
-              class="mb-6 box-border h-[64px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[16px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-5 text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
+              class="mb-5 box-border h-[52px] max-w-full w-full border border-[color:var(--wb-border-2)] rounded-[12px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-4 text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors focus:border-[color:var(--wb-hover-border)] placeholder:text-[color:var(--wb-text-faint)]"
             >
 
-            <h3 class="mb-2 text-[16px] text-[color:var(--wb-text-primary)] font-semibold">
+            <h3 class="mb-2 text-[14px] text-[color:var(--wb-text-primary)] font-semibold">
               Next Steps
             </h3>
-            <div class="mb-6 overflow-hidden border border-[color:var(--wb-border-2)] rounded-[16px]">
+            <div class="mb-5 overflow-hidden border border-[color:var(--wb-border-2)] rounded-[12px]">
               <button
-                class="h-11 w-full flex items-center justify-between border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="h-10 w-full flex items-center justify-between border-none bg-transparent px-3 text-left text-[14px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="nextStep = 'commit'"
               >
                 <span class="inline-flex items-center gap-2">
-                  <Icon name="ph:git-commit-bold" class="h-5 w-5" />
+                  <Icon name="ph:git-commit-bold" class="h-4 w-4" />
                   Commit
                 </span>
-                <Icon v-if="nextStep === 'commit'" name="ph:check-bold" class="h-5 w-5" />
+                <Icon v-if="nextStep === 'commit'" name="ph:check-bold" class="h-4 w-4" />
               </button>
               <div class="h-px bg-[var(--wb-border-2)]" />
               <button
-                class="h-11 w-full flex items-center gap-2 border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="h-10 w-full flex items-center gap-2 border-none bg-transparent px-3 text-left text-[14px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="nextStep = 'commit-push'"
               >
-                <Icon name="ph:arrow-up-bold" class="h-5 w-5" />
+                <Icon name="ph:arrow-up-bold" class="h-4 w-4" />
                 Commit and push
               </button>
               <div class="h-px bg-[var(--wb-border-2)]" />
               <button
-                class="h-12 w-full flex items-center gap-2 border-none bg-transparent px-3.5 text-left text-[15px] text-[color:var(--wb-text-faint)]"
+                class="h-11 w-full flex items-center gap-2 border-none bg-transparent px-3 text-left text-[14px] text-[color:var(--wb-text-faint)]"
                 disabled
               >
-                <Icon name="ph:github-logo-fill" class="h-5 w-5" />
+                <Icon name="ph:github-logo-fill" class="h-4 w-4" />
                 <span>
                   Commit and create PR
-                  <span class="block text-[12px] text-[color:var(--wb-text-faint)]">Requires GitHub CLI</span>
+                  <span class="block text-[11px] text-[color:var(--wb-text-faint)]">Requires GitHub CLI</span>
                 </span>
               </button>
             </div>
 
             <div class="mb-0 flex items-center justify-between">
               <button
-                class="inline-flex items-center gap-2 rounded-[12px] border-none bg-transparent px-1 py-1 text-[16px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="inline-flex items-center gap-2 rounded-[10px] border-none bg-transparent px-1 py-1 text-[14px] text-[color:var(--wb-text-primary)] transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="isDraft = !isDraft"
               >
-                <span class="h-7 w-12 inline-flex items-center rounded-full p-[3px] transition-colors" :class="isDraft ? 'justify-end bg-[var(--wb-accent)]' : 'justify-start bg-[color:var(--wb-border-2)]'">
-                  <span class="h-[22px] w-[22px] rounded-full bg-white" />
+                <span class="h-6 w-10 inline-flex items-center rounded-full p-[3px] transition-colors" :class="isDraft ? 'justify-end bg-[var(--wb-accent)]' : 'justify-start bg-[color:var(--wb-border-2)]'">
+                  <span class="bg-white h-[18px] w-[18px] rounded-full" />
                 </span>
                 Draft
               </button>
-              <button class="h-[48px] min-w-[210px] rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] px-7 text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
+              <button class="h-[42px] min-w-[180px] rounded-[12px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] px-6 text-[15px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
                 {{ ctaLabel }}
               </button>
             </div>
           </template>
 
           <template v-if="action === 'push'">
-            <button class="box-border h-[48px] max-w-full w-full rounded-[14px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[16px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
+            <button class="box-border h-[42px] max-w-full w-full rounded-[12px] border-none bg-[color-mix(in_srgb,var(--wb-text-primary)_90%,white_10%)] text-[15px] text-[var(--wb-bg-panel)] font-semibold transition-colors hover:bg-[color-mix(in_srgb,var(--wb-text-primary)_95%,white_5%)]">
               {{ ctaLabel }}
             </button>
           </template>
