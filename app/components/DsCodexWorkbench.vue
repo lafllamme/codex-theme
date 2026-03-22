@@ -158,7 +158,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <div class="inline-flex items-center gap-1">
+      <div class="inline-flex translate-y-[2px] translate-x-[12px] items-center gap-1.5">
         <button
           class="wb-top-control-btn"
           aria-label="Toggle Sidebar"
