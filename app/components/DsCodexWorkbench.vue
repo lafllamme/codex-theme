@@ -207,7 +207,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
         @mousedown="beginSidebarResize"
       />
 
-      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden" :class="isSidebarCollapsed ? 'wb-main-area--collapsed' : 'wb-main-area--open'">
+      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
         <div class="wb-main-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
           <section class="wb-chat-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
             <div class="px-[8px] pt-0">
@@ -329,18 +329,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 .wb-main-area {
   position: relative;
   background: var(--wb-bg-panel);
-  transition: padding 260ms var(--wb-sidebar-ease);
-}
-
-.wb-main-area--open {
   padding: 2px 14px 0 14px;
 }
 
-.wb-main-area--collapsed {
-  padding: 2px 14px 0 calc(var(--wb-sidebar-width) - 72px);
-}
-
 .wb-main-frame {
+  width: min(1540px, calc(100vw - 28px - var(--wb-sidebar-width)));
   max-width: 1540px;
   margin-inline: auto;
 }
@@ -410,12 +403,12 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 @media (max-width: 1180px) {
-  .wb-main-area--open {
+  .wb-main-area {
     padding: 2px 10px 0 10px;
   }
 
-  .wb-main-area--collapsed {
-    padding: 2px 10px 0 98px;
+  .wb-main-frame {
+    width: 100%;
   }
 
   .wb-control-lane {
