@@ -209,10 +209,10 @@ watch(
 
 <style scoped>
 .diff-drawer {
-  width: var(--wb-diff-size, min(41vw, 520px));
+  width: 100%;
   flex: 0 0 auto;
   min-width: 0;
-  max-width: min(520px, 100%);
+  max-width: 100%;
   height: 100%;
   min-height: 0;
   display: flex;

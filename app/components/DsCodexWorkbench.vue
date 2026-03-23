@@ -53,6 +53,10 @@ const gitActionType = ref<'commit' | 'push' | 'branch'>('commit')
 const sidebarWidth = ref(296)
 const minSidebarWidth = 260
 const maxSidebarWidth = 420
+const diffWidth = ref(520)
+const minDiffWidth = 360
+const maxDiffWidth = 760
+const isDiffResizing = ref(false)
 
 const {
   isSidebarCollapsed,
@@ -90,6 +94,21 @@ const threadItems: ThreadItem[] = [
 ]
 
 const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
+const chatLaneDesktopInsetLeft = computed(() => {
+  if (!isDiffOpen.value)
+    return 156
+
+  const progress = Math.min(1, Math.max(0, (diffWidth.value - minDiffWidth) / (maxDiffWidth - minDiffWidth)))
+  return Math.round(80 - (44 * progress))
+})
+
+const chatLaneDesktopInsetRight = computed(() => {
+  if (!isDiffOpen.value)
+    return 156
+
+  const progress = Math.min(1, Math.max(0, (diffWidth.value - minDiffWidth) / (maxDiffWidth - minDiffWidth)))
+  return Math.round(68 - (52 * progress))
+})
 
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
@@ -106,6 +125,7 @@ const shellStyle = computed(() => ({
   '--wb-chat-message-size': 'var(--ui-font-size)',
   '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
+  '--wb-diff-size': `${diffWidth.value}px`,
   '--wb-body-shift': isSidebarCollapsed.value ? '0px' : `${-sidebarWidth.value / 2}px`,
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
@@ -152,6 +172,33 @@ function beginSidebarResize(event: MouseEvent) {
 function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   gitActionType.value = action
   isGitActionModalOpen.value = true
+}
+
+function beginDiffResize(event: MouseEvent) {
+  if (!isDiffOpen.value)
+    return
+
+  const startX = event.clientX
+  const startWidth = diffWidth.value
+  isDiffResizing.value = true
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+
+  function onMouseMove(moveEvent: MouseEvent) {
+    const delta = startX - moveEvent.clientX
+    diffWidth.value = Math.min(maxDiffWidth, Math.max(minDiffWidth, startWidth + delta))
+  }
+
+  function onMouseUp() {
+    isDiffResizing.value = false
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+    window.removeEventListener('mousemove', onMouseMove)
+    window.removeEventListener('mouseup', onMouseUp)
+  }
+
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('mouseup', onMouseUp)
 }
 </script>
 
@@ -252,6 +299,9 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
                     :run-enabled="runEnabled"
                     :is-terminal-open="isTerminalOpen"
                     :is-diff-open="isDiffOpen"
+                    :is-diff-resizing="isDiffResizing"
+                    :chat-lane-desktop-inset-left="chatLaneDesktopInsetLeft"
+                    :chat-lane-desktop-inset-right="chatLaneDesktopInsetRight"
                     :is-pip-enabled="isPipEnabled"
                     :model-options="modelOptions"
                     :thinking-options="thinkingOptions"
@@ -263,6 +313,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
                     @open-git-action="openGitActionModal"
                   />
                 </div>
+                <div
+                  v-if="isDiffOpen"
+                  class="diff-resize-handle"
+                  @mousedown="beginDiffResize"
+                />
                 <div
                   class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
                   :class="isDiffOpen ? 'diff-column--open' : ''"
@@ -346,6 +401,8 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .wb-header-frame {
+  position: relative;
+  z-index: 24;
   width: min(1540px, 100%);
   max-width: 1540px;
   margin-inline: auto;
@@ -354,9 +411,12 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 .wb-chat-header-shell {
   border: none;
   border-radius: 28px 28px 0 0;
+  overflow: visible;
 }
 
 .wb-body-frame {
+  position: relative;
+  z-index: 10;
   width: min(1540px, calc(100vw - 28px));
   max-width: 1540px;
   margin-inline: auto;
@@ -411,7 +471,6 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .diff-column {
-  --wb-diff-size: min(41vw, 520px);
   width: 0;
   flex: 0 0 auto;
   min-width: 0;
@@ -432,6 +491,25 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   margin-left: -1px;
   opacity: 1;
   pointer-events: auto;
+}
+
+.diff-resize-handle {
+  position: relative;
+  z-index: 44;
+  width: 0;
+  flex: 0 0 auto;
+  margin-left: -1px;
+  cursor: col-resize;
+}
+
+.diff-resize-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
 }
 
 @media (max-width: 1180px) {
@@ -464,6 +542,10 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   }
 
   .sidebar-resize-handle {
+    display: none;
+  }
+
+  .diff-resize-handle {
     display: none;
   }
 }

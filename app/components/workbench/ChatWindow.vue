@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ChatMessage } from '~/types/workbench-chat'
+import { computed } from 'vue'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerBar from '~/components/workbench/ComposerBar.vue'
 import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
@@ -11,6 +12,9 @@ const props = defineProps<{
   runEnabled: boolean
   isTerminalOpen: boolean
   isDiffOpen: boolean
+  isDiffResizing?: boolean
+  chatLaneDesktopInsetLeft?: number
+  chatLaneDesktopInsetRight?: number
   isPipEnabled: boolean
   modelOptions: string[]
   thinkingOptions: string[]
@@ -25,10 +29,12 @@ const emit = defineEmits<{
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
-const laneVars = {
-  '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-inset)',
-  '--wb-chat-lane-inset-right': 'var(--wb-chat-lane-inset)',
-}
+const laneVars = computed(() => ({
+  '--wb-chat-lane-desktop-inset-left': `${props.chatLaneDesktopInsetLeft ?? 156}px`,
+  '--wb-chat-lane-desktop-inset-right': `${props.chatLaneDesktopInsetRight ?? 156}px`,
+  '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-desktop-inset-left)',
+  '--wb-chat-lane-inset-right': 'var(--wb-chat-lane-desktop-inset-right)',
+}))
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', { required: true })
@@ -41,9 +47,12 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
   <section
     class="wb-chat-window min-h-0 min-w-0 flex flex-1 flex-col"
     :style="laneVars"
-    :class="showHeader !== false
-      ? 'border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]'
-      : 'bg-transparent'"
+    :class="[
+      showHeader !== false
+        ? 'border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]'
+        : 'bg-transparent',
+      isDiffResizing ? 'wb-chat-window--diff-resizing' : '',
+    ]"
   >
     <div v-if="showHeader !== false" class="px-[8px] pt-0">
       <ChatHeaderBar
@@ -64,7 +73,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 
     <WorkbenchMainStage :messages="messages" :is-diff-open="isDiffOpen" />
 
-    <div class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] mb-[10px] mt-2">
+    <div class="wb-chat-composer-lane [padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] mb-[10px] mt-2">
       <ComposerBar
         v-model:selected-model="selectedModel"
         v-model:selected-thinking="selectedThinking"
@@ -78,16 +87,28 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 
 <style scoped>
 .wb-chat-window {
-  --wb-chat-lane-inset: 15%;
-  --wb-chat-lane-inset-left: var(--wb-chat-lane-inset);
-  --wb-chat-lane-inset-right: var(--wb-chat-lane-inset);
+  --wb-chat-lane-desktop-inset-left: 156px;
+  --wb-chat-lane-desktop-inset-right: 156px;
+  --wb-chat-lane-inset-left: var(--wb-chat-lane-desktop-inset-left);
+  --wb-chat-lane-inset-right: var(--wb-chat-lane-desktop-inset-right);
+}
+
+.wb-chat-window :deep(main),
+.wb-chat-composer-lane {
+  transition:
+    padding-inline-start 260ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    padding-inline-end 260ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.wb-chat-window--diff-resizing :deep(main),
+.wb-chat-window--diff-resizing .wb-chat-composer-lane {
+  transition: none;
 }
 
 @media (max-width: 980px) {
   .wb-chat-window {
-    --wb-chat-lane-inset: 24px;
-    --wb-chat-lane-inset-left: var(--wb-chat-lane-inset);
-    --wb-chat-lane-inset-right: var(--wb-chat-lane-inset);
+    --wb-chat-lane-inset-left: 24px;
+    --wb-chat-lane-inset-right: 24px;
   }
 }
 </style>
