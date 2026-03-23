@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ChatMessage } from '~/types/workbench-chat'
-import { computed } from 'vue'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerBar from '~/components/workbench/ComposerBar.vue'
 import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
@@ -26,14 +25,10 @@ const emit = defineEmits<{
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
-const laneVars = computed(() => {
-  const openInset = 'calc(var(--wb-chat-lane-inset) * 0.15)'
-
-  return {
-    '--wb-chat-lane-inset-left': props.isDiffOpen ? openInset : 'var(--wb-chat-lane-inset)',
-    '--wb-chat-lane-inset-right': props.isDiffOpen ? openInset : 'var(--wb-chat-lane-inset)',
-  }
-})
+const laneVars = {
+  '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-inset)',
+  '--wb-chat-lane-inset-right': 'var(--wb-chat-lane-inset)',
+}
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', { required: true })

@@ -111,7 +111,7 @@ const shellStyle = computed(() => ({
     ? 'clamp(244px, 16vw, 320px)'
     : 'clamp(296px, 22vw, 388px)',
   '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '28px',
-  '--wb-sidebar-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))
 
 function startNewThread() {
@@ -235,52 +235,54 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
         </div>
 
         <div class="wb-body-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-          <section class="wb-chat-body-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
-            <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
-              <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
-                <ChatWindow
-                  v-model:selected-model="selectedModel"
-                  v-model:selected-thinking="selectedThinking"
-                  v-model:compose-value="composeValue"
-                  v-model:worktree-modal-open="isWorktreeModalOpen"
-                  v-model:worktree-branch="worktreeBranch"
-                  class="min-h-0 flex-1"
-                  :show-header="false"
-                  title="Open Vue-Bits Dither Sei..."
-                  repo="codex-theme"
-                  :run-enabled="runEnabled"
-                  :is-terminal-open="isTerminalOpen"
-                  :is-diff-open="isDiffOpen"
-                  :is-pip-enabled="isPipEnabled"
-                  :model-options="modelOptions"
-                  :thinking-options="thinkingOptions"
-                  :messages="activeMessages"
-                  @toggle-run="runEnabled = !runEnabled"
-                  @toggle-terminal="toggleTerminal"
-                  @toggle-diff="toggleDiff"
-                  @toggle-pip="togglePip"
-                  @open-git-action="openGitActionModal"
-                />
+          <div class="wb-body-motion min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
+            <section class="wb-chat-body-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
+              <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
+                <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
+                  <ChatWindow
+                    v-model:selected-model="selectedModel"
+                    v-model:selected-thinking="selectedThinking"
+                    v-model:compose-value="composeValue"
+                    v-model:worktree-modal-open="isWorktreeModalOpen"
+                    v-model:worktree-branch="worktreeBranch"
+                    class="min-h-0 flex-1"
+                    :show-header="false"
+                    title="Open Vue-Bits Dither Sei..."
+                    repo="codex-theme"
+                    :run-enabled="runEnabled"
+                    :is-terminal-open="isTerminalOpen"
+                    :is-diff-open="isDiffOpen"
+                    :is-pip-enabled="isPipEnabled"
+                    :model-options="modelOptions"
+                    :thinking-options="thinkingOptions"
+                    :messages="activeMessages"
+                    @toggle-run="runEnabled = !runEnabled"
+                    @toggle-terminal="toggleTerminal"
+                    @toggle-diff="toggleDiff"
+                    @toggle-pip="togglePip"
+                    @open-git-action="openGitActionModal"
+                  />
+                </div>
+                <div
+                  class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
+                  :class="isDiffOpen ? 'diff-column--open' : ''"
+                >
+                  <DiffDrawer
+                    class="min-h-0 min-w-0 flex-1"
+                    :open="isDiffOpen"
+                    :accent="payload.theme.accent"
+                    :contrast="payload.theme.contrast"
+                  />
+                </div>
               </div>
-              <div
-                class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
-                :class="isDiffOpen ? 'diff-column--open' : ''"
-              >
-                <DiffDrawer
-                  class="min-h-0 min-w-0 flex-1"
-                  :open="isDiffOpen"
-                  :accent="payload.theme.accent"
-                  :contrast="payload.theme.contrast"
-                />
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <TerminalDrawer
-            :open="isTerminalOpen"
-            :contrast="payload.theme.contrast"
-            :opaque-windows="payload.theme.opaqueWindows"
-          />
+            <TerminalDrawer
+              :open="isTerminalOpen"
+              :contrast="payload.theme.contrast"
+              :opaque-windows="payload.theme.opaqueWindows"
+            />
+          </div>
         </div>
       </section>
 
@@ -309,8 +311,8 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   z-index: 42;
   overflow: hidden;
   transition:
-    width 260ms var(--wb-sidebar-ease),
-    margin-right 220ms var(--wb-sidebar-ease);
+    width 340ms var(--wb-sidebar-ease),
+    margin-right 340ms var(--wb-sidebar-ease);
 }
 
 .sidebar-resize-handle {
@@ -358,8 +360,14 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   width: min(1540px, calc(100vw - 28px));
   max-width: 1540px;
   margin-inline: auto;
+}
+
+.wb-body-motion {
   transform: translateX(var(--wb-body-shift));
-  transition: transform 260ms var(--wb-sidebar-ease);
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 340ms var(--wb-sidebar-ease);
+  transform-origin: center;
 }
 
 .wb-chat-body-shell {
@@ -405,27 +413,22 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 .diff-column {
   --wb-diff-size: min(41vw, 520px);
   width: 0;
-  flex: 0 0 0;
-  flex-basis: 0;
+  flex: 0 0 auto;
   min-width: 0;
-  max-width: 100%;
   margin-left: 0;
   flex-shrink: 0;
   opacity: 0;
+  will-change: width, opacity;
   pointer-events: none;
   transition:
-    width 260ms var(--wb-sidebar-ease),
-    flex-basis 260ms var(--wb-sidebar-ease),
-    max-width 260ms var(--wb-sidebar-ease),
-    margin-left 220ms var(--wb-sidebar-ease),
-    opacity 220ms ease;
+    width 340ms var(--wb-sidebar-ease),
+    margin-left 340ms var(--wb-sidebar-ease),
+    opacity 240ms ease;
 }
 
 .diff-column--open {
   width: var(--wb-diff-size);
-  max-width: min(520px, 100%);
-  flex: 0 0 var(--wb-diff-size);
-  flex-basis: var(--wb-diff-size);
+  flex: 0 0 auto;
   margin-left: -1px;
   opacity: 1;
   pointer-events: auto;
@@ -444,6 +447,9 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
   .wb-body-frame {
     width: 100%;
+  }
+
+  .wb-body-motion {
     transform: translateX(0);
   }
 
