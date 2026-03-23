@@ -140,8 +140,8 @@ const shellStyle = computed(() => ({
   '--wb-body-shift': `${bodyShiftPx.value}px`,
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
-    : 'clamp(296px, 22vw, 388px)',
-  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '28px',
+    : 'clamp(168px, 12vw, 248px)',
+  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '0px',
   '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))
 
