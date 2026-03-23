@@ -5,10 +5,12 @@ import type {
   FileDiffCodeLine,
   FileDiffLine,
 } from '~/types/workbench-chat'
+import SyntaxLine from '~/components/workbench/code/SyntaxLine.vue'
 import { useDiffStore } from '~/stores/diff'
 
 const props = defineProps<{
   block: FileChangeCardBlock
+  codeThemeId: string
 }>()
 
 const hoveredFileId = ref('')
@@ -65,14 +67,6 @@ function maxLineColumns(file: FileChangeItem | undefined) {
   for (const line of lines)
     maxColumns = Math.max(maxColumns, line.text.length)
   return maxColumns
-}
-
-function lineTextColor(line: FileDiffCodeLine) {
-  if (line.kind === 'add' || line.kind === 'added')
-    return 'text-[color:var(--wb-diff-delta-added)]'
-  if (line.kind === 'remove' || line.kind === 'removed')
-    return 'text-[color:var(--wb-diff-delta-removed)]'
-  return 'text-[color:var(--syntax-default)]'
 }
 
 function lineBackground(line: FileDiffCodeLine) {
@@ -167,7 +161,12 @@ function lineMarkerClass(line: FileDiffCodeLine) {
             >
               {{ line.right || line.left }}
             </span>
-            <span class="relative z-[2] whitespace-pre py-1 pl-4 pr-2 leading-[1.5]" :class="lineTextColor(line)">{{ line.text }}</span>
+            <SyntaxLine
+              class="relative z-[2] whitespace-pre py-1 pl-4 pr-2 leading-[1.5]"
+              :text="line.text"
+              :file-path="file.path"
+              :code-theme-id="codeThemeId"
+            />
           </div>
         </div>
       </div>

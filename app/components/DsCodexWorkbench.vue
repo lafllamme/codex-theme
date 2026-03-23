@@ -140,8 +140,8 @@ const shellStyle = computed(() => ({
   '--wb-body-shift': `${bodyShiftPx.value}px`,
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
-    : 'clamp(168px, 12vw, 248px)',
-  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '0px',
+    : 'clamp(150px, 10.5vw, 224px)',
+  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '-4px',
   '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))
 
@@ -307,6 +307,7 @@ function beginDiffResize(event: MouseEvent) {
                     :show-header="false"
                     title="Open Vue-Bits Dither Sei..."
                     repo="codex-theme"
+                    :code-theme-id="payload.codeThemeId"
                     :run-enabled="runEnabled"
                     :is-terminal-open="isTerminalOpen"
                     :is-diff-open="isDiffOpen"
@@ -336,6 +337,7 @@ function beginDiffResize(event: MouseEvent) {
                   <DiffDrawer
                     class="min-h-0 min-w-0 flex-1"
                     :open="isDiffOpen"
+                    :code-theme-id="payload.codeThemeId"
                     :accent="payload.theme.accent"
                     :contrast="payload.theme.contrast"
                   />
@@ -345,6 +347,7 @@ function beginDiffResize(event: MouseEvent) {
 
             <TerminalDrawer
               :open="isTerminalOpen"
+              :code-theme-id="payload.codeThemeId"
               :contrast="payload.theme.contrast"
               :opaque-windows="payload.theme.opaqueWindows"
             />

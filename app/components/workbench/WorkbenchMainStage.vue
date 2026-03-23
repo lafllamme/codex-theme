@@ -5,6 +5,7 @@ import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.v
 
 const props = defineProps<{
   messages: ChatMessage[]
+  codeThemeId: string
   isDiffOpen?: boolean
 }>()
 
@@ -118,7 +119,7 @@ onBeforeUnmount(() => {
                   >
                     <Icon :name="copiedMessageId === message.id ? 'ph:check-bold' : 'ph:copy'" class="h-[13px] w-[13px]" />
                   </button>
-                  <ChatFileChangeCard class="my-1.5 w-full" :block="block" />
+                  <ChatFileChangeCard class="my-1.5 w-full" :block="block" :code-theme-id="codeThemeId" />
                 </div>
               </template>
             </div>

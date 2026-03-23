@@ -2,11 +2,13 @@
 import type { DrawerSectionView } from '~/stores/diff'
 import type { FileDiffCodeLine, FileDiffLine, FileDiffUnchangedChunkLine } from '~/types/workbench-chat'
 import { computed, ref } from 'vue'
+import SyntaxLine from '~/components/workbench/code/SyntaxLine.vue'
 import { useDiffStore } from '~/stores/diff'
 import DrawerChangeTab from './DrawerChangeTab.vue'
 
 const props = defineProps<{
   section: DrawerSectionView
+  codeThemeId: string
   showStatusDot?: boolean
   collapsed: boolean
   suspendAccordionMotion?: boolean
@@ -22,8 +24,6 @@ const collapsed = computed(() => props.collapsed)
 const suspendAccordionMotion = computed(() => props.suspendAccordionMotion)
 const diffStore = useDiffStore()
 
-const RE_MD_HEADING = /^#+\s/
-const RE_STAGING = /zurücksetzen|stagen/i
 const RE_DELTA_PARTS = /[+-]\d+/g
 const titleHovered = ref(false)
 
@@ -41,17 +41,6 @@ function deltaParts(delta: string) {
     added: matches.find(part => part.startsWith('+')) ?? '',
     removed: matches.find(part => part.startsWith('-')) ?? '',
   }
-}
-
-function lineSyntaxVar(text: string) {
-  const t = text.trim()
-  if (RE_MD_HEADING.test(t))
-    return 'text-[color:var(--syntax-keyword)]'
-  if (t.startsWith('- ') || t.startsWith('`'))
-    return 'text-[color:var(--syntax-string)]'
-  if (RE_STAGING.test(t))
-    return 'text-[color:var(--syntax-comment)]'
-  return 'text-[color:var(--syntax-default)]'
 }
 
 function lineMarkerClass(line: FileDiffCodeLine) {
@@ -241,7 +230,12 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
                 class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
                 :class="lineMarkerClass(chunkLine)"
               >{{ chunkLine.right || chunkLine.left }}</span>
-              <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]" :class="lineSyntaxVar(chunkLine.text)">{{ chunkLine.text }}</span>
+              <SyntaxLine
+                class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2 text-[length:var(--wb-code-text-sm)] leading-[1.6]"
+                :text="chunkLine.text"
+                :file-path="section.path"
+                :code-theme-id="codeThemeId"
+              />
             </div>
           </template>
           <DrawerChangeTab
@@ -260,7 +254,12 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
             class="relative z-[2] py-1.5 pl-8 pr-4 text-right text-[color:var(--wb-text-faint)] tabular-nums"
             :class="isCodeLine(line) ? lineMarkerClass(line) : ''"
           >{{ line.right || line.left }}</span>
-          <span class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2" :class="lineSyntaxVar(line.text)">{{ line.text }}</span>
+          <SyntaxLine
+            class="relative z-[2] whitespace-pre py-1.5 pl-4 pr-2"
+            :text="line.text"
+            :file-path="section.path"
+            :code-theme-id="codeThemeId"
+          />
         </div>
       </template>
 

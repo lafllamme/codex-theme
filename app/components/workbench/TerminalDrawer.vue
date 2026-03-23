@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import SyntaxLine from '~/components/workbench/code/SyntaxLine.vue'
+
 type LineType = 'cmd' | 'plain' | 'add' | 'success' | 'error'
 
 interface BootLine {
@@ -14,6 +16,7 @@ interface LogLine {
 
 const props = defineProps<{
   open: boolean
+  codeThemeId: string
   contrast: number
   opaqueWindows: boolean
 }>()
@@ -40,7 +43,7 @@ let cursorTimer: ReturnType<typeof setInterval> | null = null
 const path = '~/projects/my-app'
 const branch = 'main'
 
-const lineColor = (type: LineType) => {
+function lineColor(type: LineType) {
   if (type === 'add' || type === 'success')
     return 'var(--theme-accent)'
   if (type === 'error')
@@ -140,7 +143,13 @@ onBeforeUnmount(() => {
           <span class="text-[#555]">&nbsp;git:(</span>
           <span class="text-[var(--theme-accent)]">{{ branch }}</span>
           <span class="text-[#555]">) </span>
-          <span class="text-[#e8e8e8]">{{ line.text }}</span>
+          <SyntaxLine
+            class="whitespace-pre"
+            :text="line.text"
+            file-path="terminal.sh"
+            :code-theme-id="codeThemeId"
+            fallback-color="#e8e8e8"
+          />
         </template>
         <template v-else>
           {{ line.text }}

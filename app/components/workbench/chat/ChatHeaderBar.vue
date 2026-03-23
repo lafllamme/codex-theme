@@ -115,7 +115,7 @@ function handleCommitPrimaryAction(actionKey: string) {
         <div
             class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden"
         >
-            <div class="min-w-0 inline-flex items-center gap-1 overflow-hidden">
+            <div class="min-w-0 inline-flex items-center gap-3 overflow-hidden">
                 <strong
                     class="chat-header-title min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none"
                     >{{ title }}</strong

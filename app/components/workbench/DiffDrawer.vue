@@ -6,6 +6,7 @@ import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 import DrawerChangeCard from './chat/DrawerChangeCard.vue'
 
 const props = defineProps<{
+  codeThemeId: string
   open: boolean
 }>()
 
@@ -190,6 +191,7 @@ watch(
         v-for="section in diffSections"
         :key="section.id"
         :section="section"
+        :code-theme-id="codeThemeId"
         :show-status-dot="section.showDot"
         :collapsed="isSectionCollapsed(section.id)"
         :suspend-accordion-motion="suspendAccordionMotion"
