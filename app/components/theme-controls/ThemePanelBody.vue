@@ -2,6 +2,7 @@
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
 import type { CodexThemePayload } from '~/types/codex-theme'
 import DsSwitch from '~/components/ui/DsSwitch.vue'
+import SyntaxBlock from '~/components/workbench/code/SyntaxBlock.vue'
 import ThemePresetBrowser from './ThemePresetBrowser.vue'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
@@ -593,12 +594,15 @@ onBeforeUnmount(() => {
 
           <div v-show="jsonOpen" class="space-y-2 px-5 pb-5">
             <div class="json-editor-shell relative overflow-hidden rounded-2xl border border-pureWhite/12 bg-pureWhite/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-              <textarea
-                class="json-editor-textarea hex-value block h-56 w-full resize-none overflow-auto bg-transparent border-none p-5 text-[12px] leading-relaxed text-pureWhite/90 outline-none"
-                rows="10"
-                :value="jsonValue"
-                @input="emit('setJsonValue', ($event.target as HTMLTextAreaElement).value)"
-              />
+              <div class="json-editor-viewer h-56 overflow-auto p-5">
+                <SyntaxBlock
+                  class="hex-value text-[12px] leading-relaxed"
+                  :text="jsonValue"
+                  language="json"
+                  :code-theme-id="payload.codeThemeId"
+                  fallback-color="rgba(255,255,255,0.9)"
+                />
+              </div>
               <div class="pointer-events-none absolute inset-0 rounded-2xl" />
             </div>
             <p v-if="jsonError" class="text-[12px] text-red-300">
@@ -653,10 +657,15 @@ onBeforeUnmount(() => {
   clip-path: inset(0 round 1rem);
 }
 
-.json-editor-textarea {
+.json-editor-viewer {
   border-radius: inherit;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  background-clip: padding-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.json-editor-viewer::-webkit-scrollbar {
+  display: none;
 }
 </style>
