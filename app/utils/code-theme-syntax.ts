@@ -40,6 +40,11 @@ const BASE_TOKEN_SET: Record<OfficialCodeThemeId, SyntaxTokenSet> = {
   'vscode-plus': { default: '#d4d4d4', keyword: '#569cd6', string: '#ce9178', comment: '#6a9955', function: '#dcdcaa', type: '#4ec9b0', number: '#b5cea8', meta: '#9b9b9b' },
 }
 
+export function baseSyntaxTokensForTheme(themeId: OfficialCodeThemeId): SyntaxTokenSet {
+  const tokens = BASE_TOKEN_SET[themeId] ?? BASE_TOKEN_SET[DEFAULT_CODE_THEME_ID]
+  return { ...tokens }
+}
+
 const HEX_RGB_RE = /^#?[\da-f]{6}$/i
 
 const TOKEN_MIN_RATIO: Record<keyof SyntaxTokenSet, number> = {

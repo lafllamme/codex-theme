@@ -23,7 +23,7 @@ const EMPTY_RUNS: TokenRun[] = []
 const tokenCache = new Map<string, TokenRun[]>()
 const runs = ref<TokenRun[]>(EMPTY_RUNS)
 const language = computed<BundledLanguage>(() => inferSyntaxLanguageForLine(props.filePath, props.text))
-const shikiTheme = computed(() => resolveShikiThemeBinding(props.codeThemeId).shikiTheme)
+const shikiBinding = computed(() => resolveShikiThemeBinding(props.codeThemeId))
 let requestId = 0
 let highlighterPromise: ReturnType<typeof getSingletonHighlighter> | null = null
 
@@ -53,7 +53,7 @@ async function renderTokens() {
     return
   }
 
-  const cacheKey = `${shikiTheme.value}|${language.value}|${props.text}`
+  const cacheKey = `${shikiBinding.value.themeName}|${language.value}|${props.text}`
   const cached = tokenCache.get(cacheKey)
   if (cached) {
     runs.value = cached
@@ -64,12 +64,12 @@ async function renderTokens() {
 
   try {
     const highlighter = await getHighlighter()
-    await highlighter.loadTheme(shikiTheme.value)
+    await highlighter.loadTheme(shikiBinding.value.theme)
     await highlighter.loadLanguage(language.value)
 
     const tokenLines = highlighter.codeToTokensBase(props.text, {
       lang: language.value,
-      theme: shikiTheme.value,
+      theme: shikiBinding.value.themeName,
     })
 
     if (currentRequestId !== requestId)
@@ -94,7 +94,8 @@ async function renderTokens() {
         codeThemeId: props.codeThemeId,
         filePath: props.filePath,
         language: language.value,
-        shikiTheme: shikiTheme.value,
+        shikiTheme: shikiBinding.value.themeName,
+        shikiMode: shikiBinding.value.mode,
         error,
       })
     }
