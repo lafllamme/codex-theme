@@ -350,6 +350,78 @@ function setCodeFont(value: string) {
   payload.theme.fonts.code = value.trim() ? value.trim() : null
 }
 
+function randomInt(min: number, max: number) {
+  const lower = Math.ceil(min)
+  const upper = Math.floor(max)
+  return Math.floor(Math.random() * (upper - lower + 1)) + lower
+}
+
+function hslToHex(h: number, s: number, l: number) {
+  const sat = s / 100
+  const light = l / 100
+  const c = (1 - Math.abs((2 * light) - 1)) * sat
+  const hh = h / 60
+  const x = c * (1 - Math.abs((hh % 2) - 1))
+  let r = 0
+  let g = 0
+  let b = 0
+
+  if (hh >= 0 && hh < 1) {
+    r = c
+    g = x
+  }
+  else if (hh >= 1 && hh < 2) {
+    r = x
+    g = c
+  }
+  else if (hh >= 2 && hh < 3) {
+    g = c
+    b = x
+  }
+  else if (hh >= 3 && hh < 4) {
+    g = x
+    b = c
+  }
+  else if (hh >= 4 && hh < 5) {
+    r = x
+    b = c
+  }
+  else {
+    r = c
+    b = x
+  }
+
+  const m = light - c / 2
+  const toHex = (value: number) => {
+    return Math.round((value + m) * 255).toString(16).padStart(2, '0')
+  }
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
+
+function randomizeTheme() {
+  const baseHue = randomInt(0, 359)
+  const accentHue = (baseHue + randomInt(18, 168)) % 360
+  const skillHue = (baseHue + randomInt(170, 285)) % 360
+  const diffRemovedHue = Math.random() < 0.5 ? randomInt(345, 359) : randomInt(0, 12)
+
+  payload.variant = 'dark'
+  payload.theme.surface = hslToHex(baseHue, randomInt(12, 34), randomInt(5, 14))
+  payload.theme.ink = hslToHex((baseHue + randomInt(-12, 12) + 360) % 360, randomInt(16, 52), randomInt(82, 95))
+  payload.theme.accent = hslToHex(accentHue, randomInt(56, 88), randomInt(62, 76))
+  payload.theme.semanticColors.diffAdded = hslToHex(randomInt(105, 152), randomInt(46, 82), randomInt(56, 74))
+  payload.theme.semanticColors.diffRemoved = hslToHex(diffRemovedHue, randomInt(62, 90), randomInt(62, 76))
+  payload.theme.semanticColors.skill = hslToHex(skillHue, randomInt(52, 86), randomInt(60, 76))
+  payload.theme.contrast = randomInt(54, 86)
+  payload.theme.opaqueWindows = Math.random() < 0.35
+  payload.codeThemeId = recommendCodeThemeId(payload)
+
+  activePresetId.value = null
+  scenarioId.value = 'neutral'
+  neutralSnapshot.value = null
+  jsonError.value = ''
+}
+
 function setContrast(value: number) {
   payload.theme.contrast = Math.max(0, Math.min(100, Number.isFinite(value) ? value : 60))
 }
@@ -481,6 +553,7 @@ onBeforeUnmount(() => {
           @set-ui-font-size="setUiFontSize"
           @set-code-font-size="setCodeFontSize"
           @set-scenario="setScenario"
+          @randomize-theme="randomizeTheme"
         />
       </div>
     </div>

@@ -39,6 +39,7 @@ const emit = defineEmits<{
   setCodeFontSize: [value: number]
   setScenario: [value: string]
   applyThemePreset: [entry: ThemePresetEntry]
+  randomizeTheme: []
 }>()
 
 const MORPH_MS = 380
@@ -195,6 +196,7 @@ const morphStyle = computed(() => ({
                 @set-code-font-size="emit('setCodeFontSize', $event)"
                 @set-scenario="emit('setScenario', $event)"
                 @apply-theme-preset="emit('applyThemePreset', $event)"
+                @randomize-theme="emit('randomizeTheme')"
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import type { CodexThemePayload } from '~/types/codex-theme'
 import DsSwitch from '~/components/ui/DsSwitch.vue'
 import SyntaxBlock from '~/components/workbench/code/SyntaxBlock.vue'
 import ThemePresetBrowser from './ThemePresetBrowser.vue'
+import ThemeRandomizeButton from './ThemeRandomizeButton.vue'
 
 type ColorField = 'accent' | 'surface' | 'ink' | 'diffAdded' | 'diffRemoved' | 'skill'
 
@@ -42,6 +43,7 @@ const emit = defineEmits<{
   setCodeFontSize: [value: number]
   setScenario: [value: string]
   applyThemePreset: [entry: ThemePresetEntry]
+  randomizeTheme: []
 }>()
 
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
@@ -229,9 +231,12 @@ onBeforeUnmount(() => {
 
     <!-- Colors -->
     <section>
-      <h3 class="text-[22px] font-semibold tracking-tight text-pureBlack/90 mb-4">
-        Colors
-      </h3>
+      <div class="mb-4 flex items-center justify-between px-1">
+        <h3 class="text-[22px] font-semibold tracking-tight text-pureBlack/90">
+          Colors
+        </h3>
+        <ThemeRandomizeButton @click="emit('randomizeTheme')" />
+      </div>
       <div class="bg-pureWhite rounded-3xl border border-pureBlack/8 overflow-hidden shadow-sm">
         <div
           v-for="(row, index) in colorRows"
