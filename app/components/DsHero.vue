@@ -63,7 +63,7 @@ const headerWrapClass = computed(() =>
         Editorial Theme Engine
       </p>
 
-      <h1 class="font-geist-800 max-w-[12ch] text-white text-[clamp(3.5rem,8vw,7.7rem)] leading-[0.88] tracking-[-0.03em]">
+      <h1 class="hero-headline-glow font-geist-800 max-w-[12ch] text-white text-[clamp(3.5rem,8vw,7.7rem)] leading-[0.88] tracking-[-0.03em]">
         <template v-for="(line, index) in headlineLines" :key="`${line}-${index}`">
           <span>{{ line }}</span>
           <br v-if="index < headlineLines.length - 1">
@@ -105,7 +105,7 @@ const headerWrapClass = computed(() =>
           />
         </div>
 
-        <h1 class="font-geist-700 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
+        <h1 class="hero-headline-glow font-geist-700 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]">
           <span class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineTop }}</span>
           <span class="hero-intro hero-delay-3 block whitespace-normal sm:whitespace-nowrap">{{ heroHeadlineBottom }}</span>
         </h1>
@@ -197,7 +197,7 @@ const headerWrapClass = computed(() =>
         Minimal Editorial
       </p>
 
-      <h1 class="font-geist-700 max-w-[10.5ch] text-white text-[clamp(3.9rem,9.2vw,9.2rem)] leading-[0.86] tracking-[-0.035em]">
+      <h1 class="hero-headline-glow font-geist-700 max-w-[10.5ch] text-white text-[clamp(3.9rem,9.2vw,9.2rem)] leading-[0.86] tracking-[-0.035em]">
         <template v-for="(line, index) in headlineLines" :key="`${line}-${index}`">
           <span>{{ line }}</span>
           <br v-if="index < headlineLines.length - 1">
@@ -227,6 +227,15 @@ const headerWrapClass = computed(() =>
 </template>
 
 <style scoped>
+.hero-headline-glow {
+  color: rgba(255, 255, 255, 0.995);
+  text-shadow:
+    0 0 22px rgba(255, 255, 255, 0.55),
+    0 0 60px rgba(255, 255, 255, 0.28),
+    0 0 110px rgba(255, 255, 255, 0.14);
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.22));
+}
+
 .hero-intro {
   opacity: 0;
   filter: blur(14px);
