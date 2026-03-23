@@ -13,8 +13,8 @@ const props = defineProps<{
   isTerminalOpen: boolean
   isDiffOpen: boolean
   isDiffResizing?: boolean
-  chatLaneDesktopInsetLeft?: number
-  chatLaneDesktopInsetRight?: number
+  chatLaneDesktopInsetLeft?: number | string
+  chatLaneDesktopInsetRight?: number | string
   isPipEnabled: boolean
   modelOptions: string[]
   thinkingOptions: string[]
@@ -29,9 +29,15 @@ const emit = defineEmits<{
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
+function toCssLength(value: number | string | undefined, fallback: string) {
+  if (typeof value === 'number')
+    return `${value}px`
+  return value ?? fallback
+}
+
 const laneVars = computed(() => ({
-  '--wb-chat-lane-desktop-inset-left': `${props.chatLaneDesktopInsetLeft ?? 156}px`,
-  '--wb-chat-lane-desktop-inset-right': `${props.chatLaneDesktopInsetRight ?? 156}px`,
+  '--wb-chat-lane-desktop-inset-left': toCssLength(props.chatLaneDesktopInsetLeft, '300px'),
+  '--wb-chat-lane-desktop-inset-right': toCssLength(props.chatLaneDesktopInsetRight, '300px'),
   '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-desktop-inset-left)',
   '--wb-chat-lane-inset-right': 'var(--wb-chat-lane-desktop-inset-right)',
 }))
@@ -87,8 +93,8 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 
 <style scoped>
 .wb-chat-window {
-  --wb-chat-lane-desktop-inset-left: 156px;
-  --wb-chat-lane-desktop-inset-right: 156px;
+  --wb-chat-lane-desktop-inset-left: 300px;
+  --wb-chat-lane-desktop-inset-right: 300px;
   --wb-chat-lane-inset-left: var(--wb-chat-lane-desktop-inset-left);
   --wb-chat-lane-inset-right: var(--wb-chat-lane-desktop-inset-right);
 }

@@ -96,18 +96,14 @@ const threadItems: ThreadItem[] = [
 const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
 const chatLaneDesktopInsetLeft = computed(() => {
   if (!isDiffOpen.value)
-    return 156
-
-  const progress = Math.min(1, Math.max(0, (diffWidth.value - minDiffWidth) / (maxDiffWidth - minDiffWidth)))
-  return Math.round(80 - (44 * progress))
+    return 'clamp(300px, 18vw, 460px)'
+  return 'clamp(280px, 30%, 560px)'
 })
 
 const chatLaneDesktopInsetRight = computed(() => {
   if (!isDiffOpen.value)
-    return 156
-
-  const progress = Math.min(1, Math.max(0, (diffWidth.value - minDiffWidth) / (maxDiffWidth - minDiffWidth)))
-  return Math.round(68 - (52 * progress))
+    return 'clamp(300px, 18vw, 460px)'
+  return 'clamp(266px, 29%, 540px)'
 })
 
 const shellStyle = computed(() => ({
