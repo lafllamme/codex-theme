@@ -81,7 +81,7 @@ onBeforeUnmount(() => {
       <span class="h-px flex-1 bg-[var(--wb-divider)]" />
     </div>
 
-    <section class="wb-mainstage-scroll min-h-0 overflow-x-auto overflow-y-auto border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
+    <section class="wb-mainstage-scroll min-h-0 overflow-x-auto overflow-y-auto border-none rounded-[28px] bg-[var(--wb-bg-panel)] px-0 py-4">
       <div
         class="[transition-timing-function:var(--wb-sidebar-ease)] flex flex-col transform-gpu gap-3 transition-[transform,opacity] duration-220"
         :class="props.isDiffOpen ? 'opacity-[0.985] translate-x-[-1px]' : 'opacity-100 translate-x-0'"

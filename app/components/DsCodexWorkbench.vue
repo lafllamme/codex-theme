@@ -106,7 +106,6 @@ const shellStyle = computed(() => ({
   '--wb-chat-message-size': 'var(--ui-font-size)',
   '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
-  '--wb-sidebar-occupied-width': isSidebarCollapsed.value ? '0px' : `${sidebarWidth.value}px`,
   '--wb-body-shift': isSidebarCollapsed.value ? '0px' : `${-sidebarWidth.value / 2}px`,
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
@@ -195,29 +194,6 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
       </div>
     </div>
     <section class="absolute inset-0 box-border min-h-0 flex flex-row items-stretch overflow-hidden">
-      <div class="wb-header-rail">
-        <div class="wb-header-frame">
-          <section class="wb-chat-header-shell min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
-            <div class="px-[8px] pt-0">
-              <ChatHeaderBar
-                title="Open Vue-Bits Dither Sei..."
-                repo="codex-theme"
-                :run-enabled="runEnabled"
-                :is-terminal-open="isTerminalOpen"
-                :is-diff-open="isDiffOpen"
-                :is-pip-enabled="isPipEnabled"
-                @toggle-run="runEnabled = !runEnabled"
-                @toggle-terminal="toggleTerminal"
-                @toggle-diff="toggleDiff"
-                @toggle-pip="togglePip"
-                @open-worktree="isWorktreeModalOpen = true"
-                @open-git-action="openGitActionModal"
-              />
-            </div>
-          </section>
-        </div>
-      </div>
-
       <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
         <WorkbenchSidebar
           :threads="threadItems"
@@ -237,6 +213,27 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
       />
 
       <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
+        <div class="wb-header-frame min-h-0 min-w-0 w-full flex flex-col">
+          <section class="wb-chat-header-shell min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
+            <div class="px-[8px] pt-0">
+              <ChatHeaderBar
+                title="Open Vue-Bits Dither Sei..."
+                repo="codex-theme"
+                :run-enabled="runEnabled"
+                :is-terminal-open="isTerminalOpen"
+                :is-diff-open="isDiffOpen"
+                :is-pip-enabled="isPipEnabled"
+                @toggle-run="runEnabled = !runEnabled"
+                @toggle-terminal="toggleTerminal"
+                @toggle-diff="toggleDiff"
+                @toggle-pip="togglePip"
+                @open-worktree="isWorktreeModalOpen = true"
+                @open-git-action="openGitActionModal"
+              />
+            </div>
+          </section>
+        </div>
+
         <div class="wb-body-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
           <section class="wb-chat-body-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
             <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
@@ -343,31 +340,18 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   position: relative;
   z-index: 10;
   background: var(--wb-bg-panel);
-  --wb-header-shell-height: 40px;
-  padding: calc(var(--wb-header-shell-height) + 6px) 14px 0 14px;
-}
-
-.wb-header-rail {
-  position: absolute;
-  top: 2px;
-  right: 14px;
-  left: 14px;
-  z-index: 20;
-  pointer-events: none;
+  padding: 2px 14px 0 14px;
 }
 
 .wb-header-frame {
-  width: min(1540px, calc(100vw - 28px));
+  width: min(1540px, 100%);
   max-width: 1540px;
   margin-inline: auto;
-  transform: none;
 }
 
 .wb-chat-header-shell {
-  border: 1px solid var(--wb-border-1);
+  border: none;
   border-radius: 28px 28px 0 0;
-  border-bottom: 0;
-  pointer-events: auto;
 }
 
 .wb-body-frame {
@@ -379,7 +363,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 }
 
 .wb-chat-body-shell {
-  border: 1px solid var(--wb-border-1);
+  border: none;
   border-radius: 0 0 28px 28px;
 }
 
@@ -451,17 +435,11 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   .wb-main-area {
     --wb-header-left-safe-area: 126px;
     --wb-header-title-shift: 0px;
-    padding: calc(var(--wb-header-shell-height) + 6px) 10px 0 10px;
-  }
-
-  .wb-header-rail {
-    right: 10px;
-    left: 10px;
+    padding: 2px 10px 0 10px;
   }
 
   .wb-header-frame {
     width: 100%;
-    transform: translateX(0);
   }
 
   .wb-body-frame {
