@@ -98,6 +98,8 @@ const isSidebarAndDiffOpen = computed(() => !isSidebarCollapsed.value && isDiffO
 const bodyShiftPx = computed(() => {
   if (isSidebarCollapsed.value)
     return 0
+  if (isSidebarAndDiffOpen.value)
+    return 0
   const shiftFactor = isDiffOpen.value ? 0.22 : 0.5
   return -sidebarWidth.value * shiftFactor
 })
@@ -116,13 +118,7 @@ const chatLaneDesktopInsetLeft = computed(() => {
   return 'clamp(120px, 12%, 220px)'
 })
 
-const chatLaneDesktopInsetRight = computed(() => {
-  if (!isDiffOpen.value)
-    return 'clamp(300px, 18vw, 460px)'
-  if (!isSidebarCollapsed.value)
-    return 'clamp(56px, 6.5%, 128px)'
-  return 'clamp(108px, 11%, 208px)'
-})
+const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
 
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
