@@ -94,16 +94,34 @@ const threadItems: ThreadItem[] = [
 ]
 
 const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
+const isSidebarAndDiffOpen = computed(() => !isSidebarCollapsed.value && isDiffOpen.value)
+const bodyShiftPx = computed(() => {
+  if (isSidebarCollapsed.value)
+    return 0
+  const shiftFactor = isDiffOpen.value ? 0.22 : 0.5
+  return -sidebarWidth.value * shiftFactor
+})
+const bodyFrameWidthBudget = computed(() => {
+  if (!isSidebarAndDiffOpen.value)
+    return 'calc(100vw - 28px)'
+  const squeeze = Math.round(sidebarWidth.value * 0.34)
+  return `calc(100vw - 28px - ${squeeze}px)`
+})
+
 const chatLaneDesktopInsetLeft = computed(() => {
   if (!isDiffOpen.value)
     return 'clamp(300px, 18vw, 460px)'
-  return 'clamp(280px, 30%, 560px)'
+  if (!isSidebarCollapsed.value)
+    return 'clamp(64px, 7%, 140px)'
+  return 'clamp(120px, 12%, 220px)'
 })
 
 const chatLaneDesktopInsetRight = computed(() => {
   if (!isDiffOpen.value)
     return 'clamp(300px, 18vw, 460px)'
-  return 'clamp(266px, 29%, 540px)'
+  if (!isSidebarCollapsed.value)
+    return 'clamp(56px, 6.5%, 128px)'
+  return 'clamp(108px, 11%, 208px)'
 })
 
 const shellStyle = computed(() => ({
@@ -122,7 +140,8 @@ const shellStyle = computed(() => ({
   '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
   '--wb-diff-size': `${diffWidth.value}px`,
-  '--wb-body-shift': isSidebarCollapsed.value ? '0px' : `${-sidebarWidth.value / 2}px`,
+  '--wb-body-frame-width-budget': bodyFrameWidthBudget.value,
+  '--wb-body-shift': `${bodyShiftPx.value}px`,
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
     : 'clamp(296px, 22vw, 388px)',
@@ -413,7 +432,7 @@ function beginDiffResize(event: MouseEvent) {
 .wb-body-frame {
   position: relative;
   z-index: 10;
-  width: min(1540px, calc(100vw - 28px));
+  width: min(1540px, var(--wb-body-frame-width-budget, calc(100vw - 28px)));
   max-width: 1540px;
   margin-inline: auto;
 }
