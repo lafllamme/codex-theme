@@ -230,10 +230,10 @@ const headerWrapClass = computed(() =>
 .hero-headline-glow {
   color: rgba(255, 255, 255, 0.995);
   text-shadow:
-    0 0 22px rgba(255, 255, 255, 0.55),
-    0 0 60px rgba(255, 255, 255, 0.28),
-    0 0 110px rgba(255, 255, 255, 0.14);
-  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.22));
+    0 0 16px rgba(255, 255, 255, 0.4),
+    0 0 43px rgba(255, 255, 255, 0.2),
+    0 0 80px rgba(255, 255, 255, 0.1);
+  filter: drop-shadow(0 0 13px rgba(255, 255, 255, 0.16));
 }
 
 .hero-intro {
