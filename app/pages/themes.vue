@@ -356,6 +356,21 @@ function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (upper - lower + 1)) + lower
 }
 
+function pickRandom<T>(items: readonly T[]): T {
+  return items[randomInt(0, items.length - 1)] as T
+}
+
+function pickRandomDifferent<T>(items: readonly T[], current: T): T {
+  if (items.length < 2)
+    return items[0] as T
+
+  let next = pickRandom(items)
+  while (next === current) {
+    next = pickRandom(items)
+  }
+  return next
+}
+
 function hslToHex(h: number, s: number, l: number) {
   const sat = s / 100
   const light = l / 100
@@ -400,6 +415,36 @@ function hslToHex(h: number, s: number, l: number) {
 }
 
 function randomizeTheme() {
+  const randomUiFont = pickRandomDifferent<string | null>([
+    null,
+    'Inter',
+    'Satoshi',
+    'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    'Arial, Helvetica, sans-serif',
+    '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+    'Helvetica, Arial, sans-serif',
+    'Verdana, Geneva, sans-serif',
+    'Tahoma, Geneva, sans-serif',
+    '"Trebuchet MS", Helvetica, sans-serif',
+    'Georgia, "Times New Roman", serif',
+    '"Times New Roman", Times, serif',
+  ], payload.theme.fonts.ui)
+  const randomCodeFont = pickRandomDifferent<string | null>([
+    null,
+    'Inter',
+    'Satoshi',
+    'ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    'Arial, Helvetica, sans-serif',
+    '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+    'Helvetica, Arial, sans-serif',
+    'Verdana, Geneva, sans-serif',
+    'Tahoma, Geneva, sans-serif',
+    '"Trebuchet MS", Helvetica, sans-serif',
+    'Georgia, "Times New Roman", serif',
+    '"Times New Roman", Times, serif',
+  ], payload.theme.fonts.code)
   const baseHue = randomInt(0, 359)
   const accentHue = (baseHue + randomInt(18, 168)) % 360
   const skillHue = (baseHue + randomInt(170, 285)) % 360
@@ -413,8 +458,10 @@ function randomizeTheme() {
   payload.theme.semanticColors.diffRemoved = hslToHex(diffRemovedHue, randomInt(62, 90), randomInt(62, 76))
   payload.theme.semanticColors.skill = hslToHex(skillHue, randomInt(52, 86), randomInt(60, 76))
   payload.theme.contrast = randomInt(54, 86)
-  payload.theme.opaqueWindows = Math.random() < 0.35
-  payload.codeThemeId = recommendCodeThemeId(payload)
+  payload.theme.opaqueWindows = true
+  payload.theme.fonts.ui = randomUiFont
+  payload.theme.fonts.code = randomCodeFont
+  payload.codeThemeId = pickRandomDifferent(OFFICIAL_CODE_THEME_IDS, payload.codeThemeId)
 
   activePresetId.value = null
   scenarioId.value = 'neutral'
@@ -509,7 +556,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="themes-shell">
+  <main class="themes-shell theme-color-smooth">
     <div class="themes-shell__glow" />
 
     <div class="themes-shell__content">

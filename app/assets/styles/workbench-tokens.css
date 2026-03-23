@@ -13,3 +13,30 @@
 
   --wb-topbar-height: 54px;
 }
+
+.theme-color-smooth {
+  --theme-color-transition-duration: 520ms;
+  --theme-color-transition-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-color-smooth,
+.theme-color-smooth * {
+  transition-property:
+    color,
+    background-color,
+    border-color,
+    outline-color,
+    text-decoration-color,
+    fill,
+    stroke,
+    box-shadow;
+  transition-duration: var(--theme-color-transition-duration);
+  transition-timing-function: var(--theme-color-transition-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-color-smooth,
+  .theme-color-smooth * {
+    transition-duration: 0ms !important;
+  }
+}
