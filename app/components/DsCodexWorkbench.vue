@@ -106,6 +106,12 @@ const shellStyle = computed(() => ({
   '--wb-chat-message-size': 'var(--ui-font-size)',
   '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
+  '--wb-sidebar-occupied-width': isSidebarCollapsed.value ? '0px' : `${sidebarWidth.value}px`,
+  '--wb-body-shift': isSidebarCollapsed.value ? '0px' : `${-sidebarWidth.value / 2}px`,
+  '--wb-header-left-safe-area': isSidebarCollapsed.value
+    ? 'clamp(244px, 16vw, 320px)'
+    : 'clamp(296px, 22vw, 388px)',
+  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '28px',
   '--wb-sidebar-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }))
 
@@ -189,6 +195,29 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
       </div>
     </div>
     <section class="absolute inset-0 box-border min-h-0 flex flex-row items-stretch overflow-hidden">
+      <div class="wb-header-rail">
+        <div class="wb-header-frame">
+          <section class="wb-chat-header-shell min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
+            <div class="px-[8px] pt-0">
+              <ChatHeaderBar
+                title="Open Vue-Bits Dither Sei..."
+                repo="codex-theme"
+                :run-enabled="runEnabled"
+                :is-terminal-open="isTerminalOpen"
+                :is-diff-open="isDiffOpen"
+                :is-pip-enabled="isPipEnabled"
+                @toggle-run="runEnabled = !runEnabled"
+                @toggle-terminal="toggleTerminal"
+                @toggle-diff="toggleDiff"
+                @toggle-pip="togglePip"
+                @open-worktree="isWorktreeModalOpen = true"
+                @open-git-action="openGitActionModal"
+              />
+            </div>
+          </section>
+        </div>
+      </div>
+
       <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
         <WorkbenchSidebar
           :threads="threadItems"
@@ -208,26 +237,9 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
       />
 
       <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
-        <div class="wb-main-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-          <section class="wb-chat-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden border border-[color:var(--wb-border-1)] rounded-[28px] bg-[var(--wb-bg-panel)]">
-            <div class="px-[8px] pt-0">
-              <ChatHeaderBar
-                title="Open Vue-Bits Dither Sei..."
-                repo="codex-theme"
-                :is-sidebar-collapsed="isSidebarCollapsed"
-                :run-enabled="runEnabled"
-                :is-terminal-open="isTerminalOpen"
-                :is-diff-open="isDiffOpen"
-                :is-pip-enabled="isPipEnabled"
-                @toggle-run="runEnabled = !runEnabled"
-                @toggle-terminal="toggleTerminal"
-                @toggle-diff="toggleDiff"
-                @toggle-pip="togglePip"
-                @open-worktree="isWorktreeModalOpen = true"
-                @open-git-action="openGitActionModal"
-              />
-            </div>
-            <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden border-t border-[color:var(--wb-border-1)]">
+        <div class="wb-body-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
+          <section class="wb-chat-body-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
+            <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
               <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
                 <ChatWindow
                   v-model:selected-model="selectedModel"
@@ -239,7 +251,6 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
                   :show-header="false"
                   title="Open Vue-Bits Dither Sei..."
                   repo="codex-theme"
-                  :is-sidebar-collapsed="isSidebarCollapsed"
                   :run-enabled="runEnabled"
                   :is-terminal-open="isTerminalOpen"
                   :is-diff-open="isDiffOpen"
@@ -298,6 +309,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
   margin-right: 0;
   flex-shrink: 0;
   position: relative;
+  z-index: 42;
   overflow: hidden;
   transition:
     width 260ms var(--wb-sidebar-ease),
@@ -306,6 +318,7 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 .sidebar-resize-handle {
   position: relative;
+  z-index: 43;
   width: 0;
   margin-right: 0;
   background: transparent;
@@ -328,14 +341,46 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 .wb-main-area {
   position: relative;
+  z-index: 10;
   background: var(--wb-bg-panel);
-  padding: 2px 14px 0 14px;
+  --wb-header-shell-height: 40px;
+  padding: calc(var(--wb-header-shell-height) + 6px) 14px 0 14px;
 }
 
-.wb-main-frame {
-  width: min(1540px, calc(100vw - 28px - var(--wb-sidebar-width)));
+.wb-header-rail {
+  position: absolute;
+  top: 2px;
+  right: 14px;
+  left: 14px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.wb-header-frame {
+  width: min(1540px, calc(100vw - 28px));
   max-width: 1540px;
   margin-inline: auto;
+  transform: none;
+}
+
+.wb-chat-header-shell {
+  border: 1px solid var(--wb-border-1);
+  border-radius: 28px 28px 0 0;
+  border-bottom: 0;
+  pointer-events: auto;
+}
+
+.wb-body-frame {
+  width: min(1540px, calc(100vw - 28px));
+  max-width: 1540px;
+  margin-inline: auto;
+  transform: translateX(var(--wb-body-shift));
+  transition: transform 260ms var(--wb-sidebar-ease);
+}
+
+.wb-chat-body-shell {
+  border: 1px solid var(--wb-border-1);
+  border-radius: 0 0 28px 28px;
 }
 
 .wb-control-lane {
@@ -404,11 +449,24 @@ function openGitActionModal(action: 'commit' | 'push' | 'branch') {
 
 @media (max-width: 1180px) {
   .wb-main-area {
-    padding: 2px 10px 0 10px;
+    --wb-header-left-safe-area: 126px;
+    --wb-header-title-shift: 0px;
+    padding: calc(var(--wb-header-shell-height) + 6px) 10px 0 10px;
   }
 
-  .wb-main-frame {
+  .wb-header-rail {
+    right: 10px;
+    left: 10px;
+  }
+
+  .wb-header-frame {
     width: 100%;
+    transform: translateX(0);
+  }
+
+  .wb-body-frame {
+    width: 100%;
+    transform: translateX(0);
   }
 
   .wb-control-lane {

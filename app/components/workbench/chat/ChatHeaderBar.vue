@@ -2,7 +2,6 @@
 defineProps<{
     title: string;
     repo: string;
-    isSidebarCollapsed: boolean;
     runEnabled: boolean;
     isTerminalOpen: boolean;
     isDiffOpen: boolean;
@@ -112,7 +111,6 @@ function handleCommitPrimaryAction(actionKey: string) {
 <template>
     <header
         class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-2 px-0.5"
-        :class="isSidebarCollapsed ? 'chat-header-bar--collapsed' : ''"
     >
         <div
             class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden"
@@ -221,16 +219,16 @@ function handleCommitPrimaryAction(actionKey: string) {
     max-width: min(44vw, 540px);
 }
 
+.chat-header-left {
+    padding-inline-start: var(--wb-header-left-safe-area, 0px);
+    transform: translateX(var(--wb-header-title-shift, 0px));
+    transition:
+        transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+        padding-inline-start 220ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
 .chat-header-repo {
     max-width: min(24vw, 260px);
-}
-
-.chat-header-bar--collapsed .chat-header-title {
-    max-width: min(24vw, 280px);
-}
-
-.chat-header-bar--collapsed .chat-header-repo {
-    max-width: min(10vw, 110px);
 }
 
 @media (max-width: 1180px) {
@@ -240,14 +238,6 @@ function handleCommitPrimaryAction(actionKey: string) {
 
     .chat-header-repo {
         max-width: min(30vw, 190px);
-    }
-
-    .chat-header-bar--collapsed .chat-header-title {
-        max-width: min(39vw, 250px);
-    }
-
-    .chat-header-bar--collapsed .chat-header-repo {
-        max-width: min(19vw, 92px);
     }
 }
 </style>
