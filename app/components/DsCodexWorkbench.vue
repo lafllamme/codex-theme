@@ -94,28 +94,20 @@ const threadItems: ThreadItem[] = [
 ]
 
 const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
-const isSidebarAndDiffOpen = computed(() => !isSidebarCollapsed.value && isDiffOpen.value)
-const bodyShiftPx = computed(() => {
-  if (isSidebarCollapsed.value)
-    return 0
-  if (isSidebarAndDiffOpen.value)
-    return 0
-  const shiftFactor = isDiffOpen.value ? 0.22 : 0.5
-  return -sidebarWidth.value * shiftFactor
-})
+const sidebarOccupiedWidth = computed(() => (isSidebarCollapsed.value ? 0 : sidebarWidth.value))
+const bodyShiftPx = computed(() => 0)
 const bodyFrameWidthBudget = computed(() => {
-  if (!isSidebarAndDiffOpen.value)
-    return 'calc(100vw - 28px)'
-  const squeeze = Math.round(sidebarWidth.value * 0.34)
-  return `calc(100vw - 28px - ${squeeze}px)`
+  return `calc(100vw - 28px - ${sidebarOccupiedWidth.value}px)`
 })
 
 const chatLaneDesktopInsetLeft = computed(() => {
   if (!isDiffOpen.value)
-    return 'clamp(300px, 18vw, 460px)'
+    return isSidebarCollapsed.value
+      ? 'clamp(260px, 16vw, 420px)'
+      : 'clamp(180px, 12vw, 320px)'
   if (!isSidebarCollapsed.value)
-    return 'clamp(64px, 7%, 140px)'
-  return 'clamp(120px, 12%, 220px)'
+    return 'clamp(48px, 6vw, 112px)'
+  return 'clamp(88px, 9vw, 168px)'
 })
 
 const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
@@ -434,6 +426,8 @@ function beginDiffResize(event: MouseEvent) {
   width: min(1540px, var(--wb-body-frame-width-budget, calc(100vw - 28px)));
   max-width: 1540px;
   margin-inline: auto;
+  will-change: width;
+  transition: width 340ms var(--wb-sidebar-ease);
 }
 
 .wb-body-motion {
