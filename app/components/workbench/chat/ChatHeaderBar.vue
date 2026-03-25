@@ -126,7 +126,7 @@ function handleCommitPrimaryAction(actionKey: string) {
                 >
             </div>
             <button
-                class="h-5 w-5 inline-flex shrink-0 appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="chat-header-overflow-btn h-5 w-5 inline-flex shrink-0 appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
             >
                 <Icon name="ph:dots-three-bold" class="h-[13px] w-[13px]" />
             </button>
@@ -146,12 +146,13 @@ function handleCommitPrimaryAction(actionKey: string) {
             </button>
 
             <DsEditorSelection
+                class="chat-header-hide-mobile"
                 v-model="selectedEditor"
                 :options="editorOptions"
             />
 
             <button
-                class="h-[26px] flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11.5px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] leading-none outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]"
+                class="chat-header-hide-mobile h-[26px] flex appearance-none items-center gap-1 border border-[color:var(--wb-chip-ghost-border)] rounded-[10px] bg-[var(--wb-chip-ghost-bg)] px-1.5 text-[11.5px] text-[color:var(--wb-text-primary)] font-[var(--font-ui)] leading-none outline-none transition-colors max-[1300px]:hidden hover:bg-[var(--wb-chip-ghost-bg-hover)]"
                 @click="emit('openWorktree')"
             >
                 <Icon name="ph:arrows-left-right" class="size-5" />
@@ -165,10 +166,10 @@ function handleCommitPrimaryAction(actionKey: string) {
                 @primary-action="handleCommitPrimaryAction"
             />
 
-            <span class="mx-1 h-[18px] w-px bg-[var(--wb-divider)]" />
+            <span class="chat-header-hide-mobile mx-1 h-[18px] w-px bg-[var(--wb-divider)]" />
 
             <button
-                class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="chat-header-hide-mobile h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                 :class="
                     isTerminalOpen ? 'text-[color:var(--wb-text-primary)]' : ''
                 "
@@ -181,7 +182,7 @@ function handleCommitPrimaryAction(actionKey: string) {
             </button>
 
             <button
-                class="h-7 inline-flex appearance-none items-center gap-[6px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="chat-header-diff-btn h-7 inline-flex appearance-none items-center gap-[6px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                 :class="isDiffOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
                 @click="emit('toggleDiff')"
             >
@@ -190,7 +191,7 @@ function handleCommitPrimaryAction(actionKey: string) {
                     class="h-[14px] w-[14px]"
                 />
                 <span
-                    class="text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
+                    class="chat-header-diff-delta text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
                 >
                     <span class="text-[color:var(--wb-diff-delta-added)]"
                         >+836</span
@@ -205,7 +206,7 @@ function handleCommitPrimaryAction(actionKey: string) {
             </button>
 
             <button
-                class="h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="chat-header-hide-mobile h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="emit('togglePip')"
             >
                 <Icon name="hugeicons:copy-02" class="h-[14px] w-[14px]" />
@@ -238,6 +239,52 @@ function handleCommitPrimaryAction(actionKey: string) {
 
     .chat-header-repo {
         max-width: min(30vw, 190px);
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-header-bar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 6px;
+        min-height: 36px;
+        height: 36px;
+        padding-inline: 2px;
+    }
+
+    .chat-header-left {
+        gap: 4px;
+    }
+
+    .chat-header-title {
+        max-width: min(48vw, 220px);
+    }
+
+    .chat-header-controls {
+        gap: 4px;
+    }
+
+    .chat-header-hide-mobile,
+    .chat-header-overflow-btn,
+    .chat-header-diff-delta {
+        display: none !important;
+    }
+
+    .chat-header-diff-btn {
+        width: 28px;
+        min-width: 28px;
+        padding-inline: 0;
+        justify-content: center;
+        gap: 0;
+    }
+}
+
+@media (max-width: 640px) {
+    .chat-header-repo {
+        display: none;
+    }
+
+    .chat-header-title {
+        max-width: min(56vw, 208px);
     }
 }
 </style>

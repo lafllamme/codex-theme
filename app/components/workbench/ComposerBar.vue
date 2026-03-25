@@ -175,9 +175,9 @@ const contextUsedLabel = computed(() =>
                 </div>
 
                 <div
-                    class="mt-4 flex items-center justify-between gap-2 text-[12px]"
+                    class="composer-primary-row mt-4 flex items-center justify-between gap-2 text-[12px]"
                 >
-                    <div class="min-w-0 inline-flex items-center gap-1.5">
+                    <div class="composer-primary-left min-w-0 inline-flex items-center gap-1.5">
                         <ComposerDropdownMenu
                             :open="openMenuKey === 'plus'"
                             menu-class="w-[244px]"
@@ -461,7 +461,7 @@ const contextUsedLabel = computed(() =>
         </footer>
 
         <div
-            class="mt-1 flex items-center justify-between px-1 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
+            class="composer-meta-row mt-1 flex items-center justify-between px-1 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
         >
             <div class="inline-flex items-center gap-3">
                 <ComposerDropdownMenu
@@ -763,3 +763,20 @@ const contextUsedLabel = computed(() =>
         </div>
     </div>
 </template>
+
+<style scoped>
+@media (max-width: 768px) {
+    .composer-primary-row {
+        gap: 8px;
+    }
+
+    .composer-primary-left {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .composer-meta-row {
+        display: none;
+    }
+}
+</style>

@@ -330,7 +330,7 @@ function toggleRepo(repo: string) {
 @media (max-width: 1180px) {
   .sidebar--collapsed-shell {
     position: fixed;
-    width: min(82vw, 320px);
+    width: min(92vw, 360px);
     border-color: rgba(255, 255, 255, 0.09);
     background: rgba(10, 12, 16, 0.48);
     backdrop-filter: blur(14px);
@@ -355,10 +355,10 @@ function toggleRepo(repo: string) {
 
   .sidebar {
     position: fixed;
-    top: 104px;
+    top: 72px;
     left: 8px;
-    width: min(82vw, 320px);
-    max-height: calc(100vh - 116px);
+    width: min(92vw, 360px);
+    max-height: calc(100vh - 84px);
     transform: translateX(-112%);
     z-index: 40;
     overflow-y: auto;
@@ -370,6 +370,20 @@ function toggleRepo(repo: string) {
 
   .sidebar-content--collapsed {
     width: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar--collapsed-shell,
+  .sidebar {
+    width: calc(100vw - 16px);
+    max-width: 420px;
+    left: 8px;
+  }
+
+  .sidebar {
+    top: 60px;
+    max-height: calc(100vh - 72px);
   }
 }
 </style>

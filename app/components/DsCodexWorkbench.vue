@@ -222,20 +222,20 @@ function beginDiffResize(event: MouseEvent) {
           <Icon name="cuida:sidebar-collapse-outline" class="size-4" />
         </button>
         <button
-          class="wb-top-control-btn"
+          class="wb-top-control-btn wb-top-control-secondary"
           aria-label="Back"
         >
           <Icon name="ph:arrow-left-light" class="size-4" />
         </button>
         <button
-          class="wb-top-control-btn"
+          class="wb-top-control-btn wb-top-control-secondary"
           aria-label="Forward"
         >
           <Icon name="ph:arrow-right-light" class="size-4" />
         </button>
         <button
           v-if="isSidebarCollapsed"
-          class="wb-top-control-btn"
+          class="wb-top-control-btn wb-top-control-secondary"
           aria-label="New Thread"
           @click="startNewThread"
         >
@@ -522,7 +522,7 @@ function beginDiffResize(event: MouseEvent) {
 
 @media (max-width: 1180px) {
   .wb-main-area {
-    --wb-header-left-safe-area: 126px;
+    --wb-header-left-safe-area: 16px;
     --wb-header-title-shift: 0px;
     padding: 2px 10px 0 10px;
   }
@@ -555,6 +555,50 @@ function beginDiffResize(event: MouseEvent) {
 
   .diff-resize-handle {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .wb-main-area {
+    --wb-header-left-safe-area: 12px;
+    padding: 2px 6px 0 6px;
+  }
+
+  .wb-control-lane {
+    top: 6px;
+    left: 6px;
+    gap: 8px;
+  }
+
+  .wb-top-control-secondary {
+    display: none;
+  }
+
+  .diff-column {
+    position: fixed;
+    top: 56px;
+    right: 8px;
+    bottom: 10px;
+    width: min(92vw, 460px);
+    max-width: calc(100vw - 16px);
+    margin-left: 0;
+    border-radius: 18px;
+    border: 1px solid var(--wb-border-1);
+    background: var(--wb-bg-panel);
+    transform: translateX(104%);
+    opacity: 0;
+    z-index: 46;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    transition:
+      transform 280ms var(--wb-sidebar-ease),
+      opacity 200ms ease;
+  }
+
+  .diff-column--open {
+    width: min(92vw, 460px);
+    margin-left: 0;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 </style>

@@ -39,8 +39,6 @@ function toCssLength(value: number | string | undefined, fallback: string) {
 const laneVars = computed(() => ({
   '--wb-chat-lane-desktop-inset-left': toCssLength(props.chatLaneDesktopInsetLeft, '180px'),
   '--wb-chat-lane-desktop-inset-right': toCssLength(props.chatLaneDesktopInsetRight, '180px'),
-  '--wb-chat-lane-inset-left': 'var(--wb-chat-lane-desktop-inset-left)',
-  '--wb-chat-lane-inset-right': 'var(--wb-chat-lane-desktop-inset-right)',
 }))
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
@@ -116,6 +114,13 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
   .wb-chat-window {
     --wb-chat-lane-inset-left: 24px;
     --wb-chat-lane-inset-right: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wb-chat-window {
+    --wb-chat-lane-inset-left: 16px;
+    --wb-chat-lane-inset-right: 16px;
   }
 }
 </style>
