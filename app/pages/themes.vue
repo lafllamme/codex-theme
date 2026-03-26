@@ -3,6 +3,7 @@ import type { CodexThemePayload, ThemeVariant } from '~/types/codex-theme'
 import { themePresetEntries } from '~/data/theme-preset-catalog'
 import { isOfficialCodeThemeId, OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
 import { recommendCodeThemeId } from '~/utils/code-theme-syntax'
+import { downloadTextFile } from '~/utils/download-text-file'
 import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
 definePageMeta({
@@ -107,6 +108,7 @@ const knownTopLevelKeys = new Set(['codeThemeId', 'theme', 'variant'])
 const knownThemeKeys = new Set(['accent', 'contrast', 'fonts', 'ink', 'opaqueWindows', 'semanticColors', 'surface'])
 const knownSemanticKeys = new Set(['diffAdded', 'diffRemoved', 'skill'])
 const knownFontKeys = new Set(['ui', 'code'])
+const SAFE_FILENAME_RE = /[^a-z0-9-]/gi
 
 const extraTopLevel = ref<Record<string, unknown>>({})
 const extraTheme = ref<Record<string, unknown>>({})
@@ -278,7 +280,19 @@ function setJsonValue(value: string) {
 
 function exportTheme() {
   jsonError.value = ''
-  jsonValue.value = toExportString()
+  const exportString = toExportString()
+  jsonValue.value = exportString
+
+  const safeThemeId = (isOfficialCodeThemeId(payload.codeThemeId) ? payload.codeThemeId : recommendCodeThemeId(payload))
+    .replace(SAFE_FILENAME_RE, '-')
+    .toLowerCase()
+  const filename = `codex-theme-v1-${safeThemeId}-${payload.variant}.json`
+  downloadTextFile({
+    filename,
+    text: exportString,
+    mimeType: 'application/json;charset=utf-8',
+  })
+
   exportState.value = 'ok'
   if (exportStateResetTimer)
     clearTimeout(exportStateResetTimer)
