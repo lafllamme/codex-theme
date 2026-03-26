@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
-import type { CodexThemePayload } from '~/types/codex-theme'
+import type { CodexThemePayload, ThemeVariant } from '~/types/codex-theme'
 import { onClickOutside, templateRef, useEventListener } from '@vueuse/core'
 import ThemePanelBody from '~/components/theme-controls/ThemePanelBody.vue'
 
@@ -31,6 +31,7 @@ const emit = defineEmits<{
   setDiffRemoved: [value: string]
   setSkill: [value: string]
   setCodeThemeId: [value: string]
+  setVariant: [value: ThemeVariant]
   setUiFont: [value: string]
   setCodeFont: [value: string]
   setContrast: [value: number]
@@ -188,6 +189,7 @@ const morphStyle = computed(() => ({
                 @set-diff-removed="emit('setDiffRemoved', $event)"
                 @set-skill="emit('setSkill', $event)"
                 @set-code-theme-id="emit('setCodeThemeId', $event)"
+                @set-variant="emit('setVariant', $event)"
                 @set-ui-font="emit('setUiFont', $event)"
                 @set-code-font="emit('setCodeFont', $event)"
                 @set-contrast="emit('setContrast', $event)"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CodexThemePayload } from '~/types/codex-theme'
+import type { CodexThemePayload, ThemeVariant } from '~/types/codex-theme'
 import { themePresetEntries } from '~/data/theme-preset-catalog'
 import { isOfficialCodeThemeId, OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
 import { recommendCodeThemeId } from '~/utils/code-theme-syntax'
@@ -159,9 +159,7 @@ function toExportString() {
 }
 
 function toCodexThemeString() {
-  // Force variant: "dark" for Codex compatibility (Codex doesn't support light variant)
-  const exportObj = { ...toExportObject(), variant: 'dark' }
-  return `codex-theme-v1:${JSON.stringify(exportObj)}`
+  return `codex-theme-v1:${JSON.stringify(toExportObject())}`
 }
 
 function collectUnknownKeys(raw: Record<string, unknown>, allowed: Set<string>) {
@@ -340,6 +338,10 @@ function setSkill(value: string) {
 
 function setCodeThemeId(value: string) {
   payload.codeThemeId = value.trim()
+}
+
+function setVariant(value: ThemeVariant) {
+  payload.variant = value
 }
 
 function setUiFont(value: string) {
@@ -593,6 +595,7 @@ onBeforeUnmount(() => {
           @set-diff-removed="setDiffRemoved"
           @set-skill="setSkill"
           @set-code-theme-id="setCodeThemeId"
+          @set-variant="setVariant"
           @set-ui-font="setUiFont"
           @set-code-font="setCodeFont"
           @set-contrast="setContrast"

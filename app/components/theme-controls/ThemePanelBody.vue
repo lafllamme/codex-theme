@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ThemePresetEntry } from '~/data/theme-preset-catalog'
-import type { CodexThemePayload } from '~/types/codex-theme'
+import type { CodexThemePayload, ThemeVariant } from '~/types/codex-theme'
 import DsSwitch from '~/components/ui/DsSwitch.vue'
 import SyntaxBlock from '~/components/workbench/code/SyntaxBlock.vue'
 import ThemePresetBrowser from './ThemePresetBrowser.vue'
@@ -35,6 +35,7 @@ const emit = defineEmits<{
   setDiffRemoved: [value: string]
   setSkill: [value: string]
   setCodeThemeId: [value: string]
+  setVariant: [value: ThemeVariant]
   setUiFont: [value: string]
   setCodeFont: [value: string]
   setContrast: [value: number]
@@ -165,6 +166,13 @@ function onCodeThemeSelect(event: Event) {
   if (!target)
     return
   emit('setCodeThemeId', target.value)
+}
+
+function onThemeModeSelect(event: Event) {
+  const target = event.target as HTMLSelectElement | null
+  if (!target)
+    return
+  emit('setVariant', target.value === 'light' ? 'light' : 'dark')
 }
 
 function clampSize(value: number, min: number, max: number) {
@@ -489,6 +497,25 @@ onBeforeUnmount(() => {
                     :value="option"
                   >
                     {{ option }}
+                  </option>
+                </select>
+                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
+              </div>
+            </div>
+            <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
+              <span class="text-[15px] font-medium text-pureBlack/90">Theme Mode</span>
+              <div class="relative min-w-[166px]">
+                <select
+                  class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
+                  :value="payload.variant"
+                  aria-label="Theme mode"
+                  @change="onThemeModeSelect"
+                >
+                  <option value="dark">
+                    Dark
+                  </option>
+                  <option value="light">
+                    Light
                   </option>
                 </select>
                 <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
