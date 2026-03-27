@@ -2,7 +2,7 @@
 const controls = useDitherControls()
 const ditherReady = useState<boolean>('dither-ready', () => false)
 const route = useRoute()
-const docsLikeRoute = computed(() => route.path === '/docs')
+const scrollableRoute = computed(() => route.path === '/' || route.path === '/docs')
 
 function handleDitherReady() {
   ditherReady.value = true
@@ -41,7 +41,7 @@ function handleDitherReady() {
       </div>
     </div>
 
-    <div :class="docsLikeRoute ? 'relative z-10 h-full overflow-y-auto overflow-x-hidden' : 'relative z-10 h-full overflow-hidden'">
+    <div :class="scrollableRoute ? 'relative z-10 h-full overflow-y-auto overflow-x-hidden' : 'relative z-10 h-full overflow-hidden'">
       <slot />
     </div>
   </div>

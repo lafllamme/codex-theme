@@ -46,10 +46,10 @@ const heroHeadlineBottom = computed(
 
 const headerWrapClass = computed(() =>
   props.variant === 'grid'
-    ? 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]'
+    ? 'pointer-events-auto absolute left-0 -top-10 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]'
     : props.variant === 'typo'
-      ? 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]'
-      : 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]',
+      ? 'pointer-events-auto absolute left-0 -top-10 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]'
+      : 'pointer-events-auto absolute left-0 -top-10 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]',
 )
 </script>
 
@@ -109,7 +109,7 @@ const headerWrapClass = computed(() =>
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-8 pb-0 pt-0 lg:grid-cols-12 lg:gap-20 lg:px-12"
+      class="mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-0 pb-0 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-20 lg:px-12"
     >
       <div class="relative w-full text-center lg:col-span-7 lg:text-left">
         <div class="hero-intro hero-delay-1">

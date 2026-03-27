@@ -12,7 +12,7 @@ const controlsEnabled = computed(() => route.query.controls === '1')
 </script>
 
 <template>
-  <main class="relative h-full w-full overflow-hidden">
+  <main class="relative min-h-full w-full overflow-x-hidden">
     <DsHero
       variant="typo"
       headline="Codex Theme Studio"
@@ -21,7 +21,7 @@ const controlsEnabled = computed(() => route.query.controls === '1')
       second-cta-text="Go to Docs"
     />
 
-    <GithubStarsButton username="imskyleen" repo="animate-ui" />
+    <GithubStarsButton username="lafllamme" repo="codex-theme" />
 
     <button
       v-if="controlsEnabled"
