@@ -43,22 +43,10 @@ const heroHeadlineTop = computed(
 const heroHeadlineBottom = computed(
   () => heroHeadline.value.split('\n')[1] || 'THEME STUDIO',
 )
-
-const headerWrapClass = computed(() =>
-  props.variant === 'grid'
-    ? 'pointer-events-auto absolute left-0 -top-5 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]'
-    : props.variant === 'typo'
-      ? 'pointer-events-auto absolute left-0 -top-5 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]'
-      : 'pointer-events-auto absolute left-0 -top-5 md:top-0 z-1 h-[52px] w-full sm:-top-12 sm:h-[60px]',
-)
 </script>
 
 <template>
   <div class="relative h-full w-full select-none">
-    <div :class="headerWrapClass">
-      <DsHeader />
-    </div>
-
     <div
       v-if="variant === 'tight'"
       class="mx-auto h-full max-w-[1160px] w-full flex flex-col items-center justify-center px-4 pb-8 pt-14 text-center sm:pt-16"

@@ -28,11 +28,7 @@ const schemaExample = `codex-theme-v1:{
   <main class="p-0">
     <section class="sm:border-white/8 relative mx-auto max-w-[1600px] w-full overflow-visible border-0 rounded-none sm:border sm:rounded-[30px]">
       <div class="relative z-10 min-h-screen sm:min-h-[88vh]">
-        <div class="pointer-events-auto absolute left-0 z-1 h-[52px] w-full -top-12 sm:h-[60px]">
-          <DsHeader />
-        </div>
-
-        <div class="pointer-events-none relative z-10  mx-auto mt-[var(--hero-top-offset)] -translate-y-full max-w-[1320px] px-5 lg:px-12 sm:px-8">
+        <div class="pointer-events-none relative z-10 mx-auto mt-[var(--hero-top-offset)] max-w-[1320px] px-5 sm:px-8 lg:px-12">
           <NuxtLink
             to="/"
             class="font-geist-500 pointer-events-auto inline-flex items-center gap-2 border rounded-full px-3.5 py-2 text-[13px] no-underline backdrop-blur-md transition-all text-pureWhite/88 bg-pureWhite/6 border-pureWhite/18 hover:text-pureWhite hover:bg-pureWhite/10 hover:border-pureWhite/30 hover:-translate-x-0.5"

@@ -3,6 +3,7 @@ const controls = useDitherControls()
 const ditherReady = useState<boolean>('dither-ready', () => false)
 const route = useRoute()
 const scrollableRoute = computed(() => route.path === '/' || route.path === '/docs')
+const headerRoute = computed(() => route.path === '/' || route.path === '/docs')
 
 function handleDitherReady() {
   ditherReady.value = true
@@ -39,6 +40,13 @@ function handleDitherReady() {
           @ready="handleDitherReady"
         />
       </div>
+    </div>
+
+    <div
+      v-if="headerRoute"
+      class="pointer-events-auto absolute left-0 top-10 z-20 h-[52px] w-full sm:h-[60px]"
+    >
+      <DsHeader />
     </div>
 
     <div :class="scrollableRoute ? 'relative z-10 h-full overflow-y-auto overflow-x-hidden' : 'relative z-10 h-full overflow-hidden'">
