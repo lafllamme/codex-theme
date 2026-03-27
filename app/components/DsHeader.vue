@@ -13,7 +13,7 @@ onMounted(() => {
   finishTimer = setTimeout(() => {
     hasAnimatedHeader.value = true
     finishTimer = null
-  }, 920)
+  }, 2600)
 })
 
 onBeforeUnmount(() => {
@@ -90,26 +90,29 @@ onBeforeUnmount(() => {
 <style scoped>
 .header-shell-enter {
   transform-origin: left center;
-  animation: header-shell-reveal 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: clip-path, opacity;
+  contain: paint;
+  animation: header-shell-reveal 1080ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .header-item {
   opacity: 0;
   filter: blur(8px);
-  transform: translate3d(12px, 0, 0);
-  animation: header-item-reveal 440ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform: translate3d(10px, 0, 0);
+  will-change: transform, opacity, filter;
+  animation: header-item-reveal 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .header-item-delay-1 {
-  animation-delay: 260ms;
+  animation-delay: 680ms;
 }
 
 .header-item-delay-2 {
-  animation-delay: 340ms;
+  animation-delay: 820ms;
 }
 
 .header-item-delay-3 {
-  animation-delay: 420ms;
+  animation-delay: 960ms;
 }
 
 .logo-puff {
@@ -119,8 +122,8 @@ onBeforeUnmount(() => {
 
 @keyframes header-shell-reveal {
   0% {
-    clip-path: inset(0 62% 0 0 round 999px);
-    opacity: 0.72;
+    clip-path: inset(0 74% 0 0 round 999px);
+    opacity: 0.7;
   }
   100% {
     clip-path: inset(0 0 0 0 round 999px);
@@ -132,7 +135,7 @@ onBeforeUnmount(() => {
   0% {
     opacity: 0;
     filter: blur(8px);
-    transform: translate3d(12px, 0, 0);
+    transform: translate3d(10px, 0, 0);
   }
   100% {
     opacity: 1;
@@ -164,6 +167,59 @@ onBeforeUnmount(() => {
 
   .logo-puff {
     animation: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-shell-enter {
+    will-change: transform, opacity;
+    animation-name: header-shell-reveal-mobile;
+    animation-duration: 980ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .header-item {
+    filter: none;
+    animation-name: header-item-reveal-mobile;
+    animation-duration: 620ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .header-item-delay-1 {
+    animation-delay: 560ms;
+  }
+
+  .header-item-delay-2 {
+    animation-delay: 700ms;
+  }
+
+  .header-item-delay-3 {
+    animation-delay: 820ms;
+  }
+}
+
+@keyframes header-shell-reveal-mobile {
+  0% {
+    opacity: 0;
+    transform: translate3d(-14px, 0, 0);
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes header-item-reveal-mobile {
+  0% {
+    opacity: 0;
+    transform: translate3d(8px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>
