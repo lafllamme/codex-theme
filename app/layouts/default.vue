@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const controls = useDitherControls()
 const ditherReady = useState<boolean>('dither-ready', () => false)
+const route = useRoute()
+const docsLikeRoute = computed(() => route.path === '/docs')
 
 function handleDitherReady() {
   ditherReady.value = true
@@ -8,7 +10,9 @@ function handleDitherReady() {
 </script>
 
 <template>
-  <div class="relative h-dvh overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] [--hero-top-offset:calc(76px+env(safe-area-inset-top))]">
+  <div
+    class="relative h-dvh overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] [--hero-top-offset:calc(76px+env(safe-area-inset-top))]"
+  >
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
         class="absolute inset-0 transition-opacity duration-1200 ease-out"
@@ -37,7 +41,7 @@ function handleDitherReady() {
       </div>
     </div>
 
-    <div class="relative z-10 h-full overflow-hidden">
+    <div :class="docsLikeRoute ? 'relative z-10 h-full overflow-y-auto overflow-x-hidden' : 'relative z-10 h-full overflow-hidden'">
       <slot />
     </div>
   </div>

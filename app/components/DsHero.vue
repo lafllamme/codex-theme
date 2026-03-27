@@ -98,7 +98,7 @@ const headerWrapClass = computed(() =>
         </NuxtLink>
         <DsGlassSurface
           as="NuxtLink"
-          to="/old.view"
+          to="/docs"
           tone="soft"
           class="font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-[999px] px-7 py-2.5 text-[13px] no-underline transition-all hover:bg-[rgba(255,255,255,0.08)] sm:px-9 sm:py-3 sm:text-[14px] !text-pureWhite/72 hover:!text-pureWhite/86"
         >
@@ -147,7 +147,7 @@ const headerWrapClass = computed(() =>
             {{ mainCtaText }}
           </NuxtLink>
           <NuxtLink
-            to="/old.view"
+            to="/docs"
             class="hero-intro hero-delay-6 font-geist-600 pointer-events-auto inline-flex items-center justify-center border rounded-full bg-[rgba(255,255,255,0.08)] px-8 py-4 text-[15px] no-underline shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-all duration-300 border-pureWhite/16 hover:bg-[rgba(255,255,255,0.14)] !text-pureWhite/92 hover:border-pureWhite/24 hover:-translate-y-0.25 hover:!text-pureWhite"
           >
             {{ secondCtaText }}
@@ -271,7 +271,7 @@ const headerWrapClass = computed(() =>
           {{ mainCtaText }}
         </NuxtLink>
         <NuxtLink
-          to="/old.view"
+          to="/docs"
           class="font-geist-500 pointer-events-auto border rounded-[999px] bg-[rgba(255,255,255,0.06)] px-7 py-2.5 text-[13px] no-underline shadow-[0_8px_20px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-xl transition-all border-pureWhite/20 hover:bg-[rgba(255,255,255,0.1)] sm:px-8 sm:text-[14px] !text-pureWhite/82 hover:border-pureWhite/35 hover:!text-pureWhite/92"
         >
           {{ secondCtaText }}
