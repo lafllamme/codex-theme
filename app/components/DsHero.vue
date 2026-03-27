@@ -111,7 +111,7 @@ const headerWrapClass = computed(() =>
       v-else-if="variant === 'typo'"
       class="mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-8 pb-0 pt-0 lg:grid-cols-12 lg:gap-20 lg:px-12"
     >
-      <div class="w-full text-center lg:col-span-7 lg:text-left">
+      <div class="relative w-full text-center lg:col-span-7 lg:text-left">
         <div class="hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"

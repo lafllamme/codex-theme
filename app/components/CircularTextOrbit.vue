@@ -7,13 +7,17 @@ interface CircularTextOrbitProps {
   spinDuration?: number
   onHover?: 'slowDown' | 'speedUp' | 'pause' | 'goBonkers'
   textClass?: string
+  wrapClass?: string
+  orbitClass?: string
 }
 
 const props = withDefaults(defineProps<CircularTextOrbitProps>(), {
-  text: 'OVER * 500 * THEMES * ',
+  text: 'OVER*500*THEMES*',
   spinDuration: 20,
   onHover: 'speedUp',
-  textClass: 'color-pureWhite',
+  textClass: 'text-pureWhite font-geist-900',
+  wrapClass: 'fixed left-3 top-4 md:left-6 md:top-6',
+  orbitClass: '',
 })
 
 const letters = computed(() => [...props.text])
@@ -71,10 +75,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="circular-orbit-wrap">
+  <div class="circular-orbit-wrap" :class="props.wrapClass">
     <Motion
       as="div"
-      :class="['circular-orbit', props.textClass]"
+      class="circular-orbit"
+      :class="[props.textClass, props.orbitClass]"
       :style="{ rotate: rotation }"
       :initial="{ rotate: 0 }"
       @mouseenter="handleHoverStart"
@@ -98,21 +103,16 @@ onBeforeUnmount(() => {
 <style scoped>
 .circular-orbit-wrap {
   pointer-events: none;
-  position: fixed;
-  top: clamp(1rem, 4vh, 2.5rem);
-  left: clamp(0.75rem, 2vw, 1.5rem);
   z-index: 22;
 }
 
 .circular-orbit {
   pointer-events: auto;
   position: relative;
-  width: clamp(7rem, 8.5vw, 8.75rem);
-  height: clamp(7rem, 8.5vw, 8.75rem);
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  width: 168px;
+  height: 168px;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
   line-height: 1;
   border-radius: 9999px;
   user-select: none;
