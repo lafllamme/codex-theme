@@ -23,12 +23,8 @@ const schemaExample = `codex-theme-v1:{
 </script>
 
 <template>
-  <main class="p-0 lg:p-8 sm:p-6">
+  <main class="p-0">
     <section class="sm:border-white/8 relative mx-auto max-w-[1600px] w-full overflow-visible border-0 rounded-none sm:border sm:rounded-[30px]">
-      <div class="[background-image:radial-gradient(circle_at_18%_18%,rgba(42,86,61,0.24)_0%,transparent_45%),radial-gradient(circle_at_82%_74%,rgba(33,74,51,0.2)_0%,transparent_52%)] pointer-events-none absolute inset-0" />
-
-      <div class="[background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:18px_18px] pointer-events-none absolute inset-0 opacity-35" />
-
       <div class="relative z-10 min-h-screen sm:min-h-[88vh]">
         <div class="pointer-events-auto absolute left-0 z-1 h-[52px] w-full -top-12 sm:h-[60px]">
           <DsHeader />
