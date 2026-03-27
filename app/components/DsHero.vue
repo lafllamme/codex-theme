@@ -132,7 +132,7 @@ const headerWrapClass = computed(() =>
         </h1>
 
         <p
-          class="hero-intro hero-delay-4 mb-8 font-geist-300 max-w-xl text-[19px] leading-[1.6] color-sand-11"
+          class="hero-intro <md:mt-8 hero-delay-4 mb-8 font-geist-300 max-w-xl text-[19px] leading-[1.6] color-sand-11"
         >
           {{ body }}
         </p>
@@ -160,7 +160,7 @@ const headerWrapClass = computed(() =>
           class="bg-emerald-500/10 pointer-events-none absolute inset-0 z-0 translate-x-10 rounded-full blur-[80px] -translate-y-10"
         />
         <DsGlassSurface
-          class="hero-ref-card pointer-events-auto relative z-10 ml-auto box-border w-full max-w-[500px] overflow-hidden rounded-[32px] p-10 md:p-12"
+          class="hero-ref-card <md:mb-12 pointer-events-auto relative z-10 ml-auto box-border w-full max-w-[500px] overflow-hidden rounded-[32px] p-10 md:p-12"
         >
           <div class="mb-10 flex items-center">
             <NativeTypewriter
