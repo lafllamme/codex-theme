@@ -34,22 +34,17 @@ const schemaExample = `codex-theme-v1:{
           <DsHeader />
         </div>
 
-        <div class="pointer-events-none absolute left-0 right-0 z-20 top-[calc(var(--hero-top-offset)+0.25rem)]">
-          <div class="pointer-events-auto mx-auto max-w-[1320px] px-5 lg:px-12 sm:px-8">
-            <NuxtLink
-              to="/"
-              class="font-geist-500 inline-flex items-center gap-2 border rounded-full px-3.5 py-2 text-[13px] no-underline backdrop-blur-md transition-all text-pureWhite/88 bg-pureWhite/6 border-pureWhite/18 hover:text-pureWhite hover:bg-pureWhite/10 hover:border-pureWhite/30 hover:-translate-x-0.5"
-            >
-              <Icon name="ph:arrow-left" class="h-[14px] w-[14px]" aria-hidden="true" />
-              Back to Home
-            </NuxtLink>
-          </div>
+        <div class="relative z-20 mx-auto mt-[var(--hero-top-offset)] max-w-[1320px] px-5 lg:px-12 sm:px-8">
+          <NuxtLink
+            to="/"
+            class="font-geist-500 inline-flex items-center gap-2 border rounded-full px-3.5 py-2 text-[13px] no-underline backdrop-blur-md transition-all text-pureWhite/88 bg-pureWhite/6 border-pureWhite/18 hover:text-pureWhite hover:bg-pureWhite/10 hover:border-pureWhite/30 hover:-translate-x-0.5"
+          >
+            <Icon name="ph:arrow-left" class="h-[14px] w-[14px]" aria-hidden="true" />
+            Back to Home
+          </NuxtLink>
         </div>
 
-        <div class="relative z-20 mx-auto max-w-[1320px] px-5 pb-20 pt-[calc(var(--hero-top-offset)+3.75rem)] lg:px-12 sm:px-8">
-          <NuxtLink
-            class="hidden"
-          />
+        <div class="relative z-20 mx-auto max-w-[1320px] px-5 pb-20 pt-16 lg:px-12 sm:px-8 lg:pt-24 sm:pt-20">
           <div class="mb-8 max-w-[920px] sm:mb-10">
             <p class="font-geist-mono-500 text-[10px] color-sand-11 tracking-[0.24em] uppercase sm:text-[11px]">
               Documentation
