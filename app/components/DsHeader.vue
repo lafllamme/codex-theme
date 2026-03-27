@@ -3,6 +3,8 @@ import { onBeforeUnmount, onMounted } from 'vue'
 
 const hasAnimatedHeader = useState<boolean>('has-animated-header', () => false)
 const shouldAnimate = computed(() => !hasAnimatedHeader.value)
+const route = useRoute()
+const logoSpinKey = computed(() => `logo-spin-${route.fullPath}`)
 
 let finishTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -36,6 +38,7 @@ onBeforeUnmount(() => {
         class="group flex items-center gap-3.5 pl-3 no-underline"
       >
         <svg
+          :key="logoSpinKey"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           class="logo-puff size-[28px]"
