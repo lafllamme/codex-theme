@@ -94,9 +94,9 @@ const headerWrapClass = computed(() =>
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto grid h-full w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-8 pt-28 pb-20 lg:grid-cols-12 lg:gap-20 lg:px-12"
+      class="grid h-full min-h-0 w-full grid-cols-1 items-center gap-10 px-0 pt-[80px] pb-0 lg:grid-cols-12 lg:gap-6 2xl:grid-cols-14 2xl:gap-8"
     >
-      <div class="w-full text-center lg:col-span-7 lg:text-left">
+      <div class="w-full text-center lg:col-start-2 lg:col-span-6 lg:text-left 2xl:col-start-3 2xl:col-span-6">
         <div class="mb-6 hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
@@ -130,10 +130,10 @@ const headerWrapClass = computed(() =>
         </div>
       </div>
 
-      <div class="w-full relative lg:col-span-5">
+      <div class="relative w-full lg:col-start-8 lg:col-span-4 2xl:col-start-9 2xl:col-span-4">
         <div class="pointer-events-none absolute inset-0 z-0 rounded-full bg-emerald-500/10 blur-[80px] translate-x-10 -translate-y-10" />
         <DsGlassSurface
-          class="hero-ref-card pointer-events-auto box-border relative z-10 ml-auto w-full max-w-[500px] overflow-hidden rounded-[32px] p-10 md:p-12"
+          class="hero-ref-card pointer-events-auto box-border relative z-10 ml-auto w-full max-w-[500px] overflow-hidden rounded-[32px] p-8 md:p-10"
         >
           <div class="mb-10 flex items-center">
             <NativeTypewriter

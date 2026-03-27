@@ -12,11 +12,11 @@ const controlsEnabled = computed(() => route.query.controls === "1");
 </script>
 
 <template>
-    <main class="p-0 sm:p-6 lg:p-8">
+    <main class="h-dvh overflow-hidden p-0">
         <section
-            class="relative mx-auto min-h-screen w-full max-w-[1600px] overflow-hidden border-0 rounded-none sm:min-h-[88vh] sm:overflow-visible sm:border sm:border-white/8 sm:rounded-[30px]"
+            class="relative h-full w-full overflow-hidden border-0 rounded-none sm:border sm:border-pureWhite/8 sm:rounded-[30px]"
         >
-            <div class="relative z-10 min-h-screen sm:min-h-[88vh]">
+            <div class="relative z-10 h-full min-h-0">
                 <DsHero
                     variant="typo"
                     headline="Codex Theme Studio"
