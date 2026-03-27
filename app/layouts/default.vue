@@ -8,7 +8,7 @@ function handleDitherReady() {
 </script>
 
 <template>
-  <div class="relative overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] h-dvh">
+  <div class="relative h-dvh overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] [--hero-top-offset:calc(76px+env(safe-area-inset-top))]">
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
         class="absolute inset-0 transition-opacity duration-1200 ease-out"
