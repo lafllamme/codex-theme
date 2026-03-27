@@ -115,7 +115,7 @@ watch(
 
 <template>
   <div :class="['inline-flex items-center', props.className]">
-    <span class="whitespace-pre-wrap">
+    <span class="whitespace-nowrap">
       <Motion
         v-for="(char, index) in displayedText.split('')"
         :key="index"

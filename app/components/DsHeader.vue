@@ -1,6 +1,6 @@
 <template>
     <DsGlassSurface
-        class="box-border mx-auto my-0 flex h-[52px] w-full max-w-[360px] md:max-w-[640px] items-center justify-between rounded-full border border-pureWhite/12 bg-[rgba(255,255,255,0.04)] px-3 shadow-[0_10px_26px_-12px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[24px]"
+        class="box-border mx-auto my-0 flex h-[52px] w-full max-w-[95vw] md:max-w-[640px] items-center justify-between rounded-full border border-pureWhite/12 bg-[rgba(255,255,255,0.04)] px-3 shadow-[0_10px_26px_-12px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[24px]"
     >
         <div class="flex items-center">
             <NuxtLink
