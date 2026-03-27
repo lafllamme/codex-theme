@@ -133,9 +133,9 @@ const headerWrapClass = computed(() =>
       <div class="w-full relative lg:col-span-5">
         <div class="pointer-events-none absolute inset-0 z-0 rounded-full bg-emerald-500/10 blur-[80px] translate-x-10 -translate-y-10" />
         <DsGlassSurface
-          class="hero-ref-card pointer-events-auto box-border relative z-10 ml-auto w-full max-w-[540px] overflow-hidden rounded-[32px] p-10 md:p-12"
+          class="hero-ref-card pointer-events-auto box-border relative z-10 ml-auto w-full max-w-[500px] overflow-hidden rounded-[32px] p-10 md:p-12"
         >
-          <div class="mb-8 flex items-center">
+          <div class="mb-10 flex items-center">
             <NativeTypewriter
               content="What you can generate"
               speed="fast"
@@ -143,16 +143,16 @@ const headerWrapClass = computed(() =>
             />
           </div>
 
-          <div class="relative z-10 flex flex-col gap-6">
+          <div class="relative z-10 flex flex-col gap-8">
             <div class="group flex items-start gap-6">
               <span class="font-geist-mono-700 mt-1 text-[22px] text-emerald-400 leading-none transition-colors group-hover:text-emerald-300">
                 {}
               </span>
               <div class="flex flex-col gap-1">
-                <p class="font-geist-600 text-base text-pureWhite tracking-wide">
+                <p class="m-0 font-geist-600 text-base text-pureWhite tracking-wide">
                   Semantic Token Sets
                 </p>
-                <p class="font-geist-400 text-sm text-gray-400 leading-relaxed">
+                <p class="m-0 font-geist-400 text-sm text-gray-400 leading-relaxed">
                   Surface, text, accent and state colors tuned for dark-first UIs.
                 </p>
               </div>
@@ -161,10 +161,10 @@ const headerWrapClass = computed(() =>
             <div class="group flex items-start gap-6">
               <Icon name="ph:sliders" class="mt-[2px] h-6 w-6 text-emerald-400 transition-colors group-hover:text-emerald-300" />
               <div class="flex flex-col gap-1">
-                <p class="font-geist-600 text-base text-pureWhite tracking-wide">
+                <p class="m-0 font-geist-600 text-base text-pureWhite tracking-wide">
                   Live Multi-Preview
                 </p>
-                <p class="font-geist-400 text-sm text-gray-400 leading-relaxed">
+                <p class="m-0 font-geist-400 text-sm text-gray-400 leading-relaxed">
                   Validate themes in editor, docs, and terminal-style previews.
                 </p>
               </div>
@@ -173,10 +173,10 @@ const headerWrapClass = computed(() =>
             <div class="group flex items-start gap-6">
               <Icon name="ph:file-arrow-down" class="mt-[2px] h-6 w-6 text-emerald-400 transition-colors group-hover:text-emerald-300" />
               <div class="flex flex-col gap-1">
-                <p class="font-geist-600 text-base text-pureWhite tracking-wide">
+                <p class="m-0 font-geist-600 text-base text-pureWhite tracking-wide">
                   Export-Ready Output
                 </p>
-                <p class="font-geist-400 text-sm text-gray-400 leading-relaxed">
+                <p class="m-0 font-geist-400 text-sm text-gray-400 leading-relaxed">
                   Ship JSON tokens and theme files with consistent naming.
                 </p>
               </div>
