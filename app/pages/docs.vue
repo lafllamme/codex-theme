@@ -30,7 +30,7 @@ const schemaExample = `codex-theme-v1:{
           <DsHeader />
         </div>
 
-        <div class="relative z-20 mx-auto mt-[var(--hero-top-offset)] max-w-[1320px] px-5 lg:px-12 sm:px-8">
+        <div class="relative z-20 mx-auto mt-[var(--hero-top-offset)] -translate-y-full max-w-[1320px] px-5 lg:px-12 sm:px-8">
           <NuxtLink
             to="/"
             class="font-geist-500 inline-flex items-center gap-2 border rounded-full px-3.5 py-2 text-[13px] no-underline backdrop-blur-md transition-all text-pureWhite/88 bg-pureWhite/6 border-pureWhite/18 hover:text-pureWhite hover:bg-pureWhite/10 hover:border-pureWhite/30 hover:-translate-x-0.5"
