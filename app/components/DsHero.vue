@@ -116,23 +116,23 @@ const headerWrapClass = computed(() =>
           <HyperText
             text="Tokens · Preview · Export"
             :duration="1500"
-            class="font-geist-mono font-semibold text-xs tracking-[0.25em] uppercase color-sand-11"
+            class="font-geist-mono font-semibold text-[10px] tracking-[0.18em] uppercase color-sand-11 sm:text-xs sm:tracking-[0.25em]"
           />
         </div>
 
         <h1
-          class="my-4 hero-headline-glow font-geist-800 w-full max-w-full text-[clamp(2.85rem,15vw,4.8rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit sm:text-6xl md:text-7xl xl:text-[96px]"
+          class="my-4 hero-headline-glow font-geist-800 w-full max-w-full text-[clamp(2.45rem,12vw,4.2rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit sm:text-6xl md:text-7xl xl:text-[96px]"
         >
           <span
-            class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap"
+            class="hero-intro hero-delay-2 block whitespace-nowrap"
           >{{ heroHeadlineTop }}</span>
           <span
-            class="hero-intro hero-delay-3 block whitespace-normal sm:whitespace-nowrap"
+            class="hero-intro hero-delay-3 block whitespace-nowrap"
           >{{ heroHeadlineBottom }}</span>
         </h1>
 
         <p
-          class="hero-intro <md:mt-8 hero-delay-4 mb-8 font-geist-300 max-w-xl text-[19px] leading-[1.6] color-sand-11"
+          class="hero-intro <md:mt-8 hero-delay-4 mb-8 font-geist-300 max-w-xl text-[16px] leading-[1.5] color-sand-11 sm:text-[18px] sm:leading-[1.6]"
         >
           {{ body }}
         </p>
@@ -142,13 +142,13 @@ const headerWrapClass = computed(() =>
         >
           <NuxtLink
             to="/themes"
-            class="hero-intro hero-delay-5 font-geist-600 pointer-events-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-[15px] no-underline shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all duration-300 bg-pureWhite hover:scale-[1.02] !text-pureBlack hover:bg-pureWhite/92"
+            class="hero-intro hero-delay-5 font-geist-400 pointer-events-auto inline-flex items-center justify-center rounded-full px-8 py-4 text-[15px] no-underline shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all duration-300 bg-pureWhite hover:scale-[1.02] !text-pureBlack hover:bg-pureWhite/92"
           >
             {{ mainCtaText }}
           </NuxtLink>
           <NuxtLink
             to="/docs"
-            class="hero-intro hero-delay-6 font-geist-600 pointer-events-auto inline-flex items-center justify-center border rounded-full bg-[rgba(255,255,255,0.08)] px-8 py-4 text-[15px] no-underline shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-all duration-300 border-pureWhite/16 hover:bg-[rgba(255,255,255,0.14)] !text-pureWhite/92 hover:border-pureWhite/24 hover:-translate-y-0.25 hover:!text-pureWhite"
+            class="hero-intro hero-delay-6 font-geist-400 pointer-events-auto inline-flex items-center justify-center border rounded-full bg-[rgba(255,255,255,0.08)] px-8 py-4 text-[15px] no-underline shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-all duration-300 border-pureWhite/16 hover:bg-[rgba(255,255,255,0.14)] !text-pureWhite/92 hover:border-pureWhite/24 hover:-translate-y-0.25 hover:!text-pureWhite"
           >
             {{ secondCtaText }}
           </NuxtLink>
