@@ -46,10 +46,10 @@ const heroHeadlineBottom = computed(
 
 const headerWrapClass = computed(() =>
   props.variant === 'grid'
-    ? 'pointer-events-auto absolute left-0 top-5 z-1 h-[52px] w-full sm:top-6 sm:h-[60px]'
+    ? 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]'
     : props.variant === 'typo'
-      ? 'pointer-events-auto absolute left-0 top-5 z-1 h-[52px] w-full sm:top-6 sm:h-[60px]'
-      : 'pointer-events-auto absolute left-0 top-7 z-1 h-[52px] w-full sm:top-8 sm:h-[60px]',
+      ? 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]'
+      : 'pointer-events-auto absolute left-0 -top-12 z-1 h-[52px] w-full sm:h-[60px]',
 )
 </script>
 
