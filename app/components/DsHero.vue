@@ -109,7 +109,7 @@ const headerWrapClass = computed(() =>
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-0 pb-0 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-20 lg:px-12"
+      class="box-border mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-4 pb-0 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-20 lg:px-12"
     >
       <div class="relative w-full text-center lg:col-span-7 lg:text-left">
         <div class="hero-intro hero-delay-1">
@@ -121,7 +121,7 @@ const headerWrapClass = computed(() =>
         </div>
 
         <h1
-          class="my-4 hero-headline-glow font-geist-800 w-fit max-w-full text-6xl leading-[0.9] tracking-[-0.04em] text-pureWhite md:text-7xl xl:text-[96px]"
+          class="my-4 hero-headline-glow font-geist-800 w-full max-w-full text-[clamp(2.85rem,15vw,4.8rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit sm:text-6xl md:text-7xl xl:text-[96px]"
         >
           <span
             class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap"
