@@ -112,16 +112,16 @@ const headerWrapClass = computed(() =>
       class="mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-16 px-8 pb-0 pt-0 lg:grid-cols-12 lg:gap-20 lg:px-12"
     >
       <div class="w-full text-center lg:col-span-7 lg:text-left">
-        <div class="hero-intro hero-delay-1 mb-6">
+        <div class="hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
             :duration="1500"
-            class="font-geist-mono-500 text-[11px] tracking-[0.25em] uppercase text-pureWhite/52"
+            class="font-geist-mono font-semibold text-xs tracking-[0.25em] uppercase color-sand-11"
           />
         </div>
 
         <h1
-          class="hero-headline-glow font-geist-800 w-fit max-w-full text-6xl leading-[0.9] tracking-[-0.04em] text-pureWhite md:text-7xl xl:text-[96px]"
+          class="my-4 hero-headline-glow font-geist-800 w-fit max-w-full text-6xl leading-[0.9] tracking-[-0.04em] text-pureWhite md:text-7xl xl:text-[96px]"
         >
           <span
             class="hero-intro hero-delay-2 block whitespace-normal sm:whitespace-nowrap"
@@ -132,7 +132,7 @@ const headerWrapClass = computed(() =>
         </h1>
 
         <p
-          class="hero-intro hero-delay-4 font-geist-400 mt-2 max-w-xl text-[19px] leading-[1.6] text-pureWhite/70"
+          class="hero-intro hero-delay-4 mb-8 font-geist-300 max-w-xl text-[19px] leading-[1.6] color-sand-11"
         >
           {{ body }}
         </p>
