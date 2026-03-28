@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, onMounted, ref } from 'vue'
 
 definePageMeta({
   layout: 'default',
@@ -35,23 +36,41 @@ const tocSections = [
 type TocSectionId = (typeof tocSections)[number]['id']
 
 const activeSection = ref<TocSectionId>('preset-sources')
+const scrollContainer = ref<HTMLElement | null>(null)
 
 const navIndicatorStyle = computed(() => {
   const index = tocSections.findIndex(section => section.id === activeSection.value)
+  const safeIndex = Math.max(index, 0)
   return {
-    transform: `translateY(${Math.max(index, 0) * 44}px)`,
+    transform: `translateY(${safeIndex * 44}px)`,
   }
 })
 
 function updateActiveSectionFromScroll() {
+  if (!scrollContainer.value)
+    return
+
+  const container = scrollContainer.value
+  const activationOffset = 150
+  const marker = container.scrollTop + activationOffset
+  const isAtBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 2
+
   let currentSection: TocSectionId = tocSections[0].id
 
-  for (const item of tocSections) {
+  for (const [index, item] of tocSections.entries()) {
     const section = document.getElementById(item.id)
     if (!section)
       continue
 
-    if (window.pageYOffset >= section.offsetTop - 150)
+    const sectionTop = section.offsetTop
+    const isLastSection = index === tocSections.length - 1
+
+    if (isAtBottom && isLastSection) {
+      currentSection = item.id
+      break
+    }
+
+    if (sectionTop <= marker)
       currentSection = item.id
   }
 
@@ -63,10 +82,23 @@ function scrollToSection(id: TocSectionId) {
   if (!section)
     return
 
-  section.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start',
-  })
+  if (scrollContainer.value) {
+    const containerRect = scrollContainer.value.getBoundingClientRect()
+    const sectionRect = section.getBoundingClientRect()
+    const topOffset = 148
+    const targetTop = scrollContainer.value.scrollTop + (sectionRect.top - containerRect.top) - topOffset
+
+    scrollContainer.value.scrollTo({
+      top: Math.max(targetTop, 0),
+      behavior: 'smooth',
+    })
+  }
+  else {
+    section.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
 
   if (window.location.hash !== `#${id}`)
     window.history.replaceState(null, '', `#${id}`)
@@ -79,16 +111,14 @@ function handleTocClick(event: MouseEvent, id: TocSectionId) {
 }
 
 onMounted(() => {
+  scrollContainer.value = document.querySelector('[data-app-scroll-container]') as HTMLElement | null
+
   const currentHash = window.location.hash.replace('#', '')
   if (tocSections.some(section => section.id === currentHash))
     activeSection.value = currentHash as TocSectionId
 
   updateActiveSectionFromScroll()
-  window.addEventListener('scroll', updateActiveSectionFromScroll, { passive: true })
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', updateActiveSectionFromScroll)
+  useEventListener(scrollContainer, 'scroll', updateActiveSectionFromScroll, { passive: true })
 })
 </script>
 
@@ -102,14 +132,14 @@ onBeforeUnmount(() => {
         <span class="font-geist-mono-500 text-brand-400 text-xs tracking-[0.2em] uppercase">Documentation</span>
       </div>
 
-      <nav class="border-borderSubtle relative flex flex-col gap-6 border-l">
+      <nav class="docs-toc-track relative flex flex-col gap-6">
         <div class="nav-indicator" :style="navIndicatorStyle" />
         <a
           v-for="item in tocSections"
           :key="item.id"
           :href="`#${item.id}`"
-          class="font-geist-500 hover:text-brand-400 pl-6 text-sm transition-colors"
-          :class="activeSection === item.id ? 'text-text-primary' : 'text-text-secondary'"
+          class="font-geist-500 pl-6 text-sm transition-colors"
+          :class="activeSection === item.id ? 'text-white' : 'text-[#97a3b7] hover:text-brand-400'"
           @click="handleTocClick($event, item.id)"
         >
           {{ item.label }}
@@ -299,12 +329,29 @@ onBeforeUnmount(() => {
 
 .nav-indicator {
   position: absolute;
-  left: -1px;
+  left: 0;
   width: 2px;
   height: 24px;
   background: #10b981;
-  box-shadow: 0 0 12px #10b981;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 0 8px rgba(16, 185, 129, 0.9),
+    0 0 16px rgba(16, 185, 129, 0.35);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.docs-toc-track {
+  padding-left: 1px;
+}
+
+.docs-toc-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(148, 163, 184, 0.22);
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.05);
 }
 
 .docs-section {
