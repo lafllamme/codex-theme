@@ -34,6 +34,6 @@ export default defineNuxtConfig({
       { name: 'Inter', provider: 'google', weights: [400, 500, 600, 700] },
     ],
   },
-  css: ['~/assets/styles/fonts.scss', '~/assets/styles/workbench-tokens.css'],
+  css: ['~/assets/styles/fonts.scss', '~/assets/styles/workbench-tokens.css', 'lenis/dist/lenis.css'],
   modules: ['@nuxt/fonts', '@nuxt/icon', '@pinia/nuxt', '@unocss/nuxt'],
 })

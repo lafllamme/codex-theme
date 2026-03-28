@@ -572,7 +572,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="themes-shell theme-color-smooth">
+  <main data-lenis-prevent class="themes-shell theme-color-smooth">
     <div class="themes-shell__glow" />
 
     <div class="themes-shell__content">
