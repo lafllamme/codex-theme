@@ -63,9 +63,9 @@ function handleDitherReady() {
 
     <div
       v-if="headerRoute"
-      class="pointer-events-auto absolute left-0 top-10 z-20 h-[52px] w-full sm:h-[60px]"
+      class="pointer-events-none absolute left-0 top-10 z-20 h-[52px] w-full sm:h-[60px]"
     >
-      <DsHeader />
+      <DsHeader class="pointer-events-auto" />
     </div>
 
     <!-- UX: Let's see if this distracting -->
@@ -75,7 +75,7 @@ function handleDitherReady() {
     >
       <div class="absolute inset-x-0 top-10 h-[52px] flex sm:h-[60px]">
         <div class="grow bg-[#050607]" />
-        <div class="w-[95vw] shrink-0 md:w-[600px]" />
+        <div class="w-[95vw] shrink-0 md:w-[640px]" />
         <div class="grow bg-[#050607]" />
       </div>
     </div>

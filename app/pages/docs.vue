@@ -125,31 +125,33 @@ onMounted(() => {
 <template>
   <main class="docs-page antialiased">
     <aside class="docs-sidebar fixed bottom-0 left-0 top-0 z-40 hidden w-72 px-8 py-10 lg:flex lg:flex-col">
-      <div class="flex items-center group gap-2 mb-12">
-          <Icon name="ph:book-open" class="group-hover:hidden size-4" />
-          <Icon name="ph:book-open-fill" class="hidden group-hover:block size-4" />
-          <p class="font-geist-mono-500 text-xs leading-0 tracking-relaxed uppercase">
+      <div class="flex flex-1 flex-col justify-start pt-[calc(3rem+var(--hero-top-offset))]">
+        <div class="group mb-7 flex items-center gap-2 -ml-px">
+          <Icon name="ph:book-open-text" class="size-5 color-sand-11 group-hover:hidden" />
+          <Icon name="ph:book-open-text-fill" class="hidden size-5 color-sand-11 group-hover:block" />
+          <p class="font-geist-mono-500 text-[11px] color-sand-11 leading-none tracking-[0.22em] uppercase">
             Documentation
           </p>
-      </div>
-
-      <nav class="docs-toc-track relative flex flex-col gap-6">
-        <div class="nav-indicator" :style="navIndicatorStyle" />
-        <div
-          v-for="item in tocSections"
-          :key="item.id"
-          class="pl-6 text-sm transition-colors"
-          :class="activeSection === item.id ? 'color-pureWhite' : 'color-sand-10 hover:color-[#10b981]'"
-        >
-          <a
-            :href="`#${item.id}`"
-            class="font-geist-500 transition-colors"
-            @click="handleTocClick($event, item.id)"
-          >
-            {{ item.label }}
-          </a>
         </div>
-      </nav>
+
+        <nav class="docs-toc-track relative flex flex-col gap-6">
+          <div class="nav-indicator" :style="navIndicatorStyle" />
+          <div
+            v-for="item in tocSections"
+            :key="item.id"
+            class="pl-5 text-sm transition-colors"
+            :class="activeSection === item.id ? 'color-pureWhite' : 'color-sand-10 hover:color-[#10b981]'"
+          >
+            <a
+              :href="`#${item.id}`"
+              class="font-geist-500 transition-colors"
+              @click="handleTocClick($event, item.id)"
+            >
+              {{ item.label }}
+            </a>
+          </div>
+        </nav>
+      </div>
 
       <div class="mt-auto">
         <NuxtLink to="/" class="text-text-tertiary hover:text-text-secondary flex items-center gap-2 text-xs transition-colors">
@@ -163,7 +165,7 @@ onMounted(() => {
       <div class="mx-auto max-w-4xl px-6 pb-28 lg:px-16 sm:px-8 lg:pb-40">
         <header class="pb-18 pt-[calc(var(--hero-top-offset)+44px)] lg:pb-24 lg:pt-32">
           <div class="mb-8">
-            <p class="font-geist-400 mb-3 color-sand-10 text-[clamp(2.1rem,4.4vw,4.9rem)] leading-4 tracking-[-0.02em] uppercase">
+            <p class="font-geist-400 mb-3 text-[clamp(2.1rem,4.4vw,4.9rem)] color-sand-10 leading-4 tracking-[-0.02em] uppercase">
               Dive Into
             </p>
             <h1 class="text-white text-[clamp(2.6rem,6.4vw,6rem)] leading-4 tracking-tight">
