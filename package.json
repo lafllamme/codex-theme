@@ -5,8 +5,11 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "generate:themes": "node scripts/generate.mjs themes",
+    "generate": "pnpm exec tsx scripts/run-pipeline.ts site",
+    "generate:themes": "pnpm exec tsx scripts/run-pipeline.ts themes",
+    "generate:themes:convert": "pnpm exec tsx scripts/run-pipeline.ts convert",
+    "generate:themes:rescore": "pnpm exec tsx scripts/run-pipeline.ts rescore",
+    "generate:themes:test": "pnpm exec tsx scripts/run-pipeline.ts test",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "nuxt preview",
@@ -43,6 +46,7 @@
     "eslint": "^10.0.3",
     "eslint-plugin-format": "^2.0.1",
     "sass": "^1.98.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vue-eslint-parser": "^10.4.0"
   }

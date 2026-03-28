@@ -229,13 +229,16 @@ onMounted(() => {
               </div>
               <div>
                 <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
-                  Option B (Secondary, Coming Soon)
+                  Option B (Local Pipeline)
                 </h4>
                 <p class="text-sm">
-                  Use the repository + scripts pipeline for local reproducible generation and automation workflows. Public repo/script docs will be linked in the Reference section once released.
+                  Use the repository scripts when you want reproducible batch generation from raw palette sources, normalized token mapping, and automated preset refreshes.
                 </p>
               </div>
             </div>
+            <p class="text-sm">
+              Under the hood, both paths converge on the same contract: source colors are mapped into a stable Codex theme payload, semantic fields are normalized, and the final JSON is shaped for predictable import behavior.
+            </p>
           </div>
         </section>
 
@@ -404,19 +407,25 @@ onMounted(() => {
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">01</span>
                 <p class="text-sm">
-                  Parse source palette into normalized color primitives.
+                  Parse incoming palette data (builder input or external theme source) into normalized color primitives.
                 </p>
               </div>
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">02</span>
                 <p class="text-sm">
-                  Normalize semantics (<code>accent</code>, <code>surface</code>, <code>ink</code>, semantic colors) and evaluate compatibility.
+                  Map and normalize semantic fields (<code>accent</code>, <code>surface</code>, <code>ink</code>, semantic colors) into the Codex payload structure.
                 </p>
               </div>
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">03</span>
                 <p class="text-sm">
-                  Infer <code>variant</code> and finalize Codex JSON output.
+                  Validate readability and contrast behavior across key token groups so the payload remains usable in real code contexts.
+                </p>
+              </div>
+              <div class="flex gap-4">
+                <span class="text-brand-400 font-geist-mono-500 text-sm">04</span>
+                <p class="text-sm">
+                  Infer <code>variant</code>, resolve a compatible <code>codeThemeId</code>, and finalize the Codex JSON output.
                 </p>
               </div>
             </div>
