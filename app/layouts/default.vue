@@ -4,6 +4,7 @@ const ditherReady = useState<boolean>('dither-ready', () => false)
 const route = useRoute()
 const scrollableRoute = computed(() => route.path === '/' || route.path === '/docs')
 const headerRoute = computed(() => route.path === '/' || route.path === '/docs')
+const docsRoute = computed(() => route.path === '/docs')
 
 function handleDitherReady() {
   ditherReady.value = true
@@ -12,7 +13,7 @@ function handleDitherReady() {
 
 <template>
   <div
-    class="relative h-dvh overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] [--hero-top-offset:calc(76px+env(safe-area-inset-top))]"
+    class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] h-dvh"
   >
     <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
@@ -48,6 +49,11 @@ function handleDitherReady() {
     >
       <DsHeader />
     </div>
+
+    <div
+      v-if="docsRoute"
+      class="pointer-events-none fixed inset-x-0 top-0 z-[19] h-[calc(var(--hero-top-offset)+16px)] bg-[#050607]"
+    />
 
     <div :class="scrollableRoute ? 'relative z-10 h-full overflow-y-auto overflow-x-hidden' : 'relative z-10 h-full overflow-hidden'">
       <slot />
