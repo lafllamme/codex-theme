@@ -11,6 +11,7 @@ const headerRoute = computed(
   () => route.path === '/' || route.path === '/docs',
 )
 const docsRoute = computed(() => route.path === '/docs')
+const showAnimatedBackground = computed(() => route.path !== '/docs')
 
 function handleDitherReady() {
   ditherReady.value = true
@@ -21,7 +22,10 @@ function handleDitherReady() {
   <div
     class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] h-dvh"
   >
-    <div class="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div
+      v-if="showAnimatedBackground"
+      class="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+    >
       <div
         class="absolute inset-0 transition-opacity duration-1200 ease-out"
         :class="ditherReady ? 'opacity-0' : 'opacity-100'"

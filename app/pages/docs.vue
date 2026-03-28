@@ -125,31 +125,36 @@ onMounted(() => {
 <template>
   <main class="docs-page antialiased">
     <aside class="docs-sidebar fixed bottom-0 left-0 top-0 z-40 hidden w-72 px-8 py-10 lg:flex lg:flex-col">
-      <div class="mb-12 flex items-center gap-3">
-        <div class="border-brand-500/30 bg-brand-500/20 h-6 w-6 flex items-center justify-center border rounded">
-          <div class="bg-brand-400 h-1.5 w-1.5 animate-pulse rounded-full" />
-        </div>
-        <span class="font-geist-mono-500 text-brand-400 text-xs tracking-[0.2em] uppercase">Documentation</span>
+      <div class="flex items-center group gap-2 mb-12">
+          <Icon name="ph:book-open" class="group-hover:hidden size-4" />
+          <Icon name="ph:book-open-fill" class="hidden group-hover:block size-4" />
+          <p class="font-geist-mono-500 text-xs leading-0 tracking-relaxed uppercase">
+            Documentation
+          </p>
       </div>
 
       <nav class="docs-toc-track relative flex flex-col gap-6">
         <div class="nav-indicator" :style="navIndicatorStyle" />
-        <a
+        <div
           v-for="item in tocSections"
           :key="item.id"
-          :href="`#${item.id}`"
-          class="font-geist-500 pl-6 text-sm transition-colors"
-          :class="activeSection === item.id ? 'text-white' : 'text-[#97a3b7] hover:text-brand-400'"
-          @click="handleTocClick($event, item.id)"
+          class="pl-6 text-sm transition-colors"
+          :class="activeSection === item.id ? 'color-pureWhite' : 'color-sand-10 hover:color-[#10b981]'"
         >
-          {{ item.label }}
-        </a>
+          <a
+            :href="`#${item.id}`"
+            class="font-geist-500 transition-colors"
+            @click="handleTocClick($event, item.id)"
+          >
+            {{ item.label }}
+          </a>
+        </div>
       </nav>
 
       <div class="mt-auto">
         <NuxtLink to="/" class="text-text-tertiary hover:text-text-secondary flex items-center gap-2 text-xs transition-colors">
           <Icon name="ph:arrow-left" class="h-3 w-3" />
-          Back to Theme Lab
+          Back to Home
         </NuxtLink>
       </div>
     </aside>
@@ -157,10 +162,15 @@ onMounted(() => {
     <section class="docs-main relative z-10 lg:ml-72">
       <div class="mx-auto max-w-4xl px-6 pb-28 lg:px-16 sm:px-8 lg:pb-40">
         <header class="pb-18 pt-[calc(var(--hero-top-offset)+44px)] lg:pb-24 lg:pt-32">
-          <h1 class="font-geist-300 text-white mb-8 text-[clamp(2.4rem,5.2vw,4.7rem)] leading-tight tracking-tight">
-            How Codex Theme <br>
-            <span class="font-geist-400 text-text-secondary italic">Studio Works</span>
-          </h1>
+          <div class="mb-8">
+            <p class="font-geist-400 mb-3 color-sand-10 text-[clamp(2.1rem,4.4vw,4.9rem)] leading-4 tracking-[-0.02em] uppercase">
+              Dive Into
+            </p>
+            <h1 class="text-white text-[clamp(2.6rem,6.4vw,6rem)] leading-4 tracking-tight">
+              <span class="font-geist-700">Theme</span>
+              <span class="font-imbue-400 ml-2 color-[#10b981] italic">studio</span>
+            </h1>
+          </div>
           <p class="text-text-secondary font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] leading-relaxed">
             An architectural overview of the theme generator core, the unified JSON contract, and the normalization pipeline for cross-platform theme portability.
           </p>
