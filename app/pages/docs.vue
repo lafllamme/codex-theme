@@ -25,17 +25,19 @@ const schemaExample = `codex-theme-v1:{
 }`
 
 const tocSections = [
-  { id: 'preset-sources', label: 'Preset Sources' },
-  { id: 'design-intent', label: 'Design Intent' },
-  { id: 'algorithm', label: 'The Algorithm' },
-  { id: 'json-reference', label: 'JSON Reference' },
-  { id: 'import-export', label: 'Import & Export' },
-  { id: 'limitations', label: 'Known Limitations' },
+  { id: 'introduction', label: 'Introduction' },
+  { id: 'installation', label: 'Installation' },
+  { id: 'quick-start', label: 'Quick Start' },
+  { id: 'codex-json-format', label: 'Codex JSON Format' },
+  { id: 'theme-generation-algorithm', label: 'Theme Generation Algorithm' },
+  { id: 'preset-sources', label: 'Preset Sources (iTerm2 + Curated)' },
+  { id: 'reference', label: 'Reference' },
+  { id: 'known-limitations', label: 'Known Limitations' },
 ] as const
 
 type TocSectionId = (typeof tocSections)[number]['id']
 
-const activeSection = ref<TocSectionId>('preset-sources')
+const activeSection = ref<TocSectionId>('introduction')
 const scrollContainer = ref<HTMLElement | null>(null)
 
 const navIndicatorStyle = computed(() => {
@@ -177,139 +179,282 @@ onMounted(() => {
             </h1>
           </div>
           <p class="text-text-secondary font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] leading-relaxed">
-            An architectural overview of the theme generator core, the unified JSON contract, and the normalization pipeline for cross-platform theme portability.
+            Builder-first documentation for Codex Theme Studio: how to build themes fast, how the Codex JSON contract works, and how generation stays reproducible.
           </p>
         </header>
 
-        <section id="preset-sources" class="docs-section relative">
+        <section id="introduction" class="docs-section relative">
           <div class="section-header">
             <h2 class="font-geist-500 text-white text-2xl">
-              Preset Sources & Catalog Size
+              Introduction
             </h2>
           </div>
           <div class="docs-section-content">
             <p>
-              Codex Theme Studio combines curated flagship presets with converted terminal palettes and stores both in one unified payload format.
+              Codex Theme Studio helps you generate, iterate, and export Codex-compatible themes with a predictable contract. The product is optimized for fast visual iteration first, then technical control when you need it.
             </p>
             <p>
-              The current catalog comprises <span class="text-text-primary">507 total presets</span> indexed in <code class="text-brand-400 px-1 text-xs">app/assets/theme-presets</code>. This includes 24 curated Codex designs and 483 converted assets.
+              This page is intentionally single-page and package-style: start with Installation and Quick Start if you just want a working theme, then continue into JSON and algorithm details if you want to customize or automate.
             </p>
-            <div class="grid grid-cols-1 gap-6 py-4 sm:grid-cols-2 sm:gap-8">
-              <div class="border-brand-500/20 border-l pl-6">
-                <div class="font-geist-300 text-white text-2xl">
-                  507
-                </div>
-                <div class="text-text-tertiary mt-1 text-xs tracking-widest uppercase">
-                  Active Presets
-                </div>
+          </div>
+        </section>
+
+        <section id="installation" class="docs-section relative">
+          <div class="section-header">
+            <h2 class="font-geist-500 text-white text-2xl">
+              Installation
+            </h2>
+          </div>
+          <div class="docs-section-content">
+            <p>
+              Choose the path that matches your goal. Most users should use the web builder directly.
+            </p>
+            <div class="border-borderSubtle bg-surface/70 flex flex-col gap-6 border rounded-xl p-8">
+              <div>
+                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
+                  Option A (Primary)
+                </h4>
+                <p class="text-sm">
+                  Use the <span class="text-text-primary">web builder</span> to generate, randomize, tune, and export a Codex JSON payload without local setup.
+                </p>
               </div>
-              <div class="border-brand-500/20 border-l pl-6">
-                <div class="font-geist-300 text-white text-2xl">
-                  484
-                </div>
-                <div class="text-text-tertiary mt-1 text-xs tracking-widest uppercase">
-                  Raw Sources
-                </div>
+              <div>
+                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
+                  Option B (Secondary, Coming Soon)
+                </h4>
+                <p class="text-sm">
+                  Use the repository + scripts pipeline for local reproducible generation and automation workflows. Public repo/script docs will be linked in the Reference section once released.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="design-intent" class="docs-section relative">
+        <section id="quick-start" class="docs-section relative">
           <div class="section-header">
             <h2 class="font-geist-500 text-white text-2xl">
-              Design Intent
+              Quick Start
             </h2>
           </div>
           <div class="docs-section-content">
             <p>
-              The system is contract-first. Themes are structured JSON payloads with a stable schema so import, export, and preview stay deterministic.
+              If you only want a usable theme quickly, follow this path and skip internals for now.
             </p>
-            <p>
-              Semantic keys describe usage intent (for example <code class="text-xs">theme.ink</code>) rather than raw palette positions, so visual behavior stays coherent across contexts.
-            </p>
+            <div class="border-borderSubtle bg-surface flex flex-col gap-5 border rounded-xl p-8 text-sm">
+              <div class="flex gap-4">
+                <span class="text-brand-400 font-geist-mono-500">01</span>
+                <p>Open the builder and select a base preset.</p>
+              </div>
+              <div class="flex gap-4">
+                <span class="text-brand-400 font-geist-mono-500">02</span>
+                <p>Use randomize to explore variants, then tweak accent/surface/ink for final tone.</p>
+              </div>
+              <div class="flex gap-4">
+                <span class="text-brand-400 font-geist-mono-500">03</span>
+                <p>Adjust contrast and semantic colors to improve readability in your real code context.</p>
+              </div>
+              <div class="flex gap-4">
+                <span class="text-brand-400 font-geist-mono-500">04</span>
+                <p>Export your payload, import it into Codex, and run a quick visual sanity check.</p>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="algorithm" class="docs-section relative">
+        <section id="codex-json-format" class="docs-section relative">
           <div class="section-header">
             <h2 class="font-geist-500 text-white text-2xl">
-              The Algorithm
+              Codex JSON Format
             </h2>
           </div>
           <div class="docs-section-content">
             <p>
-              Normalization follows a deterministic pipeline: parse source colors, derive variant from luminance, map semantic slots, and resolve compatible syntax theme ids.
+              Payload exchange uses the <code class="text-text-primary text-xs">codex-theme-v1:</code> prefix as parser signature. The contract is stable and designed for predictable import/export.
+            </p>
+            <div class="space-y-8">
+              <div>
+                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
+                  Top-Level Fields
+                </h4>
+                <p class="text-sm">
+                  <code>codeThemeId</code> (theme identity), <code>variant</code> (<code>dark</code>/<code>light</code>), and <code>theme</code> (all visual tokens).
+                </p>
+              </div>
+              <div>
+                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
+                  Theme Fields
+                </h4>
+                <p class="text-sm">
+                  <code>accent</code>, <code>surface</code>, <code>ink</code>, <code>contrast</code>, <code>opaqueWindows</code>, <code>fonts</code> (<code>ui</code>, <code>code</code>), and <code>semanticColors</code>.
+                </p>
+              </div>
+            </div>
+            <div class="relative mt-8">
+              <div class="bg-brand-500/5 absolute inset-0 rounded-3xl blur-2xl" />
+              <pre class="text-text-secondary border-borderSubtle bg-black/40 relative overflow-x-auto border rounded-2xl p-8 text-xs leading-relaxed"><code>{{ schemaExample }}</code></pre>
+            </div>
+            <div class="border-borderSubtle mt-8 overflow-hidden border rounded-xl">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-surface/70 text-text-primary">
+                  <tr>
+                    <th class="font-geist-500 px-4 py-3">
+                      Field
+                    </th>
+                    <th class="font-geist-500 px-4 py-3">
+                      Visual Effect
+                    </th>
+                    <th class="font-geist-500 px-4 py-3">
+                      Edit Priority
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-text-secondary">
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>accent</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Interactive highlights, emphasis color, visual personality.
+                    </td>
+                    <td class="px-4 py-3">
+                      First
+                    </td>
+                  </tr>
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>surface</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Background plane and overall depth impression.
+                    </td>
+                    <td class="px-4 py-3">
+                      First
+                    </td>
+                  </tr>
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>ink</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Foreground text legibility and perceived sharpness.
+                    </td>
+                    <td class="px-4 py-3">
+                      First
+                    </td>
+                  </tr>
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>contrast</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Global separation between content and background.
+                    </td>
+                    <td class="px-4 py-3">
+                      As needed
+                    </td>
+                  </tr>
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>semanticColors.*</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Status and meaning tokens (diffs, skills, contextual cues).
+                    </td>
+                    <td class="px-4 py-3">
+                      After base tones
+                    </td>
+                  </tr>
+                  <tr class="border-borderSubtle/70 border-t">
+                    <td class="px-4 py-3">
+                      <code>fonts</code>, <code>opaqueWindows</code>
+                    </td>
+                    <td class="px-4 py-3">
+                      Runtime and rendering behavior adjustments.
+                    </td>
+                    <td class="px-4 py-3">
+                      Rarely
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="theme-generation-algorithm" class="docs-section relative">
+          <div class="section-header">
+            <h2 class="font-geist-500 text-white text-2xl">
+              Theme Generation Algorithm
+            </h2>
+          </div>
+          <div class="docs-section-content">
+            <p>
+              Generation is pipeline-based and deterministic: same input palette + same settings produce the same output payload.
             </p>
             <div class="border-borderSubtle bg-surface flex flex-col gap-6 border rounded-xl p-8">
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">01</span>
                 <p class="text-sm">
-                  Parse color sources into internal theme fields.
+                  Parse source palette into normalized color primitives.
                 </p>
               </div>
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">02</span>
                 <p class="text-sm">
-                  Map semantic slots and compute variant.
+                  Normalize semantics (<code>accent</code>, <code>surface</code>, <code>ink</code>, semantic colors) and evaluate compatibility.
                 </p>
               </div>
               <div class="flex gap-4">
                 <span class="text-brand-400 font-geist-mono-500 text-sm">03</span>
                 <p class="text-sm">
-                  Normalize compatibility fields and export payload.
+                  Infer <code>variant</code> and finalize Codex JSON output.
                 </p>
               </div>
             </div>
+            <p>
+              Practical note: two different sources can converge visually after normalization because semantic mapping intentionally compresses wild palette variance into usable UI behavior.
+            </p>
           </div>
         </section>
 
-        <section id="json-reference" class="docs-section relative">
+        <section id="preset-sources" class="docs-section relative">
           <div class="section-header">
             <h2 class="font-geist-500 text-white text-2xl">
-              JSON Reference
-            </h2>
-          </div>
-          <div class="docs-section-content">
-            <div class="space-y-10">
-              <div>
-                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm">
-                  Top-Level Keys
-                </h4>
-                <p class="max-w-xl text-sm">
-                  <code>codeThemeId</code>, <code>variant</code>, and the <code>theme</code> object define global behavior and rendering compatibility.
-                </p>
-              </div>
-              <div>
-                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm">
-                  Theme Object Keys
-                </h4>
-                <p class="max-w-xl text-sm">
-                  Includes <code>accent</code>, <code>surface</code>, <code>ink</code>, <code>contrast</code>, <code>opaqueWindows</code>, <code>fonts.ui</code>, <code>fonts.code</code>, and semantic color keys.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="import-export" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
-              Import & Export
+              Preset Sources (iTerm2 + Curated)
             </h2>
           </div>
           <div class="docs-section-content">
             <p>
-              Payload exchange uses the <code class="text-text-primary text-xs">codex-theme-v1:</code> prefix as parser signature.
+              Many presets are pre-generated from iTerm2-like source palettes, combined with curated in-house sets. All are converted into the same Codex JSON structure.
             </p>
-            <div class="relative mt-8">
-              <div class="bg-brand-500/5 absolute inset-0 rounded-3xl blur-2xl" />
-              <pre class="text-text-secondary border-borderSubtle bg-black/40 relative overflow-x-auto border rounded-2xl p-8 text-xs leading-relaxed"><code>{{ schemaExample }}</code></pre>
-            </div>
+            <p>
+              This is intentional: the website remains the easiest creation path, while the repository/script path exists for reproducibility, local generation, and future automation workflows.
+            </p>
           </div>
         </section>
 
-        <section id="limitations" class="docs-section relative">
+        <section id="reference" class="docs-section relative">
+          <div class="section-header">
+            <h2 class="font-geist-500 text-white text-2xl">
+              Reference
+            </h2>
+          </div>
+          <div class="docs-section-content">
+            <ul class="text-sm space-y-3">
+              <li>
+                Repository (coming soon)
+              </li>
+              <li>
+                Script documentation (coming soon)
+              </li>
+              <li>
+                Codex schema/version reference (coming soon)
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="known-limitations" class="docs-section relative">
           <div class="section-header">
             <h2 class="font-geist-500 text-white text-2xl">
               Known Limitations
@@ -317,11 +462,16 @@ onMounted(() => {
           </div>
           <div class="docs-section-content pb-40">
             <p>
-              Some syntax behavior remains constrained by upstream mappings, so grammar-level control is not fully theme-driven yet.
+              Some syntax and semantic behavior remains constrained by upstream Codex mappings, so not every color token can be fully overridden in every editor context.
             </p>
-            <a href="https://github.com/openai/codex/issues/14766" target="_blank" rel="noopener noreferrer" class="text-brand-400 inline-flex items-center gap-2 text-sm hover:underline">
+            <a
+              href="https://github.com/openai/codex/issues/14766"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="relative w-fit inline-flex items-center self-start gap-2 pb-0.5 text-sm after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
+            >
               View GitHub Discussion
-              <Icon name="ph:arrow-up-right" class="h-3.5 w-3.5" />
+              <Icon name="ph:arrow-square-out" class="h-3.5 w-3.5" />
             </a>
           </div>
         </section>
