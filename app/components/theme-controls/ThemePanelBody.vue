@@ -477,10 +477,10 @@ onBeforeUnmount(() => {
                     href="https://github.com/openai/codex/issues/14766"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="mt-2 block w-fit text-[11px] text-[#0056d6] hover:underline"
+                    class="issue-link-neutral group mt-2 inline-flex w-fit items-center gap-1.5 pb-0.5 text-[11px] font-medium text-pureBlack/68 no-underline transition-colors hover:text-pureBlack/88"
                   >
                     GitHub issue #14766
-                    <Icon name="ph:arrow-up-right-bold" class="h-3 w-3" />
+                    <Icon name="ph:arrow-up-right-bold" class="h-3 w-3 text-current transition-transform duration-250 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
                   </a>
                 </div>
               </div>
@@ -699,5 +699,33 @@ onBeforeUnmount(() => {
 
 .json-editor-viewer::-webkit-scrollbar {
   display: none;
+}
+
+.issue-link-neutral {
+  position: relative;
+}
+
+.issue-link-neutral::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.72;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 300ms cubic-bezier(0.65, 0.05, 0.36, 1);
+}
+
+.issue-link-neutral:hover::after,
+.issue-link-neutral:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.issue-link-neutral:focus-visible {
+  outline: none;
 }
 </style>
