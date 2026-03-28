@@ -41,7 +41,7 @@ onBeforeUnmount(() => {
           :key="logoSpinKey"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          class="logo-puff size-[28px]"
+          class="logo-puff size-[28px] color-pureWhite"
           fill="currentColor"
           aria-hidden="true"
         >
