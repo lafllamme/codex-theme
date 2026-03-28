@@ -85,7 +85,7 @@ function toggleRepo(repo: string) {
             </div>
           </div>
 
-          <div class="mt-[1px] flex-1 overflow-y-auto pr-[2px]">
+          <div class="mt-[1px] flex-1 overflow-y-auto">
             <div v-for="group in groupedThreads" :key="group.repo" class="mt-[1px] flex flex-col gap-[2px]">
               <button class="sidebar-lane-item repo-row group inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] shadow-none outline-none" @click="toggleRepo(group.repo)">
                 <span class="min-w-0 inline-flex items-center gap-2">
@@ -160,15 +160,15 @@ function toggleRepo(repo: string) {
 .sidebar {
   --wb-sidebar-text-size: var(--wb-ui-text, var(--ui-font-size));
   --wb-sidebar-meta-size: calc(var(--wb-ui-text, var(--ui-font-size)) - 2px);
-  --wb-sidebar-pad-x: 14px;
+  --wb-sidebar-pad-x: 10px;
   --wb-sidebar-pad-top: 38px;
   --wb-sidebar-section-gap: 10px;
   --wb-sidebar-nav-row-h: 36px;
   --wb-sidebar-thread-row-h: 36px;
   --wb-sidebar-footer-h: 34px;
-  --wb-sidebar-inner-gap-right: 22px;
-  --wb-sidebar-nav-gap-right: 30px;
-  --wb-sidebar-header-gap-right: 34px;
+  --wb-sidebar-inner-gap-right: 0px;
+  --wb-sidebar-nav-gap-right: 0px;
+  --wb-sidebar-header-gap-right: 0px;
   gap: 7px;
   transition:
     border-color 180ms ease,
@@ -224,15 +224,15 @@ function toggleRepo(repo: string) {
 }
 
 .sidebar-lane-item {
-  width: calc(100% - var(--wb-sidebar-inner-gap-right));
+  width: 100%;
 }
 
 .sidebar-nav-lane-item {
-  width: calc(100% - var(--wb-sidebar-nav-gap-right));
+  width: 100%;
 }
 
 .sidebar-header-lane-item {
-  width: calc(100% - var(--wb-sidebar-header-gap-right));
+  width: 100%;
 }
 
 .repo-items {
