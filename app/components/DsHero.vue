@@ -97,19 +97,19 @@ const heroHeadlineBottom = computed(
 
     <div
       v-else-if="variant === 'typo'"
-      class="box-border mx-auto mt-[var(--hero-top-offset)] grid min-h-[calc(100dvh-var(--hero-top-offset))] w-full max-w-[1440px] grid-cols-1 items-center gap-18 md:gap-16 px-4 pb-0 pt-28 sm:px-6 lg:grid-cols-12 lg:gap-20 lg:px-12"
+      class="grid grid-cols-1 mx-auto mt-[var(--hero-top-offset)] box-border max-w-[1440px] min-h-[calc(100dvh-var(--hero-top-offset))] w-full items-center gap-18 px-4 pb-0 pt-28 lg:grid-cols-12 lg:gap-20 md:gap-16 lg:px-12 sm:px-6"
     >
       <div class="relative w-full text-center lg:col-span-7 lg:text-left">
         <div class="hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
             :duration="1500"
-            class="font-geist-mono font-semibold text-[10px] tracking-[0.18em] uppercase color-sand-11 sm:text-xs sm:tracking-[0.25em]"
+            class="font-geist-mono text-[10px] color-sand-11 font-semibold tracking-[0.18em] uppercase sm:text-xs sm:tracking-[0.25em]"
           />
         </div>
 
         <h1
-          class="my-4 hero-headline-glow font-geist-800 w-full max-w-full text-[clamp(2.45rem,12vw,4.2rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit sm:text-6xl md:text-7xl xl:text-[96px]"
+          class="hero-headline-glow font-geist-800 my-4 max-w-full w-full text-[clamp(2.45rem,12vw,4.2rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit md:text-7xl sm:text-6xl xl:text-[96px]"
         >
           <span
             class="hero-intro hero-delay-2 block whitespace-nowrap"
@@ -120,7 +120,7 @@ const heroHeadlineBottom = computed(
         </h1>
 
         <p
-          class="hero-intro <md:mt-8 hero-delay-4 mb-8 font-geist-300 max-w-xl text-[16px] leading-[1.5] color-sand-11 sm:text-[18px] sm:leading-[1.6]"
+          class="hero-intro hero-delay-4 font-geist-300 mb-8 max-w-xl text-[16px] color-sand-11 leading-[1.5] <md:mt-8 sm:text-[18px] sm:leading-[1.6]"
         >
           {{ body }}
         </p>
@@ -130,13 +130,13 @@ const heroHeadlineBottom = computed(
         >
           <NuxtLink
             to="/themes"
-            class="hero-intro hero-delay-5 font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-full px-10 py-3 text-[14px] no-underline shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all duration-300 bg-pureWhite hover:scale-[1.02] !text-pureBlack hover:bg-pureWhite/92"
+            class="hero-intro hero-delay-5 font-geist-500 pointer-events-auto inline-flex items-center justify-center rounded-full px-10 py-3 text-[14px] no-underline shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all duration-220 bg-pureWhite active:translate-y-[1px] active:scale-[0.97] hover:scale-[1.02] !text-pureBlack hover:bg-pureWhite/92"
           >
             {{ mainCtaText }}
           </NuxtLink>
           <NuxtLink
             to="/docs"
-            class="hero-intro hero-delay-6 font-geist-500 pointer-events-auto inline-flex items-center justify-center border rounded-full bg-[rgba(255,255,255,0.08)] px-10 py-3 text-[14px] no-underline shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-all duration-300 border-pureWhite/16 hover:bg-[rgba(255,255,255,0.14)] !text-pureWhite/92 hover:border-pureWhite/24 hover:-translate-y-0.25 hover:!text-pureWhite"
+            class="hero-intro hero-delay-6 font-geist-500 pointer-events-auto inline-flex items-center justify-center border rounded-full bg-[rgba(255,255,255,0.08)] px-10 py-3 text-[14px] no-underline shadow-[0_8px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-all duration-220 border-pureWhite/16 active:translate-y-[1px] active:scale-[0.97] hover:bg-[rgba(255,255,255,0.14)] !text-pureWhite/92 hover:border-pureWhite/24 hover:-translate-y-0.25 hover:!text-pureWhite"
           >
             {{ secondCtaText }}
           </NuxtLink>
@@ -148,7 +148,7 @@ const heroHeadlineBottom = computed(
           class="bg-emerald-500/10 pointer-events-none absolute inset-0 z-0 translate-x-10 rounded-full blur-[80px] -translate-y-10"
         />
         <DsGlassSurface
-          class="hero-ref-card <md:mb-12 pointer-events-auto relative z-10 ml-auto box-border w-full max-w-[500px] overflow-hidden rounded-[32px] p-10 md:p-12"
+          class="hero-ref-card pointer-events-auto relative z-10 ml-auto box-border max-w-[500px] w-full overflow-hidden rounded-[32px] p-10 <md:mb-12 md:p-12"
         >
           <div class="mb-10 flex items-center">
             <NativeTypewriter

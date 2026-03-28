@@ -75,7 +75,7 @@ function handleDitherReady() {
     >
       <div class="absolute inset-x-0 top-10 h-[52px] flex sm:h-[60px]">
         <div class="grow bg-[#050607]" />
-        <div class="w-[95vw] shrink-0 md:w-[640px]" />
+        <div class="w-[95vw] shrink-0 md:w-[615px]" />
         <div class="grow bg-[#050607]" />
       </div>
     </div>
