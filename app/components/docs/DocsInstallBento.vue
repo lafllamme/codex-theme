@@ -28,7 +28,8 @@
             >
                 <Icon
                     name="ph:globe-simple"
-                    class="h-52 w-52 lg:h-64 lg:w-64"
+                    class="h-52 w-52 animate-spin transform-gpu lg:h-64 lg:w-64"
+                    style="animation-duration: 22s; animation-timing-function: linear;"
                 />
             </div>
 

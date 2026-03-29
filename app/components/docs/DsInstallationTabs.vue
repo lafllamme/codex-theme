@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useEventListener, useResizeObserver } from "@vueuse/core";
 import SyntaxBlock from "~/components/workbench/code/SyntaxBlock.vue";
 
 interface InstallTabItem {
@@ -26,6 +27,12 @@ const emit = defineEmits<{
 
 const copyState = ref<"idle" | "ok">("idle");
 let copyTimer: ReturnType<typeof setTimeout> | null = null;
+const tabRailRef = ref<HTMLElement | null>(null);
+const tabRefs = new Map<string, HTMLElement>();
+const activePillStyle = ref<Record<string, string>>({
+    opacity: "0",
+    transform: "translate3d(0,0,0)",
+});
 
 const activeTab = computed(
     () =>
@@ -35,6 +42,35 @@ const activeCommand = computed(() => activeTab.value?.command ?? "");
 
 function selectTab(id: string) {
     emit("update:modelValue", id);
+}
+
+function setTabRef(id: string, el: Element | null) {
+    if (!el) {
+        tabRefs.delete(id);
+        return;
+    }
+    tabRefs.set(id, el as HTMLElement);
+}
+
+function updateActivePill() {
+    const rail = tabRailRef.value;
+    const active = tabRefs.get(props.modelValue);
+    if (!rail || !active) {
+        activePillStyle.value = {
+            opacity: "0",
+            transform: "translate3d(0,0,0)",
+        };
+        return;
+    }
+
+    const left = active.offsetLeft - rail.scrollLeft;
+    const top = active.offsetTop - rail.scrollTop;
+    activePillStyle.value = {
+        width: `${active.offsetWidth}px`,
+        height: `${active.offsetHeight}px`,
+        transform: `translate3d(${left}px, ${top}px, 0)`,
+        opacity: "1",
+    };
 }
 
 async function copyCommand() {
@@ -57,22 +93,43 @@ async function copyCommand() {
 onBeforeUnmount(() => {
     if (copyTimer) clearTimeout(copyTimer);
 });
+
+watch(
+    () => [props.modelValue, props.tabs.map(tab => tab.id).join("|")],
+    async () => {
+        await nextTick();
+        updateActivePill();
+    },
+    { immediate: true },
+);
+
+useEventListener(window, "resize", updateActivePill, { passive: true });
+useResizeObserver(tabRailRef, () => {
+    updateActivePill();
+});
 </script>
 
 <template>
     <div class="group overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
         <div
+            ref="tabRailRef"
             class="relative flex items-center gap-1.5 rounded-xl border-solid border-sand-5 border border-b-0 rounded-bl-0 rounded-br-0 bg-pureBlack px-2.5 py-2"
         >
+            <span
+                aria-hidden="true"
+                class="pointer-events-none absolute left-0 top-0 rounded-lg bg-sand-2 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                :style="activePillStyle"
+            />
             <button
                 v-for="tab in tabs"
                 :key="tab.id"
                 type="button"
-                class="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-geist-mono-500 transition-all duration-180 ease-out"
+                :ref="el => setTabRef(tab.id, el)"
+                class="relative z-10 inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-geist-mono-500 transition-all duration-180 ease-out"
                 :class="
                     tab.id === modelValue
-                        ? 'bg-sand-2 color-pureWhite shadow-[inset_0_0_0_1px_rgba(255,255,255,0.09)]'
-                        : 'color-sand-9 hover:bg-sand-11/10 hover:color-sand-4 active:bg-sand-11/16'
+                        ? 'color-pureWhite'
+                        : 'color-sand-9 hover:bg-sand-2/45 hover:color-pureWhite hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.07)] active:bg-sand-2/55'
                 "
                 @click="selectTab(tab.id)"
             >
