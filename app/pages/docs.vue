@@ -167,29 +167,29 @@ onMounted(() => {
     </aside>
 
     <section class="docs-main relative z-10 lg:ml-72">
-      <div class="mx-auto max-w-4xl px-6 pb-28 lg:px-16 sm:px-8 lg:pb-40">
-        <header class="pb-18 pt-[calc(var(--hero-top-offset)+44px)] lg:pb-24 lg:pt-32">
+      <div class="mx-auto max-w-4xl px-6 pb-28 sm:px-8 lg:px-0 lg:pb-40">
+        <header class="pb-18 pt-[calc(var(--hero-top-offset)+44px)] lg:pb-20 lg:pt-42">
           <div class="mb-8">
-            <p class="font-geist-400 mb-3 text-[clamp(2.1rem,4.4vw,4.9rem)] color-sand-10 leading-4 tracking-[-0.02em] uppercase">
+            <p class="font-geist-400 mb-3 text-[clamp(2.1rem,4.4vw,4.9rem)] color-sand-10 leading-17 tracking-[-0.02em] uppercase">
               Dive Into
             </p>
-            <h1 class="text-white text-[clamp(2.6rem,6.4vw,6rem)] leading-4 tracking-tight">
+            <h1 class="color-pureWhite text-[clamp(2.6rem,6.4vw,6rem)] leading-17 tracking-tight">
               <span class="font-geist-700">Theme</span>
               <span class="font-imbue-400 ml-2 color-[#10b981] italic">studio</span>
             </h1>
           </div>
-          <p class="text-text-secondary font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] leading-relaxed">
+          <p class="color-slate-11 font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] leading-normal">
             A quick primer on how Codex maps a theme JSON payload to interface tokens so you can shape your own theme from that contract.
           </p>
         </header>
 
-        <section id="introduction" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="introduction" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Introduction
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               I was genuinely excited when Codex themes launched, but I kept running into the same friction: the default selection felt limited, and comparing options took too much back-and-forth. I wanted to move faster without losing confidence in what I was shipping.
             </p>
@@ -208,13 +208,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="installation" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="installation" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Installation
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               Choose the path that matches your goal. Most users should use the web builder directly.
             </p>
@@ -242,13 +242,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="quick-start" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="quick-start" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Quick Start
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               If you only want a usable theme quickly, follow this path and skip internals for now.
             </p>
@@ -273,13 +273,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="codex-json-format" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="codex-json-format" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Codex JSON Format
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               Payload exchange uses the <code class="text-text-primary text-xs">codex-theme-v1:</code> prefix as parser signature. The contract is stable and designed for predictable import/export.
             </p>
@@ -393,13 +393,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="theme-generation-algorithm" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="theme-generation-algorithm" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Theme Generation Algorithm
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               Generation is pipeline-based and deterministic: same input palette + same settings produce the same output payload.
             </p>
@@ -435,13 +435,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="preset-sources" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="preset-sources" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Preset Sources (iTerm2 + Curated)
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               Many presets are pre-generated from iTerm2-like source palettes, combined with curated in-house sets. All are converted into the same Codex JSON structure.
             </p>
@@ -451,13 +451,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="reference" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="reference" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Reference
             </h2>
           </div>
-          <div class="docs-section-content">
+          <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <ul class="text-sm space-y-3">
               <li>
                 Repository (coming soon)
@@ -472,13 +472,13 @@ onMounted(() => {
           </div>
         </section>
 
-        <section id="known-limitations" class="docs-section relative">
-          <div class="section-header">
-            <h2 class="font-geist-500 text-white text-2xl">
+        <section id="known-limitations" class="relative [scroll-margin-top:calc(var(--hero-top-offset)+96px)] max-lg:[scroll-margin-top:calc(var(--hero-top-offset)+112px)]">
+          <div class="sticky top-[calc(var(--hero-top-offset)+12px)] z-20 bg-[linear-gradient(to_bottom,#030507_80%,transparent)] pt-16 pb-8 max-lg:top-[calc(var(--hero-top-offset)+8px)] max-lg:pt-9">
+            <h2 class="font-geist-500 color-pureWhite text-2xl lg:text-4xl">
               Known Limitations
             </h2>
           </div>
-          <div class="docs-section-content pb-40">
+          <div class="flex flex-col gap-8 pb-40 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
               Some syntax and semantic behavior remains constrained by upstream Codex mappings, so not every color token can be fully overridden in every editor context.
             </p>
@@ -540,41 +540,4 @@ onMounted(() => {
   box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.05);
 }
 
-.docs-section {
-  position: relative;
-  scroll-margin-top: calc(var(--hero-top-offset) + 96px);
-}
-
-.section-header {
-  position: sticky;
-  top: calc(var(--hero-top-offset) + 12px);
-  z-index: 20;
-  background: linear-gradient(to bottom, #030507 80%, transparent);
-  padding-top: 4rem;
-  padding-bottom: 2rem;
-}
-
-.docs-section-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding-bottom: 5rem;
-  color: #94a3b8;
-  line-height: 1.625;
-}
-
-@media (max-width: 1023px) {
-  .docs-section {
-    scroll-margin-top: calc(var(--hero-top-offset) + 112px);
-  }
-
-  .section-header {
-    top: calc(var(--hero-top-offset) + 8px);
-    padding-top: 2.25rem;
-  }
-
-  .docs-section-content {
-    padding-bottom: 3.5rem;
-  }
-}
 </style>
