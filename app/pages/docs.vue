@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import DsInstallationTabs from '~/components/docs/DsInstallationTabs.vue'
+import DsTerminalBlock from '~/components/docs/DsTerminalBlock.vue'
+
 definePageMeta({
   layout: 'default',
 })
@@ -20,6 +23,36 @@ const schemaExample = `codex-theme-v1:{
     }
   }
 }`
+
+type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'
+
+const quickStartPm = ref<PackageManager>('pnpm')
+
+const installCommandByPm: Record<PackageManager, string> = {
+  npm: 'npm install',
+  yarn: 'yarn install',
+  pnpm: 'pnpm install',
+  bun: 'bun install',
+}
+
+const runConvertByPm: Record<PackageManager, string> = {
+  npm: 'npm run convert',
+  yarn: 'yarn convert',
+  pnpm: 'pnpm convert',
+  bun: 'bun run convert',
+}
+
+const quickStartInstallTabs = computed(() => ([
+  { id: 'npm', label: 'npm', icon: 'simple-icons:npm', command: installCommandByPm.npm },
+  { id: 'yarn', label: 'yarn', icon: 'simple-icons:yarn', command: installCommandByPm.yarn },
+  { id: 'pnpm', label: 'pnpm', icon: 'simple-icons:pnpm', command: installCommandByPm.pnpm },
+  { id: 'bun', label: 'bun', icon: 'simple-icons:bun', command: installCommandByPm.bun },
+]))
+
+const quickStartPipelineCommand = computed(() => `git clone https://github.com/lafllamme/codex-themes
+cd codex-themes
+${installCommandByPm[quickStartPm.value]}
+${runConvertByPm[quickStartPm.value]}`)
 
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
@@ -104,25 +137,109 @@ const tocSections = [
           </div>
           <div class="flex flex-col gap-8 pb-20 max-lg:pb-14 color-sand-11 font-light text-base lg:text-lg leading-normal">
             <p>
-              If you only want a usable theme quickly, follow this path and skip internals for now.
+              Choose the workflow that fits your setup. Both paths end in the same Codex-compatible payload, but they optimize for different workflows.
             </p>
-            <div class="border-borderSubtle bg-surface flex flex-col gap-5 border rounded-xl p-8 text-sm">
-              <div class="flex gap-4">
-                <span class="text-brand-400 font-geist-mono-500">01</span>
-                <p>Open the builder and select a base preset.</p>
+            <div class="border-borderSubtle bg-surface/70 flex flex-col gap-8 border rounded-xl text-sm">
+              <div class="space-y-4">
+                <h4 class="text-brand-400 font-geist-mono-500 text-sm tracking-[0.18em] uppercase">
+                  Path A — Web Builder (Fastest)
+                </h4>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">01</span>
+                  <p>
+                    Open
+                    <NuxtLink to="/themes" class="text-text-primary underline decoration-dotted underline-offset-3">Theme Builder</NuxtLink>
+                    and pick a base preset.
+                  </p>
+                </div>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">02</span>
+                  <p>Shape the core tone with <code>accent</code>, <code>surface</code>, and <code>ink</code>, then adjust <code>contrast</code> and <code>semanticColors</code> for real-world readability.</p>
+                </div>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">03</span>
+                  <p>Export the payload and import it directly into Codex for a quick visual sanity check in your actual coding context.</p>
+                </div>
               </div>
-              <div class="flex gap-4">
-                <span class="text-brand-400 font-geist-mono-500">02</span>
-                <p>Use randomize to explore variants, then tweak accent/surface/ink for final tone.</p>
+
+              <div class="space-y-4">
+                <h4 class="text-brand-400 font-geist-mono-500 text-sm tracking-[0.18em] uppercase">
+                  Path B — Local iTerm2 Pipeline
+                </h4>
+                <p class="text-xs color-sand-10">
+                  Best when you want reproducible generation from raw terminal palettes.
+                </p>
+                <div class="rounded-xl border border-sand-8/45 bg-sand-12/35 p-4">
+                  <h5 class="mb-2 text-sm font-geist-500 color-sand-4">
+                    Prerequisites
+                  </h5>
+                  <ul class="space-y-2 text-[13px] leading-relaxed color-sand-10">
+                    <li class="flex items-start gap-2">
+                      <span class="mt-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-sand-8/45 bg-sand-11/10 text-[10px] font-geist-mono-500 color-sand-7">1</span>
+                      <span>Node.js <code>20.x</code> or newer.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="mt-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-sand-8/45 bg-sand-11/10 text-[10px] font-geist-mono-500 color-sand-7">2</span>
+                      <span>Package manager: <code>pnpm</code> (recommended), <code>npm</code>, <code>yarn</code>, or <code>bun</code>.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                      <span class="mt-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-sand-8/45 bg-sand-11/10 text-[10px] font-geist-mono-500 color-sand-7">3</span>
+                      <span>At least one <code>.itermcolors</code> preset placed in <code>input/</code>.</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">01</span>
+                  <p>
+                    Clone
+                    <a
+                      href="https://github.com/lafllamme/codex-themes"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      class="text-text-primary underline decoration-dotted underline-offset-3"
+                    >lafllamme/codex-themes</a>.
+                  </p>
+                </div>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">02</span>
+                  <p>Drop any <code>.itermcolors</code> file into <code>input/</code> (official iTerm2 presets or your own).</p>
+                </div>
+                <div class="flex gap-4">
+                  <span class="text-brand-400 font-geist-mono-500">03</span>
+                  <p>Run the converter. The toolkit completes and writes Codex-compatible JSON themes to <code>output/</code>.</p>
+                </div>
+                <p class="text-sm color-sand-10">
+                  Install dependencies with your preferred package manager:
+                </p>
+                <DsInstallationTabs
+                  v-model="quickStartPm"
+                  :tabs="quickStartInstallTabs"
+                  code-theme-id="matrix"
+                />
+                <p class="text-sm color-sand-10">
+                  Then run the pipeline from your terminal:
+                </p>
+                <DsTerminalBlock
+                  title="Terminal"
+                  :text="quickStartPipelineCommand"
+                  language="bash"
+                  code-theme-id="matrix"
+                />
+                <div class="rounded-xl border border-emerald-10/40 bg-emerald-11/8 px-4 py-3">
+                  <p class="text-[13px] leading-relaxed color-emerald-7">
+                    Converter output is written to <code>output/</code> as Codex-compatible theme JSON files ready for import.
+                  </p>
+                </div>
               </div>
-              <div class="flex gap-4">
-                <span class="text-brand-400 font-geist-mono-500">03</span>
-                <p>Adjust contrast and semantic colors to improve readability in your real code context.</p>
-              </div>
-              <div class="flex gap-4">
-                <span class="text-brand-400 font-geist-mono-500">04</span>
-                <p>Export your payload, import it into Codex, and run a quick visual sanity check.</p>
-              </div>
+            </div>
+            <p class="text-sm">
+              Both paths converge to the same <code class="text-text-primary text-xs">codex-theme-v1</code> contract. For field-by-field key details, continue to the next section: <span class="text-text-primary">Codex JSON Format</span>.
+            </p>
+            <div class="rounded-xl border border-dashed border-sand-8/50 bg-sand-12/20 px-5 py-4">
+              <p class="text-sm color-sand-10">
+                <span class="font-geist-600 color-pureWhite">Next step:</span>
+                after generating or exporting your theme, validate semantic balance in the real workbench, then refine in small passes.
+              </p>
             </div>
           </div>
         </section>
