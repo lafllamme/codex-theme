@@ -89,25 +89,8 @@ const tocSections = [
             <p>
               Choose the path that matches your goal. Most users should use the web builder directly.
             </p>
-            <div class="border-borderSubtle bg-surface/70 flex flex-col gap-6 border rounded-xl p-8">
-              <div>
-                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
-                  Option A (Primary)
-                </h4>
-                <p class="text-sm">
-                  Use the <span class="text-text-primary">web builder</span> to generate, randomize, tune, and export a Codex JSON payload without local setup.
-                </p>
-              </div>
-              <div>
-                <h4 class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase">
-                  Option B (Local Pipeline)
-                </h4>
-                <p class="text-sm">
-                  Use the repository scripts when you want reproducible batch generation from raw palette sources, normalized token mapping, and automated preset refreshes.
-                </p>
-              </div>
-            </div>
-            <p class="text-sm">
+            <DocsInstallBento />
+            <p class="text-sm pt-1">
               Under the hood, both paths converge on the same contract: source colors are mapped into a stable Codex theme payload, semantic fields are normalized, and the final JSON is shaped for predictable import behavior.
             </p>
           </div>
