@@ -31,18 +31,18 @@ function toggleExpanded() {
 
 <template>
     <div
-        class="group overflow-hidden rounded-xl border-solid border border-sand-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]"
+        class="group overflow-hidden rounded-xl border border-solid border-sand-5 shadow-[0_0_0_1px_rgba(255,255,255,0.02)]"
     >
         <div
-            class="relative flex items-center gap-2 color-pureWhite border-b border-solid border-sand-5 bg-pureBlack px-4 py-2.5"
+            class="relative flex items-center gap-2 border-b border-solid border-sand-5 bg-pureBlack px-4 py-2.5 color-pureWhite"
         >
             <Icon name="ph:file-code" class="size-4" />
-            <span class="font-geist-500 text-sme">{{ title }}</span>
+            <span class="text-sm font-geist-500">{{ title }}</span>
         </div>
 
         <div class="relative bg-slate-1 px-4 py-3 text-xs leading-relaxed">
             <div
-                class="overflow-hidden transition-[max-height] duration-300 ease-out"
+                class="overflow-hidden"
                 :style="{
                     maxHeight:
                         expanded || !isExpandable ? 'none' : collapsedHeight,
@@ -65,7 +65,7 @@ function toggleExpanded() {
             <div v-if="isExpandable" class="absolute bottom-3 right-3">
                 <button
                     type="button"
-                    class="rounded-full border border-sand-6 bg-pureBlack/80 px-3 py-1.5 text-[11px] font-geist-500 color-sand-5 transition-colors duration-180 hover:border-sand-5 hover:color-pureWhite"
+                    class="rounded-full border border-sand-6 bg-pureBlack/80 px-3 py-1.5 text-[11px] font-geist-500 color-sand-11 transition-colors duration-180 hover:border-sand-5 hover:color-pureWhite"
                     @click="toggleExpanded"
                 >
                     {{ expanded ? "Show Less" : "See Full Code" }}
