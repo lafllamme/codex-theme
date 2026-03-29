@@ -73,14 +73,16 @@
                 class="absolute right-5 top-5 h-4 w-4 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
             />
             <div class="flex items-start">
-                <Icon name="ph:terminal-bold" class="h-6 w-6 group-hover:color-pureWhite color-sand-12" />
+                <Icon name="ph:terminal-bold" class="h-6 w-6 color-sand-12 transition-all duration-220 ease-out group-hover:scale-110 group-hover:color-pureWhite" />
             </div>
             <div class="flex flex-col gap-1">
-                <div class="flex items-end justify-between gap-3">
+                <div class="relative flex items-end pr-12">
                     <h4 class="font-geist-600 text-xl leading-none text-pureWhite">
                         CLI Tool
                     </h4>
-                    <span class="font-geist-mono-500 text-[10px] leading-none color-sand-7">
+                    <span
+                        class="absolute right-0 top-1/2 -translate-y-1/2 font-geist-mono-500 text-[10px] leading-none color-sand-7 opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100"
+                    >
                         v2.4.0
                     </span>
                 </div>
@@ -105,7 +107,7 @@
             />
             <Icon
                 name="ph:pinwheel-bold"
-                class="h-6 w-6 color-sand-7 transition-colors duration-200 group-hover:text-pureWhite"
+                class="h-6 w-6 color-sand-7 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
             />
             <span class="text-xs font-medium color-pureWhite">Presets</span>
         </NuxtLink>
@@ -123,7 +125,7 @@
             />
             <Icon
                 name="ph:github-logo-bold"
-                class="h-6 w-6 color-sand-7 transition-colors duration-200 group-hover:text-pureWhite"
+                class="h-6 w-6 color-sand-7 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
             />
             <span class="text-xs font-medium color-pureWhite">Repo</span>
         </NuxtLink>
