@@ -294,14 +294,14 @@ const tocSections = [
                                     Best when you want reproducible generation
                                     from raw terminal palettes.
                                 </p>
-                                <div class="space-y-3 pb-1">
+                                <div class="space-y-6 pb-4">
                                     <h5
                                         class="text-2xl font-geist-500 color-pureWhite"
                                     >
                                         Prerequisites
                                     </h5>
                                     <ul
-                                        class="list-disc space-y-2 pl-6 text-[1.02rem] leading-relaxed color-sand-10 marker:color-sand-8"
+                                        class="list-disc space-y-1 pl-6 text-[1.02rem] leading-relaxed color-sand-10 marker:color-sand-8"
                                     >
                                         <li class="font-400">
                                             <span
@@ -309,7 +309,13 @@ const tocSections = [
                                                 >Node.js</span
                                             >
                                             -
-                                            <code>20.x</code>
+                                            <a
+                                                href="https://nodejs.org/en"
+                                                target="_blank"
+                                                rel="noreferrer noopener"
+                                                class="mx-1 inline-flex items-center rounded-lg border-2 border-dashed border-pureWhite/35 bg-slate-1 px-2 py-1 font-geist-mono-500 text-[0.95em] leading-none color-pureWhite transition-colors duration-200 hover:border-pureWhite/55 hover:bg-slate-2"
+                                                >20.x</a
+                                            >
                                             or newer (but we recommend the
                                             <a
                                                 href="https://nodejs.org/en/about/previous-releases"
