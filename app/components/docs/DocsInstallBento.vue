@@ -7,12 +7,20 @@
             class="group relative col-span-12 row-span-2 flex cursor-pointer flex-col justify-between overflow-hidden rounded-[2rem] bg-pureWhite p-8 text-pureBlack transition-transform duration-300 ease-out md:col-span-8 lg:p-10"
         >
             <span
-                class="absolute right-6 top-6 z-20 flex h-12 w-12 items-center justify-center rounded-full border-2 border-solid border-pureBlack transition-colors duration-200 group-hover:bg-pureBlack group-hover:text-pureWhite md:right-8 md:top-8"
+                class="absolute right-8 top-8 z-20 h-12 w-12 overflow-hidden rounded-full border-2 border-solid border-pureBlack text-pureBlack transition-colors duration-200 group-hover:bg-pureBlack group-hover:text-pureWhite"
             >
-                <Icon
-                    name="ph:arrow-up-right"
-                    class="size-5 transition-transform duration-200 ease-out group-hover:translate-x-0.25 group-hover:-translate-y-0.25"
-                />
+                <span class="absolute inset-0 grid place-content-center">
+                    <Icon
+                        name="ph:arrow-up-right"
+                        class="size-5 transform-gpu transition-all duration-200 linear group-hover:translate-x-[8px] group-hover:-translate-y-[8px] group-hover:opacity-0"
+                    />
+                </span>
+                <span class="absolute inset-0 grid place-content-center">
+                    <Icon
+                        name="ph:arrow-up-right"
+                        class="size-5 translate-x-[-14px] translate-y-[14px] transform-gpu opacity-0 transition-all duration-200 linear group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100"
+                    />
+                </span>
             </span>
 
             <div
@@ -55,8 +63,15 @@
 
         <NuxtLink
             to="https://github.com/lafllamme/codex-themes"
-            class="col-span-12 row-span-1 flex flex-col justify-between rounded-[2rem] border border-sand-10/40 bg-slate-2 p-6 transition-colors duration-200 hover:bg-slate-4 md:col-span-4"
+            external
+            target="_blank"
+            rel="noreferrer noopener"
+            class="group relative col-span-12 row-span-1 flex flex-col justify-between rounded-[2rem] border border-sand-10/40 bg-slate-2 p-6 transition-colors duration-200 hover:bg-slate-4 md:col-span-4"
         >
+            <Icon
+                name="ph:arrow-up-right"
+                class="absolute right-4 top-4 h-4 w-4 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+            />
             <div class="flex items-start justify-between">
                 <Icon name="ph:terminal-bold" class="h-6 w-6 color-sand-12" />
                 <span class="font-geist-mono-500 text-[10px] color-sand-7"
@@ -71,8 +86,14 @@
         <NuxtLink
             to="https://github.com/lafllamme/codex-themes/tree/main/output/theme-presets"
             external
-            class="group col-span-6 row-span-1 flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-sand-5 bg-sand-1 p-6 transition-all duration-200 hover:border-solid md:col-span-2"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="group relative col-span-6 row-span-1 flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-sand-5 bg-sand-1 p-6 transition-all duration-200 hover:border-solid md:col-span-2"
         >
+            <Icon
+                name="ph:arrow-up-right"
+                class="absolute right-3 top-3 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+            />
             <Icon
                 name="ph:pinwheel-bold"
                 class="h-6 w-6 color-sand-7 transition-colors duration-200 group-hover:text-pureWhite"
@@ -80,18 +101,23 @@
             <span class="text-xs font-medium color-pureWhite">Presets</span>
         </NuxtLink>
 
-        <a
-            href="https://github.com/mbadolato/iterm2-color-schemes"
+        <NuxtLink
+            to="https://github.com/mbadolato/iterm2-color-schemes"
+            external
             target="_blank"
-            rel="noreferrer"
-            class="group col-span-6 row-span-1 flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-sand-5 bg-sand-1 p-6 transition-all duration-200 hover:border-solid md:col-span-2"
+            rel="noreferrer noopener"
+            class="group relative col-span-6 row-span-1 flex flex-col items-center justify-center gap-3 rounded-[2rem] border border-sand-5 bg-sand-1 p-6 transition-all duration-200 hover:border-solid md:col-span-2"
         >
+            <Icon
+                name="ph:arrow-up-right"
+                class="absolute right-3 top-3 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+            />
             <Icon
                 name="ph:github-logo-bold"
                 class="h-6 w-6 color-sand-7 transition-colors duration-200 group-hover:text-pureWhite"
             />
             <span class="text-xs font-medium color-pureWhite">Repo</span>
-        </a>
+        </NuxtLink>
     </div>
 </template>
 
