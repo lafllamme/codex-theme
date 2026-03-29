@@ -92,7 +92,7 @@
         >
             <Icon
                 name="ph:arrow-up-right"
-                class="absolute right-3 top-3 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                class="absolute right-4 top-4 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
             />
             <Icon
                 name="ph:pinwheel-bold"
@@ -110,7 +110,7 @@
         >
             <Icon
                 name="ph:arrow-up-right"
-                class="absolute right-3 top-3 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                class="absolute right-4 top-4 size-3.5 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
             />
             <Icon
                 name="ph:github-logo-bold"
