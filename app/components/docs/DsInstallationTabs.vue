@@ -129,7 +129,7 @@ useResizeObserver(tabRailRef, () => {
                 :class="
                     tab.id === modelValue
                         ? 'color-pureWhite'
-                        : 'color-sand-9 hover:bg-sand-2/45 hover:color-pureWhite hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.07)] active:bg-sand-2/55'
+                        : 'color-sand-9 hover:bg-pureWhite/6  hover:color-sand-11 hover:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.07)]'
                 "
                 @click="selectTab(tab.id)"
             >
