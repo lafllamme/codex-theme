@@ -70,17 +70,26 @@
         >
             <Icon
                 name="ph:arrow-up-right"
-                class="absolute right-4 top-4 h-4 w-4 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                class="absolute right-5 top-5 h-4 w-4 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
             />
-            <div class="flex items-start justify-between">
-                <Icon name="ph:terminal-bold" class="h-6 w-6 color-sand-12" />
-                <span class="font-geist-mono-500 text-[10px] color-sand-7"
-                    >v2.4.0</span
-                >
+            <div class="flex items-start">
+                <Icon name="ph:terminal-bold" class="h-6 w-6 group-hover:color-pureWhite color-sand-12" />
             </div>
-            <h4 class="font-geist-600 text-xl leading-none text-pureWhite">
-                CLI Tool
-            </h4>
+            <div class="flex flex-col gap-1">
+                <div class="flex items-end justify-between gap-3">
+                    <h4 class="font-geist-600 text-xl leading-none text-pureWhite">
+                        CLI Tool
+                    </h4>
+                    <span class="font-geist-mono-500 text-[10px] leading-none color-sand-7">
+                        v2.4.0
+                    </span>
+                </div>
+                <p
+                    class="font-geist-mono-300 whitespace-nowrap max-w-[28ch] text-[11px] leading-snug color-sand-11 opacity-0 transition-all duration-200 ease-out group-hover:translate-y-0.5 group-hover:opacity-100"
+                >
+                    For generating theme presets.
+                </p>
+            </div>
         </NuxtLink>
 
         <NuxtLink
