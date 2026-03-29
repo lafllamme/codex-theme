@@ -214,7 +214,7 @@ const tocSections = [
                 <DsInstallationTabs
                   v-model="quickStartPm"
                   :tabs="quickStartInstallTabs"
-                  code-theme-id="matrix"
+                  code-theme-id="everforest"
                 />
                 <p class="text-sm color-sand-10">
                   Then run the pipeline from your terminal:
@@ -222,8 +222,8 @@ const tocSections = [
                 <DsTerminalBlock
                   title="Terminal"
                   :text="quickStartPipelineCommand"
-                  language="bash"
-                  code-theme-id="matrix"
+                  language="shellscript"
+                  code-theme-id="everforest"
                 />
                 <div class="rounded-xl border border-emerald-10/40 bg-emerald-11/8 px-4 py-3">
                   <p class="text-[13px] leading-relaxed color-emerald-7">

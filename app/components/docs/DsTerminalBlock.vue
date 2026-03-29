@@ -10,8 +10,8 @@ const props = withDefaults(
         title?: string;
     }>(),
     {
-        codeThemeId: "matrix",
-        language: "bash",
+        codeThemeId: "vscode-plus",
+        language: "shellscript",
         title: "Terminal",
     },
 );
@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
                 :text="text"
                 :language="language"
                 :code-theme-id="codeThemeId"
-                fallback-color="rgba(214, 241, 230, 0.92)"
+                fallback-color="rgba(228, 230, 236, 0.94)"
             />
         </div>
     </div>

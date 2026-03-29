@@ -15,7 +15,7 @@ const props = withDefaults(
         tabs: InstallTabItem[];
     }>(),
     {
-        codeThemeId: "matrix",
+        codeThemeId: "vscode-plus",
     },
 );
 
@@ -60,7 +60,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="group verflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+    <div class="group overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
         <div
             class="relative flex items-center gap-1.5 rounded-xl border-solid border-sand-5 border border-b-0 rounded-bl-0 rounded-br-0 bg-pureBlack px-2.5 py-2"
         >
@@ -99,9 +99,9 @@ onBeforeUnmount(() => {
             <SyntaxBlock
                 class="font-geist-mono-400"
                 :text="activeCommand"
-                language="bash"
+                language="shellscript"
                 :code-theme-id="codeThemeId"
-                fallback-color="rgba(214, 241, 230, 0.92)"
+                fallback-color="rgba(228, 230, 236, 0.94)"
             />
         </div>
     </div>
