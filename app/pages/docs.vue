@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
-import { computed, onMounted, ref } from 'vue'
-
 definePageMeta({
   layout: 'default',
 })
@@ -34,137 +31,11 @@ const tocSections = [
   { id: 'reference', label: 'Reference' },
   { id: 'known-limitations', label: 'Known Limitations' },
 ] as const
-
-type TocSectionId = (typeof tocSections)[number]['id']
-
-const activeSection = ref<TocSectionId>('introduction')
-const scrollContainer = ref<HTMLElement | null>(null)
-
-const navIndicatorStyle = computed(() => {
-  const index = tocSections.findIndex(section => section.id === activeSection.value)
-  const safeIndex = Math.max(index, 0)
-  return {
-    transform: `translateY(${safeIndex * 44}px)`,
-  }
-})
-
-function updateActiveSectionFromScroll() {
-  if (!scrollContainer.value)
-    return
-
-  const container = scrollContainer.value
-  const activationOffset = 150
-  const marker = container.scrollTop + activationOffset
-  const isAtBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 2
-
-  let currentSection: TocSectionId = tocSections[0].id
-
-  for (const [index, item] of tocSections.entries()) {
-    const section = document.getElementById(item.id)
-    if (!section)
-      continue
-
-    const sectionTop = section.offsetTop
-    const isLastSection = index === tocSections.length - 1
-
-    if (isAtBottom && isLastSection) {
-      currentSection = item.id
-      break
-    }
-
-    if (sectionTop <= marker)
-      currentSection = item.id
-  }
-
-  activeSection.value = currentSection
-}
-
-function scrollToSection(id: TocSectionId) {
-  const section = document.getElementById(id)
-  if (!section)
-    return
-
-  if (scrollContainer.value) {
-    const containerRect = scrollContainer.value.getBoundingClientRect()
-    const sectionRect = section.getBoundingClientRect()
-    const topOffset = 148
-    const targetTop = scrollContainer.value.scrollTop + (sectionRect.top - containerRect.top) - topOffset
-
-    scrollContainer.value.scrollTo({
-      top: Math.max(targetTop, 0),
-      behavior: 'smooth',
-    })
-  }
-  else {
-    section.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }
-
-  if (window.location.hash !== `#${id}`)
-    window.history.replaceState(null, '', `#${id}`)
-}
-
-function handleTocClick(event: MouseEvent, id: TocSectionId) {
-  event.preventDefault()
-  activeSection.value = id
-  scrollToSection(id)
-}
-
-onMounted(() => {
-  scrollContainer.value = document.querySelector('[data-app-scroll-container]') as HTMLElement | null
-
-  const currentHash = window.location.hash.replace('#', '')
-  if (tocSections.some(section => section.id === currentHash))
-    activeSection.value = currentHash as TocSectionId
-
-  updateActiveSectionFromScroll()
-  useEventListener(scrollContainer, 'scroll', updateActiveSectionFromScroll, { passive: true })
-})
 </script>
 
 <template>
   <main class="docs-page antialiased">
-    <aside class="docs-sidebar fixed bottom-0 left-0 top-0 z-40 hidden w-72 px-8 py-10 lg:flex lg:flex-col">
-      <div class="flex flex-1 flex-col justify-start pt-[calc(3rem+var(--hero-top-offset))]">
-        <div class="group mb-7 flex items-center gap-2 -ml-2">
-          <Icon name="ph:book-open-text" class="size-5 color-sand-11 group-hover:hidden" />
-          <Icon name="ph:book-open-text-fill" class="hidden size-5 color-sand-11 group-hover:block" />
-          <p class="font-geist-mono-500 text-[11px] color-sand-11 leading-none tracking-[0.22em] uppercase">
-            Documentation
-          </p>
-        </div>
-
-        <nav class="docs-toc-track relative flex flex-col gap-6">
-          <div class="nav-indicator" :style="navIndicatorStyle" />
-          <div
-            v-for="item in tocSections"
-            :key="item.id"
-            class="pl-5 text-sm transition-colors ease-out"
-            :class="activeSection === item.id ? 'color-pureWhite' : 'color-sand-10 hover:color-[#10b981]'"
-          >
-            <a
-              :href="`#${item.id}`"
-              class="font-geist font-light transition-colors"
-              @click="handleTocClick($event, item.id)"
-            >
-              {{ item.label }}
-            </a>
-          </div>
-        </nav>
-      </div>
-
-      <div class="mt-auto">
-        <NuxtLink
-          to="/"
-          class="text-text-tertiary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs transition-all duration-200 hover:text-pureWhite/82 hover:bg-pureWhite/6"
-        >
-          <Icon name="ph:arrow-left" class="h-3 w-3" />
-          Back to Home
-        </NuxtLink>
-      </div>
-    </aside>
+        <DocsTocSidebar :sections="tocSections" />
 
     <section class="docs-main relative z-10 lg:ml-72">
       <div class="mx-auto max-w-4xl px-6 pb-28 sm:px-8 lg:px-0 lg:pb-40">
@@ -505,39 +376,6 @@ onMounted(() => {
 .docs-page {
   background-color: #030507;
   color: #f8fafc;
-}
-
-.docs-sidebar {
-  background: linear-gradient(to bottom, rgba(3, 5, 7, 0.8), rgba(3, 5, 7, 0.4));
-  backdrop-filter: blur(12px);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.nav-indicator {
-  position: absolute;
-  left: 0;
-  width: 2px;
-  height: 24px;
-  background: #10b981;
-  box-shadow:
-    0 0 8px rgba(16, 185, 129, 0.9),
-    0 0 16px rgba(16, 185, 129, 0.35);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.docs-toc-track {
-  padding-left: 1px;
-}
-
-.docs-toc-track::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(148, 163, 184, 0.22);
-  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.05);
 }
 
 </style>
