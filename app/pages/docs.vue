@@ -2,6 +2,7 @@
 import DsInstallationTabs from "~/components/docs/DsInstallationTabs.vue";
 import DsExpandableCodeBlock from "~/components/docs/DsExpandableCodeBlock.vue";
 import DsTerminalBlock from "~/components/docs/DsTerminalBlock.vue";
+import DsLogoStepper from "~/components/docs/DsLogoStepper.vue";
 
 definePageMeta({
     layout: "default",
@@ -291,6 +292,7 @@ const tocSections = [
                             end in the same Codex-compatible payload, but they
                             optimize for different workflows.
                         </p>
+                        <DsLogoStepper />
                         <div
                             class="border-borderSubtle bg-surface/70 flex flex-col gap-8 border rounded-xl text-sm"
                         >
@@ -417,12 +419,12 @@ const tocSections = [
                                 </div>
                                 <div class="space-y-[4.5rem]">
                                     <div class="space-y-5">
-                                        <div class="flex items-start gap-4">
+                                        <div class="flex gap-4">
                                             <span
-                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                class="text-brand-400 font-geist-mono-500"
                                                 >01</span
                                             >
-                                            <p class="leading-7">
+                                            <p>
                                                 Clone
                                                 <a
                                                     href="https://github.com/lafllamme/codex-themes"
@@ -442,12 +444,12 @@ const tocSections = [
                                     </div>
 
                                     <div class="space-y-5">
-                                        <div class="flex items-start gap-4">
+                                        <div class="flex gap-4">
                                             <span
-                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                class="text-brand-400 font-geist-mono-500"
                                                 >02</span
                                             >
-                                            <p class="leading-7">
+                                            <p>
                                                 Add an iTerm preset file to
                                                 <code>input/</code> (official
                                                 iTerm2 preset or your own custom
@@ -460,7 +462,8 @@ const tocSections = [
                                             in the local
                                             <code>codex-themes</code>
                                             input folder as
-                                            <code>input/yourTheme.itermcolors</code
+                                            <code
+                                                >input/yourTheme.itermcolors</code
                                             >, as shown in the Adventure example
                                             below.
                                         </p>
@@ -483,12 +486,12 @@ const tocSections = [
                                     </div>
 
                                     <div class="space-y-5">
-                                        <div class="flex items-start gap-4">
+                                        <div class="flex gap-4">
                                             <span
-                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                class="text-brand-400 font-geist-mono-500"
                                                 >03</span
                                             >
-                                            <p class="leading-7">
+                                            <p>
                                                 Run the converter command shown
                                                 below to generate
                                                 Codex-compatible JSON themes in
@@ -501,18 +504,14 @@ const tocSections = [
                                             language="shellscript"
                                             code-theme-id="everforest"
                                         />
-                                        <div
-                                            class="rounded-xl border border-emerald-10/40 bg-emerald-11/8 px-4 py-3"
+                                        <p
+                                            class="text-[13px] leading-relaxed color-emerald-7"
                                         >
-                                            <p
-                                                class="text-[13px] leading-relaxed color-emerald-7"
-                                            >
-                                                Converter output is written to
-                                                <code>output/</code> as
-                                                Codex-compatible theme JSON
-                                                files ready for import.
-                                            </p>
-                                        </div>
+                                            Converter output is written to
+                                            <code>output/</code> as
+                                            Codex-compatible theme JSON files
+                                            ready for import.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -529,7 +528,7 @@ const tocSections = [
                             >.
                         </p>
                         <div
-                            class="rounded-xl border border-dashed border-sand-8/50 bg-sand-12/20 px-5 py-4"
+                            class="rounded-xl border border-dashed border-sand-8 hover:border-sand-11 bg-slate-1 px-5 py-4"
                         >
                             <p class="text-sm color-sand-10">
                                 <span class="font-geist-600 color-pureWhite"
