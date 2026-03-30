@@ -89,16 +89,16 @@ function lineOpacity(position: number) {
 }
 
 function initialX() {
-    return props.direction === "loop" ? 120 : -120;
+    return props.direction === "loop" ? 72 : -72;
 }
 
 function exitX() {
-    return props.direction === "loop" ? -120 : 120;
+    return props.direction === "loop" ? -72 : 72;
 }
 </script>
 
 <template>
-    <div class="relative flex w-full items-start justify-center overflow-hidden py-4">
+    <div class="relative flex w-full items-start justify-center overflow-hidden py-4 [transform:translateZ(0)]">
         <div class="flex items-start justify-center gap-6" style="width: fit-content">
             <AnimatePresence :initial="false" mode="popLayout">
                 <Motion
@@ -106,11 +106,11 @@ function exitX() {
                     :key="originalIndex"
                     as="div"
                     layout="position"
-                    class="flex min-h-[200px] w-20 shrink-0 flex-col items-center"
+                    class="flex min-h-[200px] w-20 shrink-0 flex-col items-center will-change-transform"
                     :initial="{
                         x: initialX(),
                         opacity: 0,
-                        scale: 0.7,
+                        scale: 0.75,
                     }"
                     :animate="{
                         x: 0,
@@ -120,11 +120,11 @@ function exitX() {
                     :exit="{
                         x: exitX(),
                         opacity: 0,
-                        scale: 0.7,
+                        scale: 0.75,
                     }"
                     :transition="{
                         duration: animationDuration,
-                        ease: [0.4, 0, 0.2, 1],
+                        ease: [0.22, 1, 0.36, 1],
                     }"
                 >
                     <Motion
@@ -144,7 +144,7 @@ function exitX() {
                         :exit="{ opacity: 0 }"
                         :transition="{
                             duration: animationDuration,
-                            ease: [0.4, 0, 0.2, 1],
+                            ease: [0.22, 1, 0.36, 1],
                         }"
                     >
                         <div class="mb-4 h-16 w-[2px] bg-sand-7/75" />
