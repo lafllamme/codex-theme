@@ -416,15 +416,13 @@ const tocSections = [
                                     </ul>
                                 </div>
                                 <div class="space-y-[4.5rem]">
-                                    <div
-                                        class="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3"
-                                    >
-                                        <span
-                                            class="pt-0.5 text-brand-400 font-geist-mono-500"
-                                            >01</span
-                                        >
-                                        <div class="space-y-5">
-                                            <p>
+                                    <div class="space-y-5">
+                                        <div class="flex items-start gap-4">
+                                            <span
+                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                >01</span
+                                            >
+                                            <p class="leading-7">
                                                 Clone
                                                 <a
                                                     href="https://github.com/lafllamme/codex-themes"
@@ -434,91 +432,86 @@ const tocSections = [
                                                     >lafllamme/codex-themes</a
                                                 >.
                                             </p>
-                                            <DsTerminalBlock
-                                                title="Terminal"
-                                                :text="quickStartCloneCommand"
-                                                language="shellscript"
-                                                code-theme-id="everforest"
-                                            />
                                         </div>
+                                        <DsTerminalBlock
+                                            title="Terminal"
+                                            :text="quickStartCloneCommand"
+                                            language="shellscript"
+                                            code-theme-id="everforest"
+                                        />
                                     </div>
 
-                                    <div
-                                        class="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3"
-                                    >
-                                        <span
-                                            class="pt-0.5 text-brand-400 font-geist-mono-500"
-                                            >02</span
-                                        >
-                                        <div class="space-y-5">
-                                            <p>
+                                    <div class="space-y-5">
+                                        <div class="flex items-start gap-4">
+                                            <span
+                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                >02</span
+                                            >
+                                            <p class="leading-7">
                                                 Add an iTerm preset file to
                                                 <code>input/</code> (official
                                                 iTerm2 preset or your own custom
                                                 one).
                                             </p>
-                                            <p class="text-sm color-sand-10">
-                                                Place your preferred iTerm2
-                                                color preset (or your own custom
-                                                preset) in the local
-                                                <code>codex-themes</code>
-                                                input folder as
-                                                <code>input/yourTheme.itermcolors</code
-                                                >, as shown in the Adventure
-                                                example below.
-                                            </p>
-                                            <DsExpandableCodeBlock
-                                                title="input/Adventure.itermcolors"
-                                                :text="quickStartInputPresetExample"
-                                                language="xml"
-                                                code-theme-id="everforest"
-                                                :collapsed-lines="10"
-                                            />
-                                            <p class="pt-16 text-sm color-sand-10">
-                                                Install dependencies (once) with
-                                                your preferred package manager:
-                                            </p>
-                                            <DsInstallationTabs
-                                                v-model="quickStartPm"
-                                                :tabs="quickStartInstallTabs"
-                                                code-theme-id="everforest"
-                                            />
                                         </div>
+                                        <p class="text-sm color-sand-10">
+                                            Place your preferred iTerm2 color
+                                            preset (or your own custom preset)
+                                            in the local
+                                            <code>codex-themes</code>
+                                            input folder as
+                                            <code>input/yourTheme.itermcolors</code
+                                            >, as shown in the Adventure example
+                                            below.
+                                        </p>
+                                        <DsExpandableCodeBlock
+                                            title="input/Adventure.itermcolors"
+                                            :text="quickStartInputPresetExample"
+                                            language="xml"
+                                            code-theme-id="everforest"
+                                            :collapsed-lines="10"
+                                        />
+                                        <p class="pt-16 text-sm color-sand-10">
+                                            Install dependencies (once) with
+                                            your preferred package manager:
+                                        </p>
+                                        <DsInstallationTabs
+                                            v-model="quickStartPm"
+                                            :tabs="quickStartInstallTabs"
+                                            code-theme-id="everforest"
+                                        />
                                     </div>
 
-                                    <div
-                                        class="grid grid-cols-[2.25rem_minmax(0,1fr)] items-start gap-x-4 gap-y-3"
-                                    >
-                                        <span
-                                            class="pt-0.5 text-brand-400 font-geist-mono-500"
-                                            >03</span
-                                        >
-                                        <div class="space-y-5">
-                                            <p>
+                                    <div class="space-y-5">
+                                        <div class="flex items-start gap-4">
+                                            <span
+                                                class="w-9 shrink-0 pt-0.5 text-brand-400 font-geist-mono-500"
+                                                >03</span
+                                            >
+                                            <p class="leading-7">
                                                 Run the converter command shown
                                                 below to generate
                                                 Codex-compatible JSON themes in
                                                 <code>output/</code>.
                                             </p>
-                                            <DsTerminalBlock
-                                                title="Terminal"
-                                                :text="quickStartPipelineCommand"
-                                                language="shellscript"
-                                                code-theme-id="everforest"
-                                            />
-                                            <div
-                                                class="rounded-xl border border-emerald-10/40 bg-emerald-11/8 px-4 py-3"
+                                        </div>
+                                        <DsTerminalBlock
+                                            title="Terminal"
+                                            :text="quickStartPipelineCommand"
+                                            language="shellscript"
+                                            code-theme-id="everforest"
+                                        />
+                                        <div
+                                            class="rounded-xl border border-emerald-10/40 bg-emerald-11/8 px-4 py-3"
+                                        >
+                                            <p
+                                                class="text-[13px] leading-relaxed color-emerald-7"
                                             >
-                                                <p
-                                                    class="text-[13px] leading-relaxed color-emerald-7"
-                                                >
-                                                    Converter output is written
-                                                    to
-                                                    <code>output/</code> as
-                                                    Codex-compatible theme JSON
-                                                    files ready for import.
-                                                </p>
-                                            </div>
+                                                Converter output is written to
+                                                <code>output/</code> as
+                                                Codex-compatible theme JSON
+                                                files ready for import.
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
