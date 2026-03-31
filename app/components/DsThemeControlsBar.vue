@@ -11,6 +11,7 @@ defineProps<{
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
   exportState: 'idle' | 'ok'
+  applyState: 'idle' | 'ok' | 'error'
   uiFontSize: number
   codeFontSize: number
   translucentSidebar: boolean
@@ -24,6 +25,7 @@ const emit = defineEmits<{
   setJsonValue: [value: string]
   exportTheme: []
   copyExport: []
+  applyExport: []
   setAccent: [value: string]
   setSurface: [value: string]
   setInk: [value: string]
@@ -172,6 +174,7 @@ const morphStyle = computed(() => ({
                 :json-error="jsonError"
                 :copy-state="copyState"
                 :export-state="exportState"
+                :apply-state="applyState"
                 :ui-font-size="uiFontSize"
                 :code-font-size="codeFontSize"
                 :translucent-sidebar="translucentSidebar"
@@ -182,6 +185,7 @@ const morphStyle = computed(() => ({
                 @set-json-value="emit('setJsonValue', $event)"
                 @export-theme="emit('exportTheme')"
                 @copy-export="emit('copyExport')"
+                @apply-export="emit('applyExport')"
                 @set-accent="emit('setAccent', $event)"
                 @set-surface="emit('setSurface', $event)"
                 @set-ink="emit('setInk', $event)"

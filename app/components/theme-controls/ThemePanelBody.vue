@@ -15,6 +15,7 @@ const props = defineProps<{
   jsonError: string
   copyState: 'idle' | 'ok' | 'error'
   exportState: 'idle' | 'ok'
+  applyState: 'idle' | 'ok' | 'error'
   uiFontSize: number
   codeFontSize: number
   translucentSidebar: boolean
@@ -28,6 +29,7 @@ const emit = defineEmits<{
   setJsonValue: [value: string]
   exportTheme: []
   copyExport: []
+  applyExport: []
   setAccent: [value: string]
   setSurface: [value: string]
   setInk: [value: string]
@@ -48,6 +50,7 @@ const emit = defineEmits<{
 }>()
 
 const HEX_COLOR_RE = /^#[0-9a-f]{6}$/i
+const OPTION_SUFFIX_RE = /\s*\(.*\)\s*$/
 const jsonOpen = ref(true)
 const expandedColor = ref<ColorField | null>(null)
 const codeThemeInfoOpen = ref(false)
@@ -141,7 +144,7 @@ function optionLabel(options: Array<{ label: string, value: string }>, value: st
   const match = options.find(opt => opt.value === value)
   if (!match)
     return value || fallbackLabel
-  return match.label.replace(/\s*\(.*\)\s*$/, '')
+  return match.label.replace(OPTION_SUFFIX_RE, '')
 }
 
 const uiFontLabel = computed(() => optionLabel(UI_FONT_OPTIONS, props.payload.theme.fonts.ui || '', 'Geist'))
@@ -663,6 +666,16 @@ onBeforeUnmount(() => {
         >
           <Icon name="ph:copy-bold" class="h-4.5 w-4.5" />
           {{ copyState === 'ok' ? 'Copied!' : 'Copy' }}
+        </button>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="flex w-full items-center justify-center gap-2 rounded-xl border bg-pureBlack py-3 text-[14px] font-semibold color-pureWhite shadow-sm transition-all hover:bg-sand-2 active:scale-[0.98]"
+          @click="emit('applyExport')"
+        >
+          <Icon name="ph:check-bold" class="h-4.5 w-4.5" />
+          {{ applyState === 'ok' ? 'Applied!' : 'Apply' }}
         </button>
       </div>
     </section>

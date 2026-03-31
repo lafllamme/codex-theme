@@ -45,12 +45,12 @@ const runConvertByPm: Record<PackageManager, string> = {
 }
 
 const quickStartStepperLogos = [
-  { icon: 'ph:rocket-launch-light', label: 'Launch' },
+  { icon: 'ph:magnifying-glass-light', label: 'Explore' },
   { icon: 'ph:sparkle-light', label: 'Studio' },
   { icon: 'ph:sliders-horizontal-light', label: 'Configure' },
-  { icon: 'ph:file-arrow-up-light', label: 'Export' },
-  { icon: 'ph:arrow-line-down-light', label: 'Download' },
-  { icon: 'ph:check-circle-light', label: 'Apply' },
+  { icon: 'ph:terminal', label: 'CLI' },
+  { icon: 'ph:download-simple-light', label: 'Download' },
+  { icon: 'ph:cursor-click-light', label: 'Apply' },
 ]
 
 const quickStartInstallTabs = computed(() => [
@@ -313,7 +313,7 @@ const tocSections = [
                 <div class="flex gap-4">
                   <span class="text-brand-400 font-geist-mono-500">01</span>
                   <p>
-                      Open
+                    Open
                     <NuxtLink
                       to="/themes"
                       class="group font-geist-500 relative inline-flex items-center gap-1 pb-0.5 leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
@@ -438,8 +438,14 @@ const tocSections = [
                           href="https://github.com/lafllamme/codex-themes"
                           target="_blank"
                           rel="noreferrer noopener"
-                          class="text-text-primary leading-5 underline underline-offset-3 decoration-dotted"
-                        >lafllamme/codex-themes</a>.
+                          class="group font-geist-500 relative inline-flex items-center gap-1 pb-0.5 leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
+                        >
+                          lafllamme/codex-themes
+                          <Icon
+                            name="ph:arrow-up-right"
+                            class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                          />
+                        </a>
                       </p>
                     </div>
                     <DsTerminalBlock
@@ -457,9 +463,9 @@ const tocSections = [
                       >02</span>
                       <p>
                         Add an iTerm preset file to
-                        <code>input/</code> (official
-                        iTerm2 preset or your own custom
-                        one).
+                        <code>input/</code>, either from
+                        the official iTerm2 collection or
+                        your own custom preset.
                       </p>
                     </div>
                     <p class="text-sm color-sand-10">

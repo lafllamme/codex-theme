@@ -90,11 +90,13 @@ const jsonValue = ref('')
 const jsonError = ref('')
 const copyState = ref<'idle' | 'ok' | 'error'>('idle')
 const exportState = ref<'idle' | 'ok'>('idle')
+const applyState = ref<'idle' | 'ok' | 'error'>('idle')
 const isApplyingJson = ref(false)
 const scenarioId = ref('neutral')
 const activePresetId = ref<string | null>(null)
 let copyStateResetTimer: ReturnType<typeof setTimeout> | null = null
 let exportStateResetTimer: ReturnType<typeof setTimeout> | null = null
+let applyStateResetTimer: ReturnType<typeof setTimeout> | null = null
 
 const scenarioOptions = [
   { id: 'neutral', label: 'Neutral' },
@@ -316,7 +318,6 @@ async function copyExport() {
   try {
     await navigator.clipboard.writeText(toCodexThemeString())
     copyState.value = 'ok'
-    openCodexSettingsFromBrowser()
     copyStateResetTimer = setTimeout(() => {
       copyState.value = 'idle'
       copyStateResetTimer = null
@@ -324,6 +325,31 @@ async function copyExport() {
   }
   catch {
     copyState.value = 'error'
+  }
+}
+
+async function applyExport() {
+  applyState.value = 'idle'
+  if (applyStateResetTimer) {
+    clearTimeout(applyStateResetTimer)
+    applyStateResetTimer = null
+  }
+  if (!process.client || !navigator.clipboard) {
+    applyState.value = 'error'
+    return
+  }
+
+  try {
+    await navigator.clipboard.writeText(toCodexThemeString())
+    openCodexSettingsFromBrowser()
+    applyState.value = 'ok'
+    applyStateResetTimer = setTimeout(() => {
+      applyState.value = 'idle'
+      applyStateResetTimer = null
+    }, 3000)
+  }
+  catch {
+    applyState.value = 'error'
   }
 }
 
@@ -585,6 +611,8 @@ onBeforeUnmount(() => {
     clearTimeout(copyStateResetTimer)
   if (exportStateResetTimer)
     clearTimeout(exportStateResetTimer)
+  if (applyStateResetTimer)
+    clearTimeout(applyStateResetTimer)
 })
 </script>
 
@@ -608,6 +636,7 @@ onBeforeUnmount(() => {
           :json-error="jsonError"
           :copy-state="copyState"
           :export-state="exportState"
+          :apply-state="applyState"
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
           :translucent-sidebar="!payload.theme.opaqueWindows"
@@ -619,6 +648,7 @@ onBeforeUnmount(() => {
           @apply-theme-preset="applyThemePreset"
           @export-theme="exportTheme"
           @copy-export="copyExport"
+          @apply-export="applyExport"
           @set-accent="setAccent"
           @set-surface="setSurface"
           @set-ink="setInk"
