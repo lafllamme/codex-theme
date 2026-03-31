@@ -316,6 +316,7 @@ async function copyExport() {
   try {
     await navigator.clipboard.writeText(toCodexThemeString())
     copyState.value = 'ok'
+    openCodexSettingsFromBrowser()
     copyStateResetTimer = setTimeout(() => {
       copyState.value = 'idle'
       copyStateResetTimer = null
@@ -324,6 +325,22 @@ async function copyExport() {
   catch {
     copyState.value = 'error'
   }
+}
+
+function openCodexSettingsFromBrowser() {
+  if (!process.client)
+    return
+
+  // Codex currently deep-links reliably to settings root only.
+  // Section-level routing (e.g. appearance) falls back to "general" in current app builds.
+  const codexSettingsUrl = 'codex://settings'
+  const anchor = document.createElement('a')
+  anchor.href = codexSettingsUrl
+  anchor.rel = 'noopener noreferrer'
+  anchor.style.display = 'none'
+  document.body.appendChild(anchor)
+  anchor.click()
+  anchor.remove()
 }
 
 function setAccent(value: string) {
