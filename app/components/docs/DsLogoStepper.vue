@@ -188,18 +188,18 @@ onBeforeUnmount(() => {
         <div
           v-for="{ logo, originalIndex } in visibleLogos"
           :key="originalIndex"
-          class="absolute left-1/2 top-0 ml-[-40px]"
+          class="absolute group left-1/2 top-0 ml-[-40px]"
         >
           <div
             class="min-h-[200px] w-20 flex shrink-0 flex-col items-center"
             :style="itemStyle(originalIndex)"
           >
             <div
-              class="border border-sand-6 rounded-xl bg-sand-12/35 p-4 transition-colors"
-              :class="isCenter(originalIndex) ? 'border-brand-500/60' : ''"
+              class="rounded-xl bg-sand-2 p-4 border border-solid"
+              :class="isCenter(originalIndex) ? 'border-sand-8 !group-hover:border-red-9' : 'border-sand-5 !group-hover:border-red-9'"
             >
               <div class="h-12 w-12 flex items-center justify-center">
-                <Icon :name="logo.icon" class="h-6 w-6 color-sand-2" />
+                <Icon :name="logo.icon" class="h-6 w-6 color-sand-12" />
               </div>
             </div>
 
@@ -210,9 +210,9 @@ onBeforeUnmount(() => {
                 transition: `opacity ${animationDuration}s ${transitionEasing}`,
               }"
             >
-              <div class="mb-4 h-16 w-0.5 bg-sand-7/75" />
+              <div class="mb-4 h-16 w-0.5 bg-sand-4" />
               <span
-                class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
+                class="font-geist-500 whitespace-nowrap text-xs color-sand-10 tracking-wider uppercase"
               >
                 {{ logo.label }}
               </span>

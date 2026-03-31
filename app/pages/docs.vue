@@ -313,12 +313,16 @@ const tocSections = [
                 <div class="flex gap-4">
                   <span class="text-brand-400 font-geist-mono-500">01</span>
                   <p>
-                    Launch
+                      Open
                     <NuxtLink
                       to="/themes"
-                      class="text-text-primary underline underline-offset-3 decoration-dotted"
+                      class="group font-geist-500 relative inline-flex items-center gap-1 pb-0.5 leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
                     >
                       Theme Studio
+                      <Icon
+                        name="ph:arrow-up-right"
+                        class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
                     </NuxtLink>
                     and start from any preset.
                   </p>
@@ -326,11 +330,10 @@ const tocSections = [
                 <div class="flex gap-4">
                   <span class="text-brand-400 font-geist-mono-500">02</span>
                   <p>
-                    Configure your base tokens
-                    (<code>accent</code>, <code>surface</code>,
-                    <code>ink</code>) and fine-tune
-                    <code>contrast</code> +
-                    <code>semanticColors</code>.
+                    Set your core tokens
+                    <span class="font-geist-mono">(accent,surface,ink)</span> then fine-tune
+                    <span class="font-geist-mono">contrast</span> and
+                    <span class="font-geist-mono">semanticColors</span>.
                   </p>
                 </div>
                 <div class="flex gap-4">
