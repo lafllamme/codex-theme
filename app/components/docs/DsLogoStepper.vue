@@ -82,6 +82,9 @@ const transitionEasing = 'cubic-bezier(0.4, 0, 0.2, 1)'
 
 const groupStyle = computed(() => ({
   '--step-duration': `${props.animationDuration}s`,
+  '--step-easing': transitionEasing,
+  '--enter-offset': props.direction === 'loop' ? `${ITEM_STRIDE}px` : `${-ITEM_STRIDE}px`,
+  '--leave-offset': props.direction === 'loop' ? `${-ITEM_STRIDE}px` : `${ITEM_STRIDE}px`,
 }))
 
 function getPosition(originalIndex: number) {
@@ -185,31 +188,35 @@ onBeforeUnmount(() => {
         <div
           v-for="{ logo, originalIndex } in visibleLogos"
           :key="originalIndex"
-          class="absolute left-1/2 top-0 ml-[-40px] min-h-[200px] w-20 flex shrink-0 flex-col items-center"
-          :style="itemStyle(originalIndex)"
+          class="absolute left-1/2 top-0 ml-[-40px]"
         >
           <div
-            class="border border-sand-6 rounded-xl bg-sand-12/35 p-4 transition-colors"
-            :class="isCenter(originalIndex) ? 'border-brand-500/60' : ''"
+            class="min-h-[200px] w-20 flex shrink-0 flex-col items-center"
+            :style="itemStyle(originalIndex)"
           >
-            <div class="h-12 w-12 flex items-center justify-center">
-              <Icon :name="logo.icon" class="h-6 w-6 color-sand-2" />
-            </div>
-          </div>
-
-          <div
-            class="mt-4 h-28 flex flex-col items-center"
-            :style="{
-              opacity: lineOpacity(originalIndex),
-              transition: `opacity ${animationDuration}s ${transitionEasing}`,
-            }"
-          >
-            <div class="mb-4 h-16 w-0.5 bg-sand-7/75" />
-            <span
-              class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
+            <div
+              class="border border-sand-6 rounded-xl bg-sand-12/35 p-4 transition-colors"
+              :class="isCenter(originalIndex) ? 'border-brand-500/60' : ''"
             >
-              {{ logo.label }}
-            </span>
+              <div class="h-12 w-12 flex items-center justify-center">
+                <Icon :name="logo.icon" class="h-6 w-6 color-sand-2" />
+              </div>
+            </div>
+
+            <div
+              class="mt-4 h-28 flex flex-col items-center"
+              :style="{
+                opacity: lineOpacity(originalIndex),
+                transition: `opacity ${animationDuration}s ${transitionEasing}`,
+              }"
+            >
+              <div class="mb-4 h-16 w-0.5 bg-sand-7/75" />
+              <span
+                class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
+              >
+                {{ logo.label }}
+              </span>
+            </div>
           </div>
         </div>
       </TransitionGroup>
@@ -220,11 +227,21 @@ onBeforeUnmount(() => {
 <style scoped>
 .logo-stepper-enter-active,
 .logo-stepper-leave-active {
-  transition: opacity var(--step-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity var(--step-duration) var(--step-easing),
+    transform var(--step-duration) var(--step-easing);
 }
 
 .logo-stepper-enter-from,
 .logo-stepper-leave-to {
   opacity: 0;
+}
+
+.logo-stepper-enter-from {
+  transform: translateX(var(--enter-offset)) scale(0.75);
+}
+
+.logo-stepper-leave-to {
+  transform: translateX(var(--leave-offset)) scale(0.75);
 }
 </style>
