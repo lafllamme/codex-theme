@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useClipboard, useTimeoutFn } from '@vueuse/core'
 import DsExpandableCodeBlock from '~/components/docs/DsExpandableCodeBlock.vue'
 import DsInstallationTabs from '~/components/docs/DsInstallationTabs.vue'
 import DsLogoStepper from '~/components/docs/DsLogoStepper.vue'
 import DsTerminalBlock from '~/components/docs/DsTerminalBlock.vue'
+import SyntaxBlock from '~/components/workbench/code/SyntaxBlock.vue'
 
 definePageMeta({
   layout: 'default',
@@ -145,6 +147,69 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
   </dict>
 </dict>
 </plist>`
+
+type CopyState = 'idle' | 'ok' | 'error'
+
+const payloadCopyState = ref<CopyState>('idle')
+const { copy: copyToClipboard, isSupported: isClipboardSupported } = useClipboard()
+const {
+  start: startPayloadCopyReset,
+  stop: stopPayloadCopyReset,
+} = useTimeoutFn(() => {
+  payloadCopyState.value = 'idle'
+}, 2200, { immediate: false })
+
+const tokenDefinitionRows = [
+  {
+    badges: ['accent'],
+    description: 'Interactive highlights, emphasis color, visual personality.',
+  },
+  {
+    badges: ['surface'],
+    description: 'Background plane and overall depth impression.',
+  },
+  {
+    badges: ['ink'],
+    description: 'Foreground text legibility and perceived sharpness.',
+  },
+  {
+    badges: ['contrast'],
+    description: 'Global separation between content and background.',
+  },
+  {
+    badges: ['semanticColors.*'],
+    description: 'Status and meaning tokens (diffs, skills, contextual cues).',
+  },
+  {
+    badges: ['fonts', 'opaqueWindows'],
+    description: 'Runtime and rendering behavior adjustments.',
+  },
+] as const
+
+async function copyPayloadExample() {
+  payloadCopyState.value = 'idle'
+  stopPayloadCopyReset()
+
+  if (!isClipboardSupported.value) {
+    payloadCopyState.value = 'error'
+    startPayloadCopyReset()
+    return
+  }
+
+  try {
+    await copyToClipboard(schemaExample)
+    payloadCopyState.value = 'ok'
+  }
+  catch {
+    payloadCopyState.value = 'error'
+  }
+
+  startPayloadCopyReset()
+}
+
+onBeforeUnmount(() => {
+  stopPayloadCopyReset()
+})
 
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
@@ -305,11 +370,16 @@ const tocSections = [
               class="border-borderSubtle bg-surface/70 flex flex-col gap-7 border rounded-xl py-6 text-sm"
             >
               <div class="space-y-4">
-                <h4
-                  class="text-brand-400 font-geist-mono-500 text-sm tracking-[0.18em] uppercase"
-                >
-                  Recommended Flow
-                </h4>
+                <div class="flex items-center gap-4">
+                  <h4
+                    class="font-geist-mono-500 text-[11px] tracking-[0.2em] uppercase color-sand-8"
+                  >
+                    Recommended Flow
+                  </h4>
+                  <div
+                    class="h-px flex-1 bg-gradient-to-r from-sand-9/40 to-transparent"
+                  />
+                </div>
                 <div class="flex gap-4">
                   <span class="text-brand-400 font-geist-mono-500">01</span>
                   <p>
@@ -360,11 +430,16 @@ const tocSections = [
               <div
                 class="border-borderSubtle border-b py-4"
               >
-                <h4
-                  class="text-brand-400 font-geist-mono-500 text-sm tracking-[0.18em] uppercase"
-                >
-                  Advanced Flow
-                </h4>
+                <div class="flex items-center gap-4">
+                  <h4
+                    class="font-geist-mono-500 text-[11px] tracking-[0.2em] uppercase color-sand-8"
+                  >
+                    Advanced Flow
+                  </h4>
+                  <div
+                    class="h-px flex-1 bg-gradient-to-r from-sand-9/40 to-transparent"
+                  />
+                </div>
               </div>
               <div class="py-6">
                 <p class="text-xs color-sand-10">
@@ -554,144 +629,130 @@ const tocSections = [
           <div
             class="flex flex-col gap-8 pb-20 text-base color-sand-11 font-light leading-normal max-lg:pb-14 lg:text-lg"
           >
-            <p>
+            <p class="max-w-2xl text-sand-9 leading-relaxed">
               Payload exchange uses the
-              <code class="text-text-primary text-xs">codex-theme-v1:</code>
-              prefix as parser signature. The contract is stable
-              and designed for predictable import/export.
+              <code class="border border-sand-8/70 rounded bg-sand-12/40 px-1.5 py-0.5 text-[15px] color-sand-3 font-mono">codex-theme-v1:</code>
+              prefix as parser signature. The contract is stable and
+              designed for predictable import/export.
             </p>
-            <div class="space-y-8">
-              <div>
-                <h4
-                  class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase"
-                >
-                  Top-Level Fields
-                </h4>
-                <p class="text-sm">
-                  <code>codeThemeId</code> (theme identity),
-                  <code>variant</code>
-                  (<code>dark</code>/<code>light</code>), and
-                  <code>theme</code> (all visual tokens).
-                </p>
+
+            <section class="space-y-6">
+              <div class="mb-1 flex items-center gap-4">
+                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                  Schema Overview
+                </h3>
+                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
               </div>
-              <div>
-                <h4
-                  class="text-brand-400 font-geist-mono-500 mb-2 text-sm tracking-[0.18em] uppercase"
+              <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <article
+                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all duration-200 hover:bg-sand-2"
                 >
-                  Theme Fields
-                </h4>
-                <p class="text-sm">
-                  <code>accent</code>, <code>surface</code>,
-                  <code>ink</code>, <code>contrast</code>,
-                  <code>opaqueWindows</code>,
-                  <code>fonts</code> (<code>ui</code>,
-                  <code>code</code>), and
-                  <code>semanticColors</code>.
-                </p>
+                  <h4 class="font-geist-mono-500 mb-3 text-[11px] group-hover:color-pureWhite color-sand-10 tracking-wider uppercase">
+                    Top-Level Fields
+                  </h4>
+                  <p class="text-[15px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-sand-12">
+                    <code class="font-geist-mono-500 !text-brand-500">codeThemeId</code>
+                    (theme identity),
+                    <code class="font-geist-mono-500 !text-brand-500">variant</code>
+                    (dark/light), and
+                    <code class="font-geist-mono-500 !text-brand-500">theme</code>
+                    (all visual tokens).
+                  </p>
+                </article>
+                <article
+                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all duration-200 hover:bg-sand-2"
+                >
+                  <h4 class="font-geist-mono-500 mb-3 text-[11px] group-hover:color-pureWhite color-sand-10 tracking-wider uppercase">
+                    Theme Fields
+                  </h4>
+                  <p class="text-[15px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-sand-12">
+                    <code class="font-geist-mono-500 !text-brand-500">accent</code>,
+                    <code class="font-geist-mono-500 !text-brand-500">surface</code>,
+                    <code class="font-geist-mono-500 !text-brand-500">ink</code>,
+                    <code class="font-geist-mono-500 !text-brand-500">contrast</code>,
+                    <code class="font-geist-mono-500 !text-brand-500">opaqueWindows</code>,
+                    <code class="font-geist-mono-500 !text-brand-500">fonts</code>, and
+                    <code class="font-geist-mono-500 !text-brand-500">semanticColors</code>.
+                  </p>
+                </article>
               </div>
-            </div>
-            <div class="relative mt-8">
-              <div
-                class="bg-brand-500/5 absolute inset-0 rounded-3xl blur-2xl"
-              />
-              <pre
-                class="text-text-secondary border-borderSubtle bg-black/40 relative overflow-x-auto border rounded-2xl p-8 text-xs leading-relaxed"
-              ><code>{{ schemaExample }}</code></pre>
-            </div>
-            <div
-              class="border-borderSubtle mt-8 overflow-hidden border rounded-xl"
-            >
-              <table class="w-full text-left text-sm">
-                <thead class="bg-surface/70 text-text-primary">
-                  <tr>
-                    <th class="font-geist-500 px-4 py-3">
-                      Field
-                    </th>
-                    <th class="font-geist-500 px-4 py-3">
-                      Visual Effect
-                    </th>
-                    <th class="font-geist-500 px-4 py-3">
-                      Edit Priority
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="text-text-secondary">
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>accent</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Interactive highlights, emphasis
-                      color, visual personality.
-                    </td>
-                    <td class="px-4 py-3">
-                      First
-                    </td>
-                  </tr>
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>surface</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Background plane and overall depth
-                      impression.
-                    </td>
-                    <td class="px-4 py-3">
-                      First
-                    </td>
-                  </tr>
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>ink</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Foreground text legibility and
-                      perceived sharpness.
-                    </td>
-                    <td class="px-4 py-3">
-                      First
-                    </td>
-                  </tr>
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>contrast</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Global separation between content
-                      and background.
-                    </td>
-                    <td class="px-4 py-3">
-                      As needed
-                    </td>
-                  </tr>
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>semanticColors.*</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Status and meaning tokens (diffs,
-                      skills, contextual cues).
-                    </td>
-                    <td class="px-4 py-3">
-                      After base tones
-                    </td>
-                  </tr>
-                  <tr class="border-borderSubtle/70 border-t">
-                    <td class="px-4 py-3">
-                      <code>fonts</code>,
-                      <code>opaqueWindows</code>
-                    </td>
-                    <td class="px-4 py-3">
-                      Runtime and rendering behavior
-                      adjustments.
-                    </td>
-                    <td class="px-4 py-3">
-                      Rarely
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            </section>
+
+            <section class="pt-2 space-y-6">
+              <div class="mb-1 flex items-center gap-4">
+                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                  Token Definitions
+                </h3>
+                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
+              </div>
+              <div class="flex border-b border-sand-9/45 px-4 pb-4 text-[11px] color-sand-8 tracking-wider uppercase">
+                <div class="font-geist-600 w-56 shrink-0">
+                  Field Name
+                </div>
+                <div class="font-geist-600">
+                  Visual Effect
+                </div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  v-for="(row, index) in tokenDefinitionRows"
+                  :key="row.badges.join('-')"
+                  class="group flex cursor-default items-center gap-6 border-b border-slate-1 border-solid rounded-xl px-4 py-4 transition-colors !duration-200 ease-out -mx-4 hover:bg-pureWhite/2"
+                  :class="index === tokenDefinitionRows.length - 1 ? 'border-transparent' : ''"
+                >
+                  <div class="w-56 flex shrink-0 flex-wrap items-center gap-2">
+                    <span
+                      v-for="badge in row.badges"
+                      :key="badge"
+                      class="font-geist-mono-500 border leading-normal border-sand-4 group-hover:border-sand-10 border-solid rounded bg-sand-1 px-2.5 py-1.5 text-[13px] color-sand-11 transition-all duration-200 group-hover:color-pureWhite"
+                    >
+                      {{ badge }}
+                    </span>
+                  </div>
+                  <div class="flex-1 text-[14px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-pureWhite">
+                    {{ row.description }}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="pt-2 space-y-6">
+              <div class="mb-1 flex items-center gap-4">
+                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                  Payload Example
+                </h3>
+                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
+              </div>
+              <div class="group hover:border-brand-500/45 border border-sand-9/60 rounded-xl bg-slate-1 shadow-sm transition-all duration-200">
+                <div class="flex items-center justify-between border-b border-sand-9/50 px-5 py-3.5">
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
+                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
+                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
+                    </div>
+                    <span class="font-geist-mono-500 text-[12px] color-sand-8 tracking-wide">theme-payload.json</span>
+                  </div>
+                  <button
+                    type="button"
+                    class="font-geist-500 hover:border-brand-500/50 inline-flex items-center gap-1.5 border border-sand-9/70 rounded bg-sand-12/70 px-2.5 py-1 text-[11px] color-sand-7 shadow-sm transition-colors duration-200 hover:color-sand-5"
+                    @click="copyPayloadExample"
+                  >
+                    <Icon name="ph:copy" class="h-3 w-3" />
+                    {{ payloadCopyState === 'ok' ? 'Copied' : payloadCopyState === 'error' ? 'Error' : 'Copy' }}
+                  </button>
+                </div>
+                <div class="overflow-x-auto p-6">
+                  <SyntaxBlock
+                    class="font-geist-mono-500 text-[13px] leading-[1.8]"
+                    :text="schemaExample"
+                    language="json"
+                    code-theme-id="everforest"
+                    fallback-color="rgba(220,220,223,0.95)"
+                  />
+                </div>
+              </div>
+            </section>
           </div>
         </section>
 
