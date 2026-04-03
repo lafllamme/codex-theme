@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useClipboard, useTimeoutFn } from '@vueuse/core'
 import DsExpandableCodeBlock from '~/components/docs/DsExpandableCodeBlock.vue'
 import DsInstallationTabs from '~/components/docs/DsInstallationTabs.vue'
 import DsLogoStepper from '~/components/docs/DsLogoStepper.vue'
@@ -148,73 +147,72 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
 </dict>
 </plist>`
 
-type CopyState = 'idle' | 'ok' | 'error'
-
-const payloadCopyState = ref<CopyState>('idle')
-const { copy: copyToClipboard, isSupported: isClipboardSupported }
-  = useClipboard()
-const { start: startPayloadCopyReset, stop: stopPayloadCopyReset }
-  = useTimeoutFn(
-    () => {
-      payloadCopyState.value = 'idle'
-    },
-    2200,
-    { immediate: false },
-  )
-
 const tokenDefinitionRows = [
   {
-    badges: ['accent'],
+    key: 'codeThemeId',
     description:
-            'Interactive highlights, emphasis color, visual personality.',
+            'Selects the syntax theme preset used for code highlighting output.',
   },
   {
-    badges: ['surface'],
-    description: 'Background plane and overall depth impression.',
+    key: 'variant',
+    description:
+            'Controls whether the rendered theme should be used as dark or light mode.',
   },
   {
-    badges: ['ink'],
-    description: 'Foreground text legibility and perceived sharpness.',
+    key: 'theme',
+    description:
+            'Main theme object that groups the runtime visual tokens below.',
   },
   {
-    badges: ['contrast'],
+    key: 'accent',
+    description:
+            'Primary highlight color for emphasized UI states: mentions, skill files, @-references, and other interactive callouts in Codex surfaces.',
+  },
+  {
+    key: 'surface',
+    description:
+            'Base background plane for the UI; sets the dominant panel/shell atmosphere.',
+  },
+  {
+    key: 'ink',
+    description:
+            'Primary foreground/readability color used for text and high-contrast foreground content.',
+  },
+  {
+    key: 'contrast',
     description: 'Global separation between content and background.',
   },
   {
-    badges: ['semanticColors.*'],
+    key: 'opaqueWindows',
     description:
-            'Status and meaning tokens (diffs, skills, contextual cues).',
+            'Toggles translucent glass-like system surfaces vs. fully opaque solid backgrounds for UI window elements.',
   },
   {
-    badges: ['fonts', 'opaqueWindows'],
-    description: 'Runtime and rendering behavior adjustments.',
+    key: 'ui',
+    description:
+            'UI font family string for interface text. Works with system/web-safe fonts and custom installed fonts available on the target system.',
+  },
+  {
+    key: 'code',
+    description:
+            'Code/editor font family string for monospaced code surfaces. Availability depends on fonts installed on the target system.',
+  },
+  {
+    key: 'diffAdded',
+    description:
+            'Semantic color for added lines/positive diffs in compare and review views.',
+  },
+  {
+    key: 'diffRemoved',
+    description:
+            'Semantic color for removed lines/negative diffs in compare and review views.',
+  },
+  {
+    key: 'skill',
+    description:
+            'Semantic accent for skill-related labels and contextual skill cues.',
   },
 ] as const
-
-async function copyPayloadExample() {
-  payloadCopyState.value = 'idle'
-  stopPayloadCopyReset()
-
-  if (!isClipboardSupported.value) {
-    payloadCopyState.value = 'error'
-    startPayloadCopyReset()
-    return
-  }
-
-  try {
-    await copyToClipboard(schemaExample)
-    payloadCopyState.value = 'ok'
-  }
-  catch {
-    payloadCopyState.value = 'error'
-  }
-
-  startPayloadCopyReset()
-}
-
-onBeforeUnmount(() => {
-  stopPayloadCopyReset()
-})
 
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
@@ -750,7 +748,7 @@ const tocSections = [
               <div class="flex flex-col">
                 <div
                   v-for="(row, index) in tokenDefinitionRows"
-                  :key="row.badges.join('-')"
+                  :key="row.key"
                   class="group flex cursor-default items-center gap-6 border-b border-slate-1 rounded-xl border-solid px-4 py-4 transition-colors ease-out -mx-4 !duration-200 hover:bg-pureWhite/2"
                   :class="
                     index === tokenDefinitionRows.length - 1
@@ -762,11 +760,9 @@ const tocSections = [
                     class="w-56 flex shrink-0 flex-wrap items-center gap-2"
                   >
                     <span
-                      v-for="badge in row.badges"
-                      :key="badge"
                       class="font-geist-mono-500 border border-sand-4 rounded border-solid bg-sand-1 px-2.5 py-1.5 text-[13px] color-sand-11 leading-normal transition-all duration-200 group-hover:border-sand-10 group-hover:color-pureWhite"
                     >
-                      {{ badge }}
+                      {{ row.key }}
                     </span>
                   </div>
                   <div
@@ -789,46 +785,18 @@ const tocSections = [
                   class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
                 />
               </div>
-              <div
-                class="group hover:border-brand-500/45 border border-sand-9/60 rounded-xl bg-slate-1 shadow-sm transition-all duration-200"
-              >
+              <div class="overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
                 <div
-                  class="flex items-center justify-between border-b border-sand-9/50 px-5 py-3.5"
+                  class="flex items-center gap-2 border border-b-0 border-sand-5 rounded-xl rounded-bl-0 rounded-br-0 border-solid px-4 py-2.5 bg-pureBlack"
                 >
-                  <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-2">
-                      <div
-                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
-                      />
-                      <div
-                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
-                      />
-                      <div
-                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
-                      />
-                    </div>
-                    <span
-                      class="font-geist-mono-500 text-[12px] color-sand-8 tracking-wide"
-                    >theme-payload.json</span>
-                  </div>
-                  <button
-                    type="button"
-                    class="font-geist-500 hover:border-brand-500/50 inline-flex items-center gap-1.5 border border-sand-9/70 rounded bg-sand-12/70 px-2.5 py-1 text-[11px] color-sand-7 shadow-sm transition-colors duration-200 hover:color-sand-5"
-                    @click="copyPayloadExample"
-                  >
-                    <Icon name="ph:copy" class="h-3 w-3" />
-                    {{
-                      payloadCopyState === "ok"
-                        ? "Copied"
-                        : payloadCopyState === "error"
-                          ? "Error"
-                          : "Copy"
-                    }}
-                  </button>
+                  <Icon name="ph:file-code" class="size-4 color-pureWhite" />
+                  <span
+                    class="font-geist-500 text-sm color-pureWhite"
+                  >theme-payload.json</span>
                 </div>
-                <div class="overflow-x-auto p-6">
+                <div class="overflow-x-auto border border-sand-5 rounded-xl rounded-tl-0 rounded-tr-0 border-solid bg-slate-1 px-4 py-3 text-xs leading-relaxed">
                   <SyntaxBlock
-                    class="font-geist-mono-500 text-[13px] leading-[1.8]"
+                    class="font-geist-mono-500 text-[13px] leading-[1.75]"
                     :text="schemaExample"
                     language="json"
                     code-theme-id="everforest"
