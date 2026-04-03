@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const checked = defineModel<boolean>({ required: true })
-
 const props = withDefaults(defineProps<{
   disabled?: boolean
   trackWidth?: number
@@ -20,6 +18,8 @@ const props = withDefaults(defineProps<{
   thumbOnClass: 'bg-pureBlack',
   thumbOffClass: 'bg-pureWhite ring-1 ring-pureBlack/10',
 })
+
+const checked = defineModel<boolean>({ required: true })
 
 const pad = computed(() => 2)
 

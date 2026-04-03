@@ -19,17 +19,17 @@
 
     <div class="flex flex-wrap gap-2">
       <button
-        class="teal-btn font-geist-600 border-[var(--un-preset-radix-slate6)] bg-[#0e1114] text-[15px] text-[var(--un-preset-radix-slate12)] hover:border-[var(--un-preset-radix-mint7)] hover:text-[var(--un-preset-radix-mint11)]"
+        class="font-geist-600 teal-btn border-[var(--un-preset-radix-slate6)] bg-[#0e1114] text-[15px] text-[var(--un-preset-radix-slate12)] hover:border-[var(--un-preset-radix-mint7)] hover:text-[var(--un-preset-radix-mint11)]"
       >
         Apply Theme
       </button>
       <button
-        class="teal-btn font-geist-600 border-[var(--un-preset-radix-mint6A)] bg-[var(--un-preset-radix-mint3A)] text-[15px] text-[var(--un-preset-radix-mint11)] hover:bg-[var(--un-preset-radix-mint4A)]"
+        class="font-geist-600 teal-btn border-[var(--un-preset-radix-mint6A)] bg-[var(--un-preset-radix-mint3A)] text-[15px] text-[var(--un-preset-radix-mint11)] hover:bg-[var(--un-preset-radix-mint4A)]"
       >
         Copy JSON
       </button>
       <button
-        class="teal-btn font-geist-600 border-[var(--un-preset-radix-slate6)] bg-transparent text-[15px] text-[var(--un-preset-radix-slate11)] hover:bg-[var(--un-preset-radix-slate4)]"
+        class="font-geist-600 teal-btn border-[var(--un-preset-radix-slate6)] bg-transparent text-[15px] text-[var(--un-preset-radix-slate11)] hover:bg-[var(--un-preset-radix-slate4)]"
       >
         Reset
       </button>

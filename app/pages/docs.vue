@@ -151,18 +151,22 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
 type CopyState = 'idle' | 'ok' | 'error'
 
 const payloadCopyState = ref<CopyState>('idle')
-const { copy: copyToClipboard, isSupported: isClipboardSupported } = useClipboard()
-const {
-  start: startPayloadCopyReset,
-  stop: stopPayloadCopyReset,
-} = useTimeoutFn(() => {
-  payloadCopyState.value = 'idle'
-}, 2200, { immediate: false })
+const { copy: copyToClipboard, isSupported: isClipboardSupported }
+  = useClipboard()
+const { start: startPayloadCopyReset, stop: stopPayloadCopyReset }
+  = useTimeoutFn(
+    () => {
+      payloadCopyState.value = 'idle'
+    },
+    2200,
+    { immediate: false },
+  )
 
 const tokenDefinitionRows = [
   {
     badges: ['accent'],
-    description: 'Interactive highlights, emphasis color, visual personality.',
+    description:
+            'Interactive highlights, emphasis color, visual personality.',
   },
   {
     badges: ['surface'],
@@ -178,7 +182,8 @@ const tokenDefinitionRows = [
   },
   {
     badges: ['semanticColors.*'],
-    description: 'Status and meaning tokens (diffs, skills, contextual cues).',
+    description:
+            'Status and meaning tokens (diffs, skills, contextual cues).',
   },
   {
     badges: ['fonts', 'opaqueWindows'],
@@ -365,23 +370,28 @@ const tocSections = [
               local terminal pipeline, expand the advanced section
               below.
             </p>
-            <DsLogoStepper :logos="quickStartStepperLogos" :visible-count="5" />
+            <DsLogoStepper
+              :logos="quickStartStepperLogos"
+              :visible-count="5"
+            />
             <div
               class="border-borderSubtle bg-surface/70 flex flex-col gap-7 border rounded-xl py-6 text-sm"
             >
               <div class="space-y-4">
                 <div class="flex items-center gap-4">
                   <h4
-                    class="font-geist-mono-500 text-[11px] tracking-[0.2em] uppercase color-sand-8"
+                    class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
                   >
                     Recommended Flow
                   </h4>
                   <div
-                    class="h-px flex-1 bg-gradient-to-r from-sand-9/40 to-transparent"
+                    class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
                   />
                 </div>
                 <div class="flex gap-4">
-                  <span class="text-brand-400 font-geist-mono-500">01</span>
+                  <span
+                    class="text-brand-400 font-geist-mono-500"
+                  >01</span>
                   <p>
                     Open
                     <NuxtLink
@@ -398,16 +408,22 @@ const tocSections = [
                   </p>
                 </div>
                 <div class="flex gap-4">
-                  <span class="text-brand-400 font-geist-mono-500">02</span>
+                  <span
+                    class="text-brand-400 font-geist-mono-500"
+                  >02</span>
                   <p>
                     Set your core tokens
-                    <span class="font-geist-mono">(accent,surface,ink)</span> then fine-tune
-                    <span class="font-geist-mono">contrast</span> and
+                    <span class="font-geist-mono">(accent,surface,ink)</span>
+                    then fine-tune
+                    <span class="font-geist-mono">contrast</span>
+                    and
                     <span class="font-geist-mono">semanticColors</span>.
                   </p>
                 </div>
                 <div class="flex gap-4">
-                  <span class="text-brand-400 font-geist-mono-500">03</span>
+                  <span
+                    class="text-brand-400 font-geist-mono-500"
+                  >03</span>
                   <p>
                     Export, download, and apply the JSON in
                     Codex. Then validate in a real coding
@@ -427,17 +443,15 @@ const tocSections = [
               id="advanced-local-pipeline"
               class="border-borderSubtle bg-surface/45 overflow-hidden border rounded-xl"
             >
-              <div
-                class="border-borderSubtle border-b py-4"
-              >
+              <div class="border-borderSubtle border-b py-4">
                 <div class="flex items-center gap-4">
                   <h4
-                    class="font-geist-mono-500 text-[11px] tracking-[0.2em] uppercase color-sand-8"
+                    class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
                   >
                     Advanced Flow
                   </h4>
                   <div
-                    class="h-px flex-1 bg-gradient-to-r from-sand-9/40 to-transparent"
+                    class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
                   />
                 </div>
               </div>
@@ -539,8 +553,8 @@ const tocSections = [
                       <p>
                         Add an iTerm preset file to
                         <code>input/</code>, either from
-                        the official iTerm2 collection or
-                        your own custom preset.
+                        the official iTerm2 collection
+                        or your own custom preset.
                       </p>
                     </div>
                     <p class="text-sm color-sand-10">
@@ -631,48 +645,82 @@ const tocSections = [
           >
             <p class="max-w-2xl leading-relaxed">
               Payload exchange uses the
-              <code class="border border-sand-8/70 rounded bg-sand-12 px-1.5 py-0.5 text-[15px] color-sand-1 font-mono">codex-theme-v1</code>
-              prefix as parser signature. The contract is stable and
-              designed for predictable import/export.
+              <code
+                class="border border-sand-8/70 rounded bg-sand-12 px-1.5 py-0.5 text-[15px] color-sand-1 font-mono"
+              >codex-theme-v1</code>
+              prefix as parser signature. The contract is stable
+              and designed for predictable import/export.
             </p>
 
             <section class="space-y-6">
               <div class="mb-1 flex items-center gap-4">
-                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                <h3
+                  class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
+                >
                   Schema Overview
                 </h3>
-                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
+                <div
+                  class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
+                />
               </div>
               <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <article
-                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all ease-[cubic-bezier(0.36,0,0.64,1)] duration-200 hover:bg-sand-2"
+                  class="group border border-sand-2 rounded-2xl border-solid bg-slate-1 p-6 transition-all duration-200 ease-[cubic-bezier(0.36,0,0.64,1)] hover:border-sand-4 hover:bg-sand-2"
                 >
-                  <h4 class="font-geist-mono-500 mb-3 text-[11px] group-hover:color-pureWhite color-sand-11 tracking-wider uppercase">
+                  <h4
+                    class="font-geist-mono-500 mb-3 text-[11px] color-sand-11 tracking-wider uppercase group-hover:color-pureWhite"
+                  >
                     Top-Level Fields
                   </h4>
-                  <p class="text-[15px] color-sand-11 leading-relaxed font-geist-300 transition-colors duration-200 group-hover:color-sand-12">
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">codeThemeId</code>
+                  <p
+                    class="font-geist-300 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
+                  >
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >codeThemeId</code>
                     (theme identity),
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">variant</code>
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >variant</code>
                     (dark/light), and
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">theme</code>
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >theme</code>
                     (all visual tokens).
                   </p>
                 </article>
                 <article
-                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all ease-[cubic-bezier(0.36,0,0.64,1)] duration-200 hover:bg-sand-2"
+                  class="group border border-sand-2 rounded-2xl border-solid bg-slate-1 p-6 transition-all duration-200 ease-[cubic-bezier(0.36,0,0.64,1)] hover:border-sand-4 hover:bg-sand-2"
                 >
-                  <h4 class="font-geist-mono-500 mb-3 text-[11px] group-hover:color-pureWhite color-sand-10 tracking-wider uppercase">
+                  <h4
+                    class="font-geist-mono-500 mb-3 text-[11px] color-sand-10 tracking-wider uppercase group-hover:color-pureWhite"
+                  >
                     Theme Fields
                   </h4>
-                  <p class="text-[15px] color-sand-11 leading-relaxed font-geist-300 transition-colors duration-200 group-hover:color-sand-12">
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">accent</code>,
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">surface</code>,
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">ink</code>,
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">contrast</code>,
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">opaqueWindows</code>,
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">fonts</code>, and
-                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">semanticColors</code>.
+                  <p
+                    class="font-geist-300 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
+                  >
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >accent</code>,
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >surface</code>,
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >ink</code>,
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >contrast</code>,
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >opaqueWindows</code>,
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >fonts</code>, and
+                    <code
+                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                    >semanticColors</code>.
                   </p>
                 </article>
               </div>
@@ -680,12 +728,18 @@ const tocSections = [
 
             <section class="pt-2 space-y-6">
               <div class="mb-1 flex items-center gap-4">
-                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                <h3
+                  class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
+                >
                   Token Definitions
                 </h3>
-                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
+                <div
+                  class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
+                />
               </div>
-              <div class="flex border-b border-sand-9/45 px-4 pb-4 text-[11px] color-sand-8 tracking-wider uppercase">
+              <div
+                class="flex items-center gap-6 border-b border-sand-9/45 pb-4 text-[11px] color-sand-8 tracking-wider uppercase"
+              >
                 <div class="font-geist-600 w-56 shrink-0">
                   Field Name
                 </div>
@@ -697,19 +751,27 @@ const tocSections = [
                 <div
                   v-for="(row, index) in tokenDefinitionRows"
                   :key="row.badges.join('-')"
-                  class="group flex cursor-default items-center gap-6 border-b border-slate-1 border-solid rounded-xl px-4 py-4 transition-colors !duration-200 ease-out -mx-4 hover:bg-pureWhite/2"
-                  :class="index === tokenDefinitionRows.length - 1 ? 'border-transparent' : ''"
+                  class="group flex cursor-default items-center gap-6 border-b border-slate-1 rounded-xl border-solid px-4 py-4 transition-colors ease-out -mx-4 !duration-200 hover:bg-pureWhite/2"
+                  :class="
+                    index === tokenDefinitionRows.length - 1
+                      ? 'border-transparent'
+                      : ''
+                  "
                 >
-                  <div class="w-56 flex shrink-0 flex-wrap items-center gap-2">
+                  <div
+                    class="w-56 flex shrink-0 flex-wrap items-center gap-2"
+                  >
                     <span
                       v-for="badge in row.badges"
                       :key="badge"
-                      class="font-geist-mono-500 border leading-normal border-sand-4 group-hover:border-sand-10 border-solid rounded bg-sand-1 px-2.5 py-1.5 text-[13px] color-sand-11 transition-all duration-200 group-hover:color-pureWhite"
+                      class="font-geist-mono-500 border border-sand-4 rounded border-solid bg-sand-1 px-2.5 py-1.5 text-[13px] color-sand-11 leading-normal transition-all duration-200 group-hover:border-sand-10 group-hover:color-pureWhite"
                     >
                       {{ badge }}
                     </span>
                   </div>
-                  <div class="flex-1 text-[14px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-pureWhite">
+                  <div
+                    class="flex-1 text-[14px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-pureWhite"
+                  >
                     {{ row.description }}
                   </div>
                 </div>
@@ -718,20 +780,36 @@ const tocSections = [
 
             <section class="pt-2 space-y-6">
               <div class="mb-1 flex items-center gap-4">
-                <h3 class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase">
+                <h3
+                  class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
+                >
                   Payload Example
                 </h3>
-                <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
+                <div
+                  class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
+                />
               </div>
-              <div class="group hover:border-brand-500/45 border border-sand-9/60 rounded-xl bg-slate-1 shadow-sm transition-all duration-200">
-                <div class="flex items-center justify-between border-b border-sand-9/50 px-5 py-3.5">
+              <div
+                class="group hover:border-brand-500/45 border border-sand-9/60 rounded-xl bg-slate-1 shadow-sm transition-all duration-200"
+              >
+                <div
+                  class="flex items-center justify-between border-b border-sand-9/50 px-5 py-3.5"
+                >
                   <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
-                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
-                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
-                      <div class="h-2.5 w-2.5 rounded-full bg-sand-9" />
+                      <div
+                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
+                      />
+                      <div
+                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
+                      />
+                      <div
+                        class="h-2.5 w-2.5 rounded-full bg-sand-9"
+                      />
                     </div>
-                    <span class="font-geist-mono-500 text-[12px] color-sand-8 tracking-wide">theme-payload.json</span>
+                    <span
+                      class="font-geist-mono-500 text-[12px] color-sand-8 tracking-wide"
+                    >theme-payload.json</span>
                   </div>
                   <button
                     type="button"
@@ -739,7 +817,13 @@ const tocSections = [
                     @click="copyPayloadExample"
                   >
                     <Icon name="ph:copy" class="h-3 w-3" />
-                    {{ payloadCopyState === 'ok' ? 'Copied' : payloadCopyState === 'error' ? 'Error' : 'Copy' }}
+                    {{
+                      payloadCopyState === "ok"
+                        ? "Copied"
+                        : payloadCopyState === "error"
+                          ? "Error"
+                          : "Copy"
+                    }}
                   </button>
                 </div>
                 <div class="overflow-x-auto p-6">

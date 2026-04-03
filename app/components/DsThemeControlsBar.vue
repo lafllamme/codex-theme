@@ -121,7 +121,7 @@ const morphStyle = computed(() => ({
     <div class="fixed bottom-30 right-6 z-50">
       <div
         ref="containerRef"
-        class="relative overflow-hidden border shadow-2xl shadow-black/20 transition-all bg-[#f8f8f8] border-pureBlack/10"
+        class="shadow-black/20 relative overflow-hidden border bg-[#f8f8f8] shadow-2xl transition-all border-pureBlack/10"
         :style="morphStyle"
         :role="open ? 'dialog' : undefined"
         :aria-modal="open ? 'true' : undefined"
@@ -151,13 +151,13 @@ const morphStyle = computed(() => ({
             :aria-hidden="!open"
           >
             <!-- Header -->
-            <div class="relative flex items-center justify-center px-5 pt-5 pb-2">
+            <div class="relative flex items-center justify-center px-5 pb-2 pt-5">
               <h2 class="text-[clamp(18px,4vw,22px)] font-bold tracking-tight text-pureBlack/90">
                 Appearance
               </h2>
               <button
                 type="button"
-                class="absolute right-5 h-8 w-8 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-sand10 transition-colors hover:text-sand12 hover:bg-sand4"
+                class="absolute right-5 h-8 w-8 flex shrink-0 items-center justify-center rounded-full border-none bg-transparent text-sand10 transition-colors hover:bg-sand4 hover:text-sand12"
                 aria-label="Close theme panel"
                 @click="open = false"
               >
@@ -166,7 +166,7 @@ const morphStyle = computed(() => ({
             </div>
 
             <!-- Scrollable body -->
-            <div class="space-y-4 overflow-y-auto overflow-x-visible px-5 pb-5" style="max-height: calc(85vh - 72px);">
+            <div class="overflow-x-visible overflow-y-auto px-5 pb-5 space-y-4" style="max-height: calc(85vh - 72px);">
               <ThemePanelBody
                 :payload="payload"
                 :code-theme-options="codeThemeOptions"

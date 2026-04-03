@@ -15,22 +15,24 @@ defineProps<{
   <section class="preview-shell">
     <header class="preview-header">
       <p>Quality Checks</p>
-      <p class="font-geist-mono-400 text-[11px] text-white/54">live token diagnostics</p>
+      <p class="font-geist-mono-400 text-white/54 text-[11px]">
+        live token diagnostics
+      </p>
     </header>
 
-    <div class="space-y-2 p-3">
+    <div class="p-3 space-y-2">
       <article
         v-for="check in checks"
         :key="check.id"
-        class="flex items-start gap-2 rounded-xl border p-2.5"
+        class="flex items-start gap-2 border rounded-xl p-2.5"
         :class="check.status === 'ok' ? 'border-emerald-500/35 bg-emerald-500/10' : 'border-amber-500/35 bg-amber-500/12'"
       >
         <span class="mt-[3px] h-2 w-2 rounded-full" :class="check.status === 'ok' ? 'bg-emerald-400' : 'bg-amber-400'" />
         <div class="min-w-0">
-          <p class="font-geist-600 text-[12px] text-white/92">
+          <p class="font-geist-600 text-white/92 text-[12px]">
             {{ check.label }}
           </p>
-          <p class="font-geist-400 text-[12px] text-white/66">
+          <p class="font-geist-400 text-white/66 text-[12px]">
             {{ check.detail }}
           </p>
         </div>

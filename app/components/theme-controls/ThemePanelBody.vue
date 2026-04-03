@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
       />
     </section>
 
-    <div class="bg-pureBlack/8 h-px" />
+    <div class="h-px bg-pureBlack/8" />
 
     <!-- Colors -->
     <section>
@@ -248,7 +248,7 @@ onBeforeUnmount(() => {
         </h3>
         <ThemeRandomizeButton @click="emit('randomizeTheme')" />
       </div>
-      <div class="bg-pureWhite rounded-3xl border border-pureBlack/8 overflow-hidden shadow-sm">
+      <div class="overflow-hidden border rounded-3xl shadow-sm bg-pureWhite border-pureBlack/8">
         <div
           v-for="(row, index) in colorRows"
           :key="row.field"
@@ -265,21 +265,21 @@ onBeforeUnmount(() => {
           <!-- Left indicator for expanded -->
           <div
             v-if="expandedColor === row.field"
-            class="absolute left-0 top-0 bottom-0 w-[3px] bg-pureBlack rounded-r-full"
+            class="absolute bottom-0 left-0 top-0 w-[3px] rounded-r-full bg-pureBlack"
           />
 
           <!-- Color row -->
           <div
-            class="flex items-center justify-between p-4 px-5 cursor-pointer transition-colors"
+            class="flex cursor-pointer items-center justify-between p-4 px-5 transition-colors"
             :class="expandedColor !== row.field ? 'hover:bg-pureBlack/6' : ''"
             @click="toggleColorExpand(row.field)"
           >
             <div class="flex items-center gap-3.5">
               <div
-                class="w-8 h-8 rounded-full flex items-center justify-center"
+                class="h-8 w-8 flex items-center justify-center rounded-full"
                 :class="expandedColor === row.field ? 'bg-pureBlack text-pureWhite shadow-sm' : 'bg-pureBlack/6 text-pureBlack/50'"
               >
-                <Icon :name="row.icon" class="w-[18px] h-[18px]" />
+                <Icon :name="row.icon" class="h-[18px] w-[18px]" />
               </div>
               <span
                 class="text-[15px]"
@@ -290,16 +290,16 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="flex items-center gap-3">
-              <span class="hex-value text-[13px] text-pureBlack/40 tracking-wider uppercase">
+              <span class="hex-value text-[13px] tracking-wider uppercase text-pureBlack/40">
                 {{ swatchValue(row.field) }}
               </span>
               <div
-                class="w-7 h-7 rounded-full shadow-inner"
+                class="h-7 w-7 rounded-full shadow-inner"
                 :style="{ backgroundColor: swatchValue(row.field) }"
               />
               <Icon
                 :name="expandedColor === row.field ? 'ph:caret-up' : 'ph:caret-down'"
-                class="w-4 h-4 text-pureBlack/40"
+                class="h-4 w-4 text-pureBlack/40"
               />
             </div>
           </div>
@@ -309,12 +309,12 @@ onBeforeUnmount(() => {
             v-if="expandedColor === row.field"
             class="px-5 pb-5 pl-14"
           >
-            <div class="flex items-center gap-3 mt-2">
-              <div class="flex-1 flex items-center px-3.5 py-2.5 bg-pureWhite border border-pureBlack/10 rounded-xl shadow-sm focus-within:border-pureBlack/30 focus-within:ring-1 focus-within:ring-pureBlack/10 transition-all">
-                <span class="hex-value text-pureBlack/40 text-[14px] mr-2">#</span>
+            <div class="mt-2 flex items-center gap-3">
+              <div class="focus-within:ring-pureBlack/10 flex flex-1 items-center border rounded-xl px-3.5 py-2.5 shadow-sm transition-all bg-pureWhite border-pureBlack/10 focus-within:ring-1 focus-within:border-pureBlack/30">
+                <span class="hex-value mr-2 text-[14px] text-pureBlack/40">#</span>
                 <input
                   type="text"
-                  class="hex-input bg-transparent border-none outline-none w-full text-[14px] uppercase text-pureBlack/80 tracking-wider placeholder-pureBlack/30"
+                  class="hex-input placeholder-pureBlack/30 w-full border-none bg-transparent text-[14px] tracking-wider uppercase outline-none text-pureBlack/80"
                   :value="hexInputValue"
                   placeholder="000000"
                   maxlength="6"
@@ -323,7 +323,7 @@ onBeforeUnmount(() => {
                 >
               </div>
               <label
-                class="w-11 h-11 flex items-center justify-center bg-pureBlack text-pureWhite rounded-xl shadow-sm hover:bg-pureBlack/80 transition-colors cursor-pointer active:scale-95"
+                class="h-11 w-11 flex cursor-pointer items-center justify-center rounded-xl shadow-sm transition-colors text-pureWhite bg-pureBlack active:scale-95 hover:bg-pureBlack/80"
               >
                 <input
                   type="color"
@@ -331,7 +331,7 @@ onBeforeUnmount(() => {
                   :value="swatchValue(row.field)"
                   @input="setColor(row.field, ($event.target as HTMLInputElement).value)"
                 >
-                <Icon name="ph:eyedropper-bold" class="w-5 h-5" />
+                <Icon name="ph:eyedropper-bold" class="h-5 w-5" />
               </label>
             </div>
           </div>
@@ -339,7 +339,7 @@ onBeforeUnmount(() => {
       </div>
     </section>
 
-    <div class="bg-pureBlack/8 h-px" />
+    <div class="h-px bg-pureBlack/8" />
 
     <!-- Display -->
     <section>
@@ -351,9 +351,9 @@ onBeforeUnmount(() => {
           <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
             Typography
           </p>
-          <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
-            <div class="relative border-b border-pureBlack/8 px-5 py-4 transition-colors hover:bg-pureBlack/6">
-              <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+          <div class="overflow-hidden border rounded-[20px] shadow-sm bg-pureWhite border-pureBlack/10">
+            <div class="relative border-b px-5 py-4 transition-colors border-pureBlack/8 hover:bg-pureBlack/6">
+              <div class="mb-1 text-[11px] font-semibold tracking-[0.12em] uppercase text-pureBlack/38">
                 UI Font
               </div>
               <div class="flex items-center justify-between">
@@ -377,11 +377,11 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="relative px-5 py-4 transition-colors hover:bg-pureBlack/6">
-              <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+              <div class="mb-1 text-[11px] font-semibold tracking-[0.12em] uppercase text-pureBlack/38">
                 Code Font
               </div>
               <div class="flex items-center justify-between">
-                <span class="font-mono text-[15px] font-medium text-pureBlack/90">{{ codeFontLabel }}</span>
+                <span class="text-[15px] font-medium font-mono text-pureBlack/90">{{ codeFontLabel }}</span>
                 <Icon name="ph:caret-down" class="h-3.5 w-3.5 text-pureBlack/35" />
               </div>
               <select
@@ -406,8 +406,8 @@ onBeforeUnmount(() => {
           <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
             Interface
           </p>
-          <div class="overflow-hidden rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
-            <div class="flex items-center justify-between border-b border-pureBlack/8 px-5 py-4">
+          <div class="overflow-hidden border rounded-[20px] shadow-sm bg-pureWhite border-pureBlack/10">
+            <div class="flex items-center justify-between border-b px-5 py-4 border-pureBlack/8">
               <span class="text-[15px] font-medium text-pureBlack/90">Translucent Sidebar</span>
               <DsSwitch
                 :model-value="translucentSidebar"
@@ -418,9 +418,9 @@ onBeforeUnmount(() => {
               <span class="text-[15px] font-medium text-pureBlack/90">Contrast</span>
               <div class="ml-4 flex flex-1 items-center gap-3">
                 <div class="relative h-4 flex-1">
-                  <div class="absolute top-1/2 h-[4px] w-full -translate-y-1/2 rounded-full bg-pureBlack/12" />
+                  <div class="absolute top-1/2 h-[4px] w-full rounded-full bg-pureBlack/12 -translate-y-1/2" />
                   <div
-                    class="absolute top-1/2 h-[4px] -translate-y-1/2 rounded-full bg-pureBlack/90"
+                    class="absolute top-1/2 h-[4px] rounded-full bg-pureBlack/90 -translate-y-1/2"
                     :style="{ width: `${payload.theme.contrast}%` }"
                   />
                   <input
@@ -433,11 +433,11 @@ onBeforeUnmount(() => {
                     @input="emit('setContrast', Number(($event.target as HTMLInputElement).value))"
                   >
                   <div
-                    class="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-pureBlack/22 bg-sand-6 shadow-sm"
+                    class="absolute top-1/2 h-5 w-5 border rounded-full bg-sand-6 shadow-sm border-pureBlack/22 -translate-x-1/2 -translate-y-1/2"
                     :style="{ left: `${payload.theme.contrast}%` }"
                   />
                 </div>
-                <span class="hex-value rounded-md border border-pureBlack/10 bg-pureBlack/5 px-2 py-0.5 text-[12px] font-medium text-pureBlack/60">
+                <span class="hex-value border rounded-md px-2 py-0.5 text-[12px] font-medium text-pureBlack/60 bg-pureBlack/5 border-pureBlack/10">
                   {{ payload.theme.contrast }}%
                 </span>
               </div>
@@ -449,8 +449,8 @@ onBeforeUnmount(() => {
           <p class="mb-2 px-1 text-[12px] font-semibold text-pureBlack/38">
             Advanced
           </p>
-          <div class="overflow-visible rounded-[20px] border border-pureBlack/10 bg-pureWhite shadow-sm">
-            <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
+          <div class="overflow-visible border rounded-[20px] shadow-sm bg-pureWhite border-pureBlack/10">
+            <div class="flex items-center justify-between gap-3 border-b px-5 py-4 border-pureBlack/8">
               <div
                 class="relative flex items-center gap-1.5"
                 @mouseenter="openCodeThemeInfo"
@@ -459,13 +459,13 @@ onBeforeUnmount(() => {
                 <span class="text-[15px] font-medium text-pureBlack/90">Code Theme</span>
                 <Icon
                   name="ph:info"
-                  class="h-4 w-4 cursor-help text-pureBlack/42 transition-colors hover:text-pureBlack/65"
+                  class="h-4 w-4 cursor-help transition-colors text-pureBlack/42 hover:text-pureBlack/65"
                   aria-label="Code theme limitation info"
                   @focus="openCodeThemeInfo"
                   @blur="closeCodeThemeInfo"
                 />
                 <div
-                  class="absolute left-0 top-full z-30 mt-2 w-[230px] rounded-xl border border-pureBlack/12 bg-pureWhite p-3 text-[11px] leading-relaxed text-pureBlack/70 shadow-lg transition-all"
+                  class="absolute left-0 top-full z-30 mt-2 w-[230px] border rounded-xl p-3 text-[11px] leading-relaxed shadow-lg transition-all text-pureBlack/70 bg-pureWhite border-pureBlack/12"
                   :class="codeThemeInfoOpen ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0 pointer-events-none'"
                   @mouseenter="openCodeThemeInfo"
                   @mouseleave="closeCodeThemeInfo"
@@ -480,16 +480,16 @@ onBeforeUnmount(() => {
                     href="https://github.com/openai/codex/issues/14766"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="issue-link-neutral group mt-2 inline-flex w-fit items-center gap-1.5 pb-0.5 text-[11px] font-medium text-pureBlack/68 no-underline transition-colors hover:text-pureBlack/88"
+                    class="issue-link-neutral group mt-2 w-fit inline-flex items-center gap-1.5 pb-0.5 text-[11px] font-medium no-underline transition-colors text-pureBlack/68 hover:text-pureBlack/88"
                   >
                     GitHub issue #14766
-                    <Icon name="ph:arrow-up-right-bold" class="h-3 w-3 text-current transition-transform duration-250 group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
+                    <Icon name="ph:arrow-up-right-bold" class="h-3 w-3 text-current transition-transform duration-250 group-hover:translate-x-[1px] group-hover:-translate-y-[1px]" />
                   </a>
                 </div>
               </div>
               <div class="relative min-w-[166px]">
                 <select
-                  class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
+                  class="w-full appearance-none border rounded-xl py-2 pl-3.5 pr-8 text-[14px] font-medium outline-none transition-colors text-pureBlack/75 bg-pureBlack/3 border-pureBlack/10 hover:bg-pureBlack/6 focus:border-pureBlack/24"
                   :value="payload.codeThemeId"
                   aria-label="Code theme"
                   @change="onCodeThemeSelect"
@@ -502,14 +502,14 @@ onBeforeUnmount(() => {
                     {{ option }}
                   </option>
                 </select>
-                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
+                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 text-pureBlack/40 -translate-y-1/2" />
               </div>
             </div>
-            <div class="flex items-center justify-between gap-3 border-b border-pureBlack/8 px-5 py-4">
+            <div class="flex items-center justify-between gap-3 border-b px-5 py-4 border-pureBlack/8">
               <span class="text-[15px] font-medium text-pureBlack/90">Theme Mode</span>
               <div class="relative min-w-[166px]">
                 <select
-                  class="w-full appearance-none rounded-xl border border-pureBlack/10 bg-pureBlack/3 py-2 pl-3.5 pr-8 text-[14px] font-medium text-pureBlack/75 outline-none transition-colors hover:bg-pureBlack/6 focus:border-pureBlack/24"
+                  class="w-full appearance-none border rounded-xl py-2 pl-3.5 pr-8 text-[14px] font-medium outline-none transition-colors text-pureBlack/75 bg-pureBlack/3 border-pureBlack/10 hover:bg-pureBlack/6 focus:border-pureBlack/24"
                   :value="payload.variant"
                   aria-label="Theme mode"
                   @change="onThemeModeSelect"
@@ -521,20 +521,20 @@ onBeforeUnmount(() => {
                     Light
                   </option>
                 </select>
-                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-pureBlack/40" />
+                <Icon name="ph:caret-down" class="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 text-pureBlack/40 -translate-y-1/2" />
               </div>
             </div>
 
             <div class="grid grid-cols-2">
-              <div class="border-r border-pureBlack/8 px-5 py-4">
-                <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+              <div class="border-r px-5 py-4 border-pureBlack/8">
+                <div class="mb-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-pureBlack/38">
                   UI Size
                 </div>
-                <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('ui', $event)">
-                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-hover:bg-pureBlack/6 group-focus-within:bg-pureBlack/6">
+                <div class="group flex cursor-text items-center justify-between gap-2" @click="focusSizeInput('ui', $event)">
+                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-focus-within:bg-pureBlack/6 group-hover:bg-pureBlack/6">
                     <input
                       ref="uiSizeInputRef"
-                      class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                      class="size-input w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold outline-none text-pureBlack/90"
                       :value="uiFontSize"
                       type="number"
                       min="12"
@@ -545,10 +545,10 @@ onBeforeUnmount(() => {
                     >
                   </div>
                   <div class="flex items-center gap-2">
-                    <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8 opacity-0 translate-y-0.5 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                    <div class="pointer-events-none w-6 inline-flex flex-col translate-y-0.5 overflow-hidden rounded-sm opacity-0 transition-all duration-200 ease-out bg-pureBlack/8 group-focus-within:pointer-events-auto group-hover:pointer-events-auto group-focus-within:translate-y-0 group-hover:translate-y-0 group-focus-within:opacity-100 group-hover:opacity-100">
                       <button
                         type="button"
-                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        class="h-3 flex items-center justify-center border-none bg-transparent transition-colors text-pureBlack/55 hover:text-pureBlack/80 hover:bg-pureBlack/10"
                         aria-label="Increase UI size"
                         @click="stepUiSize(1)"
                       >
@@ -556,26 +556,26 @@ onBeforeUnmount(() => {
                       </button>
                       <button
                         type="button"
-                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        class="h-3 flex items-center justify-center border-none bg-transparent transition-colors text-pureBlack/55 hover:text-pureBlack/80 hover:bg-pureBlack/10"
                         aria-label="Decrease UI size"
                         @click="stepUiSize(-1)"
                       >
                         <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
                       </button>
                     </div>
-                    <span class="text-[12px] font-semibold uppercase tracking-[0.08em] text-pureBlack/36">PX</span>
+                    <span class="text-[12px] font-semibold tracking-[0.08em] uppercase text-pureBlack/36">PX</span>
                   </div>
                 </div>
               </div>
               <div class="px-5 py-4">
-                <div class="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-pureBlack/38">
+                <div class="mb-2 text-[11px] font-semibold tracking-[0.12em] uppercase text-pureBlack/38">
                   Code Size
                 </div>
-                <div class="group flex items-center justify-between gap-2 cursor-text" @click="focusSizeInput('code', $event)">
-                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-hover:bg-pureBlack/6 group-focus-within:bg-pureBlack/6">
+                <div class="group flex cursor-text items-center justify-between gap-2" @click="focusSizeInput('code', $event)">
+                  <div class="inline-flex items-center gap-2 rounded-md px-1.5 py-1 transition-colors group-focus-within:bg-pureBlack/6 group-hover:bg-pureBlack/6">
                     <input
                       ref="codeSizeInputRef"
-                      class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold text-pureBlack/90 outline-none"
+                      class="size-input hex-value w-[2.2ch] border-none bg-transparent p-0 text-[15px] font-semibold outline-none text-pureBlack/90"
                       :value="codeFontSize"
                       type="number"
                       min="12"
@@ -586,10 +586,10 @@ onBeforeUnmount(() => {
                     >
                   </div>
                   <div class="flex items-center gap-2">
-                    <div class="inline-flex w-6 flex-col overflow-hidden rounded-sm bg-pureBlack/8 opacity-0 translate-y-0.5 pointer-events-none transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto">
+                    <div class="pointer-events-none w-6 inline-flex flex-col translate-y-0.5 overflow-hidden rounded-sm opacity-0 transition-all duration-200 ease-out bg-pureBlack/8 group-focus-within:pointer-events-auto group-hover:pointer-events-auto group-focus-within:translate-y-0 group-hover:translate-y-0 group-focus-within:opacity-100 group-hover:opacity-100">
                       <button
                         type="button"
-                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        class="h-3 flex items-center justify-center border-none bg-transparent transition-colors text-pureBlack/55 hover:text-pureBlack/80 hover:bg-pureBlack/10"
                         aria-label="Increase code size"
                         @click="stepCodeSize(1)"
                       >
@@ -597,14 +597,14 @@ onBeforeUnmount(() => {
                       </button>
                       <button
                         type="button"
-                        class="flex h-3 items-center justify-center border-none bg-transparent text-pureBlack/55 transition-colors hover:bg-pureBlack/10 hover:text-pureBlack/80"
+                        class="h-3 flex items-center justify-center border-none bg-transparent transition-colors text-pureBlack/55 hover:text-pureBlack/80 hover:bg-pureBlack/10"
                         aria-label="Decrease code size"
                         @click="stepCodeSize(-1)"
                       >
                         <Icon name="ph:caret-down-fill" class="h-2.5 w-2.5" />
                       </button>
                     </div>
-                    <span class="hex-value text-[12px] font-semibold uppercase tracking-[0.08em] text-pureBlack/36">PX</span>
+                    <span class="hex-value text-[12px] font-semibold tracking-[0.08em] uppercase text-pureBlack/36">PX</span>
                   </div>
                 </div>
               </div>
@@ -612,14 +612,14 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="overflow-hidden rounded-[20px] border border-pureBlack/14 bg-pureBlack shadow-[0_12px_24px_-16px_rgba(0,0,0,0.5)]">
+        <div class="overflow-hidden border rounded-[20px] shadow-[0_12px_24px_-16px_rgba(0,0,0,0.5)] bg-pureBlack border-pureBlack/14">
           <button
             type="button"
-            class="flex w-full items-center justify-between border-none bg-transparent px-5 py-4 text-left shadow-none outline-none"
+            class="w-full flex items-center justify-between border-none bg-transparent px-5 py-4 text-left shadow-none outline-none"
             @click="jsonOpen = !jsonOpen"
           >
             <div class="flex items-center gap-3">
-              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sand-3 text-pureWhite">
+              <span class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-sand-3 text-pureWhite">
                 <Icon name="ph:brackets-curly-bold" class="size-5" />
               </span>
               <span class="text-[15px] font-semibold text-pureWhite">JSON Preview</span>
@@ -627,8 +627,8 @@ onBeforeUnmount(() => {
             <Icon :name="jsonOpen ? 'ph:caret-up' : 'ph:caret-down'" class="h-4 w-4 text-pureWhite/60" />
           </button>
 
-          <div v-show="jsonOpen" class="space-y-2 px-5 pb-5">
-            <div class="json-editor-shell relative overflow-hidden rounded-2xl border border-pureWhite/12 bg-pureWhite/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+          <div v-show="jsonOpen" class="px-5 pb-5 space-y-2">
+            <div class="json-editor-shell relative overflow-hidden border rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] bg-pureWhite/10 border-pureWhite/12">
               <div class="json-editor-viewer h-56 overflow-auto p-5">
                 <SyntaxBlock
                   class="hex-value text-[12px] leading-relaxed"
@@ -640,7 +640,7 @@ onBeforeUnmount(() => {
               </div>
               <div class="pointer-events-none absolute inset-0 rounded-2xl" />
             </div>
-            <p v-if="jsonError" class="text-[12px] text-red-300">
+            <p v-if="jsonError" class="text-red-300 text-[12px]">
               {{ jsonError }}
             </p>
           </div>
@@ -650,10 +650,10 @@ onBeforeUnmount(() => {
 
     <!-- Export -->
     <section class="space-y-4">
-      <div class="flex gap-3 my-4">
+      <div class="my-4 flex gap-3">
         <button
           type="button"
-          class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-pureBlack/10 bg-pureWhite py-3 text-[14px] font-semibold text-pureBlack/80 shadow-sm transition-all hover:bg-pureBlack/5 active:scale-[0.98]"
+          class="flex flex-1 items-center justify-center gap-2 border rounded-xl py-3 text-[14px] font-semibold shadow-sm transition-all text-pureBlack/80 bg-pureWhite border-pureBlack/10 active:scale-[0.98] hover:bg-pureBlack/5"
           @click="emit('exportTheme')"
         >
           <Icon name="ph:export-bold" class="h-4.5 w-4.5" />
@@ -661,7 +661,7 @@ onBeforeUnmount(() => {
         </button>
         <button
           type="button"
-          class="flex flex-1 items-center justify-center gap-2 rounded-xl border border-pureBlack/10 bg-pureWhite py-3 text-[14px] font-semibold text-pureBlack/80 shadow-sm transition-all hover:bg-pureBlack/5 active:scale-[0.98]"
+          class="flex flex-1 items-center justify-center gap-2 border rounded-xl py-3 text-[14px] font-semibold shadow-sm transition-all text-pureBlack/80 bg-pureWhite border-pureBlack/10 active:scale-[0.98] hover:bg-pureBlack/5"
           @click="emit('copyExport')"
         >
           <Icon name="ph:copy-bold" class="h-4.5 w-4.5" />
@@ -671,7 +671,7 @@ onBeforeUnmount(() => {
       <div>
         <button
           type="button"
-          class="flex w-full items-center justify-center gap-2 rounded-xl border bg-pureBlack py-3 text-[14px] font-semibold color-pureWhite shadow-sm transition-all hover:bg-sand-2 active:scale-[0.98]"
+          class="w-full flex items-center justify-center gap-2 border rounded-xl py-3 text-[14px] font-semibold shadow-sm transition-all color-pureWhite bg-pureBlack active:scale-[0.98] hover:bg-sand-2"
           @click="emit('applyExport')"
         >
           <Icon name="ph:check-bold" class="h-4.5 w-4.5" />

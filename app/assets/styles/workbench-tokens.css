@@ -22,14 +22,7 @@
 .theme-color-smooth,
 .theme-color-smooth * {
   transition-property:
-    color,
-    background-color,
-    border-color,
-    outline-color,
-    text-decoration-color,
-    fill,
-    stroke,
-    box-shadow;
+    color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, box-shadow;
   transition-duration: var(--theme-color-transition-duration);
   transition-timing-function: var(--theme-color-transition-ease);
 }

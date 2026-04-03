@@ -15,7 +15,9 @@ const panelStyle = computed(() => ({
   <section class="preview-shell">
     <header class="preview-header">
       <p>Terminal</p>
-      <p class="font-geist-mono-400 text-[11px] text-white/54">/Users/flame/Developer/Projects/codex-theme</p>
+      <p class="font-geist-mono-400 text-white/54 text-[11px]">
+        /Users/flame/Developer/Projects/codex-theme
+      </p>
     </header>
 
     <div class="terminal-body" :style="panelStyle">

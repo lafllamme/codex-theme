@@ -41,8 +41,10 @@ const noMotion = computed(() => prefersReducedMotion.value === 'reduce')
 
 function measurePaths() {
   nextTick(() => {
-    if (path1Ref.value) length1.value = path1Ref.value.getTotalLength()
-    if (path2Ref.value) length2.value = path2Ref.value.getTotalLength()
+    if (path1Ref.value)
+      length1.value = path1Ref.value.getTotalLength()
+    if (path2Ref.value)
+      length2.value = path2Ref.value.getTotalLength()
   })
 }
 
@@ -52,8 +54,7 @@ watch(() => [props.pathLine1, props.pathLine2], measurePaths)
 
 <template>
   <h1
-    :class="[
-      'font-geist-800 w-fit max-w-full text-[clamp(2.35rem,14vw,6.2rem)] text-white leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]',
+    class="font-geist-800 text-white max-w-full w-fit text-[clamp(2.35rem,14vw,6.2rem)] leading-[0.92] tracking-[-0.024em] sm:text-[clamp(2.9rem,9vw,6.2rem)] sm:leading-[0.9]" :class="[
       props.class,
     ]"
     :aria-label="`${line1} ${line2}`"
@@ -62,7 +63,7 @@ watch(() => [props.pathLine1, props.pathLine2], measurePaths)
     <template v-if="usePathMode && pathLine1 && pathLine2 && viewBox1 && viewBox2">
       <svg
         :viewBox="viewBox1"
-        class="hero-headline-svg block h-auto w-full max-w-full text-white"
+        class="hero-headline-svg text-white block h-auto max-w-full w-full"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
@@ -80,7 +81,7 @@ watch(() => [props.pathLine1, props.pathLine2], measurePaths)
       </svg>
       <svg
         :viewBox="viewBox2"
-        class="hero-headline-svg block h-auto w-full max-w-full text-white"
+        class="hero-headline-svg text-white block h-auto max-w-full w-full"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
@@ -101,7 +102,7 @@ watch(() => [props.pathLine1, props.pathLine2], measurePaths)
     <svg
       v-else-if="usePathMode && pathLine1 && pathLine2"
       :viewBox="viewBox"
-      class="hero-headline-svg block h-auto w-full max-w-full text-white"
+      class="hero-headline-svg text-white block h-auto max-w-full w-full"
       fill="none"
       stroke="currentColor"
       stroke-width="1.5"

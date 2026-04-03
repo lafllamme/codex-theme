@@ -47,8 +47,10 @@ watch(
     if (shouldReduceMotion.value === 'reduce') {
       displayedText.value = textArray.value.join(' ')
       onCleanup(() => {
-        if (timeoutId) clearTimeout(timeoutId)
-        if (initialTimer) clearTimeout(initialTimer)
+        if (timeoutId)
+          clearTimeout(timeoutId)
+        if (initialTimer)
+          clearTimeout(initialTimer)
       })
       return
     }
@@ -105,8 +107,10 @@ watch(
     }, props.startDelay)
 
     onCleanup(() => {
-      if (initialTimer) clearTimeout(initialTimer)
-      if (timeoutId) clearTimeout(timeoutId)
+      if (initialTimer)
+        clearTimeout(initialTimer)
+      if (timeoutId)
+        clearTimeout(timeoutId)
     })
   },
   { immediate: true },
@@ -114,7 +118,7 @@ watch(
 </script>
 
 <template>
-  <div :class="['inline-flex items-center', props.className]">
+  <div class="inline-flex items-center" :class="[props.className]">
     <span class="whitespace-nowrap">
       <Motion
         v-for="(char, index) in displayedText.split('')"

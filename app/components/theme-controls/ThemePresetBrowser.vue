@@ -87,22 +87,22 @@ function handleSelect(entry: ThemePresetEntry) {
     <div class="relative mb-4">
       <Icon
         name="ph:magnifying-glass"
-        class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-pureBlack/40 z-10"
+        class="absolute left-3 top-1/2 z-10 h-4 w-4 text-pureBlack/40 -translate-y-1/2"
       />
       <input
         type="text"
         placeholder="Search themes..."
-        class="w-full rounded-xl border border-solid border-sand-9 focus:outline-none focus:border-solid focus:border-pureBlack py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 placeholder:text-pureBlack/40 box-border"
+        class="box-border w-full border border-sand-9 rounded-xl border-solid py-2.5 pl-10 pr-4 text-[14px] text-pureBlack/90 focus:border-solid focus:outline-none placeholder:text-pureBlack/40 focus:border-pureBlack"
         :value="searchQuery"
         @input="onSearchInput"
       >
     </div>
 
     <!-- Filter badges -->
-    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-4 -mx-1 px-1">
+    <div class="no-scrollbar flex gap-2 overflow-x-auto px-1 pb-4 -mx-1">
       <button
         type="button"
-        class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
+        class="shrink-0 rounded-full px-4 py-1.5 text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'all'
             ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
@@ -114,7 +114,7 @@ function handleSelect(entry: ThemePresetEntry) {
       </button>
       <button
         type="button"
-        class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
+        class="shrink-0 rounded-full px-4 py-1.5 text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'dark'
             ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
@@ -126,7 +126,7 @@ function handleSelect(entry: ThemePresetEntry) {
       </button>
       <button
         type="button"
-        class="shrink-0 px-4 py-1.5 rounded-full text-[13px] font-medium transition-all active:scale-95"
+        class="shrink-0 rounded-full px-4 py-1.5 text-[13px] font-medium transition-all active:scale-95"
         :class="[
           filterMode === 'light'
             ? 'bg-pureBlack text-pureWhite shadow-sm border-none'
@@ -139,14 +139,14 @@ function handleSelect(entry: ThemePresetEntry) {
     </div>
 
     <!-- Header with View all -->
-    <div class="flex justify-between items-center mb-4">
+    <div class="mb-4 flex items-center justify-between">
       <h3 class="text-[22px] font-semibold tracking-tight text-pureBlack/90">
         Presets
       </h3>
       <button
         v-if="filteredPresets.length > 4"
         type="button"
-        class="inline-flex items-center gap-1.5 rounded-xl border border-pureBlack/10 bg-pureWhite px-3 py-1.5 text-[13px] font-semibold text-pureBlack/70 shadow-sm transition-all hover:bg-pureBlack/5 hover:text-pureBlack/90 active:scale-[0.98]"
+        class="inline-flex items-center gap-1.5 border rounded-xl px-3 py-1.5 text-[13px] font-semibold shadow-sm transition-all text-pureBlack/70 bg-pureWhite border-pureBlack/10 active:scale-[0.98] hover:text-pureBlack/90 hover:bg-pureBlack/5"
         @click="toggleExpanded"
       >
         <span>{{ isExpanded ? 'Show less' : 'View all' }}</span>

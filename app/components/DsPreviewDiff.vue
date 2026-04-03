@@ -15,7 +15,9 @@ const diffBg = computed(() => ({
   <section class="preview-shell">
     <header class="preview-header">
       <p>Diff</p>
-      <p class="font-geist-mono-400 text-[11px] text-white/54">app/components/DsHeader.vue</p>
+      <p class="font-geist-mono-400 text-white/54 text-[11px]">
+        app/components/DsHeader.vue
+      </p>
     </header>
 
     <div class="diff-body" :style="diffBg">

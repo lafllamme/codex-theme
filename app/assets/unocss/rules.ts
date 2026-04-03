@@ -23,7 +23,7 @@ export const rules = [
       return { color: resolvePureTone(tone) }
     }
 
-    return { color: 'rgba(' + resolvePureToneRgb(tone) + ',' + String(alpha) + ')' }
+    return { color: `rgba(${resolvePureToneRgb(tone)},${String(alpha)})` }
   }],
 
   [/^bg-pure(White|Black)(?:\/(\d{1,3}))?$/, ([, tone, opacity]) => {
@@ -33,7 +33,7 @@ export const rules = [
       return { 'background-color': resolvePureTone(tone) }
     }
 
-    return { 'background-color': 'rgba(' + resolvePureToneRgb(tone) + ',' + String(alpha) + ')' }
+    return { 'background-color': `rgba(${resolvePureToneRgb(tone)},${String(alpha)})` }
   }],
 
   [/^border-pure(White|Black)(?:\/(\d{1,3}))?$/, ([, tone, opacity]) => {
@@ -43,6 +43,6 @@ export const rules = [
       return { 'border-color': resolvePureTone(tone) }
     }
 
-    return { 'border-color': 'rgba(' + resolvePureToneRgb(tone) + ',' + String(alpha) + ')' }
+    return { 'border-color': `rgba(${resolvePureToneRgb(tone)},${String(alpha)})` }
   }],
 ]

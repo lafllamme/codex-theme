@@ -101,10 +101,11 @@ const bodyFrameWidthBudget = computed(() => {
 })
 
 const chatLaneDesktopInsetLeft = computed(() => {
-  if (!isDiffOpen.value)
+  if (!isDiffOpen.value) {
     return isSidebarCollapsed.value
       ? 'clamp(260px, 16vw, 420px)'
       : 'clamp(180px, 12vw, 320px)'
+  }
   if (!isSidebarCollapsed.value)
     return 'clamp(48px, 6vw, 112px)'
   return 'clamp(88px, 9vw, 168px)'
@@ -213,7 +214,7 @@ function beginDiffResize(event: MouseEvent) {
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
       </div>
-      <div class="inline-flex translate-y-[2px] translate-x-[12px] items-center gap-1.5">
+      <div class="inline-flex translate-x-[12px] translate-y-[2px] items-center gap-1.5">
         <button
           class="wb-top-control-btn"
           aria-label="Toggle Sidebar"

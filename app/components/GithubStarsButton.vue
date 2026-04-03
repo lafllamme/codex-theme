@@ -55,7 +55,7 @@ function animateNumber(target: number) {
 
   const tick = (now: number) => {
     const progress = Math.min(1, (now - start) / duration)
-    const eased = 1 - Math.pow(1 - progress, 3)
+    const eased = 1 - (1 - progress) ** 3
     currentStars.value = Math.round(from + (target - from) * eased)
 
     if (progress < 1) {
@@ -96,22 +96,22 @@ onUnmounted(cleanup)
     :href="repoUrl"
     target="_blank"
     rel="noreferrer noopener"
-    class="group font-geist-500 absolute top-0 right-0 z-30 inline-flex items-center gap-1.5 rounded-[999px] border border-white/16 bg-black/58 px-2.5 py-1.5 text-[12px] text-pureWhite/88 no-underline backdrop-blur-xl shadow-[0_12px_28px_rgba(0,0,0,0.34)] transition-all duration-250 hover:-translate-y-0.5 hover:border-white/24 hover:bg-black/68 sm:top-0 sm:right-0 sm:px-3 sm:py-2 sm:text-[13px] sm:gap-2 md:fixed md:top-6 md:right-6"
+    class="group font-geist-500 border-white/16 bg-black/58 hover:border-white/24 hover:bg-black/68 absolute right-0 top-0 z-30 inline-flex items-center gap-1.5 border rounded-[999px] px-2.5 py-1.5 text-[12px] no-underline shadow-[0_12px_28px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-all duration-250 text-pureWhite/88 md:fixed md:right-6 md:top-6 sm:right-0 sm:top-0 sm:gap-2 sm:px-3 sm:py-2 sm:text-[13px] hover:-translate-y-0.5"
     aria-label="Open GitHub repository"
   >
-    <Icon name="mdi:github-circle" class="h-5 w-5 text-pureWhite/80 transition-colors duration-200 group-hover:text-pureWhite/95" />
+    <Icon name="mdi:github-circle" class="h-5 w-5 transition-colors duration-200 text-pureWhite/80 group-hover:text-pureWhite/95" />
 
-    <div class="h-4.5 w-px bg-white/12" />
+    <div class="bg-white/12 h-4.5 w-px" />
 
     <span class="number-wrap font-geist-mono-500 min-w-[6.2ch] justify-end text-right text-[12px] text-pureWhite/90">
       {{ paddedCurrent }}
     </span>
 
-    <span class="star-wrap relative inline-flex h-5 w-5 items-center justify-center text-pureWhite/65">
+    <span class="star-wrap relative h-5 w-5 inline-flex items-center justify-center text-pureWhite/65">
       <Icon name="ph:star-fill" class="h-4 w-4 text-pureWhite/34" />
       <Icon
         name="ph:star-fill"
-        class="absolute h-4 w-4 text-pureWhite/90 transition-colors duration-250 group-hover:text-pureWhite/95"
+        class="absolute h-4 w-4 transition-colors duration-250 text-pureWhite/90 group-hover:text-pureWhite/95"
         :style="{ clipPath: `inset(${100 - starFillPercent}% 0 0 0)` }"
       />
       <span v-if="burstActive" class="particles pointer-events-none absolute inset-0">
@@ -144,10 +144,22 @@ onUnmounted(cleanup)
   animation: burst 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.p1 { --tx: 0px; --ty: -9px; }
-.p2 { --tx: 8px; --ty: -4px; }
-.p3 { --tx: 8px; --ty: 4px; }
-.p4 { --tx: 0px; --ty: 9px; }
+.p1 {
+  --tx: 0px;
+  --ty: -9px;
+}
+.p2 {
+  --tx: 8px;
+  --ty: -4px;
+}
+.p3 {
+  --tx: 8px;
+  --ty: 4px;
+}
+.p4 {
+  --tx: 0px;
+  --ty: 9px;
+}
 
 @keyframes burst {
   0% {

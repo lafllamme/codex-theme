@@ -64,15 +64,19 @@ const checkColor = computed(() => {
 
 const borderColor = computed(() => {
   const lum = surfaceLum.value
-  if (lum < 0.1) return 'rgba(255, 255, 255, 0.15)'
-  if (lum > 0.9) return 'rgba(0, 0, 0, 0.12)'
+  if (lum < 0.1)
+    return 'rgba(255, 255, 255, 0.15)'
+  if (lum > 0.9)
+    return 'rgba(0, 0, 0, 0.12)'
   return 'rgba(0, 0, 0, 0.10)'
 })
 
 const borderHoverColor = computed(() => {
   const lum = surfaceLum.value
-  if (lum < 0.1) return 'rgba(255, 255, 255, 0.30)'
-  if (lum > 0.9) return 'rgba(0, 0, 0, 0.25)'
+  if (lum < 0.1)
+    return 'rgba(255, 255, 255, 0.30)'
+  if (lum > 0.9)
+    return 'rgba(0, 0, 0, 0.25)'
   return 'rgba(0, 0, 0, 0.30)'
 })
 
@@ -84,7 +88,7 @@ const activeBorderColor = computed(() => {
 
 <template>
   <div
-    class="theme-preset-card group flex flex-col gap-2.5 cursor-pointer select-none"
+    class="theme-preset-card group flex flex-col cursor-pointer select-none gap-2.5"
     :title="preset.label"
     role="button"
     tabindex="0"
@@ -94,7 +98,7 @@ const activeBorderColor = computed(() => {
   >
     <!-- Preview container -->
     <div
-      class="relative h-[120px] rounded-2xl p-3 flex flex-col gap-2 overflow-hidden transition-all group-active:scale-[0.98]"
+      class="relative h-[120px] flex flex-col gap-2 overflow-hidden rounded-2xl p-3 transition-all group-active:scale-[0.98]"
       :style="{
         backgroundColor: theme.surface,
         border: active ? `2px solid ${activeBorderColor}` : `1px solid ${borderColor}`,
@@ -104,36 +108,36 @@ const activeBorderColor = computed(() => {
     >
       <!-- Top row: circle + skeleton -->
       <div
-        class=" h-8 rounded-xl flex items-center px-2.5 gap-2"
+        class="h-8 flex items-center gap-2 rounded-xl px-2.5"
         :style="{ backgroundColor: skeletonBg }"
       >
         <div
-          class="w-4 h-4 rounded-full shrink-0"
+          class="h-4 w-4 shrink-0 rounded-full"
           :style="{ backgroundColor: theme.accent }"
         />
         <div
-          class="w-14 h-1.5 rounded-full"
+          class="h-1.5 w-14 rounded-full"
           :style="{ backgroundColor: inkWithOpacity }"
         />
       </div>
 
       <!-- Skeleton content lines -->
       <div
-        class="w-3/4 h-2 rounded-full mt-1"
+        class="mt-1 h-2 w-3/4 rounded-full"
         :style="{ backgroundColor: inkWithOpacity }"
       />
       <div
-        class="w-1/2 h-2 rounded-full"
+        class="h-2 w-1/2 rounded-full"
         :style="{ backgroundColor: inkWithOpacity }"
       />
 
       <!-- Bottom button -->
       <div
-        class="mt-auto w-full h-7 rounded-xl flex items-center justify-center"
+        class="mt-auto h-7 w-full flex items-center justify-center rounded-xl"
         :style="{ backgroundColor: theme.accent }"
       >
         <div
-          class="w-8 h-1 rounded-full"
+          class="h-1 w-8 rounded-full"
           :style="{ backgroundColor: contrastColor }"
         />
       </div>
@@ -141,23 +145,23 @@ const activeBorderColor = computed(() => {
       <!-- Active checkmark -->
       <div
         v-if="active"
-        class="absolute -top-0.5 -right-0.5 w-6 h-6 rounded-bl-xl rounded-tr-2xl flex items-center justify-center shadow-sm"
+        class="absolute h-6 w-6 flex items-center justify-center rounded-bl-xl rounded-tr-2xl shadow-sm -right-0.5 -top-0.5"
         :style="{ backgroundColor: theme.accent }"
       >
-        <Icon name="ph:check-bold" class="w-2.5 h-2.5" :style="{ color: checkColor }" />
+        <Icon name="ph:check-bold" class="h-2.5 w-2.5" :style="{ color: checkColor }" />
       </div>
     </div>
 
     <!-- Theme name -->
     <div class="text-center">
       <p
-        class="text-[14px] truncate"
+        class="truncate text-[14px]"
         :class="active ? 'font-semibold text-pureBlack/90' : 'font-medium text-pureBlack/70'"
       >
         {{ preset.label }}
       </p>
       <p
-        class="text-[12px] mt-0.5 transition-opacity"
+        class="mt-0.5 text-[12px] transition-opacity"
         :class="active ? 'text-pureBlack/50' : 'text-pureBlack/40 opacity-0 group-hover:opacity-100'"
       >
         {{ active ? 'Active' : 'Preview' }}

@@ -195,7 +195,7 @@ onBeforeUnmount(() => {
             :style="itemStyle(originalIndex)"
           >
             <div
-              class="logo-stepper-card border rounded-xl border-solid bg-sand-2 p-4 hover:border-pureWhite transition-colors duration-200"
+              class="logo-stepper-card border rounded-xl border-solid bg-sand-2 p-4 transition-colors duration-200 hover:border-pureWhite"
               :class="isCenter(originalIndex) ? 'border-sand-8' : 'border-sand-5'"
             >
               <div class="h-12 w-12 flex items-center justify-center">

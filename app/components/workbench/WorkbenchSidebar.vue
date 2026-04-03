@@ -53,7 +53,7 @@ function toggleRepo(repo: string) {
 <template>
   <div class="wb-sidebar-root relative h-full min-h-0 min-w-0 w-full flex flex-1 flex-col">
     <div class="sidebar-backdrop" :class="mobileOpen ? 'sidebar-backdrop--open' : ''" @click="emit('closeMobile')" />
-    <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden rounded-[var(--wb-r-lg)] border border-[color:var(--wb-border-1)] bg-[var(--wb-bg-sidebar)] px-[var(--wb-sidebar-pad-x)] py-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
+    <aside class="sidebar [backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[var(--wb-sidebar-pad-x)] py-[7px] text-[color:var(--wb-text-primary)]" :class="[mobileOpen ? 'sidebar--mobile-open' : '', collapsed ? 'sidebar--collapsed-shell' : '']">
       <div class="sidebar-content" :class="collapsed ? 'sidebar-content--collapsed' : 'sidebar-content--expanded'">
         <div class="nav-stack">
           <button class="sidebar-nav-lane-item nav-row grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
@@ -74,7 +74,7 @@ function toggleRepo(repo: string) {
 
         <div class="min-h-0 flex flex-1 flex-col">
           <div class="sidebar-section-header sidebar-header-lane-item mt-[2px] flex items-center justify-between pl-[10px] pr-[10px] text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
-            <span class="sidebar-label capitalize tracking-normal">Threads</span>
+            <span class="sidebar-label tracking-normal capitalize">Threads</span>
             <div class="inline-flex items-center gap-2">
               <button class="h-[18px] w-[18px] inline-flex items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:text-[color:var(--wb-text-primary)]">
                 <Icon name="ph:folder-plus" class="h-[15px] w-[15px]" />
@@ -123,9 +123,9 @@ function toggleRepo(repo: string) {
                       <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
                     </template>
                   </span>
-                  <span class="sidebar-label relative inline-flex min-w-[72px] translate-x-[6px] items-center justify-end whitespace-nowrap text-right">
-                    <span class="text-[color:var(--wb-text-muted)] text-[length:var(--wb-sidebar-meta-size)] leading-[1.25] transition-opacity duration-150 group-hover:opacity-0">{{ thread.time }}</span>
-                    <Icon name="ph:archive" class="pointer-events-none absolute right-0 top-1/2 h-[14px] w-[14px] -translate-y-1/2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+                  <span class="sidebar-label relative min-w-[72px] inline-flex translate-x-[6px] items-center justify-end whitespace-nowrap text-right">
+                    <span class="text-[length:var(--wb-sidebar-meta-size)] text-[color:var(--wb-text-muted)] leading-[1.25] transition-opacity duration-150 group-hover:opacity-0">{{ thread.time }}</span>
+                    <Icon name="ph:archive" class="pointer-events-none absolute right-0 top-1/2 h-[14px] w-[14px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 -translate-y-1/2 group-hover:opacity-100" />
                   </span>
                   <span class="thread-dot" />
                 </button>
@@ -134,7 +134,7 @@ function toggleRepo(repo: string) {
           </div>
         </div>
 
-        <button class="sidebar-lane-item settings-row mt-auto grid grid-cols-[15px_minmax(0,1fr)] items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+        <button class="sidebar-lane-item settings-row grid grid-cols-[15px_minmax(0,1fr)] mt-auto items-center gap-[11px] border border-transparent rounded-[9px] bg-transparent px-[10px] text-left text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
           <Icon name="ph:gear-six" class="h-[15px] w-[15px]" />
           <span class="sidebar-label">Settings</span>
         </button>

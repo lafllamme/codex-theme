@@ -127,8 +127,8 @@ onBeforeUnmount(() => {
   >
     <header class="h-[34px] flex items-center px-3 text-[12px]">
       <div class="inline-flex items-center gap-2">
-        <span class="font-[var(--font-ui)] text-[color:var(--wb-text-primary)]">Terminal</span>
-        <span class="font-[var(--font-ui)] text-[color:var(--wb-text-secondary)]">zsh</span>
+        <span class="text-[color:var(--wb-text-primary)] font-[var(--font-ui)]">Terminal</span>
+        <span class="text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]">zsh</span>
       </div>
     </header>
     <div ref="scrollRef" class="terminal-body h-52 overflow-y-auto px-5 py-3">

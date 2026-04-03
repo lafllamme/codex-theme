@@ -27,16 +27,16 @@ export interface CodexThemePayload {
   variant: ThemeVariant
 }
 
-export type ThemeFieldPath =
-  | 'codeThemeId'
-  | 'variant'
-  | 'theme.accent'
-  | 'theme.surface'
-  | 'theme.ink'
-  | 'theme.contrast'
-  | 'theme.opaqueWindows'
-  | 'theme.semanticColors.diffAdded'
-  | 'theme.semanticColors.diffRemoved'
-  | 'theme.semanticColors.skill'
-  | 'theme.fonts.ui'
-  | 'theme.fonts.code'
+export type ThemeFieldPath
+  = | 'codeThemeId'
+    | 'variant'
+    | 'theme.accent'
+    | 'theme.surface'
+    | 'theme.ink'
+    | 'theme.contrast'
+    | 'theme.opaqueWindows'
+    | 'theme.semanticColors.diffAdded'
+    | 'theme.semanticColors.diffRemoved'
+    | 'theme.semanticColors.skill'
+    | 'theme.fonts.ui'
+    | 'theme.fonts.code'
