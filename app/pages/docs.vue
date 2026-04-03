@@ -651,32 +651,28 @@ const tocSections = [
                     Top-Level Fields
                   </h4>
                   <p class="text-[15px] color-sand-11 leading-relaxed font-geist-300 transition-colors duration-200 group-hover:color-sand-12">
-                    <span class="font-geist-mono-500 color-jade-8 group-hover:color-[#10b981]">codeThemeId</span>
-                    <span>
-                      (theme identity),
-                  </span>
-                  <span class="font-geist-mono-500 color-jade-8 group-hover:color-[#10b981]">variant</span>
-                  <span>
-                      (dark/light), and
-                  </span>
-                    <span class="font-geist-mono-500 color-jade-8 group-hover:color-[#10b981]">theme</span>
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">codeThemeId</code>
+                    (theme identity),
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">variant</code>
+                    (dark/light), and
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">theme</code>
                     (all visual tokens).
                   </p>
                 </article>
                 <article
-                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all duration-200 hover:bg-sand-2"
+                  class="group hover:border-sand-4 border border-sand-2 border-solid rounded-2xl bg-slate-1 p-6 transition-all ease-[cubic-bezier(0.36,0,0.64,1)] duration-200 hover:bg-sand-2"
                 >
                   <h4 class="font-geist-mono-500 mb-3 text-[11px] group-hover:color-pureWhite color-sand-10 tracking-wider uppercase">
                     Theme Fields
                   </h4>
-                  <p class="text-[15px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-sand-12">
-                    <code class="font-geist-mono-500 !text-brand-500">accent</code>,
-                    <code class="font-geist-mono-500 !text-brand-500">surface</code>,
-                    <code class="font-geist-mono-500 !text-brand-500">ink</code>,
-                    <code class="font-geist-mono-500 !text-brand-500">contrast</code>,
-                    <code class="font-geist-mono-500 !text-brand-500">opaqueWindows</code>,
-                    <code class="font-geist-mono-500 !text-brand-500">fonts</code>, and
-                    <code class="font-geist-mono-500 !text-brand-500">semanticColors</code>.
+                  <p class="text-[15px] color-sand-11 leading-relaxed font-geist-300 transition-colors duration-200 group-hover:color-sand-12">
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">accent</code>,
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">surface</code>,
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">ink</code>,
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">contrast</code>,
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">opaqueWindows</code>,
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">fonts</code>, and
+                    <code class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]">semanticColors</code>.
                   </p>
                 </article>
               </div>
