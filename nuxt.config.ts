@@ -9,7 +9,6 @@ export default defineNuxtConfig({
         {
           rel: 'stylesheet',
           href: 'https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap',
-          crossorigin: '',
         },
       ],
     },

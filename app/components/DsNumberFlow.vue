@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NumberFlow, { continuous } from '@number-flow/vue'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -38,15 +38,31 @@ const emit = defineEmits<{
   animationsfinish: [event: CustomEvent]
   animationsstart: [event: CustomEvent]
 }>()
+
+const numberFlowComponent = shallowRef<unknown>(null)
+const numberFlowPlugins = shallowRef<unknown[]>([])
+
+if (import.meta.client) {
+  const numberFlowModule = await import('@number-flow/vue')
+  numberFlowComponent.value = numberFlowModule.default
+  numberFlowPlugins.value = [numberFlowModule.continuous]
+}
+
+const fallbackText = computed(() => {
+  const formattedValue = new Intl.NumberFormat(props.locales, props.format).format(props.value)
+  return `${props.prefix}${formattedValue}${props.suffix}`
+})
 </script>
 
 <template>
-  <NumberFlow
+  <component
+    :is="numberFlowComponent"
+    v-if="numberFlowComponent"
     class="ds-number-flow"
     :animated="props.animated"
     :format="props.format"
     :locales="props.locales"
-    :plugins="[continuous]"
+    :plugins="numberFlowPlugins"
     :prefix="props.prefix"
     :respect-motion-preference="props.respectMotionPreference"
     :spin-timing="props.spinTiming"
@@ -59,6 +75,9 @@ const emit = defineEmits<{
     @animationsstart="emit('animationsstart', $event)"
     @animationsfinish="emit('animationsfinish', $event)"
   />
+  <span v-else class="ds-number-flow ds-number-flow--fallback">
+    {{ fallbackText }}
+  </span>
 </template>
 
 <style scoped>
@@ -68,5 +87,9 @@ const emit = defineEmits<{
   font-variant-numeric: tabular-nums;
   line-height: 1;
   vertical-align: baseline;
+}
+
+.ds-number-flow--fallback {
+  font-variant-numeric: tabular-nums;
 }
 </style>
