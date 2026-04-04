@@ -214,6 +214,59 @@ const tokenDefinitionRows = [
   },
 ] as const
 
+const generationTargets = ['convert', 'rescore', 'test', 'all'] as const
+
+const themeGenerationSteps = [
+  {
+    id: '01',
+    title: 'Source Ingest',
+    detail:
+      'Read `.itermcolors` files from `input/themes-raw` and convert plist payloads into structured JSON.',
+    script: 'convert-iterm-themes.ts',
+    output: 'normalized source colors',
+  },
+  {
+    id: '02',
+    title: 'Token Mapping',
+    detail:
+      'Map source channels to Codex tokens: surface, ink, accent, plus semantic colors for diff and skill states.',
+    script: 'convert-iterm-themes.ts',
+    output: 'codex-theme-v1 token object',
+  },
+  {
+    id: '03',
+    title: 'Variant + Fonts',
+    detail:
+      'Infer `variant` from surface luminance and assign deterministic font stacks from seeded weighted pools.',
+    script: 'assign-fonts.ts',
+    output: 'stable variant + fonts',
+  },
+  {
+    id: '04',
+    title: 'Theme Resolver Scoring',
+    detail:
+      'Score official code themes against contrast thresholds and semantic color distance, then pick best `codeThemeId`.',
+    script: 'resolve-code-theme-id.ts',
+    output: 'recommended codeThemeId',
+  },
+  {
+    id: '05',
+    title: 'Normalization Pass',
+    detail:
+      'Re-score all generated presets and rewrite mismatched theme ids for consistent output across the full preset set.',
+    script: 'normalize-code-theme-ids.ts',
+    output: 'normalized preset files',
+  },
+  {
+    id: '06',
+    title: 'Smoke Validation',
+    detail:
+      'Run resolver smoke tests on representative dark/light payloads to verify non-empty stable recommendations.',
+    script: 'verify-resolver.ts',
+    output: 'pipeline verification result',
+  },
+] as const
+
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
   { id: 'installation', label: 'Installation' },
@@ -663,61 +716,81 @@ const tocSections = [
               </div>
               <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <article
-                  class="group border border-sand-2 rounded-2xl border-solid bg-slate-1 p-6 transition-all duration-200 ease-[cubic-bezier(0.36,0,0.64,1)] hover:border-sand-4 hover:bg-sand-2"
+                  class="group relative overflow-hidden border rounded-[2rem] border-solid bg-sand-1 p-6 shadow-[0_14px_32px_rgba(0,0,0,0.24)] transition-all duration-220 ease-[cubic-bezier(0.36,0,0.64,1)] text-pureBlack border-pureBlack/10 hover:border-pureBlack/22 hover:-translate-y-0.5"
                 >
+                  <div class="relative z-10 mb-4 flex items-center justify-between">
+                    <span
+                      class="font-geist-mono-500 text-[10px] color-sand-10 tracking-[0.16em] uppercase group-hover:opacity-0"
+                    >
+                      Schema
+                    </span>
+                    <Icon name="ph:brackets-curly-bold" class="size-4 color-sand-8 group-hover:color-sand-12" />
+                  </div>
                   <h4
-                    class="font-geist-mono-500 mb-3 text-[11px] color-sand-11 tracking-wider uppercase group-hover:color-pureWhite"
+                    class="font-geist-700 relative z-10 text-[1.9rem] color-sand-12 leading-[0.95] tracking-[-0.02em] uppercase transition-all duration-200 ease-out group-hover:-translate-y-1/2"
                   >
-                    Top-Level Fields
+                    Top-Level
+                    <br>
+                    Fields
                   </h4>
                   <p
-                    class="font-geist-300 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
+                    class="font-geist-300 relative z-10 mt-5 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
                   >
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >codeThemeId</code>
                     (theme identity),
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >variant</code>
                     (dark/light), and
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >theme</code>
                     (all visual tokens).
                   </p>
                 </article>
                 <article
-                  class="group border border-sand-2 rounded-2xl border-solid bg-slate-1 p-6 transition-all duration-200 ease-[cubic-bezier(0.36,0,0.64,1)] hover:border-sand-4 hover:bg-sand-2"
+                  class="group relative overflow-hidden border rounded-[2rem] border-solid bg-sand-1 p-6 shadow-[0_14px_32px_rgba(0,0,0,0.24)] transition-all duration-220 ease-[cubic-bezier(0.36,0,0.64,1)] text-pureBlack border-pureBlack/10 hover:border-pureBlack/22 hover:-translate-y-0.5"
                 >
+                  <div class="relative z-10 mb-4 flex items-center justify-between">
+                    <span
+                      class="font-geist-mono-500 text-[10px] color-sand-10 tracking-[0.16em] uppercase group-hover:opacity-0"
+                    >
+                      Tokens
+                    </span>
+                    <Icon name="ph:swatches-bold" class="size-4 color-sand-8 group-hover:color-sand-12" />
+                  </div>
                   <h4
-                    class="font-geist-mono-500 mb-3 text-[11px] color-sand-10 tracking-wider uppercase group-hover:color-pureWhite"
+                    class="font-geist-700 relative z-10 text-[1.9rem] color-sand-12 leading-[0.95] tracking-[-0.02em] uppercase transition-all duration-200 ease-out group-hover:-translate-y-1/2"
                   >
-                    Theme Fields
+                    Theme
+                    <br>
+                    Fields
                   </h4>
                   <p
-                    class="font-geist-300 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
+                    class="font-geist-300 relative z-10 mt-5 text-[15px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-sand-12"
                   >
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >accent</code>,
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >surface</code>,
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >ink</code>,
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >contrast</code>,
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >opaqueWindows</code>,
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >fonts</code>, and
                     <code
-                      class="font-geist-mono-500 color-jade-8 transition-colors duration-200 group-hover:color-[#10b981]"
+                      class="font-geist-mono-500 transition-colors duration-200 color-pureWhite group-hover:color-[#10b981]"
                     >semanticColors</code>.
                   </p>
                 </article>
@@ -824,62 +897,68 @@ const tocSections = [
           <div
             class="flex flex-col gap-8 pb-20 text-base color-sand-11 font-light leading-normal max-lg:pb-14 lg:text-lg"
           >
-            <p>
-              Generation is pipeline-based and deterministic: same
-              input palette + same settings produce the same
-              output payload.
+            <p class="max-w-3xl">
+              The generator is deterministic and script-driven:
+              identical source input produces identical output JSON.
+              The flow below mirrors the real
+              <code>codex-themes</code> pipeline and not a simplified mock.
             </p>
-            <div
-              class="border-borderSubtle bg-surface flex flex-col gap-6 border rounded-xl p-8"
-            >
-              <div class="flex gap-4">
-                <span
-                  class="text-brand-400 font-geist-mono-500 text-sm"
-                >01</span>
-                <p class="text-sm">
-                  Parse incoming palette data (builder input
-                  or external theme source) into normalized
-                  color primitives.
-                </p>
-              </div>
-              <div class="flex gap-4">
-                <span
-                  class="text-brand-400 font-geist-mono-500 text-sm"
-                >02</span>
-                <p class="text-sm">
-                  Map and normalize semantic fields
-                  (<code>accent</code>, <code>surface</code>,
-                  <code>ink</code>, semantic colors) into the
-                  Codex payload structure.
-                </p>
-              </div>
-              <div class="flex gap-4">
-                <span
-                  class="text-brand-400 font-geist-mono-500 text-sm"
-                >03</span>
-                <p class="text-sm">
-                  Validate readability and contrast behavior
-                  across key token groups so the payload
-                  remains usable in real code contexts.
-                </p>
-              </div>
-              <div class="flex gap-4">
-                <span
-                  class="text-brand-400 font-geist-mono-500 text-sm"
-                >04</span>
-                <p class="text-sm">
-                  Infer <code>variant</code>, resolve a
-                  compatible <code>codeThemeId</code>, and
-                  finalize the Codex JSON output.
-                </p>
-              </div>
+
+            <div class="flex flex-wrap items-center gap-2.5 border border-sand-8/45 rounded-2xl bg-slate-1 px-4 py-3">
+              <span class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.14em] uppercase">Pipeline Targets</span>
+              <span
+                v-for="target in generationTargets"
+                :key="target"
+                class="font-geist-mono-500 border border-sand-7/55 rounded px-2.5 py-1 text-[11px] color-sand-6 bg-pureBlack/70"
+              >
+                {{ target }}
+              </span>
+              <span class="font-geist-mono-500 ml-auto text-[11px] color-sand-9">
+                schema: <code>codex-theme-v1</code>
+              </span>
             </div>
-            <p>
-              Practical note: two different sources can converge
-              visually after normalization because semantic
-              mapping intentionally compresses wild palette
-              variance into usable UI behavior.
-            </p>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <article
+                v-for="step in themeGenerationSteps"
+                :key="step.id"
+                class="group relative overflow-hidden border border-sand-8/55 rounded-2xl bg-slate-1/92 p-5 transition-all duration-220 ease-out hover:border-sand-6/70 hover:bg-slate-1"
+              >
+                <div class="mb-3 flex items-center justify-between gap-3">
+                  <span class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.16em] uppercase">
+                    Step {{ step.id }}
+                  </span>
+                  <code class="font-geist-mono-500 border border-sand-8/50 rounded px-2 py-0.5 text-[11px] color-sand-6 bg-pureBlack/65">
+                    {{ step.script }}
+                  </code>
+                </div>
+                <h4 class="font-geist-600 text-[1.1rem] leading-tight color-pureWhite">
+                  {{ step.title }}
+                </h4>
+                <p class="mt-2 text-[14px] color-sand-10 leading-relaxed">
+                  {{ step.detail }}
+                </p>
+                <div class="mt-3 border-t border-sand-8/45 pt-3">
+                  <span class="font-geist-mono-500 text-[11px] color-sand-8 tracking-wide uppercase">Output</span>
+                  <p class="mt-1 text-[13px] color-sand-9 leading-relaxed">
+                    {{ step.output }}
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <div class="border border-sand-8/40 rounded-2xl px-5 py-4 bg-pureBlack/65">
+              <p class="text-[14px] color-sand-9 leading-relaxed">
+                The important behavior is intentional convergence:
+                visually different source palettes can still map to
+                similar runtime themes after readability normalization
+                and resolver scoring.
+              </p>
+              <p class="mt-2 text-[14px] color-sand-10 leading-relaxed">
+                This keeps generated themes predictable for production
+                usage while still preserving each preset's identity.
+              </p>
+            </div>
           </div>
         </section>
 
