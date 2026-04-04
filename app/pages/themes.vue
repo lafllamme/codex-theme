@@ -97,6 +97,7 @@ const activePresetId = ref<string | null>(null)
 let copyStateResetTimer: ReturnType<typeof setTimeout> | null = null
 let exportStateResetTimer: ReturnType<typeof setTimeout> | null = null
 let applyStateResetTimer: ReturnType<typeof setTimeout> | null = null
+let jsonSyncRaf: number | null = null
 
 const scenarioOptions = [
   { id: 'neutral', label: 'Neutral' },
@@ -120,6 +121,23 @@ const neutralSnapshot = ref<CodexThemePayload | null>(null)
 
 const uiFontSize = ref(16)
 const codeFontSize = ref(18)
+const themeSwitching = ref(false)
+let themeSwitchTimer: ReturnType<typeof setTimeout> | null = null
+const THEME_SWITCH_MS = 250
+
+function triggerThemeSwitch() {
+  if (themeSwitchTimer) {
+    clearTimeout(themeSwitchTimer)
+    themeSwitchTimer = null
+  }
+
+  // Must be active before payload mutations so color changes are captured by CSS transitions.
+  themeSwitching.value = true
+  themeSwitchTimer = setTimeout(() => {
+    themeSwitching.value = false
+    themeSwitchTimer = null
+  }, THEME_SWITCH_MS)
+}
 
 const themePageFontStyle = computed(() => ({
   '--font-ui': resolveThemeUiFont(payload.theme.fonts.ui),
@@ -232,16 +250,15 @@ function parsePayload(rawValue: string): {
 function applyPayload(next: CodexThemePayload) {
   payload.codeThemeId = next.codeThemeId
   payload.variant = next.variant
-  payload.theme.accent = next.theme.accent
-  payload.theme.contrast = next.theme.contrast
-  payload.theme.fonts.code = next.theme.fonts.code
-  payload.theme.fonts.ui = next.theme.fonts.ui
-  payload.theme.ink = next.theme.ink
-  payload.theme.opaqueWindows = next.theme.opaqueWindows
-  payload.theme.semanticColors.diffAdded = next.theme.semanticColors.diffAdded
-  payload.theme.semanticColors.diffRemoved = next.theme.semanticColors.diffRemoved
-  payload.theme.semanticColors.skill = next.theme.semanticColors.skill
-  payload.theme.surface = next.theme.surface
+  payload.theme = structuredClone(next.theme)
+}
+
+function snapshotPayload(): CodexThemePayload {
+  return {
+    codeThemeId: payload.codeThemeId,
+    variant: payload.variant,
+    theme: structuredClone(payload.theme),
+  }
 }
 
 function setExtraFromParsed(next: {
@@ -262,6 +279,24 @@ function syncJsonFromPayload() {
   jsonValue.value = toExportString()
 }
 
+function scheduleJsonSync() {
+  if (isApplyingJson.value)
+    return
+
+  if (!import.meta.client) {
+    syncJsonFromPayload()
+    return
+  }
+
+  if (jsonSyncRaf != null)
+    cancelAnimationFrame(jsonSyncRaf)
+
+  jsonSyncRaf = requestAnimationFrame(() => {
+    jsonSyncRaf = null
+    syncJsonFromPayload()
+  })
+}
+
 function setJsonValue(value: string) {
   jsonValue.value = value
   jsonError.value = ''
@@ -273,6 +308,7 @@ function setJsonValue(value: string) {
   }
 
   isApplyingJson.value = true
+  triggerThemeSwitch()
   applyPayload(parsed.payload)
   setExtraFromParsed(parsed)
   queueMicrotask(() => {
@@ -474,6 +510,8 @@ function hslToHex(h: number, s: number, l: number) {
 }
 
 function randomizeTheme() {
+  triggerThemeSwitch()
+  const next = snapshotPayload()
   const randomUiFont = pickRandomDifferent<string | null>([
     null,
     'Inter',
@@ -488,7 +526,7 @@ function randomizeTheme() {
     '"Trebuchet MS", Helvetica, sans-serif',
     'Georgia, "Times New Roman", serif',
     '"Times New Roman", Times, serif',
-  ], payload.theme.fonts.ui)
+  ], next.theme.fonts.ui)
   const randomCodeFont = pickRandomDifferent<string | null>([
     null,
     'Inter',
@@ -503,24 +541,25 @@ function randomizeTheme() {
     '"Trebuchet MS", Helvetica, sans-serif',
     'Georgia, "Times New Roman", serif',
     '"Times New Roman", Times, serif',
-  ], payload.theme.fonts.code)
+  ], next.theme.fonts.code)
   const baseHue = randomInt(0, 359)
   const accentHue = (baseHue + randomInt(18, 168)) % 360
   const skillHue = (baseHue + randomInt(170, 285)) % 360
   const diffRemovedHue = Math.random() < 0.5 ? randomInt(345, 359) : randomInt(0, 12)
 
-  payload.variant = 'dark'
-  payload.theme.surface = hslToHex(baseHue, randomInt(12, 34), randomInt(5, 14))
-  payload.theme.ink = hslToHex((baseHue + randomInt(-12, 12) + 360) % 360, randomInt(16, 52), randomInt(82, 95))
-  payload.theme.accent = hslToHex(accentHue, randomInt(56, 88), randomInt(62, 76))
-  payload.theme.semanticColors.diffAdded = hslToHex(randomInt(105, 152), randomInt(46, 82), randomInt(56, 74))
-  payload.theme.semanticColors.diffRemoved = hslToHex(diffRemovedHue, randomInt(62, 90), randomInt(62, 76))
-  payload.theme.semanticColors.skill = hslToHex(skillHue, randomInt(52, 86), randomInt(60, 76))
-  payload.theme.contrast = randomInt(54, 86)
-  payload.theme.opaqueWindows = true
-  payload.theme.fonts.ui = randomUiFont
-  payload.theme.fonts.code = randomCodeFont
-  payload.codeThemeId = pickRandomDifferent(OFFICIAL_CODE_THEME_IDS, payload.codeThemeId)
+  next.variant = 'dark'
+  next.theme.surface = hslToHex(baseHue, randomInt(12, 34), randomInt(5, 14))
+  next.theme.ink = hslToHex((baseHue + randomInt(-12, 12) + 360) % 360, randomInt(16, 52), randomInt(82, 95))
+  next.theme.accent = hslToHex(accentHue, randomInt(56, 88), randomInt(62, 76))
+  next.theme.semanticColors.diffAdded = hslToHex(randomInt(105, 152), randomInt(46, 82), randomInt(56, 74))
+  next.theme.semanticColors.diffRemoved = hslToHex(diffRemovedHue, randomInt(62, 90), randomInt(62, 76))
+  next.theme.semanticColors.skill = hslToHex(skillHue, randomInt(52, 86), randomInt(60, 76))
+  next.theme.contrast = randomInt(54, 86)
+  next.theme.opaqueWindows = true
+  next.theme.fonts.ui = randomUiFont
+  next.theme.fonts.code = randomCodeFont
+  next.codeThemeId = pickRandomDifferent(OFFICIAL_CODE_THEME_IDS, next.codeThemeId)
+  applyPayload(next)
 
   activePresetId.value = null
   scenarioId.value = 'neutral'
@@ -545,6 +584,7 @@ function setCodeFontSize(value: number) {
 }
 
 function applyThemePreset(entry: (typeof themePresetEntries)[number]) {
+  triggerThemeSwitch()
   applyPayload(structuredClone(entry.payload))
   setExtraFromParsed({
     extraTopLevel: {},
@@ -566,6 +606,7 @@ function setScenario(next: string) {
     return
 
   if (next === 'neutral' && neutralSnapshot.value) {
+    triggerThemeSwitch()
     applyPayload(structuredClone(neutralSnapshot.value))
     neutralSnapshot.value = null
     scenarioId.value = next
@@ -575,29 +616,32 @@ function setScenario(next: string) {
   if (!neutralSnapshot.value)
     neutralSnapshot.value = structuredClone(payload)
 
+  triggerThemeSwitch()
+  const scenarioPayload = snapshotPayload()
   if (next === 'diff-stress') {
-    payload.theme.semanticColors.diffAdded = '#00ff8f'
-    payload.theme.semanticColors.diffRemoved = '#ff4f78'
-    payload.theme.contrast = 74
+    scenarioPayload.theme.semanticColors.diffAdded = '#00ff8f'
+    scenarioPayload.theme.semanticColors.diffRemoved = '#ff4f78'
+    scenarioPayload.theme.contrast = 74
   }
   else if (next === 'high-contrast') {
-    payload.theme.ink = '#ffffff'
-    payload.theme.surface = '#050505'
-    payload.theme.contrast = 94
+    scenarioPayload.theme.ink = '#ffffff'
+    scenarioPayload.theme.surface = '#050505'
+    scenarioPayload.theme.contrast = 94
   }
   else if (next === 'panel-combo') {
-    payload.theme.opaqueWindows = false
-    payload.theme.contrast = 66
-    payload.theme.semanticColors.skill = '#8ec9ff'
+    scenarioPayload.theme.opaqueWindows = false
+    scenarioPayload.theme.contrast = 66
+    scenarioPayload.theme.semanticColors.skill = '#8ec9ff'
   }
 
+  applyPayload(scenarioPayload)
   scenarioId.value = next
 }
 
 watch(
   payload,
   () => {
-    syncJsonFromPayload()
+    scheduleJsonSync()
   },
   { deep: true },
 )
@@ -607,6 +651,10 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  if (jsonSyncRaf != null)
+    cancelAnimationFrame(jsonSyncRaf)
+  if (themeSwitchTimer)
+    clearTimeout(themeSwitchTimer)
   if (copyStateResetTimer)
     clearTimeout(copyStateResetTimer)
   if (exportStateResetTimer)
@@ -627,6 +675,7 @@ onBeforeUnmount(() => {
           :payload="payload"
           :ui-font-size="uiFontSize"
           :code-font-size="codeFontSize"
+          :theme-switching="themeSwitching"
           :translucent-sidebar="!payload.theme.opaqueWindows"
         />
         <DsThemeControlsBar

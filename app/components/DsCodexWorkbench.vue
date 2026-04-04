@@ -23,6 +23,7 @@ const props = defineProps<{
   payload: CodexThemePayload
   uiFontSize: number
   codeFontSize: number
+  themeSwitching: boolean
   translucentSidebar: boolean
 }>()
 
@@ -207,7 +208,11 @@ function beginDiffResize(event: MouseEvent) {
 </script>
 
 <template>
-  <section class="relative h-full min-h-0 w-full flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]" :style="shellStyle">
+  <section
+    class="relative h-full min-h-0 w-full flex flex-col overflow-hidden text-[length:var(--ui-font-size)] text-[color:var(--wb-text-primary)] font-[var(--font-ui)]"
+    :class="{ 'wb-theme-switching': props.themeSwitching }"
+    :style="shellStyle"
+  >
     <div class="wb-control-lane">
       <div class="inline-flex items-center gap-[9px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
@@ -263,9 +268,9 @@ function beginDiffResize(event: MouseEvent) {
         @mousedown="beginSidebarResize"
       />
 
-      <section class="wb-main-area min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
-        <div class="wb-header-frame min-h-0 min-w-0 w-full flex flex-col">
-          <section class="wb-chat-header-shell min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
+      <section class="wb-main-area theme-switch-surface min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
+        <div class="wb-header-frame theme-switch-surface min-h-0 min-w-0 w-full flex flex-col">
+          <section class="wb-chat-header-shell theme-switch-surface min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
             <div class="px-[8px] pt-0">
               <ChatHeaderBar
                 title="Open Vue-Bits Dither Sei..."
@@ -285,9 +290,9 @@ function beginDiffResize(event: MouseEvent) {
           </section>
         </div>
 
-        <div class="wb-body-frame min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
+        <div class="wb-body-frame theme-switch-surface min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
           <div class="wb-body-motion min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-            <section class="wb-chat-body-shell min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
+            <section class="wb-chat-body-shell theme-switch-surface min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
               <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
                 <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
                   <ChatWindow
@@ -324,7 +329,7 @@ function beginDiffResize(event: MouseEvent) {
                   @mousedown="beginDiffResize"
                 />
                 <div
-                  class="diff-column min-h-0 flex shrink-0 flex-col overflow-hidden"
+                  class="diff-column theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden"
                   :class="isDiffOpen ? 'diff-column--open' : ''"
                 >
                   <DiffDrawer
@@ -519,6 +524,25 @@ function beginDiffResize(event: MouseEvent) {
   bottom: 0;
   width: 8px;
   cursor: col-resize;
+}
+
+.wb-theme-switching .theme-switch-surface,
+.wb-theme-switching :deep(.sidebar),
+.wb-theme-switching :deep(.wb-chat-window),
+.wb-theme-switching :deep(.wb-mainstage-scroll),
+.wb-theme-switching :deep(.diff-drawer),
+.wb-theme-switching :deep(.terminal-drawer),
+.wb-theme-switching :deep(.chat-header-bar),
+.wb-theme-switching :deep(button),
+.wb-theme-switching :deep(input),
+.wb-theme-switching :deep(select),
+.wb-theme-switching :deep(textarea),
+.wb-theme-switching :deep(svg),
+.wb-theme-switching :deep(path) {
+  transition-duration: 250ms;
+  transition-property:
+    background-color, border-color, box-shadow, color, fill, outline-color, stroke, text-decoration-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (max-width: 1180px) {
