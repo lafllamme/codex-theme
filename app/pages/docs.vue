@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NumberFlowGroup } from '@number-flow/vue'
 import { useElementVisibility } from '@vueuse/core'
 import DsExpandableCodeBlock from '~/components/docs/DsExpandableCodeBlock.vue'
 import DsInstallationTabs from '~/components/docs/DsInstallationTabs.vue'
@@ -303,7 +302,7 @@ const displayedPresetSourceStats = ref({
   total: 0,
 })
 let presetStatsReplayTimer: ReturnType<typeof setTimeout> | null = null
-let presetStatsHoverReplayCooldown = false
+const presetStatsInteractionTimers: Partial<Record<'total' | 'official' | 'importedIterm', ReturnType<typeof setTimeout>>> = {}
 
 function resetPresetStatsDisplay() {
   displayedPresetSourceStats.value = {
@@ -333,28 +332,26 @@ function replayPresetStatsAnimation() {
   }, 120)
 }
 
-function replayPresetStatsOnInteraction() {
-  if (!isPresetStatsStripVisible.value || presetStatsHoverReplayCooldown)
-    return
-
-  presetStatsHoverReplayCooldown = true
-  const target = presetSourceStats.value
-
-  displayedPresetSourceStats.value = {
-    official: Math.max(0, target.official - 1),
-    importedIterm: Math.max(0, target.importedIterm - 1),
-    total: Math.max(0, target.total - 1),
+function replayPresetStatsOnInteraction(key: 'total' | 'official' | 'importedIterm') {
+  if (presetStatsInteractionTimers[key]) {
+    clearTimeout(presetStatsInteractionTimers[key])
+    delete presetStatsInteractionTimers[key]
   }
 
-  requestAnimationFrame(() => {
-    displayedPresetSourceStats.value = {
-      ...target,
-    }
-  })
+  const target = presetSourceStats.value[key]
 
-  setTimeout(() => {
-    presetStatsHoverReplayCooldown = false
-  }, 260)
+  displayedPresetSourceStats.value = {
+    ...displayedPresetSourceStats.value,
+    [key]: 0,
+  }
+
+  presetStatsInteractionTimers[key] = setTimeout(() => {
+    displayedPresetSourceStats.value = {
+      ...displayedPresetSourceStats.value,
+      [key]: target,
+    }
+    delete presetStatsInteractionTimers[key]
+  }, 140)
 }
 
 watch(isPresetStatsStripVisible, (visible) => {
@@ -375,10 +372,17 @@ watch(presetSourceStats, (nextStats) => {
 })
 
 onBeforeUnmount(() => {
-  if (!presetStatsReplayTimer)
-    return
-  clearTimeout(presetStatsReplayTimer)
-  presetStatsReplayTimer = null
+  if (presetStatsReplayTimer) {
+    clearTimeout(presetStatsReplayTimer)
+    presetStatsReplayTimer = null
+  }
+  ;(['total', 'official', 'importedIterm'] as const).forEach((key) => {
+    const timer = presetStatsInteractionTimers[key]
+    if (!timer)
+      return
+    clearTimeout(timer)
+    delete presetStatsInteractionTimers[key]
+  })
 })
 
 const tocSections = [
@@ -1104,59 +1108,73 @@ const tocSections = [
                 Theme Catalog
               </p>
 
-              <NumberFlowGroup>
-                <div
-                  ref="presetStatsStripRef"
-                  class="flex flex-col gap-8 md:flex-row md:items-end md:gap-0"
-                  @mouseenter="replayPresetStatsOnInteraction"
-                  @click="replayPresetStatsOnInteraction"
+              <div
+                ref="presetStatsStripRef"
+                class="flex flex-col gap-8 md:flex-row md:items-end md:gap-0"
+              >
+                <article
+                  class="md:w-1/3 md:pr-12"
+                  @mouseenter="replayPresetStatsOnInteraction('total')"
+                  @click="replayPresetStatsOnInteraction('total')"
                 >
-                  <article class="md:w-1/3 md:pr-12">
-                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
-                      <span
-                        class="inline-flex justify-end"
-                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
-                      >
-                        <DsNumberFlow :value="displayedPresetSourceStats.total" />
-                      </span>
-                      <span class="ml-1 color-[#10b981]">+</span>
-                    </p>
-                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
-                      Total Themes
-                    </p>
-                  </article>
+                  <p
+                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                  >
+                    <span
+                      class="inline-flex justify-end"
+                      :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                    >
+                      <DsNumberFlow :value="displayedPresetSourceStats.total" />
+                    </span>
+                    <span class="ml-1 color-[#10b981]">+</span>
+                  </p>
+                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                    Total Themes
+                  </p>
+                </article>
 
-                  <article class="md:w-1/3 md:border-l md:border-sand-9/40 md:px-12">
-                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
-                      <span
-                        class="inline-flex justify-end"
-                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
-                      >
-                        <DsNumberFlow :value="displayedPresetSourceStats.official" />
-                      </span>
-                      <span class="ml-1 color-slate-9">+</span>
-                    </p>
-                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
-                      Codex Native
-                    </p>
-                  </article>
+                <article
+                  class="md:w-1/3 md:border-l md:border-sand-9/40 md:px-12"
+                  @mouseenter="replayPresetStatsOnInteraction('official')"
+                  @click="replayPresetStatsOnInteraction('official')"
+                >
+                  <p
+                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                  >
+                    <span
+                      class="inline-flex justify-end"
+                      :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                    >
+                      <DsNumberFlow :value="displayedPresetSourceStats.official" />
+                    </span>
+                    <span class="ml-1 color-slate-9">+</span>
+                  </p>
+                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                    Codex Native
+                  </p>
+                </article>
 
-                  <article class="md:w-1/3 md:border-l md:border-sand-9/40 md:pl-12">
-                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
-                      <span
-                        class="inline-flex justify-end"
-                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
-                      >
-                        <DsNumberFlow :value="displayedPresetSourceStats.importedIterm" />
-                      </span>
-                      <span class="ml-1 color-slate-9">+</span>
-                    </p>
-                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
-                      iTerm Sources
-                    </p>
-                  </article>
-                </div>
-              </NumberFlowGroup>
+                <article
+                  class="md:w-1/3 md:border-l md:border-sand-9/40 md:pl-12"
+                  @mouseenter="replayPresetStatsOnInteraction('importedIterm')"
+                  @click="replayPresetStatsOnInteraction('importedIterm')"
+                >
+                  <p
+                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                  >
+                    <span
+                      class="inline-flex justify-end"
+                      :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                    >
+                      <DsNumberFlow :value="displayedPresetSourceStats.importedIterm" />
+                    </span>
+                    <span class="ml-1 color-slate-9">+</span>
+                  </p>
+                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                    iTerm Sources
+                  </p>
+                </article>
+              </div>
             </div>
 
             <p class="max-w-3xl">
