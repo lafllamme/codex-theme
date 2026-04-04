@@ -21,8 +21,6 @@ const props = withDefaults(defineProps<{
 
 const checked = defineModel<boolean>({ required: true })
 
-const pad = computed(() => 2)
-
 function toggle() {
   if (props.disabled)
     return
