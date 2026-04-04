@@ -89,6 +89,11 @@ const commitActionMap: Record<string, CommitAction[]> = {
 }
 
 const selectedCommitAction = ref('commit')
+const diffAdded = 836
+const diffRemoved = 1068
+const animatedDiffAdded = ref(0)
+const animatedDiffRemoved = ref(0)
+let diffAnimationTimer: ReturnType<typeof setTimeout> | null = null
 
 const commitOptions = computed(() => {
   return (
@@ -107,6 +112,21 @@ function handleCommitPrimaryAction(actionKey: string) {
     emit('openGitAction', actionKey)
   }
 }
+
+onMounted(() => {
+  diffAnimationTimer = setTimeout(() => {
+    animatedDiffAdded.value = diffAdded
+    animatedDiffRemoved.value = diffRemoved
+    diffAnimationTimer = null
+  }, 40)
+})
+
+onBeforeUnmount(() => {
+  if (!diffAnimationTimer)
+    return
+  clearTimeout(diffAnimationTimer)
+  diffAnimationTimer = null
+})
 </script>
 
 <template>
@@ -192,9 +212,28 @@ function handleCommitPrimaryAction(actionKey: string) {
         <span
           class="chat-header-diff-delta text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
         >
-          <span class="text-[color:var(--wb-diff-delta-added)]">+836</span>
+          <span class="text-[color:var(--wb-diff-delta-added)]">
+            <DsNumberFlow
+              :value="animatedDiffAdded"
+              prefix="+"
+              locales="de-DE"
+              :transform-timing="{ duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
+              :spin-timing="{ duration: 1020, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
+              :opacity-timing="{ duration: 420, easing: 'ease-out' }"
+              :will-change="true"
+            />
+          </span>
           <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
-          <span class="text-[color:var(--wb-diff-delta-removed)]">1.068</span>
+          <span class="text-[color:var(--wb-diff-delta-removed)]">
+            <DsNumberFlow
+              :value="animatedDiffRemoved"
+              locales="de-DE"
+              :transform-timing="{ duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
+              :spin-timing="{ duration: 1020, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
+              :opacity-timing="{ duration: 420, easing: 'ease-out' }"
+              :will-change="true"
+            />
+          </span>
         </span>
       </button>
 

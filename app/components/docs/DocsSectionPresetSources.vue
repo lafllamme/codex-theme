@@ -39,6 +39,18 @@ const displayedPresetSourceStats = ref({
 })
 
 let presetStatsReplayTimer: ReturnType<typeof setTimeout> | null = null
+const relaxedTransformTiming: EffectTiming = {
+  duration: 950,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+}
+const relaxedSpinTiming: EffectTiming = {
+  duration: 1100,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+}
+const relaxedOpacityTiming: EffectTiming = {
+  duration: 450,
+  easing: 'ease-out',
+}
 
 function resetPresetStatsDisplay() {
   displayedPresetSourceStats.value = {
@@ -140,6 +152,10 @@ onBeforeUnmount(() => {
                   :value="
                     displayedPresetSourceStats.total
                   "
+                  :transform-timing="relaxedTransformTiming"
+                  :spin-timing="relaxedSpinTiming"
+                  :opacity-timing="relaxedOpacityTiming"
+                  :will-change="true"
                 />
               </span>
               <Icon
@@ -176,6 +192,10 @@ onBeforeUnmount(() => {
                   :value="
                     displayedPresetSourceStats.official
                   "
+                  :transform-timing="relaxedTransformTiming"
+                  :spin-timing="relaxedSpinTiming"
+                  :opacity-timing="relaxedOpacityTiming"
+                  :will-change="true"
                 />
               </span>
               <Icon
@@ -212,6 +232,10 @@ onBeforeUnmount(() => {
                   :value="
                     displayedPresetSourceStats.importedIterm
                   "
+                  :transform-timing="relaxedTransformTiming"
+                  :spin-timing="relaxedSpinTiming"
+                  :opacity-timing="relaxedOpacityTiming"
+                  :will-change="true"
                 />
               </span>
               <Icon
