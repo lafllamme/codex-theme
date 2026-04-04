@@ -1239,7 +1239,7 @@ const tocSections = [
                           :value="
                             displayedPresetSourceStats.official
                           "
-                        <!-- /> -->
+                        />
                       </span>
                       <Icon
                         name="ph:plus-bold"
