@@ -33,6 +33,11 @@ const props = withDefaults(
     opacityTiming: undefined,
   },
 )
+
+const emit = defineEmits<{
+  animationsfinish: [event: CustomEvent]
+  animationsstart: [event: CustomEvent]
+}>()
 </script>
 
 <template>
@@ -51,6 +56,8 @@ const props = withDefaults(
     :value="props.value"
     :will-change="props.willChange"
     :opacity-timing="props.opacityTiming"
+    @animationsstart="emit('animationsstart', $event)"
+    @animationsfinish="emit('animationsfinish', $event)"
   />
 </template>
 

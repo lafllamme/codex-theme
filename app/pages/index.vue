@@ -21,7 +21,7 @@ const controlsEnabled = computed(() => route.query.controls === '1')
       second-cta-text="Go to Docs"
     />
 
-    <GithubStarsButton username="lafllamme" repo="codex-theme" />
+    <GithubStarsButton username="barvian" repo="number-flow" />
 
     <button
       v-if="controlsEnabled"
