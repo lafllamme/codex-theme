@@ -1150,9 +1150,13 @@ const tocSections = [
           >
             <p class="max-w-3xl">
               The current catalog combines official Codex presets
-              with a large imported iTerm2-derived set. Every
-              entry is normalized into the same
-              <code>codex-theme-v1</code> payload contract.
+              with a large imported iTerm set. We use iTerm as a
+              source because its palette ecosystem is widely known
+              across developer workflows, including familiar
+              classics like Monokai, Ayu, and many other proven
+              themes. Every entry is normalized into the same
+              <code>codex-theme-v1</code> payload contract so
+              browsing, previewing, and exporting stay consistent.
             </p>
 
             <div class="py-2 space-y-6">
@@ -1243,7 +1247,7 @@ const tocSections = [
                       </span>
                       <Icon
                         name="ph:plus-bold"
-                        class="pointer-events-none absolute left-full top-1/2 ml-2 size-12 color-slate-9 -translate-y-1/2"
+                        class="pointer-events-none absolute left-full top-1/2 ml-2 size-[0.58em] color-slate-9 -translate-y-1/2"
                       />
                     </span>
                   </p>
@@ -1289,7 +1293,7 @@ const tocSections = [
                       </span>
                       <Icon
                         name="ph:plus-bold"
-                        class="pointer-events-none absolute left-full top-1/2 ml-2 size-12 color-slate-9 -translate-y-1/2"
+                        class="pointer-events-none absolute left-full top-1/2 ml-2 size-[0.58em] color-slate-9 -translate-y-1/2"
                       />
                     </span>
                   </p>
@@ -1328,13 +1332,81 @@ const tocSections = [
           <div
             class="flex flex-col gap-8 pb-20 text-base color-sand-11 font-light leading-normal max-lg:pb-14 lg:text-lg"
           >
-            <ul class="text-sm space-y-3">
-              <li>Repository (coming soon)</li>
-              <li>Script documentation (coming soon)</li>
-              <li>
-                Codex schema/version reference (coming soon)
-              </li>
-            </ul>
+            <p class="max-w-3xl">
+              Core references for the Theme Studio pipeline,
+              source presets, and Codex compatibility context.
+            </p>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <article class="group border border-sand-8/55 rounded-2xl bg-slate-1/92 p-5 transition-colors duration-200 hover:border-sand-6/70">
+                <div class="mb-3 flex items-center justify-between">
+                  <span class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase">Repository</span>
+                  <Icon name="ph:swatches" class="h-4 w-4 color-sand-9" />
+                </div>
+                <p class="text-[13px] color-sand-10 leading-relaxed">
+                  Source of truth for conversion scripts, preset
+                  generation, and reproducible local workflows.
+                </p>
+                <a
+                  href="https://github.com/lafllamme/codex-themes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group font-geist-500 relative mt-4 w-fit inline-flex items-center gap-2 pb-0.5 text-sm leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
+                >
+                  Open Repository
+                  <Icon
+                    name="ph:arrow-up-right"
+                    class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              </article>
+
+              <article class="group border border-sand-8/55 rounded-2xl bg-slate-1/92 p-5 transition-colors duration-200 hover:border-sand-6/70">
+                <div class="mb-3 flex items-center justify-between">
+                  <span class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase">iTerm</span>
+                  <Icon name="ph:feather" class="h-4 w-4 color-sand-9" />
+                </div>
+                <p class="text-[13px] color-sand-10 leading-relaxed">
+                  Upstream palette source used to import a broad
+                  ecosystem of known developer color themes.
+                </p>
+                <a
+                  href="https://github.com/mbadolato/iTerm2-Color-Schemes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group font-geist-500 relative mt-4 w-fit inline-flex items-center gap-2 pb-0.5 text-sm leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
+                >
+                  View iTerm Source
+                  <Icon
+                    name="ph:arrow-up-right"
+                    class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              </article>
+
+              <article class="group border border-sand-8/55 rounded-2xl bg-slate-1/92 p-5 transition-colors duration-200 hover:border-sand-6/70">
+                <div class="mb-3 flex items-center justify-between">
+                  <span class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase">Codex</span>
+                  <Icon name="ph:terminal" class="h-4 w-4 color-sand-9" />
+                </div>
+                <p class="text-[13px] color-sand-10 leading-relaxed">
+                  Product context and compatibility surface for the
+                  generated payload behavior in real Codex usage.
+                </p>
+                <a
+                  href="https://github.com/openai/codex"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group font-geist-500 relative mt-4 w-fit inline-flex items-center gap-2 pb-0.5 text-sm leading-5 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-[#10b981] !text-[#10b981] after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] after:content-[''] hover:after:origin-bottom-left hover:after:scale-x-100"
+                >
+                  Open Codex
+                  <Icon
+                    name="ph:arrow-up-right"
+                    class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </a>
+              </article>
+            </div>
           </div>
         </section>
 
