@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import { NumberFlowGroup } from '@number-flow/vue'
+import { useElementVisibility } from '@vueuse/core'
 import DsExpandableCodeBlock from '~/components/docs/DsExpandableCodeBlock.vue'
 import DsInstallationTabs from '~/components/docs/DsInstallationTabs.vue'
 import DsLogoStepper from '~/components/docs/DsLogoStepper.vue'
 import DsTerminalBlock from '~/components/docs/DsTerminalBlock.vue'
+import DsNumberFlow from '~/components/DsNumberFlow.vue'
 import SyntaxBlock from '~/components/workbench/code/SyntaxBlock.vue'
+import { themePresetEntries } from '~/data/theme-preset-catalog'
+import { OFFICIAL_CODE_THEME_IDS } from '~/utils/code-theme-registry'
 
 definePageMeta({
   layout: 'default',
@@ -266,6 +271,115 @@ const themeGenerationSteps = [
     output: 'pipeline verification result',
   },
 ] as const
+
+const presetSourceStats = computed(() => {
+  const officialIdSet = new Set<string>(OFFICIAL_CODE_THEME_IDS)
+  const official = themePresetEntries.filter(entry => officialIdSet.has(entry.id)).length
+  const total = themePresetEntries.length
+  const importedIterm = Math.max(0, total - official)
+
+  return {
+    official,
+    importedIterm,
+    total,
+  }
+})
+
+const presetStatsNumberWidthCh = computed(() => {
+  const lengths = [
+    presetSourceStats.value.total.toLocaleString().length,
+    presetSourceStats.value.official.toLocaleString().length,
+    presetSourceStats.value.importedIterm.toLocaleString().length,
+  ]
+
+  return Math.max(...lengths, 1)
+})
+
+const presetStatsStripRef = ref<HTMLElement | null>(null)
+const isPresetStatsStripVisible = useElementVisibility(presetStatsStripRef)
+const displayedPresetSourceStats = ref({
+  official: 0,
+  importedIterm: 0,
+  total: 0,
+})
+let presetStatsReplayTimer: ReturnType<typeof setTimeout> | null = null
+let presetStatsHoverReplayCooldown = false
+
+function resetPresetStatsDisplay() {
+  displayedPresetSourceStats.value = {
+    official: 0,
+    importedIterm: 0,
+    total: 0,
+  }
+}
+
+function replayPresetStatsAnimation() {
+  if (!isPresetStatsStripVisible.value)
+    return
+
+  if (presetStatsReplayTimer) {
+    clearTimeout(presetStatsReplayTimer)
+    presetStatsReplayTimer = null
+  }
+
+  resetPresetStatsDisplay()
+
+  // Keep `0` visible for a short beat so NumberFlow always replays.
+  presetStatsReplayTimer = setTimeout(() => {
+    displayedPresetSourceStats.value = {
+      ...presetSourceStats.value,
+    }
+    presetStatsReplayTimer = null
+  }, 120)
+}
+
+function replayPresetStatsOnInteraction() {
+  if (!isPresetStatsStripVisible.value || presetStatsHoverReplayCooldown)
+    return
+
+  presetStatsHoverReplayCooldown = true
+  const target = presetSourceStats.value
+
+  displayedPresetSourceStats.value = {
+    official: Math.max(0, target.official - 1),
+    importedIterm: Math.max(0, target.importedIterm - 1),
+    total: Math.max(0, target.total - 1),
+  }
+
+  requestAnimationFrame(() => {
+    displayedPresetSourceStats.value = {
+      ...target,
+    }
+  })
+
+  setTimeout(() => {
+    presetStatsHoverReplayCooldown = false
+  }, 260)
+}
+
+watch(isPresetStatsStripVisible, (visible) => {
+  if (visible) {
+    replayPresetStatsAnimation()
+    return
+  }
+  resetPresetStatsDisplay()
+}, { immediate: true })
+
+watch(presetSourceStats, (nextStats) => {
+  if (!isPresetStatsStripVisible.value)
+    return
+
+  displayedPresetSourceStats.value = {
+    ...nextStats,
+  }
+})
+
+onBeforeUnmount(() => {
+  if (!presetStatsReplayTimer)
+    return
+  clearTimeout(presetStatsReplayTimer)
+  presetStatsReplayTimer = null
+})
 
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
@@ -972,23 +1086,85 @@ const tocSections = [
             <h2
               class="font-geist-500 text-2xl color-pureWhite lg:text-4xl"
             >
-              Preset Sources (iTerm2 + Curated)
+              Preset Sources
             </h2>
           </div>
           <div
             class="flex flex-col gap-8 pb-20 text-base color-sand-11 font-light leading-normal max-lg:pb-14 lg:text-lg"
           >
-            <p>
-              Many presets are pre-generated from iTerm2-like
-              source palettes, combined with curated in-house
-              sets. All are converted into the same Codex JSON
-              structure.
+            <p class="max-w-3xl">
+              The current catalog combines official Codex presets
+              with a large imported iTerm2-derived set. Every entry
+              is normalized into the same
+              <code>codex-theme-v1</code> payload contract.
             </p>
-            <p>
-              This is intentional: the website remains the easiest
-              creation path, while the repository/script path
-              exists for reproducibility, local generation, and
-              future automation workflows.
+
+            <div class="py-2 space-y-6">
+              <p class="font-geist-mono-500 text-[12px] color-[#10b981] tracking-[0.16em] uppercase">
+                Theme Catalog
+              </p>
+
+              <NumberFlowGroup>
+                <div
+                  ref="presetStatsStripRef"
+                  class="flex flex-col gap-8 md:flex-row md:items-end md:gap-0"
+                  @mouseenter="replayPresetStatsOnInteraction"
+                  @click="replayPresetStatsOnInteraction"
+                >
+                  <article class="md:w-1/3 md:pr-12">
+                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
+                      <span
+                        class="inline-flex justify-end"
+                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                      >
+                        <DsNumberFlow :value="displayedPresetSourceStats.total" />
+                      </span>
+                      <span class="ml-1 color-[#10b981]">+</span>
+                    </p>
+                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                      Total Themes
+                    </p>
+                  </article>
+
+                  <article class="md:w-1/3 md:border-l md:border-sand-9/40 md:px-12">
+                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
+                      <span
+                        class="inline-flex justify-end"
+                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                      >
+                        <DsNumberFlow :value="displayedPresetSourceStats.official" />
+                      </span>
+                      <span class="ml-1 color-slate-9">+</span>
+                    </p>
+                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                      Codex Native
+                    </p>
+                  </article>
+
+                  <article class="md:w-1/3 md:border-l md:border-sand-9/40 md:pl-12">
+                    <p class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite">
+                      <span
+                        class="inline-flex justify-end"
+                        :style="{ minWidth: `${presetStatsNumberWidthCh}ch`, fontVariantNumeric: 'tabular-nums' }"
+                      >
+                        <DsNumberFlow :value="displayedPresetSourceStats.importedIterm" />
+                      </span>
+                      <span class="ml-1 color-slate-9">+</span>
+                    </p>
+                    <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                      iTerm Sources
+                    </p>
+                  </article>
+                </div>
+              </NumberFlowGroup>
+            </div>
+
+            <p class="max-w-3xl">
+              This split is deliberate: Theme Studio stays the
+              fastest creation path, while the
+              <code>codex-themes</code> repository pipeline provides
+              reproducible local generation for automation and
+              versioned workflows.
             </p>
           </div>
         </section>
