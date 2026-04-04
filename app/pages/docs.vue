@@ -1113,12 +1113,12 @@ const tocSections = [
                 class="flex flex-col gap-8 md:flex-row md:items-end md:gap-0"
               >
                 <article
-                  class="md:w-1/3 md:pr-12"
+                  class="flex flex-col items-center md:w-1/3 md:px-12"
                   @mouseenter="replayPresetStatsOnInteraction('total')"
                   @click="replayPresetStatsOnInteraction('total')"
                 >
                   <p
-                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                    class="font-geist-300 w-full inline-flex items-baseline justify-center whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
                   >
                     <span
                       class="inline-flex justify-end"
@@ -1126,20 +1126,20 @@ const tocSections = [
                     >
                       <DsNumberFlow :value="displayedPresetSourceStats.total" />
                     </span>
-                    <span class="ml-1 color-[#10b981]">+</span>
+                    <span class="ml-1  color-[#10b981]">+</span>
                   </p>
-                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                  <p class="font-geist-mono-600 mt-3 text-center text-[13px] color-sand-8 tracking-[0.12em] uppercase">
                     Total Themes
                   </p>
                 </article>
 
                 <article
-                  class="md:w-1/3 md:border-l md:border-sand-9/40 md:px-12"
+                  class="flex flex-col items-center md:w-1/3 md:border-l md:border-sand-9/40 md:px-12"
                   @mouseenter="replayPresetStatsOnInteraction('official')"
                   @click="replayPresetStatsOnInteraction('official')"
                 >
                   <p
-                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                    class="font-geist-300 w-full inline-flex items-baseline justify-center whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
                   >
                     <span
                       class="inline-flex justify-end"
@@ -1147,20 +1147,20 @@ const tocSections = [
                     >
                       <DsNumberFlow :value="displayedPresetSourceStats.official" />
                     </span>
-                    <span class="ml-1 color-slate-9">+</span>
+                    <span class="ml-1  color-slate-9">+</span>
                   </p>
-                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                  <p class="font-geist-mono-600 mt-3 text-center text-[13px] color-sand-8 tracking-[0.12em] uppercase">
                     Codex Native
                   </p>
                 </article>
 
                 <article
-                  class="md:w-1/3 md:border-l md:border-sand-9/40 md:pl-12"
+                  class="flex flex-col items-center md:w-1/3 md:border-l md:border-sand-9/40 md:px-12"
                   @mouseenter="replayPresetStatsOnInteraction('importedIterm')"
                   @click="replayPresetStatsOnInteraction('importedIterm')"
                 >
                   <p
-                    class="font-geist-500 inline-flex items-baseline whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
+                    class="font-geist-300 w-full inline-flex items-baseline justify-center whitespace-nowrap text-[clamp(2.7rem,6vw,5.2rem)] leading-none tracking-tight color-pureWhite"
                   >
                     <span
                       class="inline-flex justify-end"
@@ -1168,9 +1168,9 @@ const tocSections = [
                     >
                       <DsNumberFlow :value="displayedPresetSourceStats.importedIterm" />
                     </span>
-                    <span class="ml-1 color-slate-9">+</span>
+                    <span class="ml-1  color-slate-9">+</span>
                   </p>
-                  <p class="font-geist-mono-500 mt-3 text-[13px] color-sand-8 tracking-[0.12em] uppercase">
+                  <p class="font-geist-mono-600 mt-3 text-center text-[13px] color-sand-8 tracking-[0.12em] uppercase">
                     iTerm Sources
                   </p>
                 </article>
