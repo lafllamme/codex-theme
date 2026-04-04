@@ -9,9 +9,12 @@ const props = withDefaults(
     locales?: Intl.LocalesArgument
     prefix?: string
     respectMotionPreference?: boolean
+    spinTiming?: EffectTiming
     suffix?: string
+    transformTiming?: EffectTiming
     trend?: number
     willChange?: boolean
+    opacityTiming?: EffectTiming
   }>(),
   {
     animated: true,
@@ -22,9 +25,12 @@ const props = withDefaults(
     locales: undefined,
     prefix: '',
     respectMotionPreference: true,
+    spinTiming: undefined,
     suffix: '',
+    transformTiming: undefined,
     trend: undefined,
     willChange: false,
+    opacityTiming: undefined,
   },
 )
 </script>
@@ -38,10 +44,13 @@ const props = withDefaults(
     :plugins="[continuous]"
     :prefix="props.prefix"
     :respect-motion-preference="props.respectMotionPreference"
+    :spin-timing="props.spinTiming"
     :suffix="props.suffix"
+    :transform-timing="props.transformTiming"
     :trend="props.trend"
     :value="props.value"
     :will-change="props.willChange"
+    :opacity-timing="props.opacityTiming"
   />
 </template>
 
