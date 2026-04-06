@@ -8,7 +8,7 @@ const surfaceLayers = [
         cardClass: "border-slate-1 bg-pureBlack",
     },
     { name: "Base", hex: "#131313", cardClass: "border-sand-3 bg-[#131313]" },
-    { name: "High", hex: "#2A2A2A", cardClass: "border-sand-5 bg-slate-1" },
+    { name: "High", hex: "#2A2A2A", cardClass: "border-sand-5 bg-sand-1" },
 ] as const;
 
 const elevationMetrics = [
@@ -65,68 +65,25 @@ const stepScripts = {
                 class="relative z-10 mt-9 grid grid-cols-1 gap-4 lg:grid-cols-3"
             >
                 <article
-                    class="border-white/6 flex flex-col justify-between border rounded-[1.7rem] bg-slate-1 p-6 transition-colors duration-200 hover:bg-slate-3"
+                    class="border-white/7 relative overflow-hidden border rounded-[1.7rem] bg-sand-1 p-6 transition-colors duration-200 lg:col-span-2 hover:bg-slate-3"
                 >
-                    <div>
+                    <div class="relative z-10">
                         <div class="flex items-start justify-between gap-3">
                             <span
                                 class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.18em] uppercase"
                                 >Step 01</span
                             >
                             <code
-                                class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                                class="bg-black/70 font-geist-mono-500 max-w-[42%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
                             >
                                 {{ stepScripts.step01 }}
                             </code>
                         </div>
-            <h4
-              class="font-geist-600 mt-5 text-[clamp(1.12rem,1.55vw,1.72rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
-            >
-              Chromatic Analysis
-            </h4>
-                        <p
-                            class="mt-6 max-w-[32ch] text-sm color-sand-10 leading-relaxed"
+                        <h4
+                            class="font-geist-600 mt-5 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
                         >
-                            Deconstructing source palettes to detect harmonic
-                            anchors, luminance weight, and contrast boundaries.
-                        </p>
-                    </div>
-                    <div class="grid grid-cols-4 mt-7 gap-2.5">
-                        <div
-                            class="border-black/15 h-11 border rounded-xl bg-[#FAFAFA]"
-                        />
-                        <div
-                            class="border-black/15 h-11 border rounded-xl bg-[#C8C8C8]"
-                        />
-                        <div
-                            class="border-black/15 h-11 border rounded-xl bg-[#3A3A3A]"
-                        />
-                        <div
-                            class="border-black/15 h-11 border rounded-xl bg-[#0E0E0E]"
-                        />
-                    </div>
-                </article>
-
-                <article
-                    class="border-white/7 relative overflow-hidden border rounded-[1.7rem] bg-slate-1 p-6 transition-colors duration-200 lg:col-span-2 hover:bg-slate-3"
-                >
-                    <div class="relative z-10">
-                        <div class="flex items-start justify-between gap-3">
-                            <span
-                                class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.18em] uppercase"
-                                >Step 02</span
-                            >
-                            <code
-                                class="bg-black/70 font-geist-mono-500 max-w-[42%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
-                            >
-                                {{ stepScripts.step02 }}
-                            </code>
-                        </div>
-            <h4
-              class="font-geist-600 mt-5 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
-            >
-              Surface Mapping
-            </h4>
+                            Surface Mapping
+                        </h4>
                         <p
                             class="mt-3 max-w-[62ch] text-sm color-sand-10 leading-relaxed"
                         >
@@ -158,6 +115,49 @@ const stepScripts = {
                         name="ph:circle-half-fill"
                         class="pointer-events-none absolute size-50 color-pureWhite/10 -bottom-7 -right-7"
                     />
+                </article>
+
+                <article
+                    class="border-white/6 flex flex-col justify-between border rounded-[1.7rem] bg-slate-2 p-6 transition-colors duration-200 hover:bg-slate-3"
+                >
+                    <div>
+                        <div class="flex items-start justify-between gap-3">
+                            <span
+                                class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.18em] uppercase"
+                                >Step 02</span
+                            >
+                            <code
+                                class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                            >
+                                {{ stepScripts.step02 }}
+                            </code>
+                        </div>
+                        <h4
+                            class="font-geist-600 mt-5 text-[clamp(1.12rem,1.55vw,1.72rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
+                        >
+                            Chromatic Analysis
+                        </h4>
+                        <p
+                            class="mt-6 max-w-[32ch] text-sm color-sand-10 leading-relaxed"
+                        >
+                            Deconstructing source palettes to detect harmonic
+                            anchors, luminance weight, and contrast boundaries.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-4 mt-7 gap-2.5">
+                        <div
+                            class="border-black/15 h-11 border rounded-xl bg-[#FAFAFA]"
+                        />
+                        <div
+                            class="border-black/15 h-11 border rounded-xl bg-[#C8C8C8]"
+                        />
+                        <div
+                            class="border-black/15 h-11 border rounded-xl bg-[#3A3A3A]"
+                        />
+                        <div
+                            class="border-black/15 h-11 border rounded-xl bg-[#0E0E0E]"
+                        />
+                    </div>
                 </article>
             </div>
 
@@ -203,7 +203,7 @@ const stepScripts = {
                 </article>
 
                 <article
-                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-slate-1 p-5 transition-colors duration-200 hover:bg-slate-3"
+                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-3"
                 >
                     <div class="flex items-start justify-between gap-3">
                         <span
@@ -242,7 +242,7 @@ const stepScripts = {
                 </article>
 
                 <article
-                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-slate-1 p-5 transition-colors duration-200 hover:bg-slate-3"
+                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-3"
                 >
                     <div class="flex items-start justify-between gap-3">
                         <span
@@ -280,19 +280,19 @@ const stepScripts = {
             </div>
 
             <article
-                class="border-white/8 relative z-10 mt-4 flex flex-col gap-8 border rounded-[1.8rem] bg-[#1C1B1E]/92 p-7 lg:mt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:p-10 sm:p-8"
+                class="border-white/8 relative z-10 mt-4 flex flex-col gap-8 border rounded-[1.8rem] bg-slate-2 p-7 lg:mt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:p-10 sm:p-8"
             >
+                <code
+                    class="bg-black/70 font-geist-mono-500 absolute right-7 top-7 inline-flex max-w-[58%] truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none lg:right-10 lg:top-10"
+                >
+                    {{ stepScripts.step06 }}
+                </code>
                 <div>
-                    <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-start gap-3">
                         <span
                             class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.18em] uppercase"
                             >Step 06</span
                         >
-                        <code
-                            class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
-                        >
-                            {{ stepScripts.step06 }}
-                        </code>
                     </div>
           <h4
             class="font-geist-600 mt-5 text-[clamp(1.78rem,3.5vw,2.95rem)] leading-[1.02] tracking-[-0.015em] color-pureWhite"
@@ -309,10 +309,10 @@ const stepScripts = {
                 </div>
                 <button
                     type="button"
-                    class="border-black/8 bg-white font-geist-600 inline-flex items-center justify-center gap-2.5 border rounded-full px-7 py-3.5 text-[13px] text-[#1B1B1B] tracking-[0.05em] uppercase transition-transform duration-200 active:scale-[0.99] hover:scale-[1.02] sm:px-10 sm:py-4"
+                    class="bg-pureWhite font-geist-600 group inline-flex items-center justify-center gap-2 border rounded-full px-4 py-4 text-[14px] text-[#1B1B1B] tracking-tight uppercase transition-transform duration-200 active:scale-[0.99] hover:scale-[1.02] lg:min-w-[16rem]"
                 >
-                    Deploy to Production
-                    <Icon name="ph:rocket-launch-bold" class="h-4 w-4" />
+                    Explore Themes
+                    <Icon name="ph:compass-rose-fill" class="group-hover:rotate-5 size-5" />
                 </button>
             </article>
 
