@@ -40,13 +40,13 @@ const referenceCards = [
       <article
         v-for="card in referenceCards"
         :key="card.title"
-        class="group border border-sand-8/55 rounded-2xl bg-slate-1/92 p-5 transition-colors duration-200 hover:border-sand-6/70"
+        class="group rounded-2xl bg-slate-1/92 p-5 transition-colors duration-200"
       >
         <div class="mb-3 flex items-center justify-between">
-          <span class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase">{{ card.title }}</span>
-          <Icon :name="card.icon" class="h-4 w-4 color-sand-9" />
+          <span class="font-geist-mono-500 text-[10px] color-sand-8 group-hover:color-sand-12 tracking-[0.16em] uppercase">{{ card.title }}</span>
+          <Icon :name="card.icon" class="size-4 color-sand-9 group-hover:color-pureWhite" />
         </div>
-        <p class="text-[13px] color-sand-10 leading-relaxed">
+        <p class="text-[13px] color-sand-10 group-hover:color-sand-11 leading-relaxed">
           {{ card.description }}
         </p>
         <a
@@ -58,7 +58,7 @@ const referenceCards = [
           {{ card.cta }}
           <Icon
             name="ph:arrow-up-right"
-            class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            class="size-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           />
         </a>
       </article>

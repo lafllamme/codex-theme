@@ -60,4 +60,3 @@ const tocSections = [
     </section>
   </main>
 </template>
-ds
