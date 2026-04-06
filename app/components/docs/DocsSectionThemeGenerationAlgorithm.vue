@@ -58,7 +58,7 @@ const stepScripts = {
       </header>
 
       <div
-        class="relative z-10 grid grid-cols-1 mt-9 gap-4 lg:[grid-auto-rows:minmax(240px,auto)] lg:grid-cols-3"
+        class="relative z-10 mt-9 grid grid-cols-1 gap-4 lg:grid-cols-3"
       >
         <article
           class="border-white/6 flex flex-col justify-between border rounded-[1.7rem] bg-slate-1 p-6 transition-colors duration-200 hover:bg-slate-3"
@@ -154,8 +154,13 @@ const stepScripts = {
           />
         </article>
 
+      </div>
+
+      <div
+        class="relative z-10 mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3"
+      >
         <article
-          class="border-black/5 flex flex-col justify-between border rounded-[1.7rem] bg-[#F2F2F2] p-6 text-[#171717]"
+          class="border-black/5 flex h-full flex-col justify-between border rounded-[1.7rem] bg-[#F2F2F2] p-5 text-[#171717]"
         >
           <div>
             <div class="flex items-start justify-between gap-3">
@@ -169,7 +174,7 @@ const stepScripts = {
               </code>
             </div>
             <h4
-              class="font-geist-600 mt-5 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight"
+              class="font-geist-600 mt-4 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight"
             >
               WCAG Validation
             </h4>
@@ -179,9 +184,9 @@ const stepScripts = {
               PASS AAA
             </span>
           </div>
-          <div class="mt-8 flex items-end gap-2">
+          <div class="mt-6 flex items-end gap-2">
             <span
-              class="font-geist-700 text-[3.5rem] leading-none tracking-[-0.03em]"
+              class="font-geist-700 text-[3.1rem] leading-none tracking-[-0.03em]"
             >21:1</span>
             <span
               class="font-geist-mono-500 pb-2 text-[11px] text-[#707070] tracking-[0.16em] uppercase"
@@ -190,7 +195,7 @@ const stepScripts = {
         </article>
 
         <article
-          class="border-white/7 border rounded-[1.7rem] bg-slate-1 p-6 transition-colors duration-200 hover:bg-slate-3"
+          class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-slate-1 p-5 transition-colors duration-200 hover:bg-slate-3"
         >
           <div class="flex items-start justify-between gap-3">
             <span
@@ -203,7 +208,7 @@ const stepScripts = {
             </code>
           </div>
           <h4
-            class="font-geist-600 mt-5 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight color-pureWhite"
+            class="font-geist-600 mt-4 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight color-pureWhite"
           >
             Elevation Matrix
           </h4>
@@ -228,7 +233,7 @@ const stepScripts = {
         </article>
 
         <article
-          class="border-white/7 border rounded-[1.7rem] bg-slate-1 p-6 transition-colors duration-200 hover:bg-slate-3"
+          class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-slate-1 p-5 transition-colors duration-200 hover:bg-slate-3"
         >
           <div class="flex items-start justify-between gap-3">
             <span
@@ -241,17 +246,16 @@ const stepScripts = {
             </code>
           </div>
           <h4
-            class="font-geist-600 mt-5 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight color-pureWhite"
+            class="font-geist-600 mt-4 text-[clamp(1.28rem,2.2vw,2rem)] leading-tight color-pureWhite"
           >
             Token Serialization
           </h4>
           <div
-            class="border-white/10 bg-black/70 mt-5 overflow-x-auto border rounded-3xl px-4 py-4"
+            class="border-white/10 bg-black/70 mt-5 max-h-48 overflow-auto border rounded-3xl px-4 py-4"
           >
             <pre
-              class="font-geist-mono-500 text-[11px] color-sand-9 leading-relaxed"
-            >
-{
+              class="font-geist-mono-500 whitespace-pre text-[11px] color-sand-9 leading-relaxed"
+            >{
   "theme": "obsidian",
   "tokens": {
     "primary": "#FFFFFF",
