@@ -137,7 +137,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
       :visible-count="5"
     />
     <div
-      class="border-borderSubtle bg-surface/70 flex flex-col gap-7 border rounded-xl py-6 text-sm"
+      class="border-borderSubtle bg-surface/70 flex flex-col gap-7 border rounded-xl px-5 py-6 text-sm sm:px-6"
     >
       <div class="space-y-4">
         <div class="flex items-center gap-4">
@@ -150,7 +150,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
             class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r"
           />
         </div>
-        <div class="flex gap-4">
+        <div class="flex items-start gap-4">
           <span
             class="text-brand-400 font-geist-mono-500"
           >01</span>
@@ -169,7 +169,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
             and start from any preset.
           </p>
         </div>
-        <div class="flex gap-4">
+        <div class="flex items-start gap-4">
           <span
             class="text-brand-400 font-geist-mono-500"
           >02</span>
@@ -182,7 +182,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
             <span class="font-geist-mono">semanticColors</span>.
           </p>
         </div>
-        <div class="flex gap-4">
+        <div class="flex items-start gap-4">
           <span
             class="text-brand-400 font-geist-mono-500"
           >03</span>
@@ -205,7 +205,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
       id="advanced-local-pipeline"
       class="border-borderSubtle bg-surface/45 overflow-hidden border rounded-xl"
     >
-      <div class="border-borderSubtle border-b py-4">
+      <div class="border-borderSubtle border-b px-5 py-3 sm:px-6">
         <div class="flex items-center gap-4">
           <h4
             class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.2em] uppercase"
@@ -217,7 +217,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
           />
         </div>
       </div>
-      <div class="py-6">
+      <div class="px-5 pb-6 pt-0 sm:px-6">
         <p class="text-xs color-sand-10">
           Best when you want reproducible generation
           from raw terminal palettes.
@@ -277,9 +277,9 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
             </li>
           </ul>
         </div>
-        <div class="pt-8 space-y-[4.5rem]">
+        <div class="pt-8 space-y-10 lg:space-y-12">
           <div class="space-y-5">
-            <div class="flex gap-4">
+            <div class="flex items-start gap-4">
               <span
                 class="text-brand-400 font-geist-mono-500"
               >01</span>
@@ -308,7 +308,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
           </div>
 
           <div class="space-y-5">
-            <div class="flex gap-4">
+            <div class="flex items-start gap-4">
               <span
                 class="text-brand-400 font-geist-mono-500"
               >02</span>
@@ -335,7 +335,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
               code-theme-id="everforest"
               :collapsed-lines="10"
             />
-            <p class="pt-16 text-sm color-sand-10">
+            <p class="pt-6 text-sm color-sand-10">
               Install dependencies (once) with
               your preferred package manager:
             </p>
@@ -347,7 +347,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
           </div>
 
           <div class="space-y-5">
-            <div class="flex gap-4">
+            <div class="flex items-start gap-4">
               <span
                 class="text-brand-400 font-geist-mono-500"
               >03</span>
