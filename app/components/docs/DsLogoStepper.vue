@@ -176,8 +176,8 @@ onBeforeUnmount(() => {
 <template>
   <div class="relative w-full flex items-start justify-center overflow-hidden py-4">
     <div class="relative overflow-hidden" :style="{ width: `${viewportWidth}px` }">
-      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 from-[#030507] to-transparent bg-gradient-to-r" />
-      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 from-[#030507] to-transparent bg-gradient-to-l" />
+      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 from-pureBlack to-transparent bg-gradient-to-r" />
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 from-pureBlack to-transparent bg-gradient-to-l" />
 
       <TransitionGroup
         tag="div"
@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
             >
               <div class="mb-4 h-16 w-0.5 bg-sand-4" />
               <span
-                class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
+                class="font-geist-500 whitespace-nowrap text-xs color-sand-10 tracking-wider uppercase"
               >
                 {{ logo.label }}
               </span>
