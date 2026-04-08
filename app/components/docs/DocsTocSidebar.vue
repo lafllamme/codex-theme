@@ -299,9 +299,9 @@ onBeforeUnmount(() => {
   <aside class="docs-sidebar fixed bottom-0 left-0 top-0 z-40 hidden w-72 px-8 py-10 lg:flex lg:flex-col">
     <div class="flex flex-1 flex-col justify-start pt-[calc(3rem+var(--hero-top-offset))]">
       <div class="group mb-7 flex items-center gap-2 -ml-2">
-        <Icon name="ph:book-open-text" class="size-5 color-sand-11 group-hover:hidden" />
-        <Icon name="ph:book-open-text-fill" class="hidden size-5 color-sand-11 group-hover:block" />
-        <p class="font-geist-mono-500 text-[11px] color-sand-11 leading-none tracking-[0.22em] uppercase">
+        <Icon name="ph:book-open-text" class="size-5 color-sand-8 group-hover:hidden" />
+        <Icon name="ph:book-open-text-fill" class="hidden size-5 color-sand-8 group-hover:block" />
+        <p class="font-geist-mono-500 text-[11px] color-sand-8 leading-none tracking-[0.22em] uppercase">
           Documentation
         </p>
       </div>
@@ -330,7 +330,7 @@ onBeforeUnmount(() => {
     <div class="mt-auto">
       <NuxtLink
         to="/"
-        class="text-text-tertiary inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs transition-all duration-200 hover:text-pureWhite/82 hover:bg-pureWhite/6"
+        class="color-sand-10 inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs transition-all duration-200 hover:bg-pureWhite/6 hover:color-pureWhite/82"
       >
         <Icon name="ph:arrow-left" class="h-3 w-3" />
         Back to Home

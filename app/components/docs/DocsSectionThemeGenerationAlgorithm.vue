@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import DocsSectionShell from "~/components/docs/DocsSectionShell.vue";
 
-const pipelineTargets = ["convert", "rescore", "test", "all"] as const;
-
 const surfaceLayers = [
     {
         name: "Lowest",
@@ -66,26 +64,6 @@ const stepScripts = {
             </div>
 
             <div
-                class="border-white/10 bg-slate-1 relative z-10 mt-4 flex flex-wrap items-center gap-2.5 border rounded-2xl px-4 py-3"
-            >
-                <span
-                    class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.14em] uppercase"
-                >
-                    Pipeline Targets
-                </span>
-                <span
-                    v-for="target in pipelineTargets"
-                    :key="target"
-                    class="bg-pureBlack/70 border-white/15 font-geist-mono-500 border rounded px-2.5 py-1 text-[11px] color-sand-6"
-                >
-                    {{ target }}
-                </span>
-                <span class="font-geist-mono-500 ml-auto text-[11px] color-sand-8">
-                    schema: <code>codex-theme-v1</code>
-                </span>
-            </div>
-
-            <div
                 class="relative z-10 mt-9 grid grid-cols-1 gap-4 lg:grid-cols-3"
             >
                 <article
@@ -98,7 +76,7 @@ const stepScripts = {
                                 >Step 01</span
                             >
                             <code
-                                class="bg-black/70 font-geist-mono-500 max-w-[42%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                                class="bg-black/70 font-geist-mono-500 max-w-[42%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none"
                             >
                                 {{ stepScripts.step01 }}
                             </code>
@@ -109,7 +87,7 @@ const stepScripts = {
                             Source Ingest
                         </h4>
                         <p
-                            class="mt-3 max-w-[62ch] text-sm color-sand-10 leading-relaxed"
+                            class="mt-3 max-w-[62ch] text-sm color-sand-11 leading-relaxed"
                         >
                             Read <code>.itermcolors</code> files from
                             <code>input/themes-raw</code> and convert plist
@@ -151,7 +129,7 @@ const stepScripts = {
                                 >Step 02</span
                             >
                             <code
-                                class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                                class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none"
                             >
                                 {{ stepScripts.step02 }}
                             </code>
@@ -162,7 +140,7 @@ const stepScripts = {
                             Token Mapping
                         </h4>
                         <p
-                            class="mt-6 max-w-[32ch] text-sm color-sand-10 leading-relaxed"
+                            class="mt-6 max-w-[32ch] text-sm color-sand-11 leading-relaxed"
                         >
                             Map source channels to Codex tokens: surface, ink,
                             accent, plus semantic colors for diff and skill
@@ -236,7 +214,7 @@ const stepScripts = {
                             >Step 04</span
                         >
                         <code
-                            class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                            class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none"
                         >
                             {{ stepScripts.step04 }}
                         </code>
@@ -275,7 +253,7 @@ const stepScripts = {
                             >Step 05</span
                         >
                         <code
-                            class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none"
+                            class="bg-black/70 font-geist-mono-500 max-w-[72%] inline-flex truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none"
                         >
                             {{ stepScripts.step05 }}
                         </code>
@@ -289,7 +267,7 @@ const stepScripts = {
                         class="border-white/10 bg-black/70 mt-5 max-h-48 overflow-auto border rounded-3xl px-4 py-4"
                     >
                         <pre
-                            class="font-geist-mono-500 whitespace-pre text-[11px] color-sand-9 leading-relaxed"
+                            class="font-geist-mono-500 whitespace-pre text-[11px] color-sand-10 leading-relaxed"
                         >
 {
   "target": "rescore",
@@ -305,7 +283,7 @@ const stepScripts = {
                 class="border-white/8 relative z-10 mt-4 flex flex-col gap-8 border rounded-[1.8rem] bg-slate-2 p-7 lg:mt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:p-10 sm:p-8"
             >
                 <code
-                    class="bg-black/70 font-geist-mono-500 absolute right-7 top-7 inline-flex max-w-[58%] truncate rounded-xl px-3 py-1 text-[10px] color-sand-7 leading-none lg:right-10 lg:top-10"
+                    class="bg-black/70 font-geist-mono-500 absolute right-7 top-7 inline-flex max-w-[58%] truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none lg:right-10 lg:top-10"
                 >
                     {{ stepScripts.step06 }}
                 </code>
@@ -322,7 +300,7 @@ const stepScripts = {
             Smoke Validation
           </h4>
                     <p
-                        class="mt-3 max-w-[44ch] text-[15px] color-sand-10 leading-relaxed"
+                        class="mt-3 max-w-[44ch] text-[15px] color-sand-11 leading-relaxed"
                     >
                         Run resolver smoke tests on representative dark/light
                         payloads to verify non-empty stable recommendations.
@@ -341,13 +319,13 @@ const stepScripts = {
             </article>
 
             <div class="border-white/10 relative z-10 mt-4 border-t pt-4">
-                <p class="max-w-4xl text-[14px] color-sand-10 leading-relaxed">
+                <p class="max-w-4xl text-[14px] color-sand-11 leading-relaxed">
                     The important behavior is intentional convergence:
                     visually different source palettes can still map to similar
                     runtime themes after readability normalization and resolver
                     scoring.
                 </p>
-                <p class="mt-2 max-w-4xl text-[14px] color-sand-10 leading-relaxed">
+                <p class="mt-2 max-w-4xl text-[14px] color-sand-11 leading-relaxed">
                     This keeps generated themes predictable for production usage
                     while still preserving each preset's identity.
                 </p>

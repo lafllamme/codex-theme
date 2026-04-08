@@ -46,7 +46,7 @@ const referenceCards = [
           <span class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase group-hover:color-sand-12">{{ card.title }}</span>
           <Icon :name="card.icon" class="size-4 color-sand-9 group-hover:color-pureWhite" />
         </div>
-        <p class="text-[13px] color-sand-10 leading-relaxed group-hover:color-sand-11">
+        <p class="text-[13px] color-sand-11 leading-relaxed group-hover:color-pureWhite">
           {{ card.description }}
         </p>
         <a

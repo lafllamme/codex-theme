@@ -92,7 +92,7 @@ const tokenDefinitionRows = [
   <DocsSectionShell
     id="codex-json-format"
     title="Codex JSON Format"
-    content-class="flex flex-col gap-8 pb-20 text-base color-sand-12 font-light leading-normal max-lg:pb-14 lg:text-lg"
+    content-class="flex flex-col gap-8 pb-20 text-base color-sand-11 font-light leading-normal max-lg:pb-14 lg:text-lg"
   >
     <p class="max-w-2xl leading-relaxed">
       Payload exchange uses the
@@ -122,7 +122,7 @@ const tokenDefinitionRows = [
             class="relative z-10 mb-4 flex items-center justify-between"
           >
             <span
-              class="font-geist-mono-500 text-[10px] color-sand-10 tracking-[0.16em] uppercase group-hover:opacity-0"
+              class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase group-hover:opacity-0"
             >
               Schema
             </span>
@@ -162,7 +162,7 @@ const tokenDefinitionRows = [
             class="relative z-10 mb-4 flex items-center justify-between"
           >
             <span
-              class="font-geist-mono-500 text-[10px] color-sand-10 tracking-[0.16em] uppercase group-hover:opacity-0"
+              class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.16em] uppercase group-hover:opacity-0"
             >
               Tokens
             </span>
@@ -220,7 +220,7 @@ const tokenDefinitionRows = [
               {{ row.key }}
             </span>
           </div>
-          <div class="flex-1 text-[14px] color-sand-10 leading-relaxed transition-colors duration-200 group-hover:color-pureWhite">
+          <div class="flex-1 text-[14px] color-sand-11 leading-relaxed transition-colors duration-200 group-hover:color-pureWhite">
             {{ row.description }}
           </div>
         </div>

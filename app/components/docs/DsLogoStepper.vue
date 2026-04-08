@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
               :class="isCenter(originalIndex) ? 'border-sand-8' : 'border-sand-5'"
             >
               <div class="h-12 w-12 flex items-center justify-center">
-                <Icon :name="logo.icon" class="h-6 w-6 color-sand-12" />
+                <Icon :name="logo.icon" class="h-6 w-6 color-sand-10" />
               </div>
             </div>
 
@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
             >
               <div class="mb-4 h-16 w-0.5 bg-sand-4" />
               <span
-                class="font-geist-500 whitespace-nowrap text-xs color-sand-11 tracking-wider uppercase"
+                class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
               >
                 {{ logo.label }}
               </span>

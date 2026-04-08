@@ -73,7 +73,7 @@
         class="absolute right-5 top-5 h-4 w-4 color-sand-11 opacity-0 transition-all duration-180 ease-out group-hover:translate-x-0.5 group-hover:opacity-100 group-hover:-translate-y-0.5"
       />
       <div class="flex items-start">
-        <Icon name="ph:terminal-bold" class="h-6 w-6 color-sand-12 transition-all duration-220 ease-out group-hover:scale-110 group-hover:color-pureWhite" />
+      <Icon name="ph:terminal-bold" class="h-6 w-6 color-sand-10 transition-all duration-220 ease-out group-hover:scale-110 group-hover:color-pureWhite" />
       </div>
       <div class="flex flex-col gap-1">
         <div class="relative flex items-end pr-12">
@@ -81,7 +81,7 @@
             CLI Tool
           </h4>
           <span
-            class="font-geist-mono-500 absolute right-0 top-1/2 text-[10px] color-sand-7 leading-none opacity-0 transition-opacity duration-200 ease-out -translate-y-1/2 group-hover:opacity-100"
+            class="font-geist-mono-500 absolute right-0 top-1/2 text-[10px] color-sand-8 leading-none opacity-0 transition-opacity duration-200 ease-out -translate-y-1/2 group-hover:opacity-100"
           >
             v2.4.0
           </span>
@@ -107,7 +107,7 @@
       />
       <Icon
         name="ph:pinwheel-bold"
-        class="h-6 w-6 color-sand-7 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
+        class="h-6 w-6 color-sand-10 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
       />
       <span class="text-xs font-medium color-pureWhite">Presets</span>
     </NuxtLink>
@@ -125,7 +125,7 @@
       />
       <Icon
         name="ph:github-logo-bold"
-        class="h-6 w-6 color-sand-7 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
+        class="h-6 w-6 color-sand-10 transition-all duration-220 ease-out group-hover:scale-110 group-hover:text-pureWhite"
       />
       <span class="text-xs font-medium color-pureWhite">Repo</span>
     </NuxtLink>

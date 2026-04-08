@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
 
       <button
         type="button"
-        class="font-geist-mono-500 absolute right-3 top-1/2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] color-sand-9 opacity-0 transition-all duration-180 ease-out -translate-y-1/2 hover:bg-sand-11/12 hover:color-sand-4 group-hover:opacity-100"
+        class="font-geist-mono-500 absolute right-3 top-1/2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] color-sand-10 opacity-0 transition-all duration-180 ease-out -translate-y-1/2 hover:bg-sand-11/12 hover:color-sand-4 group-hover:opacity-100"
         @click="copyCommand"
       >
         <Icon

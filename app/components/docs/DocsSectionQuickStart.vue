@@ -229,7 +229,7 @@ const quickStartInputPresetExample = `<?xml version="1.0" encoding="UTF-8"?>
             Prerequisites
           </h5>
           <ul
-            class="list-disc pl-6 text-[1.02rem] color-sand-10 leading-relaxed space-y-1 marker:color-sand-8"
+            class="list-disc pl-6 text-[1.02rem] color-sand-11 leading-relaxed space-y-1 marker:color-sand-8"
           >
             <li class="font-400">
               <span

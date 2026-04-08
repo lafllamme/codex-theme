@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
 
     <div class="py-2 space-y-6">
       <p
-        class="font-geist-mono-500 text-[12px] color-[#10b981] tracking-[0.16em] uppercase"
+        class="font-geist-mono-500 text-[12px] color-sand-8 tracking-[0.16em] uppercase"
       >
         Theme Catalog
       </p>

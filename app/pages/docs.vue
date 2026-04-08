@@ -26,7 +26,7 @@ const tocSections = [
         >
           <div class="mb-8">
             <p
-              class="font-geist-400 mb-3 text-[clamp(2.1rem,4.4vw,4.9rem)] color-sand-10 leading-17 tracking-[-0.02em] uppercase"
+              class="font-geist-400 mb-3 text-[clamp(2.1rem,4.4vw,4.9rem)] color-sand-8 leading-17 tracking-[-0.02em] uppercase"
             >
               Dive Into
             </p>
@@ -40,7 +40,7 @@ const tocSections = [
             </h1>
           </div>
           <p
-            class="font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] color-slate-11 leading-normal"
+            class="font-geist-300 max-w-2xl text-[clamp(1.05rem,1.4vw,1.32rem)] color-sand-11 leading-normal"
           >
             A quick primer on how Codex maps a theme JSON payload to
             interface tokens so you can shape your own theme from
