@@ -20,7 +20,7 @@ function handleDitherReady() {
 
 <template>
   <div
-    class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden bg-[#050607] text-[var(--un-preset-radix-slate12)] h-dvh"
+    class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden bg-pureBlack text-[var(--un-preset-radix-slate12)] h-dvh"
   >
     <div
       v-if="showAnimatedBackground"
@@ -71,12 +71,12 @@ function handleDitherReady() {
     <!-- UX: Let's see if this distracting -->
     <div
       v-if="docsRoute"
-      class="pointer-events-none fixed inset-x-0 top-0 z-[19] h-[calc(var(--hero-top-offset)-32px)] bg-[#050607]"
+      class="pointer-events-none fixed inset-x-0 top-0 z-[19] h-[calc(var(--hero-top-offset)-32px)] bg-pureBlack"
     >
       <div class="absolute inset-x-0 top-10 h-[52px] flex sm:h-[60px]">
-        <div class="grow bg-[#050607]" />
+        <div class="grow bg-pureBlack" />
         <div class="w-[95vw] shrink-0 md:w-[615px]" />
-        <div class="grow bg-[#050607]" />
+        <div class="grow bg-pureBlack" />
       </div>
     </div>
 
