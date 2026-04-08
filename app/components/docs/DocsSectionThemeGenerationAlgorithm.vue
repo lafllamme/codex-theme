@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import DocsSectionShell from "~/components/docs/DocsSectionShell.vue";
 
+const pipelineTargets = ["convert", "rescore", "test", "all"] as const;
+
 const surfaceLayers = [
     {
         name: "Lowest",
@@ -12,9 +14,9 @@ const surfaceLayers = [
 ] as const;
 
 const elevationMetrics = [
-    { label: "Blur", value: "40px" },
-    { label: "Opacity", value: "0.04" },
-    { label: "Tonal Shift", value: "+12%" },
+    { label: "Signal", value: "contrast thresholds" },
+    { label: "Signal", value: "semantic color distance" },
+    { label: "Output", value: "recommended codeThemeId" },
 ] as const;
 
 const stepScripts = {
@@ -44,9 +46,11 @@ const stepScripts = {
                 <p
                     class="max-w-3xl text-[clamp(0.98rem,1.5vw,1.34rem)] color-sand-11 leading-relaxed"
                 >
-                    Our pipeline translates source palettes into
-                    high-performance, WCAG-compliant design tokens with
-                    deterministic scoring and production-safe normalization.
+                    The generator is deterministic and script-driven:
+                    identical source input produces identical output JSON.
+                    The flow below mirrors the real
+                    <code>codex-themes</code> pipeline and not a simplified
+                    mock.
                 </p>
             </header>
 
@@ -59,6 +63,26 @@ const stepScripts = {
                 <div
                     class="h-px flex-1 from-sand-7/55 to-transparent bg-gradient-to-r"
                 />
+            </div>
+
+            <div
+                class="border-white/10 bg-slate-1 relative z-10 mt-4 flex flex-wrap items-center gap-2.5 border rounded-2xl px-4 py-3"
+            >
+                <span
+                    class="font-geist-mono-500 text-[11px] color-sand-8 tracking-[0.14em] uppercase"
+                >
+                    Pipeline Targets
+                </span>
+                <span
+                    v-for="target in pipelineTargets"
+                    :key="target"
+                    class="bg-pureBlack/70 border-white/15 font-geist-mono-500 border rounded px-2.5 py-1 text-[11px] color-sand-6"
+                >
+                    {{ target }}
+                </span>
+                <span class="font-geist-mono-500 ml-auto text-[11px] color-sand-8">
+                    schema: <code>codex-theme-v1</code>
+                </span>
             </div>
 
             <div
@@ -82,14 +106,14 @@ const stepScripts = {
                         <h4
                             class="font-geist-600 mt-5 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
                         >
-                            Surface Mapping
+                            Source Ingest
                         </h4>
                         <p
                             class="mt-3 max-w-[62ch] text-sm color-sand-10 leading-relaxed"
                         >
-                            Tonal layers are mathematically spaced for optical
-                            depth so components remain distinct across dark
-                            surfaces.
+                            Read <code>.itermcolors</code> files from
+                            <code>input/themes-raw</code> and convert plist
+                            payloads into structured JSON.
                         </p>
                         <div class="grid mt-8 gap-3 sm:grid-cols-3">
                             <div
@@ -135,13 +159,14 @@ const stepScripts = {
                         <h4
                             class="font-geist-600 mt-5 text-[clamp(1.12rem,1.55vw,1.72rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
                         >
-                            Chromatic Analysis
+                            Token Mapping
                         </h4>
                         <p
                             class="mt-6 max-w-[32ch] text-sm color-sand-10 leading-relaxed"
                         >
-                            Deconstructing source palettes to detect harmonic
-                            anchors, luminance weight, and contrast boundaries.
+                            Map source channels to Codex tokens: surface, ink,
+                            accent, plus semantic colors for diff and skill
+                            states.
                         </p>
                     </div>
                     <div class="grid grid-cols-4 mt-7 gap-2.5">
@@ -219,7 +244,7 @@ const stepScripts = {
           <h4
             class="font-geist-600 mt-4 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
           >
-            Elevation Matrix
+            Theme Resolver Scoring
           </h4>
                     <div class="mt-6 space-y-4">
                         <div
@@ -258,7 +283,7 @@ const stepScripts = {
           <h4
             class="font-geist-600 mt-4 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
           >
-            Token Serialization
+            Normalization Pass
           </h4>
                     <div
                         class="border-white/10 bg-black/70 mt-5 max-h-48 overflow-auto border rounded-3xl px-4 py-4"
@@ -267,12 +292,9 @@ const stepScripts = {
                             class="font-geist-mono-500 whitespace-pre text-[11px] color-sand-9 leading-relaxed"
                         >
 {
-  "theme": "obsidian",
-  "tokens": {
-    "primary": "#FFFFFF",
-    "surface": "#131313",
-    "on-surface": "#E5E2E1"
-  }
+  "target": "rescore",
+  "status": "normalized",
+  "field": "codeThemeId"
 }</pre
                         >
                     </div>
@@ -297,14 +319,13 @@ const stepScripts = {
           <h4
             class="font-geist-600 mt-5 text-[clamp(1.78rem,3.5vw,2.95rem)] leading-[1.02] tracking-[-0.015em] color-pureWhite"
           >
-            Export Ready
+            Smoke Validation
           </h4>
                     <p
                         class="mt-3 max-w-[44ch] text-[15px] color-sand-10 leading-relaxed"
                     >
-                        Design tokens are calculated, validated, and serialized.
-                        The artifact is deployment-ready with stable
-                        readability.
+                        Run resolver smoke tests on representative dark/light
+                        payloads to verify non-empty stable recommendations.
                     </p>
                 </div>
                 <button
@@ -312,9 +333,25 @@ const stepScripts = {
                     class="bg-pureWhite font-geist-600 group inline-flex items-center justify-center gap-2 border rounded-full px-4 py-4 text-[14px] text-[#1B1B1B] tracking-tight uppercase transition-transform duration-200 active:scale-[0.99] hover:scale-[1.02] lg:min-w-[16rem]"
                 >
                     Explore Themes
-                    <Icon name="ph:compass-rose-fill" class="group-hover:rotate-5 size-5" />
+                    <Icon
+                        name="ph:arrow-right-bold"
+                        class="size-5 transition-transform duration-200 group-hover:translate-x-0.5"
+                    />
                 </button>
             </article>
+
+            <div class="border-white/10 relative z-10 mt-4 border-t pt-4">
+                <p class="max-w-4xl text-[14px] color-sand-10 leading-relaxed">
+                    The important behavior is intentional convergence:
+                    visually different source palettes can still map to similar
+                    runtime themes after readability normalization and resolver
+                    scoring.
+                </p>
+                <p class="mt-2 max-w-4xl text-[14px] color-sand-10 leading-relaxed">
+                    This keeps generated themes predictable for production usage
+                    while still preserving each preset's identity.
+                </p>
+            </div>
 
         </div>
     </DocsSectionShell>
