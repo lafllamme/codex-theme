@@ -17,8 +17,8 @@ const props = withDefaults(
     visibleCount?: number
   }>(),
   {
-    animationDelay: 1.2,
-    animationDuration: 0.6,
+    animationDelay: 1.55,
+    animationDuration: 0.78,
     direction: 'loop',
     visibleCount: 5,
   },
@@ -78,7 +78,7 @@ const visiblePositionByIndex = computed(() => {
   return map
 })
 
-const transitionEasing = 'cubic-bezier(0.4, 0, 0.2, 1)'
+const transitionEasing = 'cubic-bezier(0.22, 1, 0.36, 1)'
 
 const groupStyle = computed(() => ({
   '--step-duration': `${props.animationDuration}s`,
@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
             :style="itemStyle(originalIndex)"
           >
             <div
-              class="logo-stepper-card border rounded-xl border-solid bg-sand-2 p-4 transition-colors duration-200 hover:border-pureWhite"
+              class="logo-stepper-card border rounded-xl border-solid bg-sand-1 p-4 transition-colors duration-200 hover:border-pureWhite"
               :class="isCenter(originalIndex) ? 'border-sand-8' : 'border-sand-5'"
             >
               <div class="h-12 w-12 flex items-center justify-center">

@@ -25,7 +25,7 @@ const runConvertByPm: Record<PackageManager, string> = {
 
 const quickStartStepperLogos = [
   { icon: 'ph:magnifying-glass-light', label: 'Explore' },
-  { icon: 'ph:sparkle-light', label: 'Studio' },
+  { icon: 'ph:sparkle-light', label: 'Create' },
   { icon: 'ph:sliders-horizontal-light', label: 'Configure' },
   { icon: 'ph:terminal', label: 'CLI' },
   { icon: 'ph:download-simple-light', label: 'Download' },
