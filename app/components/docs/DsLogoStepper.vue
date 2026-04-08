@@ -101,8 +101,10 @@ function itemOpacity(originalIndex: number) {
   if (d === 0)
     return 1
   if (d === 1)
-    return 0.3
-  return 0.14
+    return 0.5
+  if (d === 2)
+    return 0.24
+  return 0.16
 }
 
 function itemScale(originalIndex: number) {
@@ -111,12 +113,14 @@ function itemScale(originalIndex: number) {
 }
 
 function lineOpacity(originalIndex: number) {
-  const position = getPosition(originalIndex)
-  if (position === 0)
+  const d = Math.abs(getPosition(originalIndex))
+  if (d === 0)
     return 1
-  if (Math.abs(position) === 1)
-    return 0.3
-  return 0
+  if (d === 1)
+    return 0.58
+  if (d === 2)
+    return 0.34
+  return 0.2
 }
 
 function itemStyle(originalIndex: number) {
@@ -210,9 +214,9 @@ onBeforeUnmount(() => {
                 transition: `opacity ${animationDuration}s ${transitionEasing}`,
               }"
             >
-              <div class="mb-4 h-16 w-0.5 bg-sand-4" />
+              <div class="mb-4 h-16 w-0.5 bg-sand-5" />
               <span
-                class="font-geist-500 whitespace-nowrap text-xs color-sand-10 tracking-wider uppercase"
+                class="font-geist-500 whitespace-nowrap text-xs color-sand-8 tracking-wider uppercase"
               >
                 {{ logo.label }}
               </span>
