@@ -67,7 +67,7 @@ const stepScripts = {
                 class="relative z-10 mt-9 grid grid-cols-1 gap-4 lg:grid-cols-3"
             >
                 <article
-                    class="border-white/7 relative overflow-hidden border rounded-[1.7rem] bg-sand-1 p-6 transition-colors duration-200 lg:col-span-2 hover:bg-slate-3"
+                    class="relative overflow-hidden border rounded-[1.7rem] bg-sand-1 p-6 transition-colors duration-200 lg:col-span-2 hover:bg-slate-2"
                 >
                     <div class="relative z-10">
                         <div class="flex items-start justify-between gap-3">
@@ -120,7 +120,7 @@ const stepScripts = {
                 </article>
 
                 <article
-                    class="border-white/6 flex flex-col justify-between border rounded-[1.7rem] bg-slate-2 p-6 transition-colors duration-200 hover:bg-slate-3"
+                    class="border-white/6 flex flex-col justify-between border rounded-[1.7rem] bg-sand-2 p-6 transition-colors duration-200 hover:bg-slate-3"
                 >
                     <div>
                         <div class="flex items-start justify-between gap-3">
@@ -168,7 +168,7 @@ const stepScripts = {
                 class="relative z-10 mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3"
             >
                 <article
-                    class="border-black/5 flex h-full flex-col justify-between border rounded-[1.7rem] bg-[#F2F2F2] p-5 text-[#171717]"
+                    class="flex h-full flex-col justify-between border rounded-[1.7rem] bg-pureWhite p-5 text-[#171717]"
                 >
                     <div>
                         <div class="flex items-start justify-between gap-3">
@@ -206,7 +206,7 @@ const stepScripts = {
                 </article>
 
                 <article
-                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-3"
+                    class="flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-2"
                 >
                     <div class="flex items-start justify-between gap-3">
                         <span
@@ -222,13 +222,13 @@ const stepScripts = {
           <h4
             class="font-geist-600 mt-4 text-[clamp(1.2rem,1.75vw,1.92rem)] leading-[1.12] tracking-[-0.01em] color-pureWhite"
           >
-            Theme Resolver Scoring
+            Theme Resolver
           </h4>
                     <div class="mt-6 space-y-4">
                         <div
                             v-for="item in elevationMetrics"
                             :key="item.label"
-                            class="border-white/8 flex items-center justify-between border-b pb-2.5"
+                            class="border-pureWhite/8 border-solid flex items-center justify-between border-b pb-2.5"
                         >
                             <span
                                 class="font-geist-mono-500 text-[10px] color-sand-8 tracking-[0.14em] uppercase"
@@ -236,7 +236,7 @@ const stepScripts = {
                                 {{ item.label }}
                             </span>
                             <span
-                                class="font-geist-mono-500 text-sm color-pureWhite"
+                                class="font-geist-mono-500 text-[10px] color-pureWhite"
                             >
                                 {{ item.value }}
                             </span>
@@ -245,7 +245,7 @@ const stepScripts = {
                 </article>
 
                 <article
-                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-3"
+                    class="border-white/7 flex h-full flex-col border rounded-[1.7rem] bg-sand-1 p-5 transition-colors duration-200 hover:bg-slate-2"
                 >
                     <div class="flex items-start justify-between gap-3">
                         <span
@@ -280,7 +280,7 @@ const stepScripts = {
             </div>
 
             <article
-                class="border-white/8 relative z-10 mt-4 flex flex-col gap-8 border rounded-[1.8rem] bg-slate-2 p-7 lg:mt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:p-10 sm:p-8"
+                class="border-white/8 relative z-10 mt-4 flex flex-col gap-8 border rounded-[1.8rem] bg-sand-2 p-7 lg:mt-5 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:p-10 sm:p-8"
             >
                 <code
                     class="bg-black/70 font-geist-mono-500 absolute right-7 top-7 inline-flex max-w-[58%] truncate rounded-xl px-3 py-1 text-[10px] color-sand-8 leading-none lg:right-10 lg:top-10"
