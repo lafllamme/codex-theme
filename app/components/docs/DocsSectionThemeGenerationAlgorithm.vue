@@ -306,8 +306,8 @@ const stepScripts = {
                         payloads to verify non-empty stable recommendations.
                     </p>
                 </div>
-                <button
-                    type="button"
+                <NuxtLink
+                    to="/themes"
                     class="bg-pureWhite font-geist-600 group inline-flex items-center justify-center gap-2 border rounded-full px-4 py-4 text-[14px] text-[#1B1B1B] tracking-tight uppercase transition-transform duration-200 active:scale-[0.99] hover:scale-[1.02] lg:min-w-[16rem]"
                 >
                     Explore Themes
@@ -315,7 +315,7 @@ const stepScripts = {
                         name="ph:arrow-right-bold"
                         class="size-5 transition-transform duration-200 group-hover:translate-x-0.5"
                     />
-                </button>
+                </NuxtLink>
             </article>
 
             <div class="border-white/10 relative z-10 mt-4 border-t pt-4">

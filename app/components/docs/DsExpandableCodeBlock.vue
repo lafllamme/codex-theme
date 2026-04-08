@@ -22,12 +22,38 @@ const expanded = ref(false)
 const totalLines = computed(() => props.text.split('\n').length)
 const isExpandable = computed(() => totalLines.value > props.collapsedLines)
 const collapsedHeight = computed(() => `calc(${props.collapsedLines} * 1.6em)`)
+const copyState = ref<'idle' | 'ok'>('idle')
+let copyTimer: ReturnType<typeof setTimeout> | null = null
 
 function toggleExpanded() {
   if (!isExpandable.value)
     return
   expanded.value = !expanded.value
 }
+
+async function copyCode() {
+  if (!props.text)
+    return
+
+  try {
+    await navigator.clipboard.writeText(props.text)
+    copyState.value = 'ok'
+    if (copyTimer)
+      clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      copyState.value = 'idle'
+      copyTimer = null
+    }, 1200)
+  }
+  catch {
+    // Ignore clipboard failures silently in docs context.
+  }
+}
+
+onBeforeUnmount(() => {
+  if (copyTimer)
+    clearTimeout(copyTimer)
+})
 </script>
 
 <template>
@@ -39,6 +65,17 @@ function toggleExpanded() {
     >
       <Icon name="ph:file-code" class="size-4" />
       <span class="font-geist-500 text-sm">{{ title }}</span>
+      <button
+        type="button"
+        class="font-geist-mono-500 absolute right-3 top-1/2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] color-sand-10 opacity-0 transition-all duration-180 ease-out -translate-y-1/2 hover:bg-sand-11/12 hover:color-sand-4 group-hover:opacity-100"
+        @click="copyCode"
+      >
+        <Icon
+          :name="copyState === 'ok' ? 'ph:check' : 'ph:copy'"
+          class="h-3.5 w-3.5"
+        />
+        <span>{{ copyState === "ok" ? "Copied" : "Copy" }}</span>
+      </button>
     </div>
 
     <div class="relative bg-slate-1 px-4 py-3 text-xs leading-relaxed">

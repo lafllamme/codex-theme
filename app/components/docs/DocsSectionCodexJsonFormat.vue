@@ -86,6 +86,33 @@ const tokenDefinitionRows = [
       'Semantic accent for skill-related labels and contextual skill cues.',
   },
 ] as const
+
+const copyState = ref<'idle' | 'ok'>('idle')
+let copyTimer: ReturnType<typeof setTimeout> | null = null
+
+async function copyPayloadExample() {
+  if (!schemaExample)
+    return
+
+  try {
+    await navigator.clipboard.writeText(schemaExample)
+    copyState.value = 'ok'
+    if (copyTimer)
+      clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      copyState.value = 'idle'
+      copyTimer = null
+    }, 1200)
+  }
+  catch {
+    // Ignore clipboard failures silently in docs context.
+  }
+}
+
+onBeforeUnmount(() => {
+  if (copyTimer)
+    clearTimeout(copyTimer)
+})
 </script>
 
 <template>
@@ -234,10 +261,21 @@ const tokenDefinitionRows = [
         </h3>
         <div class="h-px flex-1 from-sand-9/40 to-transparent bg-gradient-to-r" />
       </div>
-      <div class="overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
-        <div class="flex items-center gap-2 border border-b-0 border-sand-5 rounded-xl rounded-bl-0 rounded-br-0 border-solid px-4 py-2.5 bg-pureBlack">
+      <div class="group overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+        <div class="relative flex items-center gap-2 border border-b-0 border-sand-5 rounded-xl rounded-bl-0 rounded-br-0 border-solid px-4 py-2.5 bg-pureBlack">
           <Icon name="ph:file-code" class="size-4 color-pureWhite" />
           <span class="font-geist-500 text-sm color-pureWhite">theme-payload.json</span>
+          <button
+            type="button"
+            class="font-geist-mono-500 absolute right-3 top-1/2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] color-sand-10 opacity-0 transition-all duration-180 ease-out -translate-y-1/2 hover:bg-sand-11/12 hover:color-sand-4 group-hover:opacity-100"
+            @click="copyPayloadExample"
+          >
+            <Icon
+              :name="copyState === 'ok' ? 'ph:check' : 'ph:copy'"
+              class="h-3.5 w-3.5"
+            />
+            <span>{{ copyState === "ok" ? "Copied" : "Copy" }}</span>
+          </button>
         </div>
         <div class="overflow-x-auto border border-sand-5 rounded-xl rounded-tl-0 rounded-tr-0 border-solid bg-slate-1 px-4 py-3 text-xs leading-relaxed">
           <SyntaxBlock
