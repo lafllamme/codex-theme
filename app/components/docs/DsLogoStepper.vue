@@ -203,7 +203,10 @@ onBeforeUnmount(() => {
               :class="isCenter(originalIndex) ? 'border-sand-8' : 'border-sand-5'"
             >
               <div class="h-12 w-12 flex items-center justify-center">
-                <Icon :name="logo.icon" class="h-6 w-6 color-sand-10" />
+                <Icon :name="logo.icon"
+                :class="isCenter(originalIndex) ? 'color-sand-12' : 'color-sand-10'"
+                class="size-6" 
+                />
               </div>
             </div>
 
