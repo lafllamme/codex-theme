@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTimeoutFn } from '@vueuse/core'
+
 interface ThreadItem {
   id: string
   title: string
@@ -61,6 +63,121 @@ function toggleAllRepos() {
   }
   collapsedRepos.value = new Set(groupedThreads.value.map(group => group.repo))
 }
+
+const ENTER_MS = 280
+const LEAVE_MS = 220
+const ENTER_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
+const LEAVE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)'
+
+function clearTransitionStyles(node: HTMLElement) {
+  node.style.transition = ''
+  node.style.overflow = ''
+  node.style.willChange = ''
+  node.style.transformOrigin = ''
+}
+
+function beforeRepoEnter(el: Element) {
+  const node = el as HTMLElement
+  node.style.height = '0px'
+  node.style.opacity = '1'
+  node.style.transform = 'none'
+  node.style.overflow = 'hidden'
+  node.style.willChange = 'height'
+  node.style.transformOrigin = 'top'
+}
+
+function repoEnter(el: Element, done: () => void) {
+  const node = el as HTMLElement
+  const targetHeight = `${node.scrollHeight}px`
+  let finished = false
+  let stopTimeout = () => {}
+  const finish = () => {
+    if (finished)
+      return
+    finished = true
+    stopTimeout()
+    done()
+  }
+  const timeout = useTimeoutFn(() => {
+    finish()
+  }, ENTER_MS + 60, { immediate: false })
+  stopTimeout = timeout.stop
+  void node.offsetHeight
+  node.style.transition = [
+    `height ${ENTER_MS}ms ${ENTER_EASING}`,
+  ].join(', ')
+
+  requestAnimationFrame(() => {
+    node.style.height = targetHeight
+  })
+  timeout.start()
+
+  const onEnd = (event: TransitionEvent) => {
+    if (event.target !== node || event.propertyName !== 'height')
+      return
+    finish()
+  }
+  node.addEventListener('transitionend', onEnd, { once: true })
+}
+
+function afterRepoEnter(el: Element) {
+  const node = el as HTMLElement
+  node.style.height = 'auto'
+  node.style.opacity = ''
+  node.style.transform = ''
+  clearTransitionStyles(node)
+}
+
+function beforeRepoLeave(el: Element) {
+  const node = el as HTMLElement
+  node.style.height = `${node.scrollHeight}px`
+  node.style.opacity = '1'
+  node.style.transform = 'none'
+  node.style.overflow = 'hidden'
+  node.style.willChange = 'height'
+  node.style.transformOrigin = 'top'
+}
+
+function repoLeave(el: Element, done: () => void) {
+  const node = el as HTMLElement
+  let finished = false
+  let stopTimeout = () => {}
+  const finish = () => {
+    if (finished)
+      return
+    finished = true
+    stopTimeout()
+    done()
+  }
+  const timeout = useTimeoutFn(() => {
+    finish()
+  }, LEAVE_MS + 60, { immediate: false })
+  stopTimeout = timeout.stop
+  void node.offsetHeight
+  node.style.transition = [
+    `height ${LEAVE_MS}ms ${LEAVE_EASING}`,
+  ].join(', ')
+
+  requestAnimationFrame(() => {
+    node.style.height = '0px'
+  })
+  timeout.start()
+
+  const onEnd = (event: TransitionEvent) => {
+    if (event.target !== node || event.propertyName !== 'height')
+      return
+    finish()
+  }
+  node.addEventListener('transitionend', onEnd, { once: true })
+}
+
+function afterRepoLeave(el: Element) {
+  const node = el as HTMLElement
+  node.style.height = ''
+  node.style.opacity = ''
+  node.style.transform = ''
+  clearTransitionStyles(node)
+}
 </script>
 
 <template>
@@ -119,51 +236,59 @@ function toggleAllRepos() {
           </div>
 
           <div class="mt-px flex-1 overflow-y-auto">
-            <div v-for="group in groupedThreads" :key="group.repo" :class="allReposCollapsed ? 'mt-px flex flex-col gap-[8px]' : 'mt-px flex flex-col gap-[2px]'">
-              <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none" @click="toggleRepo(group.repo)">
-                <span class="min-w-0 inline-flex items-center gap-2">
-                  <span class="relative size-[15px] inline-flex items-center justify-center">
-                    <Icon
-                      :name="isRepoCollapsed(group.repo) ? 'ph:folder-bold' : 'ph:folder-open-bold'"
-                      class="size-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
-                    />
-                    <Icon
-                      :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
-                      class="absolute h-[13px] w-[13px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                    />
+            <div :class="allReposCollapsed ? 'flex flex-col gap-[8px]' : 'flex flex-col gap-px'">
+              <div v-for="group in groupedThreads" :key="group.repo" class="flex flex-col gap-[2px]">
+                <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none" @click="toggleRepo(group.repo)">
+                  <span class="min-w-0 inline-flex items-center gap-2">
+                    <span class="relative size-[15px] inline-flex items-center justify-center">
+                      <Icon
+                        :name="isRepoCollapsed(group.repo) ? 'ph:folder-bold' : 'ph:folder-open-bold'"
+                        class="size-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
+                      />
+                      <Icon
+                        :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
+                        class="absolute h-[13px] w-[13px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                      />
+                    </span>
+                    <span class="truncate">{{ group.repo }}</span>
                   </span>
-                  <span class="truncate">{{ group.repo }}</span>
-                </span>
-                <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-                  <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
-                  <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
-                </span>
-              </button>
-
-              <div
-                class="flex flex-col origin-top gap-[2px] overflow-hidden transition-[max-height,opacity,transform] duration-230 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                :class="isRepoCollapsed(group.repo) ? 'max-h-0 opacity-0 -translate-y-[4px] pointer-events-none' : 'max-h-[420px] opacity-100 translate-y-0'"
-              >
-                <button
-                  v-for="thread in group.items"
-                  :key="thread.id"
-                  class="group relative grid grid-cols-[minmax(0,1fr)_auto_max-content] min-h-[36px] w-full items-center justify-between gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
-                  :class="thread.id === activeThreadId ? 'bg-[var(--wb-row-active-bg)] border-[color:color-mix(in_srgb,var(--wb-row-active-border)_76%,transparent)]' : ''"
-                  @click="emit('selectThread', thread.id)"
-                >
-                  <Icon name="ph:push-pin" class="pointer-events-none absolute left-[12px] h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
-                  <span class="min-w-0 translate-x-[1px] overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--wb-ui-text)] font-normal leading-[1.25]" :class="thread.id === activeThreadId ? 'font-medium' : ''">{{ thread.title }}</span>
-                  <span class="min-h-[1em] inline-flex items-center justify-end gap-[1px] whitespace-nowrap text-right text-[length:var(--wb-ui-text-sm)] font-[var(--font-ui)] tabular-nums">
-                    <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
-                      <span v-if="typeof thread.added === 'number'" class="text-[color:var(--wb-diff-delta-added)]">+{{ thread.added }}</span>
-                      <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
-                    </template>
-                  </span>
-                  <span class="relative min-w-[72px] inline-flex translate-x-[6px] items-center justify-end whitespace-nowrap text-right">
-                    <span class="text-[color:var(--wb-text-muted)] text-[length:calc(var(--wb-ui-text)-2px)] leading-[1.25] transition-opacity duration-150 group-hover:opacity-0">{{ thread.time }}</span>
-                    <Icon name="ph:archive" class="pointer-events-none absolute right-0 top-1/2 h-[14px] w-[14px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 -translate-y-1/2 group-hover:opacity-100" />
+                  <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                    <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
+                    <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
                   </span>
                 </button>
+
+                <Transition
+                  @before-enter="beforeRepoEnter"
+                  @enter="repoEnter"
+                  @after-enter="afterRepoEnter"
+                  @before-leave="beforeRepoLeave"
+                  @leave="repoLeave"
+                  @after-leave="afterRepoLeave"
+                >
+                  <div v-if="!isRepoCollapsed(group.repo)" class="flex flex-col gap-[2px] overflow-hidden">
+                    <button
+                      v-for="thread in group.items"
+                      :key="thread.id"
+                      class="group relative grid grid-cols-[minmax(0,1fr)_auto_max-content] min-h-[36px] w-full items-center justify-between gap-[4px] border border-transparent rounded-[12px] bg-transparent pl-[34px] pr-[14px] text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg-strong)]"
+                      :class="thread.id === activeThreadId ? 'bg-[var(--wb-row-active-bg)] border-[color:color-mix(in_srgb,var(--wb-row-active-border)_76%,transparent)]' : ''"
+                      @click="emit('selectThread', thread.id)"
+                    >
+                      <Icon name="ph:push-pin" class="pointer-events-none absolute left-[12px] h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
+                      <span class="min-w-0 translate-x-[1px] overflow-hidden text-ellipsis whitespace-nowrap text-[length:var(--wb-ui-text)] font-normal leading-[1.25]" :class="thread.id === activeThreadId ? 'font-medium' : ''">{{ thread.title }}</span>
+                      <span class="min-h-[1em] inline-flex items-center justify-end gap-[1px] whitespace-nowrap text-right text-[length:var(--wb-ui-text-sm)] font-[var(--font-ui)] tabular-nums">
+                        <template v-if="typeof thread.added === 'number' || typeof thread.removed === 'number'">
+                          <span v-if="typeof thread.added === 'number'" class="text-[color:var(--wb-diff-delta-added)]">+{{ thread.added }}</span>
+                          <span v-if="typeof thread.removed === 'number'" class="text-[color:var(--wb-diff-delta-removed)]">-{{ thread.removed }}</span>
+                        </template>
+                      </span>
+                      <span class="relative min-w-[72px] inline-flex translate-x-[6px] items-center justify-end whitespace-nowrap text-right">
+                        <span class="text-[color:var(--wb-text-muted)] text-[length:calc(var(--wb-ui-text)-2px)] leading-[1.25] transition-opacity duration-150 group-hover:opacity-0">{{ thread.time }}</span>
+                        <Icon name="ph:archive" class="pointer-events-none absolute right-0 top-1/2 h-[14px] w-[14px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 -translate-y-1/2 group-hover:opacity-100" />
+                      </span>
+                    </button>
+                  </div>
+                </Transition>
               </div>
             </div>
           </div>
