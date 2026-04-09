@@ -225,7 +225,7 @@ function beginDiffResize(event: MouseEvent) {
           aria-label="Toggle Sidebar"
           @click="toggleSidebar"
         >
-          <Icon name="cuida:sidebar-collapse-outline" class="size-4" />
+          <Icon :name="isSidebarCollapsed ? 'cuida:sidebar-collapse-outline' : 'cuida:sidebar-expand-outline'" class="size-4" />
         </button>
         <button
           class="wb-top-control-btn wb-top-control-secondary"
