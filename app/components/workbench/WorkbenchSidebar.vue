@@ -91,25 +91,28 @@ function toggleRepo(repo: string) {
         <div class="min-h-0 flex flex-1 flex-col">
           <div class="mb-[8px] mt-[18px] w-full flex items-center justify-between pl-[10px] pr-[10px] text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
             <span class="whitespace-nowrap tracking-normal capitalize">Threads</span>
-            <div class="inline-flex items-center gap-2">
-              <button class="wb-sidebar-icon-btn">
-                <Icon name="ph:funnel-simple" class="h-[15px] w-[15px]" />
+            <div class="inline-flex items-center gap-3">
+              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
+                <Icon name="ph:arrows-in-simple-bold" class="size-[15px]" />
+              </button>
+              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
+                <Icon name="ph:funnel-simple" class="size-[15px]" />
               </button>
 
-              <button class="wb-sidebar-icon-btn">
-                <Icon name="hugeicons:folder-add" class="h-[15px] w-[15px]" />
+              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
+                <Icon name="hugeicons:folder-add" class="size-[15px]" />
               </button>
             </div>
           </div>
 
-          <div class="mt-[1px] flex-1 overflow-y-auto">
-            <div v-for="group in groupedThreads" :key="group.repo" class="mt-[1px] flex flex-col gap-[2px]">
+          <div class="mt-px flex-1 overflow-y-auto">
+            <div v-for="group in groupedThreads" :key="group.repo" class="mt-px flex flex-col gap-[2px]">
               <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none" @click="toggleRepo(group.repo)">
                 <span class="min-w-0 inline-flex items-center gap-2">
-                  <span class="relative h-[15px] w-[15px] inline-flex items-center justify-center">
+                  <span class="relative size-[15px] inline-flex items-center justify-center">
                     <Icon
                       name="ph:folder-open"
-                      class="h-[15px] w-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
+                      class="size-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
                     />
                     <Icon
                       :name="isRepoCollapsed(group.repo) ? 'ph:caret-right-fill' : 'ph:caret-down-fill'"
