@@ -68,6 +68,8 @@ const ENTER_MS = 280
 const LEAVE_MS = 220
 const ENTER_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const LEAVE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)'
+const CONTENT_FADE_IN_MS = 260
+const CONTENT_FADE_OUT_MS = 180
 
 function clearTransitionStyles(node: HTMLElement) {
   node.style.transition = ''
@@ -79,10 +81,9 @@ function clearTransitionStyles(node: HTMLElement) {
 function beforeRepoEnter(el: Element) {
   const node = el as HTMLElement
   node.style.height = '0px'
-  node.style.opacity = '1'
-  node.style.transform = 'none'
+  node.style.opacity = '0'
   node.style.overflow = 'hidden'
-  node.style.willChange = 'height'
+  node.style.willChange = 'height, opacity'
   node.style.transformOrigin = 'top'
 }
 
@@ -105,10 +106,12 @@ function repoEnter(el: Element, done: () => void) {
   void node.offsetHeight
   node.style.transition = [
     `height ${ENTER_MS}ms ${ENTER_EASING}`,
+    `opacity ${CONTENT_FADE_IN_MS}ms ${ENTER_EASING}`,
   ].join(', ')
 
   requestAnimationFrame(() => {
     node.style.height = targetHeight
+    node.style.opacity = '1'
   })
   timeout.start()
 
@@ -132,9 +135,8 @@ function beforeRepoLeave(el: Element) {
   const node = el as HTMLElement
   node.style.height = `${node.scrollHeight}px`
   node.style.opacity = '1'
-  node.style.transform = 'none'
   node.style.overflow = 'hidden'
-  node.style.willChange = 'height'
+  node.style.willChange = 'height, opacity'
   node.style.transformOrigin = 'top'
 }
 
@@ -156,10 +158,12 @@ function repoLeave(el: Element, done: () => void) {
   void node.offsetHeight
   node.style.transition = [
     `height ${LEAVE_MS}ms ${LEAVE_EASING}`,
+    `opacity ${CONTENT_FADE_OUT_MS}ms ${LEAVE_EASING}`,
   ].join(', ')
 
   requestAnimationFrame(() => {
     node.style.height = '0px'
+    node.style.opacity = '0'
   })
   timeout.start()
 
@@ -174,8 +178,6 @@ function repoLeave(el: Element, done: () => void) {
 function afterRepoLeave(el: Element) {
   const node = el as HTMLElement
   node.style.height = ''
-  node.style.opacity = ''
-  node.style.transform = ''
   clearTransitionStyles(node)
 }
 </script>
@@ -236,7 +238,7 @@ function afterRepoLeave(el: Element) {
           </div>
 
           <div class="mt-px flex-1 overflow-y-auto">
-            <div :class="allReposCollapsed ? 'flex flex-col gap-[8px]' : 'flex flex-col gap-px'">
+            <div :class="allReposCollapsed ? 'flex flex-col gap-[16px]' : 'flex flex-col gap-px'">
               <div v-for="group in groupedThreads" :key="group.repo" class="flex flex-col gap-[2px]">
                 <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none" @click="toggleRepo(group.repo)">
                   <span class="min-w-0 inline-flex items-center gap-2">
