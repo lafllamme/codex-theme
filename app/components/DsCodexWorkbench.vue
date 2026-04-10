@@ -46,6 +46,7 @@ const selectedModel = ref(
 const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
 const composeValue = ref('Ask for follow-up changes')
 const activeThreadId = ref('thread-1')
+const draftThreadRepo = ref('codex-theme')
 const runEnabled = ref(false)
 const isWorktreeModalOpen = ref(false)
 const worktreeBranch = ref('codex/add-appearance-settings-view')
@@ -95,6 +96,11 @@ const threadItems: ThreadItem[] = [
 ]
 
 const activeMessages = computed(() => workbenchMessagesByThread[activeThreadId.value] || [])
+const activeThread = computed(() =>
+  threadItems.find(thread => thread.id === activeThreadId.value) ?? null,
+)
+const activeThreadTitle = computed(() => activeThread.value?.title ?? 'New Thread')
+const activeThreadRepo = computed(() => activeThread.value?.repo ?? draftThreadRepo.value)
 const sidebarOccupiedWidth = computed(() => (isSidebarCollapsed.value ? 0 : sidebarWidth.value))
 const bodyShiftPx = computed(() => 0)
 const bodyFrameWidthBudget = computed(() => {
@@ -139,14 +145,42 @@ const shellStyle = computed(() => ({
   '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))
 
-function startNewThread() {
-  activeThreadId.value = defaultThread.id
+function startNewThread(repo?: string) {
+  activeThreadId.value = `thread-new-${Date.now()}`
+  draftThreadRepo.value = repo ?? activeThreadRepo.value ?? defaultThread.repo
+  composeValue.value = ''
   closeSidebarMobile()
 }
 
 function selectThread(id: string) {
   activeThreadId.value = id
   closeSidebarMobile()
+}
+
+function openFolderCommand() {
+  if (!process.client)
+    return
+
+  const tryDirectoryPicker = async () => {
+    try {
+      if ('showDirectoryPicker' in window) {
+        await (window as Window & { showDirectoryPicker?: () => Promise<unknown> }).showDirectoryPicker?.()
+        return
+      }
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.setAttribute('webkitdirectory', '')
+      input.style.display = 'none'
+      document.body.appendChild(input)
+      input.click()
+      input.remove()
+    }
+    catch {
+      // Ignore browser security blocks in restricted environments.
+    }
+  }
+
+  void tryDirectoryPicker()
 }
 
 function beginSidebarResize(event: MouseEvent) {
@@ -257,6 +291,8 @@ function beginDiffResize(event: MouseEvent) {
           :collapsed="isSidebarCollapsed"
           :mobile-open="isSidebarOpenMobile"
           @new-thread="startNewThread"
+          @new-thread-for-repo="startNewThread"
+          @open-folder-command="openFolderCommand"
           @select-thread="selectThread"
           @close-mobile="closeSidebarMobile"
           @toggle-collapsed="toggleSidebar"
@@ -273,8 +309,8 @@ function beginDiffResize(event: MouseEvent) {
           <section class="wb-chat-header-shell theme-switch-surface min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
             <div class="px-[8px] pt-0">
               <ChatHeaderBar
-                title="Open Vue-Bits Dither Sei..."
-                repo="codex-theme"
+                :title="activeThreadTitle"
+                :repo="activeThreadRepo"
                 :run-enabled="runEnabled"
                 :is-terminal-open="isTerminalOpen"
                 :is-diff-open="isDiffOpen"
@@ -303,8 +339,8 @@ function beginDiffResize(event: MouseEvent) {
                     v-model:worktree-branch="worktreeBranch"
                     class="min-h-0 flex-1"
                     :show-header="false"
-                    title="Open Vue-Bits Dither Sei..."
-                    repo="codex-theme"
+                    :title="activeThreadTitle"
+                    :repo="activeThreadRepo"
                     :code-theme-id="payload.codeThemeId"
                     :run-enabled="runEnabled"
                     :is-terminal-open="isTerminalOpen"
@@ -316,6 +352,7 @@ function beginDiffResize(event: MouseEvent) {
                     :model-options="modelOptions"
                     :thinking-options="thinkingOptions"
                     :messages="activeMessages"
+                    :empty-state-repo="activeThreadRepo"
                     @toggle-run="runEnabled = !runEnabled"
                     @toggle-terminal="toggleTerminal"
                     @toggle-diff="toggleDiff"

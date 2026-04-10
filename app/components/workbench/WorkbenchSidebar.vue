@@ -21,6 +21,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   selectThread: [id: string]
   newThread: []
+  newThreadForRepo: [repo: string]
+  openFolderCommand: []
   closeMobile: []
   toggleCollapsed: []
 }>()
@@ -364,7 +366,7 @@ function afterRepoLeave(el: Element) {
                 </div>
               </ComposerDropdownMenu>
 
-              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
+              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]" @click="emit('openFolderCommand')">
                 <Icon name="hugeicons:folder-add" class="size-[15px]" />
               </button>
             </div>
@@ -389,7 +391,13 @@ function afterRepoLeave(el: Element) {
                   </span>
                   <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                     <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
-                    <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
+                    <button
+                      class="inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:text-[color:var(--wb-text-primary)]"
+                      :aria-label="`Start new chat in ${group.repo}`"
+                      @click.stop="emit('newThreadForRepo', group.repo)"
+                    >
+                      <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
+                    </button>
                   </span>
                 </button>
 

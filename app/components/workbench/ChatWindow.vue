@@ -20,6 +20,7 @@ const props = defineProps<{
   modelOptions: string[]
   thinkingOptions: string[]
   messages: ChatMessage[]
+  emptyStateRepo?: string
 }>()
 
 const emit = defineEmits<{
@@ -76,7 +77,12 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       />
     </div>
 
-    <WorkbenchMainStage :messages="messages" :code-theme-id="codeThemeId" :is-diff-open="isDiffOpen" />
+    <WorkbenchMainStage
+      :messages="messages"
+      :code-theme-id="codeThemeId"
+      :is-diff-open="isDiffOpen"
+      :empty-state-repo="emptyStateRepo ?? repo"
+    />
 
     <div class="wb-chat-composer-lane [padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] mb-[10px] mt-2">
       <ComposerBar
