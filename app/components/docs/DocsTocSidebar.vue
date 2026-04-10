@@ -330,7 +330,7 @@ onBeforeUnmount(() => {
     <div class="mt-auto">
       <NuxtLink
         to="/"
-        class="color-sand-10 inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs transition-all duration-200 hover:bg-pureWhite/6 hover:color-pureWhite/82"
+        class="inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs color-sand-10 transition-all duration-200 hover:color-pureWhite/82 hover:bg-pureWhite/6"
       >
         <Icon name="ph:arrow-left" class="h-3 w-3" />
         Back to Home

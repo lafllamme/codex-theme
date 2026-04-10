@@ -20,7 +20,7 @@ function handleDitherReady() {
 
 <template>
   <div
-    class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden bg-pureBlack text-[var(--un-preset-radix-slate12)] h-dvh"
+    class="[--hero-top-offset:calc(76px+env(safe-area-inset-top))] relative overflow-hidden text-[var(--un-preset-radix-slate12)] h-dvh bg-pureBlack"
   >
     <div
       v-if="showAnimatedBackground"

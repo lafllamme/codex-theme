@@ -20,7 +20,7 @@ const tocSections = [
     <DocsTocSidebar :sections="tocSections" />
 
     <section class="docs-main relative z-10 lg:ml-72">
-      <div class="mx-auto max-w-4xl px-6 pb-28 sm:px-8 lg:px-0 lg:pb-40">
+      <div class="mx-auto max-w-4xl px-6 pb-28 lg:px-0 sm:px-8 lg:pb-40">
         <header
           class="pb-18 pt-[calc(var(--hero-top-offset)+44px)] lg:pb-20 lg:pt-42"
         >

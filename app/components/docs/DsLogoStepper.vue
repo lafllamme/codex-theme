@@ -180,8 +180,8 @@ onBeforeUnmount(() => {
 <template>
   <div class="relative w-full flex items-start justify-center overflow-hidden py-4">
     <div class="relative overflow-hidden" :style="{ width: `${viewportWidth}px` }">
-      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 from-pureBlack to-transparent bg-gradient-to-r" />
-      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 from-pureBlack to-transparent bg-gradient-to-l" />
+      <div class="from-pureBlack pointer-events-none absolute inset-y-0 left-0 z-10 w-14 to-transparent bg-gradient-to-r" />
+      <div class="from-pureBlack pointer-events-none absolute inset-y-0 right-0 z-10 w-14 to-transparent bg-gradient-to-l" />
 
       <TransitionGroup
         tag="div"
@@ -203,9 +203,10 @@ onBeforeUnmount(() => {
               :class="isCenter(originalIndex) ? 'border-sand-8' : 'border-sand-5'"
             >
               <div class="h-12 w-12 flex items-center justify-center">
-                <Icon :name="logo.icon"
-                :class="isCenter(originalIndex) ? 'color-sand-12' : 'color-sand-10'"
-                class="size-6" 
+                <Icon
+                  :name="logo.icon"
+                  :class="isCenter(originalIndex) ? 'color-sand-12' : 'color-sand-10'"
+                  class="size-6"
                 />
               </div>
             </div>
