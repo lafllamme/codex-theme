@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'
+import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 
 interface ThreadItem {
   id: string
@@ -62,6 +63,56 @@ function toggleAllRepos() {
     return
   }
   collapsedRepos.value = new Set(groupedThreads.value.map(group => group.repo))
+}
+
+type OrganizeMode = 'project' | 'chronological'
+type SortMode = 'created' | 'updated'
+type ShowMode = 'all' | 'relevant'
+interface ThreadsFilterOption<T extends string> {
+  value: T
+  label: string
+  icon: string
+}
+
+const isThreadsFilterMenuOpen = ref(false)
+const organizeMode = ref<OrganizeMode>('project')
+const sortMode = ref<SortMode>('updated')
+const showMode = ref<ShowMode>('all')
+
+const organizeOptions: ThreadsFilterOption<OrganizeMode>[] = [
+  { value: 'project', label: 'By project', icon: 'ph:folder-open' },
+  { value: 'chronological', label: 'Chronological list', icon: 'ph:clock' },
+]
+
+const sortOptions: ThreadsFilterOption<SortMode>[] = [
+  { value: 'created', label: 'Created', icon: 'ph:plus-circle' },
+  { value: 'updated', label: 'Updated', icon: 'ph:pencil-simple-line' },
+]
+
+const showOptions: ThreadsFilterOption<ShowMode>[] = [
+  { value: 'all', label: 'All Threads', icon: 'ph:chats-circle' },
+  { value: 'relevant', label: 'Relevant', icon: 'ph:star' },
+]
+
+const organizeLabel = computed(() =>
+  organizeOptions.find(option => option.value === organizeMode.value)?.label ?? 'By project',
+)
+const sortLabel = computed(() =>
+  sortOptions.find(option => option.value === sortMode.value)?.label ?? 'Updated',
+)
+const showLabel = computed(() =>
+  showOptions.find(option => option.value === showMode.value)?.label ?? 'All Threads',
+)
+const threadsFilterSummary = computed(() =>
+  `${organizeLabel.value} • ${sortLabel.value} • ${showLabel.value}`,
+)
+
+function toggleThreadsFilterMenu() {
+  isThreadsFilterMenuOpen.value = !isThreadsFilterMenuOpen.value
+}
+
+function closeThreadsFilterMenu() {
+  isThreadsFilterMenuOpen.value = false
 }
 
 const ENTER_MS = 280
@@ -191,17 +242,22 @@ function afterRepoLeave(el: Element) {
     />
 
     <aside
-      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] overflow-hidden border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:left-[8px] max-[1180px]:top-[72px] max-md:left-[8px] max-md:top-[60px] max-[1180px]:z-[40] max-[1180px]:max-h-[calc(100vh-84px)] max-[1180px]:w-[min(92vw,360px)] max-md:max-h-[calc(100vh-72px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
+      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:left-[8px] max-[1180px]:top-[72px] max-md:left-[8px] max-md:top-[60px] max-[1180px]:z-[40] max-[1180px]:max-h-[calc(100vh-84px)] max-[1180px]:w-[min(92vw,360px)] max-md:max-h-[calc(100vh-72px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
       :class="[
         mobileOpen ? 'max-[1180px]:translate-x-0' : '',
         collapsed
           ? 'border-transparent bg-transparent [backdrop-filter:none] px-[5px] max-[1180px]:border-[rgba(255,255,255,0.09)] max-[1180px]:bg-[rgba(10,12,16,0.48)] max-[1180px]:[backdrop-filter:blur(14px)] max-[1180px]:px-[7px]'
           : '',
+        isThreadsFilterMenuOpen ? 'overflow-visible' : 'overflow-hidden',
       ]"
     >
       <div
-        class="min-h-0 w-full flex flex-1 flex-col origin-left gap-[10px] overflow-x-hidden pt-[38px] transition-[width,opacity,transform] duration-260"
-        :class="collapsed ? 'w-0 opacity-0 -translate-x-[12px] overflow-y-hidden pointer-events-none' : 'w-full opacity-100 translate-x-0 overflow-y-hidden'"
+        class="min-h-0 w-full flex flex-1 flex-col origin-left gap-[10px] pt-[38px] transition-[width,opacity,transform] duration-260"
+        :class="collapsed
+          ? 'w-0 opacity-0 -translate-x-[12px] overflow-hidden pointer-events-none'
+          : isThreadsFilterMenuOpen
+            ? 'w-full opacity-100 translate-x-0 overflow-visible'
+            : 'w-full opacity-100 translate-x-0 overflow-hidden'"
       >
         <div class="grid gap-[6px]">
           <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
@@ -223,13 +279,90 @@ function afterRepoLeave(el: Element) {
         <div class="min-h-0 flex flex-1 flex-col">
           <div class="mb-[8px] mt-[6px] w-full flex items-center justify-between pl-[10px] pr-[10px] text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-faint)] tracking-[0.13em] uppercase">
             <span class="whitespace-nowrap tracking-normal capitalize">Threads</span>
-            <div class="inline-flex items-center gap-3">
+            <div class="inline-flex items-center gap-3 tracking-normal normal-case">
               <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]" @click="toggleAllRepos">
                 <Icon :name="allReposCollapsed ? 'ph:caret-up-down' : 'ph:arrows-in-simple-bold'" :class="allReposCollapsed ? 'size-[15px] rotate-45' : 'size-[15px]'" />
               </button>
-              <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
-                <Icon name="ph:funnel-simple" class="size-[15px]" />
-              </button>
+
+              <ComposerDropdownMenu
+                :open="isThreadsFilterMenuOpen"
+                menu-class="w-[214px]"
+                panel-padding-class="p-1.5"
+                panel-class="normal-case tracking-normal rounded-[17px] border-[color:color-mix(in_srgb,var(--wb-border-2)_72%,transparent)] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_96%,transparent)] text-[color:var(--wb-text-primary)] shadow-[0_14px_34px_rgba(0,0,0,0.34)] backdrop-blur-[10px]"
+                align="right"
+                direction="down"
+                @toggle="toggleThreadsFilterMenu"
+                @close="closeThreadsFilterMenu"
+              >
+                <template #trigger="{ toggle }">
+                  <button
+                    class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+                    :class="isThreadsFilterMenuOpen ? 'border-[color:var(--wb-hover-border)] bg-[var(--wb-hover-bg)] text-[color:var(--wb-text-primary)]' : ''"
+                    :title="threadsFilterSummary"
+                    :aria-label="`Filter threads (${threadsFilterSummary})`"
+                    @click.stop="toggle"
+                  >
+                    <Icon name="ph:funnel-simple" class="size-[15px]" />
+                  </button>
+                </template>
+
+                <div class="grid gap-0 tracking-normal normal-case">
+                  <p class="m-0 px-1.5 py-1 text-[12px] text-[color:var(--wb-text-muted)] font-semibold leading-none">
+                    Organize
+                  </p>
+
+                  <button
+                    v-for="option in organizeOptions"
+                    :key="option.value"
+                    class="h-[36px] w-full inline-flex items-center justify-between rounded-[9px] border-none bg-transparent px-1.5 text-left text-[14px] text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                    @click="organizeMode = option.value; closeThreadsFilterMenu()"
+                  >
+                    <span class="inline-flex items-center gap-1.5">
+                      <Icon :name="option.icon" class="h-[14px] w-[14px]" />
+                      {{ option.label }}
+                    </span>
+                    <Icon v-if="organizeMode === option.value" name="ph:check-bold" class="h-[13px] w-[13px]" />
+                  </button>
+
+                  <div class="mx-1.5 my-[4px] h-px bg-[color:var(--wb-divider)]" />
+
+                  <p class="m-0 px-1.5 py-1 text-[12px] text-[color:var(--wb-text-muted)] font-semibold leading-none">
+                    Sort by
+                  </p>
+
+                  <button
+                    v-for="option in sortOptions"
+                    :key="option.value"
+                    class="h-[36px] w-full inline-flex items-center justify-between rounded-[9px] border-none bg-transparent px-1.5 text-left text-[14px] text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                    @click="sortMode = option.value; closeThreadsFilterMenu()"
+                  >
+                    <span class="inline-flex items-center gap-1.5">
+                      <Icon :name="option.icon" class="h-[14px] w-[14px]" />
+                      {{ option.label }}
+                    </span>
+                    <Icon v-if="sortMode === option.value" name="ph:check-bold" class="h-[13px] w-[13px]" />
+                  </button>
+
+                  <div class="mx-1.5 my-[4px] h-px bg-[color:var(--wb-divider)]" />
+
+                  <p class="m-0 px-1.5 py-1 text-[12px] text-[color:var(--wb-text-muted)] font-semibold leading-none">
+                    Show
+                  </p>
+
+                  <button
+                    v-for="option in showOptions"
+                    :key="option.value"
+                    class="h-[36px] w-full inline-flex items-center justify-between rounded-[9px] border-none bg-transparent px-1.5 text-left text-[14px] text-[color:var(--wb-text-primary)] leading-none outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                    @click="showMode = option.value; closeThreadsFilterMenu()"
+                  >
+                    <span class="inline-flex items-center gap-1.5">
+                      <Icon :name="option.icon" class="h-[14px] w-[14px]" />
+                      {{ option.label }}
+                    </span>
+                    <Icon v-if="showMode === option.value" name="ph:check-bold" class="h-[13px] w-[13px]" />
+                  </button>
+                </div>
+              </ComposerDropdownMenu>
 
               <button class="h-[22px] w-[22px] wb-sidebar-icon-btn inline-flex items-center justify-center border border-transparent rounded-[8px] bg-transparent p-0 text-[color:var(--wb-text-secondary)] transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
                 <Icon name="hugeicons:folder-add" class="size-[15px]" />
