@@ -9,10 +9,17 @@ interface MenuOption {
   disabled?: boolean
 }
 
-const props = defineProps<{
-  modelOptions: string[]
-  thinkingOptions: string[]
-}>()
+const props = withDefaults(
+  defineProps<{
+    modelOptions: string[]
+    thinkingOptions: string[]
+    /** Input placeholder; use empty-thread vs follow-up copy from the parent. */
+    composerPlaceholder?: string
+  }>(),
+  {
+    composerPlaceholder: 'Ask Codex anything, @ to add files, / for commands, $ for skills',
+  },
+)
 
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', {
@@ -173,7 +180,7 @@ const contextUsedLabel = computed(() =>
             v-model="composeValue"
             class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[17px] text-[color:var(--wb-text-muted)] font-light font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
             type="text"
-            placeholder="Ask for follow-up changes"
+            :placeholder="composerPlaceholder"
           >
         </div>
 

@@ -33,7 +33,7 @@ defineProps<{
         <input
           class="composer-input"
           type="text"
-          value="Ask for follow-up changes"
+          value="Ask Codex anything, @ to add files, / for commands, $ for skills"
           readonly
           :style="{ color: payload.theme.ink }"
         >

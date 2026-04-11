@@ -44,7 +44,7 @@ const selectedModel = ref(
   ?? '',
 )
 const selectedThinking = ref(thinkingOptions[1] ?? thinkingOptions[0] ?? '')
-const composeValue = ref('Ask for follow-up changes')
+const composeValue = ref('')
 const activeThreadId = ref('thread-1')
 const draftThreadRepo = ref('codex-theme')
 const runEnabled = ref(false)

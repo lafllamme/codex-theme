@@ -40,6 +40,12 @@ const laneVars = computed(() => ({
   '--wb-chat-lane-desktop-inset-right': toCssLength(props.chatLaneDesktopInsetRight, '180px'),
 }))
 
+const composerPlaceholder = computed(() =>
+  props.messages.length === 0
+    ? 'Ask Codex anything, @ to add files, / for commands, $ for skills'
+    : 'Ask for follow-up changes',
+)
+
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', { required: true })
 const composeValue = defineModel<string>('composeValue', { required: true })
@@ -85,6 +91,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
         v-model:selected-model="selectedModel"
         v-model:selected-thinking="selectedThinking"
         v-model:compose-value="composeValue"
+        :composer-placeholder="composerPlaceholder"
         :model-options="modelOptions"
         :thinking-options="thinkingOptions"
       />
