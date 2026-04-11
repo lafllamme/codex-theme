@@ -3,15 +3,19 @@ import { onClickOutside, useEventListener } from '@vueuse/core'
 
 const props = withDefaults(defineProps<{
   open: boolean
+  rootClass?: string
   menuClass?: string
   panelPaddingClass?: string
   panelClass?: string
+  panelPositionClass?: string
   align?: 'left' | 'right'
   direction?: 'up' | 'down'
 }>(), {
+  rootClass: 'relative inline-flex',
   menuClass: 'w-[220px]',
   panelPaddingClass: 'p-2.5',
   panelClass: '',
+  panelPositionClass: '',
   align: 'left',
   direction: 'up',
 })
@@ -43,15 +47,15 @@ useEventListener(document, 'keydown', (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <div ref="rootRef" class="relative inline-flex">
+  <div ref="rootRef" :class="rootClass">
     <slot name="trigger" :open="open" :toggle="toggle" />
 
     <div
       v-if="open"
       class="absolute z-40 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
       :class="[
-        align === 'right' ? 'right-0' : 'left-0',
-        direction === 'up' ? 'bottom-full mb-2' : 'top-full mt-2',
+        panelPositionClass || (align === 'right' ? 'right-0' : 'left-0'),
+        panelPositionClass ? '' : (direction === 'up' ? 'bottom-full mb-2' : 'top-full mt-2'),
         panelPaddingClass,
         panelClass,
         menuClass,

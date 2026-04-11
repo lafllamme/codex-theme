@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
+import ComposerDropdownMenu from '~/components/workbench/chat/ComposerDropdownMenu.vue'
 import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
 import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
@@ -52,6 +53,9 @@ const isWorktreeModalOpen = ref(false)
 const worktreeBranch = ref('codex/add-appearance-settings-view')
 const isGitActionModalOpen = ref(false)
 const gitActionType = ref<'commit' | 'push' | 'branch'>('commit')
+const isSearchCommandOpen = ref(false)
+const searchQuery = ref('')
+const searchInputRef = ref<HTMLInputElement | null>(null)
 const sidebarWidth = ref(296)
 const minSidebarWidth = 260
 const maxSidebarWidth = 420
@@ -118,6 +122,41 @@ const chatLaneDesktopInsetLeft = computed(() => {
 
 const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
 
+const searchSections = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+  const sections = [
+    {
+      id: 'suggested',
+      title: 'Suggested',
+      items: [
+        { id: 'new-thread', label: 'New Thread', shortcut: '⌘N', icon: 'heroicons-outline:pencil-alt', action: () => startNewThread() },
+        { id: 'open-folder', label: 'Open folder', shortcut: '⌘O', icon: 'ph:folder-open', action: () => openFolderCommand() },
+        { id: 'settings', label: 'Settings', shortcut: '⌘,', icon: 'ph:gear-six', action: () => undefined },
+        { id: 'search-files', label: 'Search files', shortcut: '⌘P', icon: 'ph:magnifying-glass', action: () => undefined },
+      ],
+    },
+    {
+      id: 'thread',
+      title: 'Thread',
+      items: [
+        { id: 'search-chats', label: 'Search chats', shortcut: '⌘G', icon: 'ph:magnifying-glass', action: () => undefined },
+        { id: 'new-quick-chat', label: 'New quick chat', shortcut: '⇧⌘N', icon: 'heroicons-outline:pencil-alt', action: () => startNewThread(activeThreadRepo.value) },
+        { id: 'expand-thread', label: 'Expand thread', shortcut: '⌘]', icon: 'ph:arrows-out-simple', action: () => undefined },
+      ],
+    },
+  ]
+
+  if (!query)
+    return sections
+
+  return sections
+    .map(section => ({
+      ...section,
+      items: section.items.filter(item => item.label.toLowerCase().includes(query)),
+    }))
+    .filter(section => section.items.length > 0)
+})
+
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
   '--font-ui': resolveThemeUiFont(props.payload.theme.fonts.ui),
@@ -179,6 +218,22 @@ function openFolderCommand() {
   }
 
   void tryDirectoryPicker()
+}
+
+async function openSearchCommand() {
+  isSearchCommandOpen.value = true
+  await nextTick()
+  searchInputRef.value?.focus()
+}
+
+function closeSearchCommand() {
+  isSearchCommandOpen.value = false
+  searchQuery.value = ''
+}
+
+function executeSearchCommand(action: () => void) {
+  action()
+  closeSearchCommand()
 }
 
 function beginSidebarResize(event: MouseEvent) {
@@ -289,6 +344,7 @@ function beginDiffResize(event: MouseEvent) {
           :collapsed="isSidebarCollapsed"
           :mobile-open="isSidebarOpenMobile"
           @new-thread="startNewThread"
+          @open-search-command="openSearchCommand"
           @new-thread-for-repo="startNewThread"
           @open-folder-command="openFolderCommand"
           @select-thread="selectThread"
@@ -393,6 +449,66 @@ function beginDiffResize(event: MouseEvent) {
         v-model:action="gitActionType"
       />
     </section>
+
+    <div
+      v-if="isSearchCommandOpen"
+      class="fixed inset-0 z-[67] bg-[rgba(0,0,0,0.42)] backdrop-blur-[1px]"
+      @click="closeSearchCommand"
+    />
+
+    <ComposerDropdownMenu
+      :open="isSearchCommandOpen"
+      root-class="fixed inset-0 z-[68] flex items-center justify-center p-4 pointer-events-none"
+      panel-position-class="relative"
+      menu-class="w-[min(92vw,640px)]"
+      panel-padding-class="p-2"
+      panel-class="pointer-events-auto rounded-[20px] border-[color:color-mix(in_srgb,var(--wb-border-2)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_96%,transparent)] shadow-[0_20px_52px_rgba(0,0,0,0.45)] backdrop-blur-[16px]"
+      @close="closeSearchCommand"
+    >
+      <template #trigger>
+        <span class="hidden" />
+      </template>
+
+      <div class="grid gap-2">
+        <label class="h-11 flex items-center gap-2 border border-[color:var(--wb-border-2)] rounded-[12px] bg-[var(--wb-bg-panel)] px-3">
+          <Icon name="ph:magnifying-glass" class="h-[15px] w-[15px] text-[color:var(--wb-text-muted)]" />
+          <input
+            ref="searchInputRef"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search commands"
+            class="min-w-0 w-full border-none bg-transparent p-0 text-[17px] text-[color:var(--wb-text-primary)] font-normal leading-none outline-none placeholder:text-[color:var(--wb-text-muted)]"
+          >
+        </label>
+
+        <div class="max-h-[350px] overflow-y-auto">
+          <div v-if="searchSections.length === 0" class="px-2 py-5 text-center text-[14px] text-[color:var(--wb-text-muted)]">
+            No matching commands
+          </div>
+
+          <div v-for="section in searchSections" :key="section.id" class="grid gap-1 pb-1">
+            <p class="mb-0 mt-1.5 px-2 text-[12px] text-[color:var(--wb-text-muted)] font-semibold leading-none">
+              {{ section.title }}
+            </p>
+            <button
+              v-for="(item, index) in section.items"
+              :key="item.id"
+              class="h-[38px] w-full inline-flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              :class="index === 0 && section.id === searchSections[0]?.id ? 'bg-[var(--wb-hover-bg)]' : ''"
+              @click="executeSearchCommand(item.action)"
+            >
+              <span class="inline-flex items-center gap-2">
+                <Icon :name="item.icon" class="h-[14px] w-[14px] text-[color:var(--wb-text-secondary)]" />
+                <span class="truncate">{{ item.label }}</span>
+              </span>
+              <span class="rounded-[8px] bg-[color:var(--wb-hover-bg)] px-1.5 py-[3px] text-[11px] text-[color:var(--wb-text-muted)] font-medium leading-none">
+                {{ item.shortcut }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ComposerDropdownMenu>
   </section>
 </template>
 

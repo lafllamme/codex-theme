@@ -21,6 +21,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   selectThread: [id: string]
   newThread: []
+  openSearchCommand: []
   newThreadForRepo: [repo: string]
   openFolderCommand: []
   closeMobile: []
@@ -267,13 +268,18 @@ function afterRepoLeave(el: Element) {
             <span class="truncate whitespace-nowrap">New Thread</span>
           </button>
 
+          <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('openSearchCommand')">
+            <Icon name="ph:magnifying-glass-bold" class="size-4 wb-sidebar-icon" />
+            <span class="truncate whitespace-nowrap">Search</span>
+          </button>
+
           <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:circles-four" class="size-4.5 wb-sidebar-icon" />
+            <Icon name="ph:circles-four-bold" class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">Capabilities &amp; Apps</span>
           </button>
 
           <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:clock" class="size-4.5 wb-sidebar-icon" />
+            <Icon name="ph:clock-bold" class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">Automations</span>
           </button>
         </div>
@@ -376,7 +382,7 @@ function afterRepoLeave(el: Element) {
             <div :class="allReposCollapsed ? 'flex flex-col gap-[16px]' : 'flex flex-col gap-px'">
               <div v-for="group in groupedThreads" :key="group.repo" class="flex flex-col gap-[2px]">
                 <!-- Use a wrapper — not a single <button> — so action controls are not nested buttons (invalid HTML; browsers hoist inner <button> and cause stray icons / layout jump). -->
-                <div class="group flex w-full items-center justify-between gap-2 px-[10px] py-0">
+                <div class="group w-full flex items-center justify-between gap-2 px-[10px] py-0">
                   <button
                     type="button"
                     class="min-w-0 inline-flex flex-1 appearance-none items-center justify-start gap-2 border-none bg-transparent text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none"
