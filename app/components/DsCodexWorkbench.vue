@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
+import { useEventListener } from '@vueuse/core'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerDropdownMenu from '~/components/workbench/chat/ComposerDropdownMenu.vue'
 import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
@@ -235,6 +236,34 @@ function executeSearchCommand(action: () => void) {
   action()
   closeSearchCommand()
 }
+
+function isEditableEventTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement))
+    return false
+  const tagName = target.tagName.toLowerCase()
+  return target.isContentEditable || tagName === 'input' || tagName === 'textarea' || tagName === 'select'
+}
+
+useEventListener(document, 'keydown', (event: KeyboardEvent) => {
+  if (event.defaultPrevented || event.altKey)
+    return
+
+  if (!(event.metaKey || event.ctrlKey))
+    return
+
+  const key = event.key.toLowerCase()
+
+  if (key === 'k' && !event.shiftKey) {
+    event.preventDefault()
+    void openSearchCommand()
+    return
+  }
+
+  if (key === 'n' && !event.shiftKey && !isEditableEventTarget(event.target)) {
+    event.preventDefault()
+    startNewThread()
+  }
+})
 
 function beginSidebarResize(event: MouseEvent) {
   if (isSidebarCollapsed.value)
@@ -501,7 +530,7 @@ function beginDiffResize(event: MouseEvent) {
                 <Icon :name="item.icon" class="h-[14px] w-[14px] text-[color:var(--wb-text-secondary)]" />
                 <span class="truncate">{{ item.label }}</span>
               </span>
-              <span class="rounded-[8px] bg-[color:var(--wb-hover-bg)] px-1.5 py-[3px] text-[11px] text-[color:var(--wb-text-muted)] font-medium leading-none">
+              <span v-if="item.shortcut" class="rounded-[8px] bg-[color:var(--wb-hover-bg)] px-1.5 py-[3px] text-[11px] text-[color:var(--wb-text-muted)] font-medium leading-none">
                 {{ item.shortcut }}
               </span>
             </button>
