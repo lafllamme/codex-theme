@@ -209,11 +209,12 @@ onBeforeUnmount(() => {
         @click="emit('toggleDiff')"
       >
         <span
-          class="chat-header-diff-delta text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
+          class="chat-header-diff-delta inline-flex items-baseline gap-1.5 text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
         >
           <span class="text-[color:var(--wb-diff-delta-added)]">
             <DsNumberFlow
               :value="animatedDiffAdded"
+              :stable-width-value="diffAdded"
               prefix="+"
               locales="de-DE"
               :transform-timing="{ duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
@@ -222,10 +223,11 @@ onBeforeUnmount(() => {
               :will-change="true"
             />
           </span>
-          <span class="mx-[1px] text-[color:var(--wb-text-muted)]">-</span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">
             <DsNumberFlow
               :value="animatedDiffRemoved"
+              :stable-width-value="diffRemoved"
+              prefix="-"
               locales="de-DE"
               :transform-timing="{ duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
               :spin-timing="{ duration: 1020, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
