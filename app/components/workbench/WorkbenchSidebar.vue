@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'
+import CodexNewThreadIcon from '~/components/icons/CodexNewThreadIcon.vue'
 import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 
 interface ThreadItem {
@@ -264,7 +265,7 @@ function afterRepoLeave(el: Element) {
       >
         <div class="grid gap-[6px]">
           <button class="group relative grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]" @click="emit('newThread')">
-            <Icon name="heroicons-outline:pencil-alt" class="size-4.5 wb-sidebar-icon" />
+            <CodexNewThreadIcon class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">New chat</span>
             <span class="pointer-events-none absolute right-[9px] top-1/2 inline-flex items-center border border-[color:var(--wb-chip-ghost-border)] rounded-[999px] bg-[var(--wb-chip-ghost-bg)] px-2 py-[2px] text-[11px] text-[color:var(--wb-text-secondary)] font-medium leading-none opacity-0 shadow-[inset_0_0_0_1px_var(--wb-chip-ghost-border)] transition-opacity duration-150 -translate-y-1/2 group-hover:opacity-100">
               ⌘N

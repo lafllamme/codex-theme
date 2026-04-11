@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
+import DsMessageHeader from '~/components/DsMessageHeader.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
@@ -17,7 +18,14 @@ const diffStore = useDiffStore()
 const copiedMessageId = ref<string | null>(null)
 let copiedResetTimer: ReturnType<typeof setTimeout> | undefined
 const previousMessageMeta = computed(() => diffStore.previousMessageMeta(props.activeThreadId))
-const previousMessageExpanded = computed(() => diffStore.isPreviousMessageExpanded(props.activeThreadId))
+const previousMessageExpanded = computed({
+  get: () => diffStore.isPreviousMessageExpanded(props.activeThreadId),
+  set: (next: boolean) => {
+    const current = diffStore.isPreviousMessageExpanded(props.activeThreadId)
+    if (next !== current)
+      diffStore.togglePreviousMessage(props.activeThreadId)
+  },
+})
 const previousMessageLabel = computed(() => {
   const count = previousMessageMeta.value.count
   return `${count} previous message${count === 1 ? '' : 's'}`
@@ -59,10 +67,6 @@ function hasInlineCopyBeforeCard(message: ChatMessage) {
   return message.role === 'assistant' && firstCardIndex > 0
 }
 
-function togglePreviousMessage() {
-  diffStore.togglePreviousMessage(props.activeThreadId)
-}
-
 async function copyMessage(message: ChatMessage) {
   const payload = messageToPlainText(message).trim()
   if (!payload)
@@ -102,27 +106,11 @@ onBeforeUnmount(() => {
         class="[transition-timing-function:var(--wb-sidebar-ease)] flex flex-col transform-gpu gap-3 transition-[transform,opacity] duration-220"
         :class="props.isDiffOpen ? 'opacity-[0.985] translate-x-[-1px]' : 'opacity-100 translate-x-0'"
       >
-        <div class="mb-1 px-1">
-          <button
-            type="button"
-            class="group h-8 w-full inline-flex items-center gap-2 border-none bg-transparent p-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] leading-none outline-none"
-            @click="togglePreviousMessage"
-          >
-            <span class="truncate font-medium">{{ previousMessageLabel }}</span>
-            <Icon
-              name="ph:caret-down-bold"
-              class="h-[12px] w-[12px] shrink-0 text-[color:var(--wb-text-muted)] transition-transform duration-160"
-              :class="previousMessageExpanded ? 'rotate-180' : 'rotate-0'"
-            />
-          </button>
-          <p
-            v-if="previousMessageExpanded"
-            class="pb-2 pt-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] leading-[1.45]"
-          >
-            {{ previousMessageMeta.details }}
-          </p>
-          <div class="h-px w-full bg-[var(--wb-divider)]" />
-        </div>
+        <DsMessageHeader
+          v-model:expanded="previousMessageExpanded"
+          :title="previousMessageLabel"
+          :content="previousMessageMeta.details"
+        />
 
         <div
           v-for="message in messages"
