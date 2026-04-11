@@ -375,9 +375,14 @@ function afterRepoLeave(el: Element) {
           <div class="mt-px flex-1 overflow-y-auto">
             <div :class="allReposCollapsed ? 'flex flex-col gap-[16px]' : 'flex flex-col gap-px'">
               <div v-for="group in groupedThreads" :key="group.repo" class="flex flex-col gap-[2px]">
-                <button class="group w-full inline-flex appearance-none items-center justify-between gap-2 border-none bg-transparent px-[10px] py-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none" @click="toggleRepo(group.repo)">
-                  <span class="min-w-0 inline-flex items-center gap-2">
-                    <span class="relative size-[15px] inline-flex items-center justify-center">
+                <!-- Use a wrapper — not a single <button> — so action controls are not nested buttons (invalid HTML; browsers hoist inner <button> and cause stray icons / layout jump). -->
+                <div class="group flex w-full items-center justify-between gap-2 px-[10px] py-0">
+                  <button
+                    type="button"
+                    class="min-w-0 inline-flex flex-1 appearance-none items-center justify-start gap-2 border-none bg-transparent text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-normal leading-[1.2] shadow-none outline-none"
+                    @click="toggleRepo(group.repo)"
+                  >
+                    <span class="relative size-[15px] inline-flex shrink-0 items-center justify-center">
                       <Icon
                         :name="isRepoCollapsed(group.repo) ? 'ph:folder-bold' : 'ph:folder-open-bold'"
                         class="size-[15px] opacity-100 transition-opacity duration-150 group-hover:opacity-0"
@@ -387,19 +392,20 @@ function afterRepoLeave(el: Element) {
                         class="absolute h-[13px] w-[13px] text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
                       />
                     </span>
-                    <span class="truncate">{{ group.repo }}</span>
-                  </span>
-                  <span class="inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+                    <span class="min-w-0 truncate">{{ group.repo }}</span>
+                  </button>
+                  <div class="inline-flex shrink-0 items-center gap-2 text-[color:var(--wb-text-secondary)] opacity-0 transition-opacity duration-150 group-hover:opacity-100">
                     <Icon name="ph:dots-three" class="h-[16px] w-[16px]" />
                     <button
+                      type="button"
                       class="inline-flex appearance-none items-center justify-center border-none bg-transparent p-0 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:text-[color:var(--wb-text-primary)]"
                       :aria-label="`Start new chat in ${group.repo}`"
                       @click.stop="emit('newThreadForRepo', group.repo)"
                     >
                       <Icon name="heroicons-outline:pencil-alt" class="h-[16px] w-[16px]" />
                     </button>
-                  </span>
-                </button>
+                  </div>
+                </div>
 
                 <Transition
                   @before-enter="beforeRepoEnter"
