@@ -3,16 +3,25 @@ import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
+import { useDiffStore } from '~/stores/diff'
 
 const props = defineProps<{
+  activeThreadId: string
   messages: ChatMessage[]
   codeThemeId: string
   isDiffOpen?: boolean
   emptyStateRepo?: string
 }>()
 
+const diffStore = useDiffStore()
 const copiedMessageId = ref<string | null>(null)
 let copiedResetTimer: ReturnType<typeof setTimeout> | undefined
+const previousMessageMeta = computed(() => diffStore.previousMessageMeta(props.activeThreadId))
+const previousMessageExpanded = computed(() => diffStore.isPreviousMessageExpanded(props.activeThreadId))
+const previousMessageLabel = computed(() => {
+  const count = previousMessageMeta.value.count
+  return `${count} previous message${count === 1 ? '' : 's'}`
+})
 
 function blockKey(block: AssistantBlock, index: number) {
   if (block.type === 'text')
@@ -50,6 +59,10 @@ function hasInlineCopyBeforeCard(message: ChatMessage) {
   return message.role === 'assistant' && firstCardIndex > 0
 }
 
+function togglePreviousMessage() {
+  diffStore.togglePreviousMessage(props.activeThreadId)
+}
+
 async function copyMessage(message: ChatMessage) {
   const payload = messageToPlainText(message).trim()
   if (!payload)
@@ -79,15 +92,9 @@ onBeforeUnmount(() => {
 <template>
   <main
     class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] grid min-h-0 min-w-0 flex-1 gap-2 pb-[8px] pt-[8px]"
-    :class="messages.length > 0 ? 'grid-rows-[auto_1fr]' : 'grid-rows-[minmax(0,1fr)]'"
+    :class="messages.length > 0 ? 'grid-rows-[1fr]' : 'grid-rows-[minmax(0,1fr)]'"
   >
-    <div v-if="messages.length > 0" class="flex items-center gap-3 px-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-faint)]">
-      <span class="h-px flex-1 bg-[var(--wb-divider)]" />
-      <span class="font-medium">1 previous message</span>
-      <span class="h-px flex-1 bg-[var(--wb-divider)]" />
-    </div>
-
-    <section class="wb-mainstage-scroll min-h-0 overflow-x-auto overflow-y-auto rounded-[28px] border-none bg-[var(--wb-bg-panel)] px-0 py-4">
+    <section class="wb-mainstage-scroll relative min-h-0 overflow-x-auto overflow-y-auto rounded-[28px] border-none bg-[var(--wb-bg-panel)] px-0 py-4">
       <WorkbenchEmptyState v-if="messages.length === 0" :repo="props.emptyStateRepo" />
 
       <div
@@ -95,6 +102,28 @@ onBeforeUnmount(() => {
         class="[transition-timing-function:var(--wb-sidebar-ease)] flex flex-col transform-gpu gap-3 transition-[transform,opacity] duration-220"
         :class="props.isDiffOpen ? 'opacity-[0.985] translate-x-[-1px]' : 'opacity-100 translate-x-0'"
       >
+        <div class="mb-1 px-1">
+          <button
+            type="button"
+            class="group h-8 w-full inline-flex items-center gap-2 border-none bg-transparent p-0 text-left text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] leading-none outline-none"
+            @click="togglePreviousMessage"
+          >
+            <span class="truncate font-medium">{{ previousMessageLabel }}</span>
+            <Icon
+              name="ph:caret-down-bold"
+              class="h-[12px] w-[12px] shrink-0 text-[color:var(--wb-text-muted)] transition-transform duration-160"
+              :class="previousMessageExpanded ? 'rotate-180' : 'rotate-0'"
+            />
+          </button>
+          <p
+            v-if="previousMessageExpanded"
+            class="pb-2 pt-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] leading-[1.45]"
+          >
+            {{ previousMessageMeta.details }}
+          </p>
+          <div class="h-px w-full bg-[var(--wb-divider)]" />
+        </div>
+
         <div
           v-for="message in messages"
           :key="message.id"

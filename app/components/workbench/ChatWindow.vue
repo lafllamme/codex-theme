@@ -6,6 +6,7 @@ import ComposerBar from '~/components/workbench/ComposerBar.vue'
 import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
 
 const props = defineProps<{
+  activeThreadId: string
   title: string
   repo: string
   codeThemeId: string
@@ -64,7 +65,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       isDiffResizing ? 'wb-chat-window--diff-resizing' : '',
     ]"
   >
-    <div v-if="showHeader !== false" class="px-[8px] pt-0">
+    <div v-if="showHeader !== false" class="wb-chat-header-wrap relative px-[8px] pt-0">
       <ChatHeaderBar
         :title="title"
         :repo="repo"
@@ -80,6 +81,7 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
     </div>
 
     <WorkbenchMainStage
+      :active-thread-id="activeThreadId"
       :messages="messages"
       :code-theme-id="codeThemeId"
       :is-diff-open="isDiffOpen"
@@ -105,6 +107,12 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
   --wb-chat-lane-desktop-inset-right: 180px;
   --wb-chat-lane-inset-left: var(--wb-chat-lane-desktop-inset-left);
   --wb-chat-lane-inset-right: var(--wb-chat-lane-desktop-inset-right);
+}
+
+.wb-chat-header-wrap {
+  z-index: 18;
+  background: var(--wb-bg-panel);
+  box-shadow: 0 10px 20px -18px color-mix(in srgb, var(--wb-text-primary) 58%, transparent);
 }
 
 .wb-chat-window :deep(main),

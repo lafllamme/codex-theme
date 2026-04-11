@@ -10,6 +10,11 @@ export interface DrawerSectionView {
   lines: FileChangeItem['lines']
 }
 
+interface PreviousMessageMeta {
+  count: number
+  details: string
+}
+
 export const useDiffStore = defineStore('diff', () => {
   const drawerSections = ref(createSharedDrawerSections())
   const filesById = ref<Record<string, FileChangeItem>>({})
@@ -17,6 +22,25 @@ export const useDiffStore = defineStore('diff', () => {
   const openFileByCardId = ref<Record<string, string>>({})
   const expandedChunkIdsByFile = ref<Record<string, string[]>>({})
   const PREVIEW_CONTEXT_LINES = 2
+  const previousMessageMetaByThread = ref<Record<string, PreviousMessageMeta>>({
+    'thread-1': {
+      count: 1,
+      details: 'Shows the previous assistant response so follow-up changes keep context without crowding the live thread.',
+    },
+    'thread-2': {
+      count: 1,
+      details: 'Keeps one prior update visible for quick context while the latest implementation reply stays in focus.',
+    },
+    'thread-3': {
+      count: 1,
+      details: 'Provides a compact history hint before the active exchange to keep review flow readable.',
+    },
+    'thread-4': {
+      count: 1,
+      details: 'Displays one previous status note to preserve chronology while keeping the thread compact.',
+    },
+  })
+  const previousMessageExpandedByThread = ref<Record<string, boolean>>({})
 
   function upsertFiles(files: FileChangeItem[]) {
     for (const file of files)
@@ -171,6 +195,21 @@ export const useDiffStore = defineStore('diff', () => {
     resolvedDrawerSections.value.reduce((sum, section) => sum + (filesById.value[section.fileId]?.removed ?? 0), 0),
   )
 
+  function previousMessageMeta(threadId: string): PreviousMessageMeta {
+    return previousMessageMetaByThread.value[threadId] ?? {
+      count: 1,
+      details: 'Shows a compact previous message preview so context is available without occupying full chat space.',
+    }
+  }
+
+  function isPreviousMessageExpanded(threadId: string) {
+    return previousMessageExpandedByThread.value[threadId] ?? false
+  }
+
+  function togglePreviousMessage(threadId: string) {
+    previousMessageExpandedByThread.value[threadId] = !isPreviousMessageExpanded(threadId)
+  }
+
   return {
     filesById,
     resolvedDrawerSections,
@@ -185,5 +224,8 @@ export const useDiffStore = defineStore('diff', () => {
     toggleSection,
     isUnmodifiedChunkExpanded,
     toggleUnmodifiedChunk,
+    previousMessageMeta,
+    isPreviousMessageExpanded,
+    togglePreviousMessage,
   }
 })

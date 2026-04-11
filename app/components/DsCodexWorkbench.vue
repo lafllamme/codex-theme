@@ -419,6 +419,7 @@ function beginDiffResize(event: MouseEvent) {
                     v-model:worktree-modal-open="isWorktreeModalOpen"
                     v-model:worktree-branch="worktreeBranch"
                     class="min-h-0 flex-1"
+                    :active-thread-id="activeThreadId"
                     :show-header="false"
                     :title="activeThreadTitle"
                     :repo="activeThreadRepo"
