@@ -65,12 +65,10 @@ const {
   isSidebarOpenMobile,
   isTerminalOpen,
   isDiffOpen,
-  isPipEnabled,
   toggleSidebar,
   closeSidebarMobile,
   toggleTerminal,
   toggleDiff,
-  togglePip,
 } = useWorkbenchPanels()
 
 const defaultThread: ThreadItem = { id: 'thread-1', title: 'Investigate Codex token mismatch', repo: 'codex-theme', time: '50 Min.' }
@@ -314,11 +312,9 @@ function beginDiffResize(event: MouseEvent) {
                 :run-enabled="runEnabled"
                 :is-terminal-open="isTerminalOpen"
                 :is-diff-open="isDiffOpen"
-                :is-pip-enabled="isPipEnabled"
                 @toggle-run="runEnabled = !runEnabled"
                 @toggle-terminal="toggleTerminal"
                 @toggle-diff="toggleDiff"
-                @toggle-pip="togglePip"
                 @open-worktree="isWorktreeModalOpen = true"
                 @open-git-action="openGitActionModal"
               />
@@ -348,7 +344,6 @@ function beginDiffResize(event: MouseEvent) {
                     :is-diff-resizing="isDiffResizing"
                     :chat-lane-desktop-inset-left="chatLaneDesktopInsetLeft"
                     :chat-lane-desktop-inset-right="chatLaneDesktopInsetRight"
-                    :is-pip-enabled="isPipEnabled"
                     :model-options="modelOptions"
                     :thinking-options="thinkingOptions"
                     :messages="activeMessages"
@@ -356,7 +351,6 @@ function beginDiffResize(event: MouseEvent) {
                     @toggle-run="runEnabled = !runEnabled"
                     @toggle-terminal="toggleTerminal"
                     @toggle-diff="toggleDiff"
-                    @toggle-pip="togglePip"
                     @open-git-action="openGitActionModal"
                   />
                 </div>

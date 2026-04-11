@@ -16,7 +16,6 @@ const props = defineProps<{
   isDiffResizing?: boolean
   chatLaneDesktopInsetLeft?: number | string
   chatLaneDesktopInsetRight?: number | string
-  isPipEnabled: boolean
   modelOptions: string[]
   thinkingOptions: string[]
   messages: ChatMessage[]
@@ -27,7 +26,6 @@ const emit = defineEmits<{
   toggleRun: []
   toggleTerminal: []
   toggleDiff: []
-  togglePip: []
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
 
@@ -67,11 +65,9 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
         :run-enabled="runEnabled"
         :is-terminal-open="isTerminalOpen"
         :is-diff-open="isDiffOpen"
-        :is-pip-enabled="isPipEnabled"
         @toggle-run="emit('toggleRun')"
         @toggle-terminal="emit('toggleTerminal')"
         @toggle-diff="emit('toggleDiff')"
-        @toggle-pip="emit('togglePip')"
         @open-worktree="isWorktreeModalOpen = true"
         @open-git-action="emit('openGitAction', $event)"
       />

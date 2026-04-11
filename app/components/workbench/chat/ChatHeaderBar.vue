@@ -5,14 +5,12 @@ defineProps<{
   runEnabled: boolean
   isTerminalOpen: boolean
   isDiffOpen: boolean
-  isPipEnabled: boolean
 }>()
 
 const emit = defineEmits<{
   toggleRun: []
   toggleTerminal: []
   toggleDiff: []
-  togglePip: []
   openWorktree: []
   openGitAction: [action: 'commit' | 'push' | 'branch']
 }>()
@@ -201,14 +199,12 @@ onBeforeUnmount(() => {
       </button>
 
       <button
-        class="chat-header-diff-btn h-7 inline-flex appearance-none items-center gap-[6px] rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+        type="button"
+        class="chat-header-diff-btn h-7 inline-flex appearance-none items-center gap-1.5 rounded-[8px] border-none bg-transparent px-1.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
         :class="isDiffOpen ? 'text-[color:var(--wb-text-primary)]' : ''"
+        aria-label="Toggle side panel"
         @click="emit('toggleDiff')"
       >
-        <Icon
-          name="hugeicons:plus-minus-square-01"
-          class="h-[14px] w-[14px]"
-        />
         <span
           class="chat-header-diff-delta text-[length:var(--wb-ui-text-2xs)] leading-none font-[var(--font-ui)] tabular-nums"
         >
@@ -235,13 +231,11 @@ onBeforeUnmount(() => {
             />
           </span>
         </span>
-      </button>
-
-      <button
-        class="chat-header-hide-mobile h-7 w-7 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
-        @click="emit('togglePip')"
-      >
-        <Icon name="hugeicons:copy-02" class="h-[14px] w-[14px]" />
+        <Icon
+          :name="isDiffOpen ? 'cuida:sidebar-collapse-outline' : 'cuida:sidebar-expand-outline'"
+          class="size-4 shrink-0 -scale-x-100"
+          aria-hidden="true"
+        />
       </button>
     </div>
   </header>
