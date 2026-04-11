@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
         "
         @click="emit('toggleRun')"
       >
-        <Icon name="ph:play-bold" class="size-5" />
+        <Icon name="ph:play-bold" class="size-3" />
       </button>
 
       <DsEditorSelection
@@ -193,8 +193,8 @@ onBeforeUnmount(() => {
         @click="emit('toggleTerminal')"
       >
         <Icon
-          name="hugeicons:computer-terminal-01"
-          class="h-[14px] w-[14px]"
+          name="mynaui:terminal"
+          class="size-4"
         />
       </button>
 
