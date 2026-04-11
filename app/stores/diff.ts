@@ -25,19 +25,27 @@ export const useDiffStore = defineStore('diff', () => {
   const previousMessageMetaByThread = ref<Record<string, PreviousMessageMeta>>({
     'thread-1': {
       count: 1,
-      details: 'Shows the previous assistant response so follow-up changes keep context without crowding the live thread.',
+      details: 'I just walked through the styling mismatch, refined DsCodexWorkbench and WorkbenchMainStage, and attached the 3-file diff for review.',
     },
     'thread-2': {
       count: 1,
-      details: 'Keeps one prior update visible for quick context while the latest implementation reply stays in focus.',
+      details: 'I just verified the build and tightened the header hierarchy so it reads closer to the Codex layout.',
     },
     'thread-3': {
       count: 1,
-      details: 'Provides a compact history hint before the active exchange to keep review flow readable.',
+      details: 'I just tuned the sidebar geometry, softened the section-title contrast, and kept the active-row emphasis intentionally restrained.',
     },
     'thread-4': {
       count: 1,
-      details: 'Displays one previous status note to preserve chronology while keeping the thread compact.',
+      details: 'Your updates are now reflected in subtle ghost-hover behavior for terminal and diff controls, with zero layout shift.',
+    },
+    'thread-7': {
+      count: 1,
+      details: 'I just finished this sidebar validation pass and kept it clean without introducing new diff counters.',
+    },
+    'thread-8': {
+      count: 1,
+      details: 'I just balanced the personal-page card states for hover contrast while keeping the +/- change signals clearly visible.',
     },
   })
   const previousMessageExpandedByThread = ref<Record<string, boolean>>({})
@@ -198,7 +206,7 @@ export const useDiffStore = defineStore('diff', () => {
   function previousMessageMeta(threadId: string): PreviousMessageMeta {
     return previousMessageMetaByThread.value[threadId] ?? {
       count: 1,
-      details: 'Shows a compact previous message preview so context is available without occupying full chat space.',
+      details: 'I just summarized the previous pass so the context stays clear without adding noise to the thread.',
     }
   }
 
