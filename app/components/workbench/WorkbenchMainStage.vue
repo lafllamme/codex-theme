@@ -77,7 +77,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] grid grid-rows-[auto_1fr] min-h-0 min-w-0 flex-1 gap-2 pb-[8px] pt-[8px]">
+  <main
+    class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] grid min-h-0 min-w-0 flex-1 gap-2 pb-[8px] pt-[8px]"
+    :class="messages.length > 0 ? 'grid-rows-[auto_1fr]' : 'grid-rows-[minmax(0,1fr)]'"
+  >
     <div v-if="messages.length > 0" class="flex items-center gap-3 px-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-faint)]">
       <span class="h-px flex-1 bg-[var(--wb-divider)]" />
       <span class="font-medium">1 previous message</span>
