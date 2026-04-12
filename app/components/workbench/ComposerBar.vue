@@ -460,40 +460,33 @@ const contextUsedLabel = computed(() =>
 
       <div class="rounded-[10px] bg-transparent px-2.5 py-2.5">
         <div>
-          <div
-            v-if="composerTokenMap.length > 0"
-            class="mb-1.5 mt-0.5 flex flex-wrap items-center gap-1.5 px-1"
-          >
+          <div class="min-h-[40px] flex flex-wrap items-center gap-1.5 px-1">
             <span
               v-for="token in composerTokenMap"
               :key="token.id"
-              class="h-8 inline-flex items-center gap-1.5 rounded-[12px] px-2.5 text-[13px] font-semibold leading-none"
+              class="h-7 inline-flex items-center gap-1.5 border rounded-[10px] px-2 text-[12.5px] font-medium leading-none"
               :class="[
-                token.tone === 'plugin'
-                  ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_26%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_78%,var(--wb-text-primary)_22%)]'
-                  : token.tone === 'skill'
-                    ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_18%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_62%,var(--wb-text-primary)_38%)]'
-                    : token.tone === 'file'
-                      ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_14%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_48%,var(--wb-text-primary)_52%)]'
-                      : 'bg-[var(--wb-hover-bg)] text-[color:var(--wb-text-primary)]',
+                token.tone === 'plugin' || token.tone === 'skill'
+                  ? 'border-[color:color-mix(in_srgb,var(--theme-skill)_32%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-skill)_16%,transparent)] text-[color:color-mix(in_srgb,var(--theme-skill)_74%,var(--wb-text-primary)_26%)]'
+                  : token.tone === 'file'
+                    ? 'border-[color:color-mix(in_srgb,var(--theme-accent)_32%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-accent)_16%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_74%,var(--wb-text-primary)_26%)]'
+                    : 'border-[color:var(--wb-chip-ghost-border)] bg-[var(--wb-chip-ghost-bg)] text-[color:var(--wb-text-primary)]',
               ]"
             >
-              <Icon :name="token.icon" class="h-[13px] w-[13px]" />
+              <Icon :name="token.icon" class="h-[12px] w-[12px]" />
               <span>{{ token.label }}</span>
               <button
-                class="h-[16px] w-[16px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-70 outline-none transition-opacity hover:opacity-100"
+                class="h-[14px] w-[14px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-65 outline-none transition-opacity hover:opacity-100"
                 @click.stop="removeComposerMention(token.id)"
               >
-                <Icon name="ph:x-bold" class="h-[10px] w-[10px]" />
+                <Icon name="ph:x-bold" class="h-[9px] w-[9px]" />
               </button>
             </span>
-          </div>
 
-          <div class="flex items-center">
             <input
               ref="composerInputRef"
               v-model="composeValue"
-              class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[17px] text-[color:var(--wb-text-muted)] font-light font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
+              class="h-[40px] min-w-[240px] flex-1 appearance-none border-none bg-transparent px-0.5 text-[17px] text-[color:var(--wb-text-muted)] font-light font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
               type="text"
               :placeholder="composerPlaceholder"
               @focus="refreshComposerMenu"

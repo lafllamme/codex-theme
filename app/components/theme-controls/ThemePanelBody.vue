@@ -54,6 +54,7 @@ const OPTION_SUFFIX_RE = /\s*\(.*\)\s*$/
 const jsonOpen = ref(true)
 const expandedColor = ref<ColorField | null>(null)
 const codeThemeInfoOpen = ref(false)
+const jsonViewerRef = ref<HTMLElement | null>(null)
 const uiSizeInputRef = ref<HTMLInputElement | null>(null)
 const codeSizeInputRef = ref<HTMLInputElement | null>(null)
 let codeThemeInfoCloseTimer: ReturnType<typeof setTimeout> | null = null
@@ -219,6 +220,64 @@ function closeCodeThemeInfo() {
     codeThemeInfoOpen.value = false
     codeThemeInfoCloseTimer = null
   }, 140)
+}
+
+function onJsonEditorInput(event: Event) {
+  const target = event.target as HTMLTextAreaElement | null
+  if (!target)
+    return
+  emit('setJsonValue', target.value)
+}
+
+function formatJsonForEditor(rawValue: string) {
+  const trimmed = rawValue.trim()
+  if (!trimmed)
+    return rawValue
+
+  const prefix = 'codex-theme-v1:'
+  const hasPrefix = trimmed.startsWith(prefix)
+  const jsonCandidate = hasPrefix ? trimmed.slice(prefix.length).trim() : trimmed
+
+  try {
+    const parsed = JSON.parse(jsonCandidate)
+    const pretty = JSON.stringify(parsed, null, 2)
+    return hasPrefix ? `${prefix}${pretty}` : pretty
+  }
+  catch {
+    return rawValue
+  }
+}
+
+function onJsonEditorScroll(event: Event) {
+  const target = event.target as HTMLTextAreaElement | null
+  const viewer = jsonViewerRef.value
+  if (!target || !viewer)
+    return
+  viewer.scrollTop = target.scrollTop
+  viewer.scrollLeft = target.scrollLeft
+}
+
+function onJsonEditorPaste(event: ClipboardEvent) {
+  const target = event.target as HTMLTextAreaElement | null
+  if (!target)
+    return
+
+  const pasted = event.clipboardData?.getData('text/plain')
+  if (!pasted)
+    return
+
+  event.preventDefault()
+  const selectionStart = target.selectionStart ?? target.value.length
+  const selectionEnd = target.selectionEnd ?? selectionStart
+  const merged = `${target.value.slice(0, selectionStart)}${pasted}${target.value.slice(selectionEnd)}`
+  const formatted = formatJsonForEditor(merged)
+  emit('setJsonValue', formatted)
+
+  nextTick(() => {
+    const endPos = formatted.length
+    target.setSelectionRange(endPos, endPos)
+    target.scrollTop = target.scrollHeight
+  })
 }
 
 onBeforeUnmount(() => {
@@ -629,7 +688,7 @@ onBeforeUnmount(() => {
 
           <div v-show="jsonOpen" class="px-5 pb-5 space-y-2">
             <div class="json-editor-shell relative overflow-hidden border rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] bg-pureWhite/10 border-pureWhite/12">
-              <div class="json-editor-viewer h-56 overflow-auto p-5">
+              <div ref="jsonViewerRef" class="json-editor-viewer h-56 overflow-auto p-5">
                 <SyntaxBlock
                   class="hex-value text-[12px] leading-relaxed"
                   :text="jsonValue"
@@ -638,6 +697,19 @@ onBeforeUnmount(() => {
                   fallback-color="rgba(255,255,255,0.9)"
                 />
               </div>
+              <textarea
+                class="json-editor-input hex-value absolute inset-0 h-full w-full resize-none border-none bg-transparent p-5 text-[12px] leading-relaxed outline-none"
+                :value="jsonValue"
+                spellcheck="false"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="off"
+                placeholder="codex-theme-v1:{ ... } oder reines JSON einfügen"
+                aria-label="Theme JSON input"
+                @input="onJsonEditorInput"
+                @paste="onJsonEditorPaste"
+                @scroll="onJsonEditorScroll"
+              />
               <div class="pointer-events-none absolute inset-0 rounded-2xl" />
             </div>
             <p v-if="jsonError" class="text-red-300 text-[12px]">
@@ -712,6 +784,31 @@ onBeforeUnmount(() => {
 
 .json-editor-viewer::-webkit-scrollbar {
   display: none;
+}
+
+.json-editor-input {
+  color: transparent;
+  caret-color: rgba(255, 255, 255, 0.92);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.json-editor-input::selection {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.json-editor-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.json-editor-viewer :deep(pre),
+.json-editor-viewer :deep(code) {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .issue-link-neutral {

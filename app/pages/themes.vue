@@ -300,8 +300,8 @@ function scheduleJsonSync() {
 function setJsonValue(value: string) {
   jsonValue.value = value
   jsonError.value = ''
-
   const parsed = parsePayload(value)
+
   if (!parsed) {
     jsonError.value = 'Invalid theme JSON. Keep codex-theme-v1 format.'
     return

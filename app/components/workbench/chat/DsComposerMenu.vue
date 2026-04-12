@@ -56,11 +56,10 @@ function toneClass(item: ComposerMenuItem) {
 
   switch (item.tone ?? item.type) {
     case 'plugin':
-      return 'text-[color:color-mix(in_srgb,var(--theme-accent)_78%,var(--wb-text-primary)_22%)]'
     case 'skill':
-      return 'text-[color:color-mix(in_srgb,var(--theme-accent)_62%,var(--wb-text-primary)_38%)]'
+      return 'text-[color:color-mix(in_srgb,var(--theme-skill)_70%,var(--wb-text-primary)_30%)]'
     case 'file':
-      return 'text-[color:color-mix(in_srgb,var(--theme-accent)_48%,var(--wb-text-primary)_52%)]'
+      return 'text-[color:color-mix(in_srgb,var(--theme-accent)_68%,var(--wb-text-primary)_32%)]'
     default:
       return 'text-[color:var(--wb-text-primary)]'
   }
@@ -77,7 +76,7 @@ function select(item: ComposerMenuItem) {
   <div
     v-if="open"
     ref="rootRef"
-    class="pointer-events-auto absolute bottom-full z-[65] mb-6 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 backdrop-blur-[16px]"
+    class="pointer-events-auto absolute bottom-full z-[65] mb-3 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 backdrop-blur-[16px]"
     :class="insetClass"
   >
     <div class="max-h-[320px] overflow-y-auto">
