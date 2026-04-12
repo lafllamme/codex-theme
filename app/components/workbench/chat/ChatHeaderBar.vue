@@ -236,11 +236,18 @@ onBeforeUnmount(() => {
             />
           </span>
         </span>
-        <Icon
-          :name="isDiffOpen ? 'cuida:sidebar-collapse-outline' : 'cuida:sidebar-expand-outline'"
-          class="size-4 shrink-0 -scale-x-100"
-          aria-hidden="true"
-        />
+        <span class="relative inline-block size-4 shrink-0" aria-hidden="true">
+          <Icon
+            name="cuida:sidebar-collapse-outline"
+            class="absolute inset-0 size-4 -scale-x-100"
+            :class="isDiffOpen ? '' : 'hidden'"
+          />
+          <Icon
+            name="cuida:sidebar-expand-outline"
+            class="absolute inset-0 size-4 -scale-x-100"
+            :class="isDiffOpen ? 'hidden' : ''"
+          />
+        </span>
       </button>
     </div>
   </header>
