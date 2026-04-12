@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import CodexSkillIcon from '~/components/icons/CodexSkillIcon.vue'
 
 export type ComposerMenuTrigger = '/' | '@' | '$'
 export type ComposerMenuItemType = 'command' | 'plugin' | 'skill' | 'file'
@@ -104,7 +105,12 @@ function select(item: ComposerMenuItem) {
             @click="select(item)"
           >
             <span class="min-w-0 inline-flex items-center gap-2.5">
+              <CodexSkillIcon
+                v-if="item.type === 'skill'"
+                class="h-[17px] w-[17px] shrink-0 text-[color:var(--wb-text-secondary)]"
+              />
               <Icon
+                v-else
                 :name="item.icon"
                 class="h-[16px] w-[16px] shrink-0 text-[color:var(--wb-text-secondary)]"
               />

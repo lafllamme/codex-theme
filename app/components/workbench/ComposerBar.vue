@@ -4,6 +4,7 @@ import type {
   ComposerMenuSection,
   ComposerMenuTrigger,
 } from '~/components/workbench/chat/DsComposerMenu.vue'
+import CodexSkillIcon from '~/components/icons/CodexSkillIcon.vue'
 import DsSwitch from '~/components/ui/DsSwitch.vue'
 import ComposerDropdownMenu from '~/components/workbench/chat/ComposerDropdownMenu.vue'
 import DsComposerMenu from '~/components/workbench/chat/DsComposerMenu.vue'
@@ -120,12 +121,12 @@ const skillItems: ComposerMenuItem[] = [
 ]
 
 const fileItems: ComposerMenuItem[] = [
-  { id: 'file-dshero', type: 'file', tone: 'file', label: 'DsHero.vue', description: 'app/components', path: 'app/components/DsHero.vue', icon: 'ph:file-vue' },
-  { id: 'file-composer', type: 'file', tone: 'file', label: 'ComposerBar.vue', description: 'app/components/workbench', path: 'app/components/workbench/ComposerBar.vue', icon: 'ph:file-vue' },
-  { id: 'file-mainstage', type: 'file', tone: 'file', label: 'WorkbenchMainStage.vue', description: 'app/components/workbench', path: 'app/components/workbench/WorkbenchMainStage.vue', icon: 'ph:file-vue' },
-  { id: 'file-chatdemo', type: 'file', tone: 'file', label: 'ChatWorkbenchDemoMessage.vue', description: 'app/components/workbench/chat', path: 'app/components/workbench/chat/ChatWorkbenchDemoMessage.vue', icon: 'ph:file-vue' },
-  { id: 'file-ayu', type: 'file', tone: 'file', label: 'ayu.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/ayu.json', icon: 'ph:file-code' },
-  { id: 'file-box', type: 'file', tone: 'file', label: 'box.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/box.json', icon: 'ph:file-code' },
+  { id: 'file-dshero', type: 'file', tone: 'file', label: 'DsHero.vue', description: 'app/components', path: 'app/components/DsHero.vue', icon: 'ph:file' },
+  { id: 'file-composer', type: 'file', tone: 'file', label: 'ComposerBar.vue', description: 'app/components/workbench', path: 'app/components/workbench/ComposerBar.vue', icon: 'ph:file' },
+  { id: 'file-mainstage', type: 'file', tone: 'file', label: 'WorkbenchMainStage.vue', description: 'app/components/workbench', path: 'app/components/workbench/WorkbenchMainStage.vue', icon: 'ph:file' },
+  { id: 'file-chatdemo', type: 'file', tone: 'file', label: 'ChatWorkbenchDemoMessage.vue', description: 'app/components/workbench/chat', path: 'app/components/workbench/chat/ChatWorkbenchDemoMessage.vue', icon: 'ph:file' },
+  { id: 'file-ayu', type: 'file', tone: 'file', label: 'ayu.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/ayu.json', icon: 'ph:brackets-curly' },
+  { id: 'file-box', type: 'file', tone: 'file', label: 'box.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/box.json', icon: 'ph:brackets-curly' },
 ]
 
 const emptyFileSearchItem: ComposerMenuItem = {
@@ -473,7 +474,15 @@ const contextUsedLabel = computed(() =>
                     : 'border-[color:var(--wb-chip-ghost-border)] bg-[var(--wb-chip-ghost-bg)] text-[color:var(--wb-text-primary)]',
               ]"
             >
-              <Icon :name="token.icon" class="h-[12px] w-[12px]" />
+              <CodexSkillIcon
+                v-if="token.tone === 'skill'"
+                class="h-[13px] w-[13px]"
+              />
+              <Icon
+                v-else
+                :name="token.icon"
+                class="h-[12px] w-[12px]"
+              />
               <span>{{ token.label }}</span>
               <button
                 class="h-[14px] w-[14px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-65 outline-none transition-opacity hover:opacity-100"
