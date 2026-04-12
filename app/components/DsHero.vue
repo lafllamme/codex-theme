@@ -97,9 +97,9 @@ const heroHeadlineBottom = computed(
 
     <div
       v-else-if="variant === 'typo'"
-      class="grid grid-cols-1 mx-auto mt-[var(--hero-top-offset)] box-border max-w-[1440px] min-h-[calc(100dvh-var(--hero-top-offset))] w-full items-center gap-18 px-4 pb-0 pt-28 lg:grid-cols-12 lg:gap-20 md:gap-16 lg:px-12 sm:px-6"
+      class="mx-auto mt-[var(--hero-top-offset)] box-border grid max-w-[1240px] min-h-[calc(100dvh-var(--hero-top-offset))] w-full grid-cols-1 items-start gap-12 px-4 pb-10 pt-24 sm:gap-14 sm:px-6 sm:pt-26 lg:px-8 xl:max-w-[1440px] xl:grid-cols-12 xl:items-center xl:gap-20 xl:px-12 xl:pb-0 xl:pt-28"
     >
-      <div class="relative w-full text-center lg:col-span-7 lg:text-left">
+      <div class="relative mx-auto min-w-0 w-full max-w-[760px] text-center xl:col-span-7 xl:mx-0 xl:max-w-none xl:text-left">
         <div class="hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
@@ -109,13 +109,13 @@ const heroHeadlineBottom = computed(
         </div>
 
         <h1
-          class="hero-headline-glow font-geist-800 my-4 max-w-full w-full text-[clamp(2.45rem,12vw,4.2rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite sm:w-fit md:text-7xl sm:text-6xl xl:text-[96px]"
+          class="hero-headline-glow font-geist-800 my-4 max-w-full w-full text-[clamp(2.45rem,8.8vw,6rem)] leading-[0.9] tracking-[-0.04em] text-pureWhite xl:w-fit xl:text-[96px]"
         >
           <span
-            class="hero-intro hero-delay-2 block whitespace-nowrap"
+            class="hero-intro hero-delay-2 block"
           >{{ heroHeadlineTop }}</span>
           <span
-            class="hero-intro hero-delay-3 block whitespace-nowrap"
+            class="hero-intro hero-delay-3 block"
           >{{ heroHeadlineBottom }}</span>
         </h1>
 
@@ -126,7 +126,7 @@ const heroHeadlineBottom = computed(
         </p>
 
         <div
-          class="mt-2 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
+          class="mt-2 flex flex-wrap items-center justify-center gap-4 xl:justify-start"
         >
           <NuxtLink
             to="/themes"
@@ -143,12 +143,12 @@ const heroHeadlineBottom = computed(
         </div>
       </div>
 
-      <div class="relative w-full lg:col-span-5">
+      <div class="relative mx-auto min-w-0 w-full max-w-[620px] xl:col-span-5 xl:mx-0 xl:max-w-none">
         <div
           class="bg-emerald-500/10 pointer-events-none absolute inset-0 z-0 translate-x-10 rounded-full blur-[80px] -translate-y-10"
         />
         <DsGlassSurface
-          class="hero-ref-card pointer-events-auto relative z-10 ml-auto box-border max-w-[500px] w-full overflow-hidden rounded-[32px] p-10 <md:mb-12 md:p-12"
+          class="hero-ref-card pointer-events-auto relative z-10 mx-auto box-border max-w-[500px] w-full overflow-hidden rounded-[32px] p-10 <md:mb-12 md:p-12 xl:ml-auto xl:mr-0"
         >
           <div class="mb-10 flex items-center">
             <NativeTypewriter
