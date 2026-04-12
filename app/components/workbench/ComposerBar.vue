@@ -447,19 +447,19 @@ const contextUsedLabel = computed(() =>
 <template>
   <div class="flex flex-col">
     <footer
-      class="border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]"
+      class="relative border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]"
     >
-      <div class="rounded-[10px] bg-transparent px-2.5 py-2.5">
-        <div class="relative">
-          <DsComposerMenu
-            :open="composerMenuOpen"
-            :trigger="activeComposerTrigger"
-            :sections="composerMenuSections"
-            :active-item-id="composerActiveItemId"
-            @select="selectComposerMenuItem"
-            @close="closeComposerMenu"
-          />
+      <DsComposerMenu
+        :open="composerMenuOpen"
+        :trigger="activeComposerTrigger"
+        :sections="composerMenuSections"
+        :active-item-id="composerActiveItemId"
+        @select="selectComposerMenuItem"
+        @close="closeComposerMenu"
+      />
 
+      <div class="rounded-[10px] bg-transparent px-2.5 py-2.5">
+        <div>
           <div
             v-if="composerTokenMap.length > 0"
             class="mb-1.5 mt-0.5 flex flex-wrap items-center gap-1.5 px-1"

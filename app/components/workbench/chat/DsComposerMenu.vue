@@ -30,9 +30,11 @@ const props = withDefaults(
     trigger: ComposerMenuTrigger | null
     sections: ComposerMenuSection[]
     activeItemId?: string
+    insetClass?: string
   }>(),
   {
     activeItemId: '',
+    insetClass: 'left-0 right-0',
   },
 )
 
@@ -75,7 +77,8 @@ function select(item: ComposerMenuItem) {
   <div
     v-if="open"
     ref="rootRef"
-    class="pointer-events-auto absolute bottom-full left-0 right-0 z-[65] mb-2 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-[16px]"
+    class="pointer-events-auto absolute bottom-full z-[65] mb-6 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 backdrop-blur-[16px]"
+    :class="insetClass"
   >
     <div class="max-h-[320px] overflow-y-auto">
       <div
