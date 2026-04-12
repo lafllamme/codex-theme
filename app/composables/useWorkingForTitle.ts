@@ -1,5 +1,5 @@
-import { toValue } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
+import { toValue } from 'vue'
 
 /**
  * Live “Working for Ns / Xm Ys” label while `active` (display caps at `maxDisplaySec`).
@@ -23,7 +23,8 @@ export function useWorkingForTitle(
     active,
     (isActive) => {
       pause()
-      displaySec.value = 0
+      if (isActive)
+        displaySec.value = 0
       if (isActive)
         resume()
     },

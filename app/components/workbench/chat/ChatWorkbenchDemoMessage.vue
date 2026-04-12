@@ -3,9 +3,9 @@ import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
 import { usePreferredReducedMotion, useTimeoutFn } from '@vueuse/core'
 import DsMessageHeader from '~/components/DsMessageHeader.vue'
 import DsShinyText from '~/components/DsShinyText.vue'
+import NativeTypewriter from '~/components/NativeTypewriter.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
-import NativeTypewriter from '~/components/NativeTypewriter.vue'
 
 const props = defineProps<{
   message: ChatMessage
@@ -30,10 +30,10 @@ const workingDelayMs = ref(4000)
 
 const { start: startTailPhase, stop: stopTailPhase } = useTimeoutFn(() => {
   showTail.value = true
+  showWorking.value = false
 }, tailDelayMs)
 
 const { start: startWorkingPhase, stop: stopWorkingPhase } = useTimeoutFn(() => {
-  showWorking.value = false
   showStatusAndTypewriter.value = true
   tailDelayMs.value = Math.max(400, bodyPlain.value.length * 50 + 600)
   startTailPhase()
@@ -106,7 +106,6 @@ async function copyMessage() {
     copiedMessageId.value = null
   }
 }
-
 </script>
 
 <template>
@@ -114,7 +113,6 @@ async function copyMessage() {
     <div class="flex w-full min-w-0 flex-col gap-1.5">
       <!-- Bleed past message article padding (p-[12px_14px]) so “Working” aligns with “previous message” above -->
       <div
-        v-if="showWorking"
         class="-mx-[14px] w-[calc(100%+28px)] min-w-0 max-w-none shrink-0 self-stretch"
       >
         <DsMessageHeader variant="status" :title="workingTitle" />
