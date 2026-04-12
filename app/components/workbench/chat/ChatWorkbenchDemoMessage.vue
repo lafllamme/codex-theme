@@ -2,6 +2,7 @@
 import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
 import { usePreferredReducedMotion, useTimeoutFn } from '@vueuse/core'
 import DsMessageHeader from '~/components/DsMessageHeader.vue'
+import DsShinyText from '~/components/DsShinyText.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import NativeTypewriter from '~/components/NativeTypewriter.vue'
@@ -116,19 +117,23 @@ async function copyMessage() {
         v-if="showWorking"
         class="-mx-[14px] w-[calc(100%+28px)] min-w-0 max-w-none shrink-0 self-stretch"
       >
-        <DsMessageHeader
-          variant="status"
-          :title="workingTitle"
-        />
+        <DsMessageHeader variant="status" :title="workingTitle" />
       </div>
 
       <template v-if="showStatusAndTypewriter">
         <p
           v-for="(line, i) in demo.statusLines"
           :key="`st-${i}`"
-          class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] leading-[1.5]"
+          class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
         >
-          {{ line }}
+          <DsShinyText
+            :text="line"
+            :speed="2.2"
+            :delay="0.45"
+            :repeat-count="2"
+            direction="left"
+            class="text-[length:var(--wb-ui-text-xs)]"
+          />
         </p>
 
         <div
@@ -146,9 +151,16 @@ async function copyMessage() {
         <template v-if="showTail">
           <p
             v-if="demo.thinkingLabel"
-            class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] leading-[1.5]"
+            class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
           >
-            {{ demo.thinkingLabel }}
+            <DsShinyText
+              :text="demo.thinkingLabel"
+              :speed="2.2"
+              :delay="0.45"
+              :repeat-count="2"
+              direction="left"
+              class="text-[length:var(--wb-ui-text-xs)]"
+            />
           </p>
 
           <template v-for="(block, index) in demo.blocks" :key="blockKey(block, index)">

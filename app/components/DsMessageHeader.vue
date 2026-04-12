@@ -25,7 +25,9 @@ const isCollapsible = computed(() => props.variant === 'collapsible')
         class="group h-8 w-full inline-flex min-w-0 items-center gap-2 border-none bg-transparent p-0 text-left text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] font-normal leading-none outline-none"
         @click="expanded = !expanded"
       >
-        <span class="min-w-0 flex-1 truncate">{{ title }}</span>
+        <span class="min-w-0 flex-1 truncate">
+          <slot name="title">{{ title }}</slot>
+        </span>
         <Icon
           name="ph:caret-down-bold"
           class="h-[12px] w-[12px] shrink-0 text-[color:var(--wb-text-muted)] transition-transform duration-160"
@@ -43,7 +45,9 @@ const isCollapsible = computed(() => props.variant === 'collapsible')
       v-else
       class="flex h-8 w-full min-w-0 items-center"
     >
-      <span class="min-w-0 flex-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] font-normal leading-none">{{ title }}</span>
+      <span class="min-w-0 flex-1 text-[length:var(--wb-ui-text-xs)] font-normal leading-none">
+        <slot name="title">{{ title }}</slot>
+      </span>
     </div>
     <div class="h-px w-full bg-[var(--wb-divider)]" />
   </div>
