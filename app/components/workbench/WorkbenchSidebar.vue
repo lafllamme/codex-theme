@@ -281,12 +281,12 @@ function afterRepoLeave(el: Element) {
           </button>
 
           <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:circles-four-bold" class="size-4.5 wb-sidebar-icon" />
+            <Icon name="ph:circles-four" class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">Plugins</span>
           </button>
 
           <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
-            <Icon name="ph:clock-bold" class="size-4.5 wb-sidebar-icon" />
+            <Icon name="ph:clock" class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">Automations</span>
           </button>
         </div>

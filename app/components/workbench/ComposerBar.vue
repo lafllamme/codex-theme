@@ -495,7 +495,7 @@ const contextUsedLabel = computed(() =>
               }}</span>
               <Icon
                 name="ph:caret-down-bold"
-                class="h-[10px] w-[10px]"
+                class="size-3.5"
               />
             </button>
           </template>
@@ -551,60 +551,6 @@ const contextUsedLabel = computed(() =>
         </ComposerDropdownMenu>
 
         <ComposerDropdownMenu
-          :open="openMenuKey === 'access'"
-          menu-class="w-[210px]"
-          align="left"
-          @toggle="toggleMenu('access')"
-          @close="closeMenus"
-        >
-          <template #trigger="{ toggle }">
-            <button
-              class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-access-warn)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
-              @click.stop="toggle"
-            >
-              <Icon
-                name="ph:shield-warning"
-                class="h-[16px] w-[16px]"
-              />
-              <span class="font-normal">{{
-                selectedAccessLabel
-              }}</span>
-              <Icon
-                name="ph:caret-down-bold"
-                class="h-[10px] w-[10px]"
-              />
-            </button>
-          </template>
-
-          <ul class="grid m-0 list-none gap-1 p-0">
-            <li v-for="option in accessOptions" :key="option.key">
-              <button
-                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
-                @click="selectAccess(option.key)"
-              >
-                <span class="inline-flex items-center gap-2.5">
-                  <Icon
-                    :name="
-                      option.icon
-                        || 'ph:shield-warning'
-                    "
-                    class="h-[16px] w-[16px]"
-                  />
-                  {{ option.label }}
-                </span>
-                <Icon
-                  v-if="option.key === selectedAccess"
-                  name="ph:check-bold"
-                  class="h-[14px] w-[14px]"
-                />
-              </button>
-            </li>
-          </ul>
-        </ComposerDropdownMenu>
-      </div>
-
-      <span class="inline-flex items-center gap-3">
-        <ComposerDropdownMenu
           :open="openMenuKey === 'branch'"
           menu-class="w-[360px]"
           align="right"
@@ -617,7 +563,7 @@ const contextUsedLabel = computed(() =>
               @click.stop="toggle"
             >
               <Icon
-                name="ph:git-branch-bold"
+                name="ph:git-branch"
                 class="h-[16px] w-[16px]"
               />
               <span class="font-normal">{{
@@ -625,7 +571,7 @@ const contextUsedLabel = computed(() =>
               }}</span>
               <Icon
                 name="ph:caret-down-bold"
-                class="h-[10px] w-[10px]"
+                class="size-3.5"
               />
             </button>
           </template>
@@ -706,6 +652,60 @@ const contextUsedLabel = computed(() =>
               Create and checkout new branch...
             </button>
           </div>
+        </ComposerDropdownMenu>
+      </div>
+
+      <span class="inline-flex items-center gap-3">
+        <ComposerDropdownMenu
+          :open="openMenuKey === 'access'"
+          menu-class="w-[210px]"
+          align="left"
+          @toggle="toggleMenu('access')"
+          @close="closeMenus"
+        >
+          <template #trigger="{ toggle }">
+            <button
+              class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-access-warn)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              @click.stop="toggle"
+            >
+              <Icon
+                name="solar:shield-warning-outline"
+                class="h-[16px] w-[16px]"
+              />
+              <span class="font-normal">{{
+                selectedAccessLabel
+              }}</span>
+              <Icon
+                name="ph:caret-down-bold"
+                class="size-3.5"
+              />
+            </button>
+          </template>
+
+          <ul class="grid m-0 list-none gap-1 p-0">
+            <li v-for="option in accessOptions" :key="option.key">
+              <button
+                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                @click="selectAccess(option.key)"
+              >
+                <span class="inline-flex items-center gap-2.5">
+                  <Icon
+                    :name="
+                      option.icon
+                        || 'ph:shield-warning'
+                    "
+                    class="h-[16px] w-[16px]"
+                  />
+                  {{ option.label }}
+                </span>
+                <Icon
+                  v-if="option.key === selectedAccess"
+                  name="ph:check-bold"
+                  class="h-[14px] w-[14px]"
+                />
+              </button>
+            </li>
+          </ul>
         </ComposerDropdownMenu>
 
         <span class="relative inline-flex items-center">
