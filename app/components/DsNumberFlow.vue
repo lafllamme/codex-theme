@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, shallowRef } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -45,11 +45,11 @@ const emit = defineEmits<{
 const numberFlowComponent = shallowRef<unknown>(null)
 const numberFlowPlugins = shallowRef<unknown[]>([])
 
-if (import.meta.client) {
+onMounted(async () => {
   const numberFlowModule = await import('@number-flow/vue')
   numberFlowComponent.value = numberFlowModule.default
   numberFlowPlugins.value = [numberFlowModule.continuous]
-}
+})
 
 const fallbackText = computed(() => {
   const formattedValue = new Intl.NumberFormat(props.locales, props.format).format(props.value)

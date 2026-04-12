@@ -53,6 +53,10 @@ async function renderTokens() {
     return
   }
 
+  // Match SSR: Shiki resolves after the first paint; without this the client hydrates
+  // with `runs` still empty while the server already applied fallback runs.
+  runs.value = fallbackRuns(props.text)
+
   const cacheKey = `${shikiBinding.value.themeName}|${language.value}|${props.text}`
   const cached = tokenCache.get(cacheKey)
   if (cached) {
