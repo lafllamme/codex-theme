@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
+import type { AssistantBlock, ChatMessage, ComponentMentionBlock } from '~/types/workbench-chat'
 import { usePreferredReducedMotion, useTimeoutFn } from '@vueuse/core'
 import DsMessageHeader from '~/components/DsMessageHeader.vue'
 import DsShinyText from '~/components/DsShinyText.vue'
@@ -7,10 +7,19 @@ import NativeTypewriter from '~/components/NativeTypewriter.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 
+interface ParsedDiffStatusLine {
+  verb: 'Created' | 'Edited'
+  file: string
+  added: number
+  removed: number
+}
+
 const props = defineProps<{
   message: ChatMessage
   codeThemeId: string
 }>()
+
+const DIFF_STATUS_LINE_RE = /^(Created|Edited)\s+`([^`]+)`\s+\+(\d+)\s+-(\d+)$/
 
 const demo = computed(() => props.message.workbenchDemo!)
 
@@ -99,8 +108,10 @@ const { start: startAdvanceStatus, stop: stopAdvanceStatus } = useTimeoutFn(() =
   const next = visibleStatusCount.value
   if (next < demo.value.statusLines.length) {
     visibleStatusCount.value += 1
-    pendingActionShinyQueue.value.push(next)
-    scheduleNextActionShinyIfNeeded()
+    if (!parseDiffStatusLine(demo.value.statusLines[next] ?? '')) {
+      pendingActionShinyQueue.value.push(next)
+      scheduleNextActionShinyIfNeeded()
+    }
     startAdvanceStatus()
     return
   }
@@ -204,6 +215,40 @@ function firstFileChangeCardIndex() {
   return blocks.findIndex(block => block.type === 'file_change_card')
 }
 
+function parseDiffStatusLine(line: string): ParsedDiffStatusLine | null {
+  const match = DIFF_STATUS_LINE_RE.exec(line.trim())
+  if (!match)
+    return null
+  return {
+    verb: match[1] as ParsedDiffStatusLine['verb'],
+    file: match[2]!,
+    added: Number(match[3]),
+    removed: Number(match[4]),
+  }
+}
+
+const parsedStatusLines = computed(() => demo.value.statusLines.map(parseDiffStatusLine))
+
+const STATUS_PATH_HINTS: Record<string, string> = {
+  'CodexSidebarToggleIcon.vue': 'app/components/icons/CodexSidebarToggleIcon.vue',
+  'WorkbenchSidebar.vue': 'app/components/workbench/WorkbenchSidebar.vue',
+}
+
+function resolveStatusPath(file: string) {
+  if (file.includes('/'))
+    return file
+  return STATUS_PATH_HINTS[file] ?? file
+}
+
+function diffStatusToMentionBlock(line: ParsedDiffStatusLine): ComponentMentionBlock {
+  return {
+    type: 'component_mention',
+    lead: line.verb,
+    component: line.file,
+    path: resolveStatusPath(line.file),
+  }
+}
+
 async function copyMessage() {
   const payload = bodyPlain.value.trim()
   try {
@@ -230,14 +275,24 @@ async function copyMessage() {
       </div>
 
       <template v-if="showStatus">
-        <p
+        <div
           v-for="(line, i) in demo.statusLines"
           v-show="i < visibleStatusCount"
           :key="`st-${i}`"
           class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
         >
+          <template v-if="parsedStatusLines[i]">
+            <ChatComponentMention
+              :block="diffStatusToMentionBlock(parsedStatusLines[i]!)"
+              compact
+              hide-dot
+              muted
+              :added="parsedStatusLines[i]!.added"
+              :removed="parsedStatusLines[i]!.removed"
+            />
+          </template>
           <DsShinyText
-            v-if="i === activeActionShinyIndex"
+            v-else-if="i === activeActionShinyIndex"
             :text="line"
             :speed="actionShinySpeedSec"
             :delay="actionShinyDelaySec"
@@ -250,7 +305,7 @@ async function copyMessage() {
           >
             {{ line }}
           </span>
-        </p>
+        </div>
       </template>
 
       <template v-if="showTypewriter">

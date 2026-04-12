@@ -190,15 +190,21 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
       id: 'wd-a1',
       role: 'assistant',
       workbenchDemo: {
-        minWorkingSec: 4,
+        minWorkingSec: 6,
         maxDisplaySec: 120,
         statusLines: [
-          'Explored 2 files, 1 search',
+          'Explored 3 files, ran 2 searches',
+          'Read `WorkbenchMainStage.vue`',
+          'Read `ChatWorkbenchDemoMessage.vue`',
+          'Searched for Nuxt icon usages in workbench controls',
+          'Ran 1 command',
           'Created `CodexSidebarToggleIcon.vue` +10 -0',
+          'Edited `WorkbenchSidebar.vue` +4 -2',
         ],
         body: [
-          'I\'m swapping the three spots—the new-thread button and sidebar toggle states—to Codex SVGs so we no longer depend on the Nuxt icon set.',
-          'Hitboxes stay the same; next I’ll sanity-check hover colors against the panel.',
+          'I\'m replacing the three Nuxt-icon touchpoints—the new-thread affordance and both sidebar-toggle states—with Codex SVG components while keeping geometry pixel-stable.',
+          'I validated the clickable areas and spacing against the existing layout so there is no hitbox drift and no alignment jump between collapsed and expanded sidebar states.',
+          'Next I\'ll verify hover/pressed contrast in the panel context and keep the icon stroke weight consistent with the surrounding workbench chrome.',
         ],
         thinkingLabel: 'Thinking',
         blocks: [
