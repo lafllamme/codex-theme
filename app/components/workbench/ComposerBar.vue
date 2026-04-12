@@ -561,7 +561,7 @@ const contextUsedLabel = computed(() =>
               class="grid gap-0.5 px-2 pb-1.5 pt-0.5"
             >
               <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-x-3">
-                <span class="text-[32px] text-[color:var(--wb-text-primary)] font-semibold leading-[1.05]">5h</span>
+                <span class="text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-[1.2]">5h</span>
                 <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">63%</span>
                 <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">20:51</span>
               </div>
@@ -571,16 +571,16 @@ const contextUsedLabel = computed(() =>
                 <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">16. Apr.</span>
               </div>
               <button
-                class="mt-0.5 h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="mt-0.5 h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-muted)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
               >
                 <span class="whitespace-nowrap">Upgrade to Pro</span>
-                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px]" />
+                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px] text-[color:var(--wb-text-muted)]" />
               </button>
               <button
-                class="h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-[var(--wb-hover-bg)] px-2 text-left text-[13px] text-[color:var(--wb-text-muted)] outline-none transition-colors hover:brightness-110"
+                class="h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-faint)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-muted)]"
               >
                 <span class="whitespace-nowrap">Learn more</span>
-                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px]" />
+                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px] text-[color:var(--wb-text-faint)]" />
               </button>
             </div>
           </div>
