@@ -129,8 +129,7 @@ async function copyMessage() {
           <DsShinyText
             :text="line"
             :speed="2.2"
-            :delay="0.45"
-            :repeat-count="2"
+            :delay="0.05"
             direction="left"
             class="text-[length:var(--wb-ui-text-xs)]"
           />
@@ -156,8 +155,7 @@ async function copyMessage() {
             <DsShinyText
               :text="demo.thinkingLabel"
               :speed="2.2"
-              :delay="0.45"
-              :repeat-count="2"
+              :delay="0.05"
               direction="left"
               class="text-[length:var(--wb-ui-text-xs)]"
             />
