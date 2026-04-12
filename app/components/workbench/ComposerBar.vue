@@ -461,17 +461,17 @@ const contextUsedLabel = computed(() =>
 
       <div class="rounded-[10px] bg-transparent px-2.5 py-2.5">
         <div>
-          <div class="min-h-[40px] flex flex-wrap items-center gap-1.5 px-1">
+          <div class="min-h-[40px] flex flex-wrap items-center gap-1 px-1">
             <span
               v-for="token in composerTokenMap"
               :key="token.id"
-              class="h-7 inline-flex items-center gap-1.5 border rounded-[10px] px-2 text-[12.5px] font-medium leading-none"
+              class="h-[25px] inline-flex items-center gap-1 border rounded-[9px] px-1.5 text-[12.5px] font-medium leading-none"
               :class="[
                 token.tone === 'plugin' || token.tone === 'skill'
-                  ? 'border-[color:color-mix(in_srgb,var(--theme-skill)_32%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-skill)_16%,transparent)] text-[color:color-mix(in_srgb,var(--theme-skill)_74%,var(--wb-text-primary)_26%)]'
+                  ? 'border-[color:color-mix(in_srgb,var(--theme-skill)_22%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-skill)_10%,transparent)] text-[color:color-mix(in_srgb,var(--theme-skill)_78%,var(--wb-text-primary)_22%)]'
                   : token.tone === 'file'
-                    ? 'border-[color:color-mix(in_srgb,var(--theme-accent)_32%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-accent)_16%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_74%,var(--wb-text-primary)_26%)]'
-                    : 'border-[color:var(--wb-chip-ghost-border)] bg-[var(--wb-chip-ghost-bg)] text-[color:var(--wb-text-primary)]',
+                    ? 'border-[color:color-mix(in_srgb,var(--theme-accent)_22%,transparent)] bg-[color:color-mix(in_srgb,var(--theme-accent)_10%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_78%,var(--wb-text-primary)_22%)]'
+                    : 'border-[color:color-mix(in_srgb,var(--wb-text-primary)_16%,transparent)] bg-[color:color-mix(in_srgb,var(--wb-text-primary)_6%,transparent)] text-[color:var(--wb-text-primary)]',
               ]"
             >
               <CodexSkillIcon
@@ -485,7 +485,7 @@ const contextUsedLabel = computed(() =>
               />
               <span>{{ token.label }}</span>
               <button
-                class="h-[14px] w-[14px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-65 outline-none transition-opacity hover:opacity-100"
+                class="h-[14px] w-[14px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-55 outline-none transition-opacity hover:opacity-85"
                 @click.stop="removeComposerMention(token.id)"
               >
                 <Icon name="ph:x-bold" class="h-[9px] w-[9px]" />
