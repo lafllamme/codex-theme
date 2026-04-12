@@ -1,12 +1,25 @@
 <script setup lang="ts">
+import type {
+  ComposerMenuItem,
+  ComposerMenuSection,
+  ComposerMenuTrigger,
+} from '~/components/workbench/chat/DsComposerMenu.vue'
 import DsSwitch from '~/components/ui/DsSwitch.vue'
 import ComposerDropdownMenu from '~/components/workbench/chat/ComposerDropdownMenu.vue'
+import DsComposerMenu from '~/components/workbench/chat/DsComposerMenu.vue'
 
 interface MenuOption {
   key: string
   label: string
   icon?: string
   disabled?: boolean
+}
+
+interface TriggerToken {
+  trigger: ComposerMenuTrigger
+  query: string
+  start: number
+  end: number
 }
 
 const props = withDefaults(
@@ -21,11 +34,20 @@ const props = withDefaults(
   },
 )
 
+const COMPACT_WHITESPACE_RE = /\s{2,}/g
+
 const selectedModel = defineModel<string>('selectedModel', { required: true })
 const selectedThinking = defineModel<string>('selectedThinking', {
   required: true,
 })
 const composeValue = defineModel<string>('composeValue', { required: true })
+const composerInputRef = ref<HTMLInputElement | null>(null)
+
+const selectedComposerMentions = ref<ComposerMenuItem[]>([])
+const activeComposerTrigger = ref<ComposerMenuTrigger | null>(null)
+const composerMenuQuery = ref('')
+const composerMenuOpen = ref(false)
+const composerMenuActiveIndex = ref(0)
 
 const openMenuKey = ref<
     null | 'plus' | 'model' | 'thinking' | 'local' | 'access' | 'branch'
@@ -54,6 +76,65 @@ const thinkingOptionIcons: Record<string, string> = {
   'Medium': 'ph:brain-bold',
   'High': 'ph:brain-bold',
   'Very high': 'ph:brain-bold',
+}
+
+const commandItems = computed<ComposerMenuItem[]>(() => [
+  { id: 'cmd-cloud', type: 'command', tone: 'command', label: 'Cloud', description: 'Run in cloud environment', icon: 'material-symbols:cloud-outline' },
+  { id: 'cmd-code-review', type: 'command', tone: 'command', label: 'Code review', description: 'Review current changes', icon: 'mdi:bug-outline' },
+  { id: 'cmd-fast', type: 'command', tone: 'command', label: 'Fast', description: 'Enable faster inference mode', icon: 'ph:lightning-bold' },
+  { id: 'cmd-feedback', type: 'command', tone: 'command', label: 'Feedback', description: 'Share product feedback', icon: 'ph:chat-text' },
+  { id: 'cmd-mcp', type: 'command', tone: 'command', label: 'MCP', description: 'Show MCP server status', icon: 'ph:plugs' },
+  { id: 'cmd-model', type: 'command', tone: 'command', label: 'Model', description: selectedModel.value, icon: 'ph:cube' },
+  { id: 'cmd-new-worktree', type: 'command', tone: 'command', label: 'New worktree', description: 'Create and switch worktree', icon: 'ph:arrow-square-out' },
+  { id: 'cmd-personality', type: 'command', tone: 'command', label: 'Personality', description: 'Adjust assistant style', icon: 'ph:user-circle' },
+  { id: 'cmd-plan-mode', type: 'command', tone: 'command', label: 'Plan mode', description: 'Turn plan mode on', icon: 'ph:list-checks' },
+  { id: 'cmd-reasoning', type: 'command', tone: 'command', label: 'Reasoning', description: selectedThinking.value, icon: 'ph:brackets-curly' },
+  { id: 'cmd-status', type: 'command', tone: 'command', label: 'Status', description: 'Show context usage and rate limits', icon: 'mdi:speedometer' },
+])
+
+const pluginItems: ComposerMenuItem[] = [
+  {
+    id: 'plugin-github',
+    type: 'plugin',
+    tone: 'plugin',
+    label: 'GitHub',
+    description: 'Triage PRs, issues, CI, and publish flows',
+    icon: 'mdi:github',
+  },
+  {
+    id: 'plugin-notion',
+    type: 'plugin',
+    tone: 'plugin',
+    label: 'Notion',
+    description: 'Notion workflows for specs, research, and docs',
+    icon: 'simple-icons:notion',
+  },
+]
+
+const skillItems: ComposerMenuItem[] = [
+  { id: 'skill-vue', type: 'skill', tone: 'skill', label: 'Vue', description: 'Vue.js - Progressive UI framework', icon: 'mdi:cube-outline', meta: 'Personal' },
+  { id: 'skill-vueuse', type: 'skill', tone: 'skill', label: 'Vueuse Functions', description: 'Composable helpers for Vue apps', icon: 'mdi:cube-outline', meta: 'Personal' },
+  { id: 'skill-vite', type: 'skill', tone: 'skill', label: 'Vite', description: 'Fast build tool with HMR', icon: 'mdi:cube-outline', meta: 'Personal' },
+  { id: 'skill-vitest', type: 'skill', tone: 'skill', label: 'Vitest', description: 'Unit testing framework powered by Vite', icon: 'mdi:cube-outline', meta: 'Personal' },
+  { id: 'skill-unocss', type: 'skill', tone: 'skill', label: 'Unocss', description: 'Instant atomic CSS engine', icon: 'mdi:cube-outline', meta: 'Personal' },
+]
+
+const fileItems: ComposerMenuItem[] = [
+  { id: 'file-dshero', type: 'file', tone: 'file', label: 'DsHero.vue', description: 'app/components', path: 'app/components/DsHero.vue', icon: 'ph:file-vue' },
+  { id: 'file-composer', type: 'file', tone: 'file', label: 'ComposerBar.vue', description: 'app/components/workbench', path: 'app/components/workbench/ComposerBar.vue', icon: 'ph:file-vue' },
+  { id: 'file-mainstage', type: 'file', tone: 'file', label: 'WorkbenchMainStage.vue', description: 'app/components/workbench', path: 'app/components/workbench/WorkbenchMainStage.vue', icon: 'ph:file-vue' },
+  { id: 'file-chatdemo', type: 'file', tone: 'file', label: 'ChatWorkbenchDemoMessage.vue', description: 'app/components/workbench/chat', path: 'app/components/workbench/chat/ChatWorkbenchDemoMessage.vue', icon: 'ph:file-vue' },
+  { id: 'file-ayu', type: 'file', tone: 'file', label: 'ayu.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/ayu.json', icon: 'ph:file-code' },
+  { id: 'file-box', type: 'file', tone: 'file', label: 'box.json', description: 'app/assets/theme-presets', path: 'app/assets/theme-presets/box.json', icon: 'ph:file-code' },
+]
+
+const emptyFileSearchItem: ComposerMenuItem = {
+  id: 'file-search-empty',
+  type: 'file',
+  tone: 'file',
+  label: 'Type to search for files',
+  icon: 'ph:magnifying-glass',
+  disabled: true,
 }
 
 const selectedExecution = ref('local')
@@ -118,9 +199,192 @@ const filteredBranches = computed(() => {
   )
 })
 
+const composerTokenMap = computed(
+  () =>
+    selectedComposerMentions.value.map(item => ({
+      id: item.id,
+      icon: item.icon,
+      label: item.label,
+      tone: item.tone ?? item.type,
+    })),
+)
+
+function includesQuery(item: ComposerMenuItem, query: string) {
+  if (!query)
+    return true
+  const q = query.toLowerCase()
+  return (
+    item.label.toLowerCase().includes(q)
+    || item.description?.toLowerCase().includes(q)
+    || item.path?.toLowerCase().includes(q)
+  )
+}
+
+const composerMenuSections = computed<ComposerMenuSection[]>(() => {
+  const trigger = activeComposerTrigger.value
+  const query = composerMenuQuery.value.trim()
+  if (!trigger)
+    return []
+
+  if (trigger === '/') {
+    const filteredCommands = commandItems.value.filter(item => includesQuery(item, query))
+    const filteredSkills = skillItems.filter(item => includesQuery(item, query))
+
+    return [
+      { id: 'commands', title: 'Commands', items: filteredCommands },
+      { id: 'skills', title: 'Skills', items: filteredSkills },
+    ].filter(section => section.items.length > 0)
+  }
+
+  if (trigger === '@') {
+    const filteredPlugins = pluginItems.filter(item => includesQuery(item, query))
+    const filteredFiles = fileItems.filter(item => includesQuery(item, query))
+    const filesSectionItems = filteredFiles.length
+      ? filteredFiles
+      : [emptyFileSearchItem]
+
+    return [
+      { id: 'plugins', title: 'Plugins', items: filteredPlugins },
+      { id: 'files', title: 'Files', items: filesSectionItems },
+    ].filter(section => section.items.length > 0)
+  }
+
+  const filteredSkills = skillItems.filter(item => includesQuery(item, query))
+  return [
+    { id: 'skills', title: 'Skills', items: filteredSkills },
+  ].filter(section => section.items.length > 0)
+})
+
+const composerSelectableItems = computed(() =>
+  composerMenuSections.value.flatMap(section =>
+    section.items.filter(item => !item.disabled),
+  ),
+)
+
+const composerActiveItemId = computed(
+  () => composerSelectableItems.value[composerMenuActiveIndex.value]?.id ?? '',
+)
+
+function clampComposerMenuIndex() {
+  const lastIndex = Math.max(0, composerSelectableItems.value.length - 1)
+  if (composerMenuActiveIndex.value > lastIndex)
+    composerMenuActiveIndex.value = lastIndex
+}
+
+watch(composerMenuSections, () => {
+  clampComposerMenuIndex()
+})
+
+function parseTriggerToken(value: string, cursor: number): TriggerToken | null {
+  const safeCursor = Math.max(0, Math.min(cursor, value.length))
+  const lastSpaceIndex = Math.max(
+    value.lastIndexOf(' ', safeCursor - 1),
+    value.lastIndexOf('\n', safeCursor - 1),
+  )
+  const start = lastSpaceIndex + 1
+  const segment = value.slice(start, safeCursor)
+  if (!segment)
+    return null
+
+  const trigger = segment[0]
+  if (trigger !== '/' && trigger !== '@' && trigger !== '$')
+    return null
+
+  return {
+    trigger,
+    query: segment.slice(1),
+    start,
+    end: safeCursor,
+  }
+}
+
+function refreshComposerMenu() {
+  const inputEl = composerInputRef.value
+  const cursor = inputEl?.selectionStart ?? composeValue.value.length
+  const token = parseTriggerToken(composeValue.value, cursor)
+
+  if (!token) {
+    composerMenuOpen.value = false
+    activeComposerTrigger.value = null
+    composerMenuQuery.value = ''
+    composerMenuActiveIndex.value = 0
+    return
+  }
+
+  activeComposerTrigger.value = token.trigger
+  composerMenuQuery.value = token.query
+  composerMenuOpen.value = true
+  composerMenuActiveIndex.value = 0
+}
+
+function removeComposerMention(id: string) {
+  selectedComposerMentions.value = selectedComposerMentions.value.filter(item => item.id !== id)
+}
+
+function closeComposerMenu() {
+  composerMenuOpen.value = false
+  activeComposerTrigger.value = null
+  composerMenuQuery.value = ''
+  composerMenuActiveIndex.value = 0
+}
+
+function selectComposerMenuItem(item: ComposerMenuItem) {
+  if (!selectedComposerMentions.value.some(existing => existing.id === item.id))
+    selectedComposerMentions.value.push(item)
+
+  const inputEl = composerInputRef.value
+  const cursor = inputEl?.selectionStart ?? composeValue.value.length
+  const token = parseTriggerToken(composeValue.value, cursor)
+  if (token) {
+    const before = composeValue.value.slice(0, token.start)
+    const after = composeValue.value.slice(token.end)
+    composeValue.value = `${before}${after}`.replace(COMPACT_WHITESPACE_RE, ' ')
+    const nextCursor = Math.min(token.start, composeValue.value.length)
+    nextTick(() => {
+      inputEl?.focus()
+      inputEl?.setSelectionRange(nextCursor, nextCursor)
+    })
+  }
+
+  closeComposerMenu()
+}
+
+function handleComposerInputKeydown(event: KeyboardEvent) {
+  if (!composerMenuOpen.value || composerSelectableItems.value.length === 0)
+    return
+
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    composerMenuActiveIndex.value = (composerMenuActiveIndex.value + 1) % composerSelectableItems.value.length
+    return
+  }
+
+  if (event.key === 'ArrowUp') {
+    event.preventDefault()
+    composerMenuActiveIndex.value = composerMenuActiveIndex.value === 0
+      ? composerSelectableItems.value.length - 1
+      : composerMenuActiveIndex.value - 1
+    return
+  }
+
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    const item = composerSelectableItems.value[composerMenuActiveIndex.value]
+    if (item)
+      selectComposerMenuItem(item)
+    return
+  }
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    closeComposerMenu()
+  }
+}
+
 function toggleMenu(
   menu: 'plus' | 'model' | 'thinking' | 'local' | 'access' | 'branch',
 ) {
+  closeComposerMenu()
   openMenuKey.value = openMenuKey.value === menu ? null : menu
   if (menu !== 'plus' || openMenuKey.value !== 'plus')
     isSpeedMenuOpen.value = false
@@ -130,6 +394,7 @@ function closeMenus() {
   openMenuKey.value = null
   isSpeedMenuOpen.value = false
   isLocalRateLimitsExpanded.value = false
+  closeComposerMenu()
 }
 
 function selectModel(option: string) {
@@ -170,6 +435,10 @@ function selectSpeed(mode: 'standard' | 'fast') {
   isSpeedMenuOpen.value = false
 }
 
+function togglePlanningMode() {
+  planningModeEnabled.value = !planningModeEnabled.value
+}
+
 const contextUsedLabel = computed(() =>
   `${Math.round(contextUsedTokens / 1000)}k / ${Math.round(contextTotalTokens / 1000)}k Tokens`,
 )
@@ -181,13 +450,59 @@ const contextUsedLabel = computed(() =>
       class="border border-[color:var(--wb-border-2)] rounded-[28px] bg-[var(--wb-input-bg)] p-[6px]"
     >
       <div class="rounded-[10px] bg-transparent px-2.5 py-2.5">
-        <div class="flex items-center">
-          <input
-            v-model="composeValue"
-            class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[17px] text-[color:var(--wb-text-muted)] font-light font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
-            type="text"
-            :placeholder="composerPlaceholder"
+        <div class="relative">
+          <DsComposerMenu
+            :open="composerMenuOpen"
+            :trigger="activeComposerTrigger"
+            :sections="composerMenuSections"
+            :active-item-id="composerActiveItemId"
+            @select="selectComposerMenuItem"
+            @close="closeComposerMenu"
+          />
+
+          <div
+            v-if="composerTokenMap.length > 0"
+            class="mb-1.5 mt-0.5 flex flex-wrap items-center gap-1.5 px-1"
           >
+            <span
+              v-for="token in composerTokenMap"
+              :key="token.id"
+              class="h-8 inline-flex items-center gap-1.5 rounded-[12px] px-2.5 text-[13px] font-semibold leading-none"
+              :class="[
+                token.tone === 'plugin'
+                  ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_26%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_78%,var(--wb-text-primary)_22%)]'
+                  : token.tone === 'skill'
+                    ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_18%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_62%,var(--wb-text-primary)_38%)]'
+                    : token.tone === 'file'
+                      ? 'bg-[color:color-mix(in_srgb,var(--theme-accent)_14%,transparent)] text-[color:color-mix(in_srgb,var(--theme-accent)_48%,var(--wb-text-primary)_52%)]'
+                      : 'bg-[var(--wb-hover-bg)] text-[color:var(--wb-text-primary)]',
+              ]"
+            >
+              <Icon :name="token.icon" class="h-[13px] w-[13px]" />
+              <span>{{ token.label }}</span>
+              <button
+                class="h-[16px] w-[16px] inline-flex items-center justify-center rounded-full border-none bg-transparent p-0 opacity-70 outline-none transition-opacity hover:opacity-100"
+                @click.stop="removeComposerMention(token.id)"
+              >
+                <Icon name="ph:x-bold" class="h-[10px] w-[10px]" />
+              </button>
+            </span>
+          </div>
+
+          <div class="flex items-center">
+            <input
+              ref="composerInputRef"
+              v-model="composeValue"
+              class="h-[40px] min-w-0 flex-1 appearance-none border-none bg-transparent px-1 text-[17px] text-[color:var(--wb-text-muted)] font-light font-[var(--font-ui)] outline-none placeholder:text-[color:var(--wb-text-faint)]"
+              type="text"
+              :placeholder="composerPlaceholder"
+              @focus="refreshComposerMenu"
+              @input="refreshComposerMenu"
+              @click="refreshComposerMenu"
+              @keyup="refreshComposerMenu"
+              @keydown="handleComposerInputKeydown"
+            >
+          </div>
         </div>
 
         <div
@@ -570,18 +885,24 @@ const contextUsedLabel = computed(() =>
                 <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">12%</span>
                 <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">16. Apr.</span>
               </div>
-              <button
-                class="mt-0.5 h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-muted)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+              <a
+                href="https://chatgpt.com/de-DE/pricing/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-0.5 h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-muted)] no-underline outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
               >
                 <span class="whitespace-nowrap">Upgrade to Pro</span>
                 <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px] text-[color:var(--wb-text-muted)]" />
-              </button>
-              <button
-                class="h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-faint)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-muted)]"
+              </a>
+              <a
+                href="https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan#h_8dd84c836b"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-0 text-left text-[13px] text-[color:var(--wb-text-faint)] no-underline outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-muted)]"
               >
                 <span class="whitespace-nowrap">Learn more</span>
                 <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px] text-[color:var(--wb-text-faint)]" />
-              </button>
+              </a>
             </div>
           </div>
 
