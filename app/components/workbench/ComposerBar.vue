@@ -33,7 +33,7 @@ const openMenuKey = ref<
 
 const executionOptions: MenuOption[] = [
   { key: 'local', label: 'Local Project', icon: 'ph:laptop' },
-  { key: 'cloud', label: 'Cloud', icon: 'ph:cloud' },
+  { key: 'cloud', label: 'Cloud', icon: 'material-symbols:cloud-outline' },
 ]
 
 const accessOptions: MenuOption[] = [
@@ -59,6 +59,7 @@ const thinkingOptionIcons: Record<string, string> = {
 const selectedExecution = ref('local')
 const selectedAccess = ref('full')
 const selectedBranch = ref('main')
+const isLocalRateLimitsExpanded = ref(false)
 const planningModeEnabled = ref(false)
 const selectedSpeed = ref<'standard' | 'fast'>('standard')
 const isSpeedMenuOpen = ref(false)
@@ -128,6 +129,7 @@ function toggleMenu(
 function closeMenus() {
   openMenuKey.value = null
   isSpeedMenuOpen.value = false
+  isLocalRateLimitsExpanded.value = false
 }
 
 function selectModel(option: string) {
@@ -143,6 +145,10 @@ function selectThinking(option: string) {
 function selectExecution(option: string) {
   selectedExecution.value = option
   closeMenus()
+}
+
+function toggleLocalRateLimits() {
+  isLocalRateLimitsExpanded.value = !isLocalRateLimitsExpanded.value
 }
 
 function selectAccess(option: string) {
@@ -471,19 +477,19 @@ const contextUsedLabel = computed(() =>
     </footer>
 
     <div
-      class="composer-meta-row mt-1 flex items-center justify-between px-1 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
+      class="composer-meta-row mt-1 min-h-[34px] flex items-center justify-between px-2.5 text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-secondary)] font-[var(--font-ui)]"
     >
-      <div class="inline-flex items-center gap-3">
+      <div class="inline-flex items-center">
         <ComposerDropdownMenu
           :open="openMenuKey === 'local'"
-          menu-class="w-[203px]"
+          menu-class="w-[250px]"
           align="left"
           @toggle="toggleMenu('local')"
           @close="closeMenus"
         >
           <template #trigger="{ toggle }">
             <button
-              class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+              class="h-9 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-3 text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
               @click.stop="toggle"
             >
               <Icon
@@ -505,16 +511,16 @@ const contextUsedLabel = computed(() =>
           >
             Continue in
           </p>
-          <ul class="grid m-0 list-none gap-1 p-0">
+          <ul class="grid m-0 list-none gap-0.5 p-0">
             <li
               v-for="option in executionOptions"
               :key="option.key"
             >
               <button
-                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+                class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2 text-left text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="selectExecution(option.key)"
               >
-                <span class="inline-flex items-center gap-2.5">
+                <span class="inline-flex items-center gap-2.5 whitespace-nowrap">
                   <Icon
                     :name="option.icon || 'ph:laptop'"
                     class="h-[16px] w-[16px]"
@@ -530,22 +536,66 @@ const contextUsedLabel = computed(() =>
             </li>
           </ul>
           <div
-            class="mt-1 border-t border-[color:var(--wb-divider)] pt-1"
+            class="mx-0.5 mt-2 border-t border-[color:var(--wb-divider)] pt-2"
           >
             <button
-              class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2 text-left text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              @click="toggleLocalRateLimits"
             >
-              <span class="inline-flex items-center gap-2.5">
+              <span class="inline-flex items-center gap-2.5 whitespace-nowrap">
                 <Icon
-                  name="ph:speedometer"
+                  name="mdi:speedometer"
                   class="h-[14px] w-[14px]"
                 />
                 Remaining rate limits
               </span>
               <Icon
-                name="ph:caret-right-bold"
-                class="h-[12px] w-[12px]"
+                name="ph:caret-down-bold ml-2"
+                class="h-[12px] w-[12px] transition-transform duration-150"
+                :class="isLocalRateLimitsExpanded ? 'rotate-180' : ''"
               />
+            </button>
+
+            <div
+              v-if="isLocalRateLimitsExpanded"
+              class="grid gap-0.5 px-2 pb-1.5 pt-0.5"
+            >
+              <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-x-3">
+                <span class="text-[32px] text-[color:var(--wb-text-primary)] font-semibold leading-[1.05]">5h</span>
+                <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">63%</span>
+                <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">20:51</span>
+              </div>
+              <div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-x-3">
+                <span class="text-[13px] text-[color:var(--wb-text-primary)] font-semibold leading-[1.2]">Weekly</span>
+                <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">12%</span>
+                <span class="text-[13px] text-[color:var(--wb-text-muted)] leading-none">16. Apr.</span>
+              </div>
+              <button
+                class="mt-0.5 h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2 text-left text-[13px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              >
+                <span class="whitespace-nowrap">Upgrade to Pro</span>
+                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px]" />
+              </button>
+              <button
+                class="h-8 w-full flex items-center justify-between rounded-[10px] border-none bg-[var(--wb-hover-bg)] px-2 text-left text-[13px] text-[color:var(--wb-text-muted)] outline-none transition-colors hover:brightness-110"
+              >
+                <span class="whitespace-nowrap">Learn more</span>
+                <Icon name="ph:arrow-square-out-bold" class="h-[14px] w-[14px]" />
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="mx-0.5 mt-1 border-t border-[color:var(--wb-divider)] pt-2"
+          >
+            <button
+              class="h-10 w-full flex items-center gap-2.5 rounded-[10px] border-none bg-transparent px-2 text-left text-[14px] text-[color:var(--wb-text-primary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+            >
+              <Icon
+                name="ph:arrows-left-right"
+                class="h-[16px] w-[16px]"
+              />
+              <span class="whitespace-nowrap">Handoff to worktree</span>
             </button>
           </div>
         </ComposerDropdownMenu>
@@ -553,13 +603,13 @@ const contextUsedLabel = computed(() =>
         <ComposerDropdownMenu
           :open="openMenuKey === 'branch'"
           menu-class="w-[360px]"
-          align="right"
+          align="left"
           @toggle="toggleMenu('branch')"
           @close="closeMenus"
         >
           <template #trigger="{ toggle }">
             <button
-              class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-text-secondary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+              class="h-9 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-3 text-[color:var(--wb-text-secondary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
               @click.stop="toggle"
             >
               <Icon
@@ -576,9 +626,7 @@ const contextUsedLabel = computed(() =>
             </button>
           </template>
 
-          <div
-            class="mb-2 h-10 flex items-center gap-2 border border-[color:var(--wb-border-2)] rounded-[12px] bg-[color-mix(in_srgb,var(--wb-bubble-bg)_74%,var(--wb-bg-panel)_26%)] px-3"
-          >
+          <div class="mb-2 h-10 flex items-center gap-2 px-2">
             <Icon
               name="ph:magnifying-glass-bold"
               class="h-[12px] w-[12px] text-[color:var(--wb-text-muted)]"
@@ -655,7 +703,7 @@ const contextUsedLabel = computed(() =>
         </ComposerDropdownMenu>
       </div>
 
-      <span class="inline-flex items-center gap-3">
+      <span class="inline-flex items-center gap-3.5">
         <ComposerDropdownMenu
           :open="openMenuKey === 'access'"
           menu-class="w-[210px]"
@@ -665,7 +713,7 @@ const contextUsedLabel = computed(() =>
         >
           <template #trigger="{ toggle }">
             <button
-              class="h-8 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-2.5 text-[color:var(--wb-access-warn)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              class="h-9 inline-flex items-center gap-1.5 rounded-[999px] border-none bg-transparent px-3 text-[color:var(--wb-access-warn)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
               @click.stop="toggle"
             >
               <Icon
@@ -688,7 +736,7 @@ const contextUsedLabel = computed(() =>
                 class="h-10 w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] text-[color:var(--wb-text-primary)] font-normal outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
                 @click="selectAccess(option.key)"
               >
-                <span class="inline-flex items-center gap-2.5">
+                <span class="inline-flex items-center gap-2.5 whitespace-nowrap">
                   <Icon
                     :name="
                       option.icon
