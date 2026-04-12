@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
+import { useTimeoutFn } from '@vueuse/core'
 import DsMessageHeader from '~/components/DsMessageHeader.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
-import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
 import ChatWorkbenchDemoMessage from '~/components/workbench/chat/ChatWorkbenchDemoMessage.vue'
+import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
 import { useDiffStore } from '~/stores/diff'
 import { chatMessageToPlainText } from '~/utils/workbench-chat-plain-text'
 
@@ -18,7 +19,9 @@ const props = defineProps<{
 
 const diffStore = useDiffStore()
 const copiedMessageId = ref<string | null>(null)
-let copiedResetTimer: ReturnType<typeof setTimeout> | undefined
+const { start: startCopiedReset, stop: stopCopiedReset } = useTimeoutFn(() => {
+  copiedMessageId.value = null
+}, 2200)
 const previousMessageMeta = computed(() => diffStore.previousMessageMeta(props.activeThreadId))
 const previousMessageExpanded = computed({
   get: () => diffStore.isPreviousMessageExpanded(props.activeThreadId),
@@ -60,22 +63,14 @@ async function copyMessage(message: ChatMessage) {
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(payload)
       copiedMessageId.value = message.id
-      if (copiedResetTimer)
-        clearTimeout(copiedResetTimer)
-      copiedResetTimer = setTimeout(() => {
-        copiedMessageId.value = null
-      }, 2200)
+      stopCopiedReset()
+      startCopiedReset()
     }
   }
   catch {
     copiedMessageId.value = null
   }
 }
-
-onBeforeUnmount(() => {
-  if (copiedResetTimer)
-    clearTimeout(copiedResetTimer)
-})
 </script>
 
 <template>
@@ -83,7 +78,7 @@ onBeforeUnmount(() => {
     class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] grid min-h-0 min-w-0 flex-1 gap-2 pb-[8px] pt-[8px]"
     :class="messages.length > 0 ? 'grid-rows-[1fr]' : 'grid-rows-[minmax(0,1fr)]'"
   >
-    <section class="wb-mainstage-scroll relative min-h-0 overflow-x-auto overflow-y-auto rounded-[28px] border-none bg-[var(--wb-bg-panel)] px-0 py-4">
+    <section class="wb-mainstage-scroll relative min-h-0 overflow-x-auto overflow-y-auto border-none bg-[var(--wb-bg-panel)] px-0 py-4">
       <WorkbenchEmptyState v-if="messages.length === 0" :repo="props.emptyStateRepo" />
 
       <div
@@ -104,10 +99,10 @@ onBeforeUnmount(() => {
           :class="message.role === 'user' ? 'max-w-[78%] self-end' : 'w-full max-w-none self-start'"
         >
           <article
-            class="rounded-[var(--wb-chat-bubble-radius)] p-[12px_14px] text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.45]"
+            class="rounded-[var(--wb-chat-bubble-radius)] text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.45]"
             :class="message.role === 'user'
-              ? 'border border-[color:var(--wb-border-3)] bg-[var(--wb-bubble-bg)]'
-              : 'border-none bg-transparent'"
+              ? 'border border-[color:var(--wb-border-3)] bg-[var(--wb-bubble-bg)] p-[12px_14px]'
+              : 'border-none bg-transparent p-0'"
             :style="message.role === 'user' ? { borderColor: 'color-mix(in srgb, var(--theme-accent) 22%, var(--wb-border-3))' } : undefined"
           >
             <p v-if="message.role === 'user'" class="m-0 whitespace-pre-line">

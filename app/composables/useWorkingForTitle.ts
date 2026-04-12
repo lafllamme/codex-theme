@@ -34,11 +34,12 @@ export function useWorkingForTitle(
   const title = computed(() => {
     const cap = maxCap.value
     const s = Math.min(displaySec.value, cap)
+    const verb = active.value ? 'Working' : 'Worked'
     if (s < 60)
-      return `Working for ${s}s`
+      return `${verb} for ${s}s`
     const m = Math.floor(s / 60)
     const r = s % 60
-    return `Working for ${m}m ${r}s`
+    return `${verb} for ${m}m ${r}s`
   })
 
   return { title }
