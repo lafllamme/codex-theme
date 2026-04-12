@@ -80,6 +80,14 @@ const defaultThread: ThreadItem = { id: 'thread-1', title: 'Investigate Codex to
 
 const threadItems: ThreadItem[] = [
   { ...defaultThread, added: 28, removed: 7 },
+  {
+    id: 'thread-working-demo',
+    title: 'Codex SVG sidebar toggle mock',
+    repo: 'codex-theme',
+    time: 'Just now',
+    added: 10,
+    removed: 0,
+  },
   { id: 'thread-2', title: 'Open Vue-Bits Dither page', repo: 'codex-theme', time: '3 Day(s)', added: 71, removed: 24 },
   { id: 'thread-3', title: 'Verify Geist font weight parity', repo: 'codex-theme', time: '19 Hrs.' },
   { id: 'thread-4', title: 'Add appearance settings sections', repo: 'codex-theme', time: '23 Hrs.' },

@@ -49,9 +49,23 @@ export interface FileChangeCardBlock {
 
 export type AssistantBlock = TextBlock | ComponentMentionBlock | FileChangeCardBlock
 
+/** Scripted “Working for…” demo inside the assistant bubble (themes workbench mock). */
+export interface WorkbenchChatDemoScript {
+  /** Seconds to stay in the working phase before revealing status + body (timer display caps at `maxDisplaySec`). */
+  minWorkingSec: number
+  /** Cap for the “Working for …” label (default 120). */
+  maxDisplaySec?: number
+  statusLines: string[]
+  /** One paragraph or several (joined with blank lines for typewriter). */
+  body: string | string[]
+  thinkingLabel?: string
+  blocks: AssistantBlock[]
+}
+
 export interface ChatMessage {
   id: string
   role: 'assistant' | 'user'
   text?: string
   blocks?: AssistantBlock[]
+  workbenchDemo?: WorkbenchChatDemoScript
 }

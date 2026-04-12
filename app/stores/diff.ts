@@ -47,6 +47,10 @@ export const useDiffStore = defineStore('diff', () => {
       count: 1,
       details: 'I just balanced the personal-page card states for hover contrast while keeping the +/- change signals clearly visible.',
     },
+    'thread-working-demo': {
+      count: 1,
+      details: 'I swapped the sidebar toggle and thread actions to Codex SVGs and kept the chat lane layout unchanged for a clean visual diff.',
+    },
   })
   const previousMessageExpandedByThread = ref<Record<string, boolean>>({})
 

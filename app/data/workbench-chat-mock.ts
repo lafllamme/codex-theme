@@ -1,5 +1,27 @@
-import type { ChatMessage } from '~/types/workbench-chat'
+import type { ChatMessage, FileChangeItem } from '~/types/workbench-chat'
 import { createSharedDiffFiles } from '~/data/workbench-diff-shared'
+
+/** Single-file diff for the scripted “working” demo thread. */
+export const workingDemoSidebarIconFile: FileChangeItem = {
+  id: 'f-codex-sidebar-toggle-icon',
+  path: 'app/components/icons/CodexSidebarToggleIcon.vue',
+  fileName: 'CodexSidebarToggleIcon.vue',
+  added: 10,
+  removed: 0,
+  showDot: true,
+  lines: [
+    { left: '', right: 1, text: '<script setup lang="ts">', kind: 'add' },
+    { left: '', right: 2, text: 'defineProps<{ open: boolean }>()', kind: 'add' },
+    { left: '', right: 3, text: '</script>', kind: 'add' },
+    { left: '', right: 4, text: '', kind: 'add' },
+    { left: '', right: 5, text: '<template>', kind: 'add' },
+    { left: '', right: 6, text: '  <svg class="codex-sidebar-toggle" viewBox="0 0 24 24" aria-hidden="true">', kind: 'add' },
+    { left: '', right: 7, text: '    <path v-if="open" d="M6 6l12 12M18 6L6 18" />', kind: 'add' },
+    { left: '', right: 8, text: '    <path v-else d="M4 6h16M4 12h16M4 18h16" />', kind: 'add' },
+    { left: '', right: 9, text: '  </svg>', kind: 'add' },
+    { left: '', right: 10, text: '</template>', kind: 'add' },
+  ],
+}
 
 export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
   'thread-1': [
@@ -157,5 +179,40 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
   'thread-8': [
     { id: 'a10', role: 'assistant', text: 'Personal-page card states updated with balanced hover contrast.' },
     { id: 'u10', role: 'user', text: 'Nice, keep plus/minus visible for this task.' },
+  ],
+  'thread-working-demo': [
+    {
+      id: 'wd-u1',
+      role: 'user',
+      text: 'Replace the Nuxt icon usages in the sidebar toggle and new-thread affordances with the Codex SVG components from my screenshot, keeping layout pixel-stable.',
+    },
+    {
+      id: 'wd-a1',
+      role: 'assistant',
+      workbenchDemo: {
+        minWorkingSec: 4,
+        maxDisplaySec: 120,
+        statusLines: [
+          'Explored 2 files, 1 search',
+          'Created `CodexSidebarToggleIcon.vue` +10 -0',
+        ],
+        body: [
+          'I\'m swapping the three spots—the new-thread button and sidebar toggle states—to Codex SVGs so we no longer depend on the Nuxt icon set.',
+          'Hitboxes stay the same; next I’ll sanity-check hover colors against the panel.',
+        ],
+        thinkingLabel: 'Thinking',
+        blocks: [
+          {
+            type: 'file_change_card',
+            id: 'card-working-demo',
+            summaryLabel: '1 file changed',
+            added: 10,
+            removed: 0,
+            revertLabel: 'Revert',
+            files: [workingDemoSidebarIconFile],
+          },
+        ],
+      },
+    },
   ],
 }

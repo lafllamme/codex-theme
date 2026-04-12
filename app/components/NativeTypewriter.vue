@@ -10,6 +10,8 @@ interface NativeTypewriterProps {
   startDelay?: number
   morph?: boolean
   className?: string
+  /** Chat-style wrapping; hero usage keeps default false. */
+  wrap?: boolean
 }
 
 const props = withDefaults(defineProps<NativeTypewriterProps>(), {
@@ -19,10 +21,19 @@ const props = withDefaults(defineProps<NativeTypewriterProps>(), {
   startDelay: 0,
   morph: true,
   className: '',
+  wrap: false,
 })
 
 const shouldReduceMotion = usePreferredReducedMotion()
 const displayedText = ref('')
+
+/** Single string avoids UnoCSS choking on undefined tokens in array :class during extract. */
+const rootClass = computed(() =>
+  [
+    props.wrap ? 'native-typewriter-wrap' : 'inline-flex items-center',
+    props.className?.trim() || undefined,
+  ].filter(Boolean).join(' '),
+)
 
 const speedMap = {
   slow: 100,
@@ -118,8 +129,8 @@ watch(
 </script>
 
 <template>
-  <div class="inline-flex items-center" :class="[props.className]">
-    <span class="whitespace-nowrap">
+  <div :class="rootClass">
+    <span :class="props.wrap ? 'native-typewriter-text' : 'whitespace-nowrap'">
       <Motion
         v-for="(char, index) in displayedText.split('')"
         :key="index"
@@ -149,3 +160,18 @@ watch(
     />
   </div>
 </template>
+
+<style scoped>
+.native-typewriter-wrap {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.native-typewriter-text {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+</style>

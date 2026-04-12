@@ -4,7 +4,9 @@ import DsMessageHeader from '~/components/DsMessageHeader.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
+import ChatWorkbenchDemoMessage from '~/components/workbench/chat/ChatWorkbenchDemoMessage.vue'
 import { useDiffStore } from '~/stores/diff'
+import { chatMessageToPlainText } from '~/utils/workbench-chat-plain-text'
 
 const props = defineProps<{
   activeThreadId: string
@@ -39,23 +41,6 @@ function blockKey(block: AssistantBlock, index: number) {
   return `change-${index}-${block.summaryLabel}`
 }
 
-function blockToPlainText(block: AssistantBlock) {
-  if (block.type === 'text')
-    return block.text
-  if (block.type === 'component_mention')
-    return `${block.lead} ${block.component}${block.trail ? ` ${block.trail}` : ''}\n${block.path}`
-  return [
-    `${block.summaryLabel} +${block.added} -${block.removed}`,
-    ...block.files.map(file => `${file.path} +${file.added} -${file.removed}`),
-  ].join('\n')
-}
-
-function messageToPlainText(message: ChatMessage) {
-  if (message.blocks?.length)
-    return message.blocks.map(blockToPlainText).join('\n\n')
-  return message.text ?? ''
-}
-
 function firstFileChangeCardIndex(message: ChatMessage) {
   if (!message.blocks?.length)
     return -1
@@ -68,7 +53,7 @@ function hasInlineCopyBeforeCard(message: ChatMessage) {
 }
 
 async function copyMessage(message: ChatMessage) {
-  const payload = messageToPlainText(message).trim()
+  const payload = chatMessageToPlainText(message).trim()
   if (!payload)
     return
   try {
@@ -128,6 +113,11 @@ onBeforeUnmount(() => {
             <p v-if="message.role === 'user'" class="m-0 whitespace-pre-line">
               {{ message.text }}
             </p>
+            <ChatWorkbenchDemoMessage
+              v-else-if="message.role === 'assistant' && message.workbenchDemo"
+              :message="message"
+              :code-theme-id="codeThemeId"
+            />
             <div v-else-if="message.blocks?.length" class="flex flex-col gap-1.5">
               <template v-for="(block, index) in message.blocks" :key="blockKey(block, index)">
                 <p v-if="block.type === 'text'" class="m-0 max-w-[min(78ch,100%)] whitespace-pre-line leading-[1.5]">
