@@ -256,7 +256,7 @@ function afterRepoLeave(el: Element) {
       ]"
     >
       <div
-        class="min-h-0 w-full flex flex-1 flex-col origin-left gap-[10px] pt-[38px] transition-[width,opacity,transform] duration-260"
+        class="min-h-0 w-full flex flex-1 flex-col origin-left gap-[10px] pt-[var(--wb-top-chrome-height,38px)] transition-[width,opacity,transform] duration-260"
         :class="collapsed
           ? 'w-0 opacity-0 -translate-x-[12px] overflow-hidden pointer-events-none'
           : isThreadsFilterMenuOpen

@@ -132,14 +132,16 @@ onBeforeUnmount(() => {
     class="chat-header-bar grid grid-cols-[minmax(0,1fr)_auto] h-[38px] items-center gap-2 px-0.5"
   >
     <div
-      class="chat-header-left min-w-0 inline-flex items-center gap-1 overflow-hidden"
+      class="chat-header-left min-w-0 w-full flex items-center gap-1 overflow-hidden"
     >
-      <div class="min-w-0 inline-flex items-center gap-3 overflow-hidden">
+      <div
+        class="chat-header-text-cluster min-h-0 min-w-0 flex flex-1 items-center gap-3 overflow-hidden"
+      >
         <strong
-          class="chat-header-title min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none"
+          class="chat-header-title min-h-0 min-w-0 flex-1 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none"
         >{{ title }}</strong>
         <span
-          class="chat-header-repo min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-none"
+          class="chat-header-repo max-w-[42%] min-h-0 min-w-0 flex-none truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-none"
         >{{ repo }}</span>
       </div>
       <button
@@ -254,29 +256,15 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.chat-header-title {
-  max-width: min(44vw, 540px);
-}
-
 .chat-header-left {
   padding-inline-start: var(--wb-header-left-safe-area, 0px);
   transform: translateX(var(--wb-header-title-shift, 0px));
-  transition:
-    transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-    padding-inline-start 220ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: padding-inline-start 220ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
-.chat-header-repo {
-  max-width: min(24vw, 260px);
-}
-
-@media (max-width: 1180px) {
-  .chat-header-title {
-    max-width: min(50vw, 380px);
-  }
-
+@container wb-chat-header (max-width: 400px) {
   .chat-header-repo {
-    max-width: min(30vw, 190px);
+    display: none;
   }
 }
 
@@ -291,10 +279,6 @@ onBeforeUnmount(() => {
 
   .chat-header-left {
     gap: 4px;
-  }
-
-  .chat-header-title {
-    max-width: min(48vw, 220px);
   }
 
   .chat-header-controls {
@@ -313,16 +297,6 @@ onBeforeUnmount(() => {
     padding-inline: 0;
     justify-content: center;
     gap: 0;
-  }
-}
-
-@media (max-width: 640px) {
-  .chat-header-repo {
-    display: none;
-  }
-
-  .chat-header-title {
-    max-width: min(56vw, 208px);
   }
 }
 </style>

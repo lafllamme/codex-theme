@@ -184,10 +184,11 @@ const shellStyle = computed(() => ({
   '--wb-diff-size': `${diffWidth.value}px`,
   '--wb-body-frame-width-budget': bodyFrameWidthBudget.value,
   '--wb-body-shift': `${bodyShiftPx.value}px`,
+  '--wb-top-chrome-height': '38px',
   '--wb-header-left-safe-area': isSidebarCollapsed.value
     ? 'clamp(244px, 16vw, 320px)'
     : 'clamp(150px, 10.5vw, 224px)',
-  '--wb-header-title-shift': isSidebarCollapsed.value ? '18px' : '-4px',
+  '--wb-header-title-shift': '0px',
   '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))
 
@@ -338,7 +339,7 @@ function beginDiffResize(event: MouseEvent) {
     :style="shellStyle"
   >
     <div class="wb-control-lane">
-      <div class="hidden min-[1181px]:inline-flex items-center gap-[9px]">
+      <div class="hidden items-center gap-[9px] min-[1181px]:inline-flex">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
@@ -620,6 +621,8 @@ function beginDiffResize(event: MouseEvent) {
   border: none;
   border-radius: 28px 28px 0 0;
   overflow: visible;
+  container-type: inline-size;
+  container-name: wb-chat-header;
 }
 
 .wb-body-frame {
@@ -743,7 +746,11 @@ function beginDiffResize(event: MouseEvent) {
 
 @media (max-width: 1180px) {
   .wb-main-area {
-    --wb-header-left-safe-area: 16px;
+    /*
+      Clear absolutely positioned .wb-control-lane: left 8px + translate 12px + up to four 22px
+      controls with 6px gaps (~132px) + margin before title. Matches collapsed sidebar + new-thread.
+    */
+    --wb-header-left-safe-area: clamp(128px, 32vw, 168px);
     --wb-header-title-shift: 0px;
     padding: 2px 10px 0 10px;
   }
@@ -781,7 +788,8 @@ function beginDiffResize(event: MouseEvent) {
 
 @media (max-width: 768px) {
   .wb-main-area {
-    --wb-header-left-safe-area: 12px;
+    /* .wb-top-control-secondary hidden: sidebar toggle + lane offsets only */
+    --wb-header-left-safe-area: clamp(52px, 16vw, 72px);
     padding: 2px 6px 0 6px;
   }
 
