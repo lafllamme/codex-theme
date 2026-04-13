@@ -805,9 +805,9 @@ function beginDiffResize(event: MouseEvent) {
 
   .diff-column {
     position: fixed;
-    top: 56px;
+    top: 0;
     right: 8px;
-    bottom: 10px;
+    bottom: 0;
     width: min(92vw, 460px);
     max-width: calc(100vw - 16px);
     margin-left: 0;

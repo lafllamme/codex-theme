@@ -239,10 +239,14 @@ watch(
 @media (max-width: 1180px) {
   .diff-drawer {
     position: fixed;
-    inset: 104px 8px 8px;
+    top: 0;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
     z-index: 42;
     width: auto;
     max-width: none;
+    height: auto;
     opacity: 0;
     transform: translateX(105%);
     pointer-events: none;
