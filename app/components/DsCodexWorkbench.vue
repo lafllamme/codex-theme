@@ -33,10 +33,7 @@ const modelOptions = [
   'GPT-5.4',
   'GPT-5.4-Mini',
   'GPT-5.3-Codex',
-  'GPT-5.2-Codex',
   'GPT-5.2',
-  'GPT-5.1-Codex-Max',
-  'GPT-5.1-Codex-Mini',
 ]
 const thinkingOptions = ['Low', 'Medium', 'High', 'Very high']
 

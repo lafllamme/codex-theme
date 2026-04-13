@@ -677,7 +677,7 @@ const contextUsedLabel = computed(() =>
               <p
                 class="mb-2 px-2 text-[17px] text-[color:var(--wb-text-muted)] font-normal leading-[1.2]"
               >
-                Select model
+                Model
               </p>
               <ul class="grid m-0 list-none gap-1 p-0">
                 <li
@@ -726,7 +726,7 @@ const contextUsedLabel = computed(() =>
               <p
                 class="mb-2 px-2 text-[17px] text-[color:var(--wb-text-muted)] font-normal leading-[1.2]"
               >
-                Select reasoning
+                Reasoning
               </p>
               <ul class="grid m-0 list-none gap-1 p-0">
                 <li

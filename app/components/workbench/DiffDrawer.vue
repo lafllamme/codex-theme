@@ -173,13 +173,13 @@ watch(
 
       <div class="inline-flex items-center gap-1 text-[color:color-mix(in_srgb,var(--wb-text-primary)_74%,transparent)]">
         <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
-          <Icon name="ph:dots-three" class="h-[12px] w-[12px]" />
+          <Icon name="ph:dots-three" class="size-[16px]" />
         </button>
         <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
-          <Icon name="ph:folders" class="h-[12px] w-[12px]" />
+          <Icon name="ph:square-split-horizontal" class="size-[16px]" />
         </button>
         <button class="h-6 w-6 inline-flex appearance-none items-center justify-center rounded-[8px] border-none bg-transparent p-0 text-[color:inherit] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]">
-          <Icon name="ph:arrows-out-simple" class="h-[12px] w-[12px]" />
+          <Icon name="ph:folders" class="size-[16px]" />
         </button>
       </div>
     </header>
