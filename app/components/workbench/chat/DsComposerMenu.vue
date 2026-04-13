@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import { nextTick, watch } from 'vue'
 import CodexSkillIcon from '~/components/icons/CodexSkillIcon.vue'
 
 export type ComposerMenuTrigger = '/' | '@' | '$'
@@ -45,6 +46,7 @@ const emit = defineEmits<{
 }>()
 
 const rootRef = ref<HTMLElement | null>(null)
+const listScrollRef = ref<HTMLElement | null>(null)
 
 onClickOutside(rootRef, () => {
   if (props.open)
@@ -71,6 +73,20 @@ function select(item: ComposerMenuItem) {
     return
   emit('select', item)
 }
+
+watch(
+  () => props.activeItemId,
+  async (id) => {
+    if (!props.open || !id)
+      return
+    await nextTick()
+    const scroller = listScrollRef.value
+    if (!scroller)
+      return
+    const el = scroller.querySelector<HTMLElement>(`[data-composer-item="${CSS.escape(id)}"]`)
+    el?.scrollIntoView({ block: 'nearest' })
+  },
+)
 </script>
 
 <template>
@@ -80,7 +96,7 @@ function select(item: ComposerMenuItem) {
     class="pointer-events-auto absolute bottom-full z-[65] mb-3 border border-[color:color-mix(in_srgb,var(--wb-border-2)_56%,transparent)] rounded-[20px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_72%,transparent)] p-2 backdrop-blur-[16px]"
     :class="insetClass"
   >
-    <div class="max-h-[320px] overflow-y-auto">
+    <div ref="listScrollRef" class="max-h-[320px] overflow-y-auto">
       <div
         v-for="section in sections"
         :key="section.id"
@@ -93,15 +109,12 @@ function select(item: ComposerMenuItem) {
           <button
             v-for="item in section.items"
             :key="item.id"
-            class="min-h-[36px] w-full flex items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] font-[var(--font-ui)] outline-none transition-colors"
-            :class="[
-              item.disabled
-                ? 'cursor-default text-[color:var(--wb-text-faint)]'
-                : 'hover:bg-[var(--wb-hover-bg)]',
-              activeItemId === item.id && !item.disabled
-                ? 'bg-[var(--wb-hover-bg)]'
-                : '',
-            ]"
+            type="button"
+            :data-composer-item="item.id"
+            :data-highlighted="!item.disabled && activeItemId === item.id ? true : undefined"
+            :disabled="item.disabled"
+            class="composer-menu-item min-h-[36px] w-full flex cursor-pointer items-center justify-between rounded-[10px] border-none bg-transparent px-2.5 text-left text-[15px] font-[var(--font-ui)] outline-none transition-[background-color,color] duration-150"
+            :class="item.disabled ? 'cursor-default text-[color:var(--wb-text-faint)]' : ''"
             @click="select(item)"
           >
             <span class="min-w-0 inline-flex items-center gap-2.5">
@@ -137,3 +150,11 @@ function select(item: ComposerMenuItem) {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Same background for hover and keyboard-highlighted row (single source of truth). */
+.composer-menu-item:not(:disabled):hover,
+.composer-menu-item:not(:disabled)[data-highlighted='true'] {
+  background-color: var(--wb-hover-bg);
+}
+</style>

@@ -49,6 +49,8 @@ const activeComposerTrigger = ref<ComposerMenuTrigger | null>(null)
 const composerMenuQuery = ref('')
 const composerMenuOpen = ref(false)
 const composerMenuActiveIndex = ref(0)
+/** When this matches the current trigger+query, keyboard highlight is preserved (arrow keys). Ref reset only when the user changes the filter. */
+const composerMenuFilterSignature = ref('')
 
 const openMenuKey = ref<
     null | 'plus' | 'model' | 'thinking' | 'local' | 'access' | 'branch'
@@ -309,13 +311,20 @@ function refreshComposerMenu() {
     activeComposerTrigger.value = null
     composerMenuQuery.value = ''
     composerMenuActiveIndex.value = 0
+    composerMenuFilterSignature.value = ''
     return
   }
 
+  const nextSignature = `${token.trigger}\0${token.query}`
   activeComposerTrigger.value = token.trigger
   composerMenuQuery.value = token.query
   composerMenuOpen.value = true
-  composerMenuActiveIndex.value = 0
+
+  if (composerMenuFilterSignature.value !== nextSignature) {
+    composerMenuFilterSignature.value = nextSignature
+    composerMenuActiveIndex.value = 0
+  }
+  clampComposerMenuIndex()
 }
 
 function removeComposerMention(id: string) {
@@ -327,6 +336,7 @@ function closeComposerMenu() {
   activeComposerTrigger.value = null
   composerMenuQuery.value = ''
   composerMenuActiveIndex.value = 0
+  composerMenuFilterSignature.value = ''
 }
 
 function selectComposerMenuItem(item: ComposerMenuItem) {
@@ -501,7 +511,6 @@ const contextUsedLabel = computed(() =>
               @focus="refreshComposerMenu"
               @input="refreshComposerMenu"
               @click="refreshComposerMenu"
-              @keyup="refreshComposerMenu"
               @keydown="handleComposerInputKeydown"
             >
           </div>
