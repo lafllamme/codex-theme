@@ -50,7 +50,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
           summaryLabel: '3 files changed',
           added: 86,
           removed: 33,
-          revertLabel: 'Revert',
+          revertLabel: 'Undo',
           files: createSharedDiffFiles(),
         },
       ],
@@ -88,7 +88,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
           summaryLabel: '3 files changed',
           added: 9,
           removed: 5,
-          revertLabel: 'Revert',
+          revertLabel: 'Undo',
           files: [
             {
               id: 'f3',
@@ -214,7 +214,7 @@ export const workbenchMessagesByThread: Record<string, ChatMessage[]> = {
             summaryLabel: '1 file changed',
             added: 10,
             removed: 0,
-            revertLabel: 'Revert',
+            revertLabel: 'Undo',
             files: [workingDemoSidebarIconFile],
           },
         ],

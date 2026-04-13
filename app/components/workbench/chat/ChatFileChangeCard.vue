@@ -134,11 +134,16 @@ function lineMarkerClass(line: FileDiffCodeLine) {
               class="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--theme-accent)]"
             />
           </div>
-          <div class="ml-3 flex items-center gap-2">
+          <div class="ml-3 flex shrink-0 items-center gap-2">
+            <Icon
+              name="ph:arrow-square-out"
+              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+              aria-hidden="true"
+            />
             <Icon
               name="ph:caret-down-bold"
-              class="h-[11px] w-[11px] text-[color:var(--wb-text-muted)] opacity-0 transition-[opacity,transform] duration-150 group-hover:opacity-100"
-              :class="file.id === diffStore.activeFileId(block.id) ? 'rotate-180 opacity-100' : ''"
+              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] opacity-100 transition-transform duration-150"
+              :class="file.id === diffStore.activeFileId(block.id) ? 'rotate-180' : ''"
             />
           </div>
         </button>
