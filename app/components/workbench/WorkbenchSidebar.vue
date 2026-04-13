@@ -246,7 +246,7 @@ function afterRepoLeave(el: Element) {
     />
 
     <aside
-      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:left-[8px] max-[1180px]:top-[72px] max-md:left-[8px] max-md:top-[60px] max-[1180px]:z-[40] max-[1180px]:max-h-[calc(100vh-84px)] max-[1180px]:w-[min(92vw,360px)] max-md:max-h-[calc(100vh-72px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
+      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:bottom-0 max-[1180px]:left-[8px] max-[1180px]:top-0 max-md:left-[8px] max-[1180px]:z-[40] max-[1180px]:w-[min(92vw,360px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
       :class="[
         mobileOpen ? 'max-[1180px]:translate-x-0' : '',
         collapsed
