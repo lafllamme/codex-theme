@@ -40,6 +40,8 @@ const props = withDefaults(
 const emit = defineEmits<{
   animationsfinish: [event: CustomEvent]
   animationsstart: [event: CustomEvent]
+  /** Fired after `@number-flow/vue` is loaded and the animated component can render. */
+  numberFlowReady: []
 }>()
 
 const numberFlowComponent = shallowRef<unknown>(null)
@@ -49,6 +51,7 @@ onMounted(async () => {
   const numberFlowModule = await import('@number-flow/vue')
   numberFlowComponent.value = numberFlowModule.default
   numberFlowPlugins.value = [numberFlowModule.continuous]
+  emit('numberFlowReady')
 })
 
 const fallbackText = computed(() => {

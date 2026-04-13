@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTimeoutFn } from '@vueuse/core'
+
 defineProps<{
   title: string
   repo: string
@@ -91,7 +93,30 @@ const diffAdded = 836
 const diffRemoved = 1068
 const animatedDiffAdded = ref(0)
 const animatedDiffRemoved = ref(0)
-let diffAnimationTimer: ReturnType<typeof setTimeout> | null = null
+let diffDeltaAnimationScheduled = false
+let stopDiffFallback = () => {}
+
+const { start: startDiffReveal, stop: stopDiffReveal } = useTimeoutFn(() => {
+  animatedDiffAdded.value = diffAdded
+  animatedDiffRemoved.value = diffRemoved
+}, 40, { immediate: false })
+
+function scheduleDiffDeltaAnimation() {
+  if (diffDeltaAnimationScheduled)
+    return
+  diffDeltaAnimationScheduled = true
+  stopDiffFallback()
+  stopDiffReveal()
+  startDiffReveal()
+}
+
+const fallbackDiffAnimation = useTimeoutFn(
+  scheduleDiffDeltaAnimation,
+  800,
+  { immediate: false },
+)
+stopDiffFallback = fallbackDiffAnimation.stop
+const startDiffFallback = fallbackDiffAnimation.start
 
 const commitOptions = computed(() => {
   return (
@@ -112,18 +137,8 @@ function handleCommitPrimaryAction(actionKey: string) {
 }
 
 onMounted(() => {
-  diffAnimationTimer = setTimeout(() => {
-    animatedDiffAdded.value = diffAdded
-    animatedDiffRemoved.value = diffRemoved
-    diffAnimationTimer = null
-  }, 40)
-})
-
-onBeforeUnmount(() => {
-  if (!diffAnimationTimer)
-    return
-  clearTimeout(diffAnimationTimer)
-  diffAnimationTimer = null
+  // Run if `numberFlowReady` never fires (e.g. failed dynamic import).
+  startDiffFallback()
 })
 </script>
 
@@ -223,6 +238,7 @@ onBeforeUnmount(() => {
               :spin-timing="{ duration: 1020, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }"
               :opacity-timing="{ duration: 420, easing: 'ease-out' }"
               :will-change="true"
+              @number-flow-ready="scheduleDiffDeltaAnimation"
             />
           </span>
           <span class="text-[color:var(--wb-diff-delta-removed)]">
