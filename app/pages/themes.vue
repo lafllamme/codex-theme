@@ -254,10 +254,28 @@ function applyPayload(next: CodexThemePayload) {
 }
 
 function snapshotPayload(): CodexThemePayload {
+  // Avoid cloning reactive proxies directly; copy only the serializable theme contract.
+  // This prevents DataCloneError if stray non-cloneable values ever get attached.
+  const theme = payload.theme
   return {
     codeThemeId: payload.codeThemeId,
     variant: payload.variant,
-    theme: structuredClone(payload.theme),
+    theme: {
+      accent: String(theme.accent),
+      contrast: Number(theme.contrast),
+      fonts: {
+        code: theme.fonts.code ? String(theme.fonts.code) : null,
+        ui: theme.fonts.ui ? String(theme.fonts.ui) : null,
+      },
+      ink: String(theme.ink),
+      opaqueWindows: Boolean(theme.opaqueWindows),
+      semanticColors: {
+        diffAdded: String(theme.semanticColors.diffAdded),
+        diffRemoved: String(theme.semanticColors.diffRemoved),
+        skill: String(theme.semanticColors.skill),
+      },
+      surface: String(theme.surface),
+    },
   }
 }
 
