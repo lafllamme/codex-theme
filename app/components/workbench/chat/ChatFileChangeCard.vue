@@ -106,7 +106,7 @@ function lineMarkerClass(line: FileDiffCodeLine) {
       <div
         v-for="(file, index) in block.files"
         :key="file.id"
-        class="group relative z-0 border-b border-[color:var(--wb-divider)] hover:z-40 last:border-b-0"
+        class="relative z-0 border-b border-[color:var(--wb-divider)] hover:z-40 last:border-b-0"
       >
         <span
           class="pointer-events-none absolute bottom-full z-50 mb-1 max-w-[calc(100%-12px)] inline-flex translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160 -left-2"
@@ -115,7 +115,8 @@ function lineMarkerClass(line: FileDiffCodeLine) {
           {{ file.path }}
         </span>
         <button
-          class="group w-full flex items-center justify-between border-none bg-[var(--wb-card-tab-bg)] px-3 py-2 text-left transition-colors"
+          type="button"
+          class="group/file-row w-full flex items-center justify-between border-none bg-[var(--wb-card-tab-bg)] px-3 py-2 text-left transition-colors"
           :class="index === block.files.length - 1 && file.id !== diffStore.activeFileId(block.id) ? 'rounded-b-[8px]' : ''"
           @click="selectFile(file)"
         >
@@ -134,16 +135,24 @@ function lineMarkerClass(line: FileDiffCodeLine) {
               class="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--theme-accent)]"
             />
           </div>
-          <div class="ml-3 flex shrink-0 items-center gap-2">
-            <Icon
-              name="ph:arrow-square-out"
-              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-              aria-hidden="true"
-            />
+          <div
+            class="ml-3 flex shrink-0 items-center gap-2 text-[color:var(--wb-text-secondary)] transition-colors duration-150 group-hover/file-row:text-[color:var(--wb-text-primary)]"
+          >
+            <span
+              class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-[opacity,color] duration-150 group-hover/file-row:opacity-100"
+              @click.stop
+            >
+              <Icon
+                name="ph:arrow-square-out"
+                class="h-[11px] w-[11px] text-current"
+                aria-hidden="true"
+              />
+            </span>
             <Icon
               name="ph:caret-down-bold"
-              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] opacity-100 transition-transform duration-150"
+              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] transition-[transform,color] duration-150 group-hover/file-row:text-[color:var(--wb-text-secondary)]"
               :class="file.id === diffStore.activeFileId(block.id) ? 'rotate-180' : ''"
+              aria-hidden="true"
             />
           </div>
         </button>

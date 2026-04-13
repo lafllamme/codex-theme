@@ -142,7 +142,7 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
   <section
     class="[--wb-accordion-header-bg:color-mix(in_srgb,var(--wb-card-surface)_94%,var(--wb-text-primary)_6%)] [--wb-card-surface:color-mix(in_srgb,var(--wb-bubble-bg)_90%,var(--wb-bg-panel)_10%)] [--wb-row-divider:var(--wb-card-surface)] [--wb-unmodified-strip-bg:color-mix(in_srgb,var(--wb-card-surface)_88%,var(--wb-text-primary)_12%)] mb-3 max-w-full min-w-0 overflow-visible border border-[color:var(--wb-border-2)] rounded-[10px] bg-[var(--wb-card-surface)] last:mb-0"
   >
-    <div class="group relative z-0 hover:z-40">
+    <div class="relative z-0 hover:z-40">
       <span
         class="pointer-events-none absolute bottom-full z-[220] mb-1 max-w-[calc(100%-12px)] inline-flex translate-y-1 items-center truncate whitespace-nowrap border border-[color:var(--wb-border-3)] rounded-[8px] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_88%,var(--wb-text-primary)_12%)] px-3 py-1 text-[length:var(--wb-code-text-sm)] text-[color:var(--wb-text-primary)] font-[var(--font-code)] opacity-0 transition-[opacity,transform] duration-160 -left-2"
         :class="titleHovered ? 'translate-y-0 opacity-100' : ''"
@@ -151,7 +151,8 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
       </span>
 
       <button
-        class="group w-full flex items-center justify-between border-none bg-[var(--wb-accordion-header-bg)] px-3 py-2 text-left outline-none transition-colors"
+        type="button"
+        class="group/drawer w-full flex items-center justify-between border-none bg-[var(--wb-accordion-header-bg)] px-3 py-2 text-left outline-none transition-colors"
         :class="collapsed
           ? 'rounded-[8px]'
           : 'rounded-t-[8px]'"
@@ -182,17 +183,36 @@ function maxSectionLineColumns(lines: FileDiffLine[]) {
             class="h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--theme-accent)]"
           />
         </div>
-        <div class="ml-3 inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)]">
-          <span class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-            <Icon name="ph:arrow-u-up-left" class="h-[11px] w-[11px]" />
+        <div
+          class="ml-3 inline-flex items-center gap-2 text-[color:var(--wb-text-secondary)] transition-colors duration-150 group-hover/drawer:text-[color:var(--wb-text-primary)]"
+        >
+          <span
+            class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-[opacity,color] duration-150 group-hover/drawer:opacity-100"
+            @click.stop
+          >
+            <Icon name="ph:arrow-u-up-left" class="h-[11px] w-[11px] text-current" aria-hidden="true" />
           </span>
-          <span class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-opacity duration-150 group-hover:opacity-100">
-            <Icon name="ph:plus-bold" class="h-[11px] w-[11px]" />
+          <span
+            class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-[opacity,color] duration-150 group-hover/drawer:opacity-100"
+            @click.stop
+          >
+            <Icon name="ph:plus-bold" class="h-[11px] w-[11px] text-current" aria-hidden="true" />
           </span>
-          <span class="h-4 w-4 inline-flex items-center justify-center">
+          <span
+            class="h-4 w-4 inline-flex items-center justify-center opacity-0 transition-[opacity,color] duration-150 group-hover/drawer:opacity-100"
+            @click.stop
+          >
+            <Icon
+              name="ph:arrow-square-out"
+              class="h-[11px] w-[11px] text-current"
+              aria-hidden="true"
+            />
+          </span>
+          <span class="h-4 w-4 inline-flex items-center justify-center text-[color:var(--wb-text-muted)] transition-colors duration-150 group-hover/drawer:text-[color:var(--wb-text-secondary)]">
             <Icon
               :name="collapsed ? 'ph:caret-right-bold' : 'ph:caret-down-bold'"
-              class="h-[11px] w-[11px] shrink-0 text-[color:var(--wb-text-muted)] transition-transform duration-150"
+              class="h-[11px] w-[11px] shrink-0 text-current transition-transform duration-150"
+              aria-hidden="true"
             />
           </span>
         </div>
