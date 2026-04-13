@@ -338,7 +338,7 @@ function beginDiffResize(event: MouseEvent) {
     :style="shellStyle"
   >
     <div class="wb-control-lane">
-      <div class="inline-flex items-center gap-[9px]">
+      <div class="hidden min-[1181px]:inline-flex items-center gap-[9px]">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span class="h-3 w-3 rounded-full bg-[#28c840]" />
