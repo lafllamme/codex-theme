@@ -126,7 +126,7 @@ watch(
 
     <header
       v-show="activeTab === 'review'"
-      class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]"
+      class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-chrome-hairline)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]"
     >
       <ComposerDropdownMenu
         :open="openMenuKey === 'status'"
@@ -144,7 +144,7 @@ watch(
               aria-label="Change scope"
               @click.stop="toggle"
             >
-              <Icon name="ph:caret-up-down" class="rotate-45 size-[14px] shrink-0" aria-hidden="true" />
+              <Icon name="ph:caret-up-down" class="size-[14px] shrink-0 rotate-45" aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -310,8 +310,7 @@ watch(
   opacity: 0;
   transform: translateX(12px);
   pointer-events: none;
-  /* Subtle column edge (Codex-like): mostly border tokens, tiny text tint when open. */
-  border-left: 1px solid var(--wb-border-2);
+  border-left: 1px solid var(--wb-chrome-hairline);
   transition:
     opacity 220ms ease,
     transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
@@ -323,12 +322,12 @@ watch(
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
-  border-left-color: color-mix(in srgb, var(--wb-border-2) 88%, var(--wb-text-primary) 12%);
+  border-left-color: color-mix(in srgb, var(--wb-chrome-hairline) 94%, var(--wb-text-primary) 6%);
 }
 
 /* Tab strip hairline; active tab = bottom accent only (no box). */
 .diff-drawer-tablist {
-  border-bottom: 1px solid var(--wb-border-2);
+  border-bottom: 1px solid var(--wb-chrome-hairline);
 }
 
 .diff-drawer-tab {

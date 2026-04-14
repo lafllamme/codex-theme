@@ -163,6 +163,8 @@ export function codexWorkbenchCssVars(
     '--wb-text-muted': `color-mix(in srgb, ${ink} 42%, transparent)`,
     '--wb-text-faint': `color-mix(in srgb, ${ink} 26%, transparent)`,
     '--wb-divider': `color-mix(in srgb, ${ink} 12%, transparent)`,
+    /** Softer than `--wb-divider`: header hairlines, diff chrome (Codex-like). */
+    '--wb-chrome-hairline': `color-mix(in srgb, ${ink} 7%, transparent)`,
     '--wb-hover-bg': `color-mix(in srgb, ${ink} 8%, transparent)`,
     '--wb-hover-bg-strong': `color-mix(in srgb, ${ink} 11%, transparent)`,
     '--wb-hover-border': `color-mix(in srgb, ${ink} 14%, transparent)`,

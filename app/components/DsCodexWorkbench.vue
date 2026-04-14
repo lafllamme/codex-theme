@@ -470,8 +470,6 @@ function beginDiffResize(event: MouseEvent) {
                     class="min-h-0 min-w-0 flex-1"
                     :open="isDiffOpen"
                     :code-theme-id="payload.codeThemeId"
-                    :accent="payload.theme.accent"
-                    :contrast="payload.theme.contrast"
                   />
                 </div>
               </div>
@@ -616,6 +614,7 @@ function beginDiffResize(event: MouseEvent) {
 
 .wb-chat-header-shell {
   border: none;
+  border-bottom: 1px solid var(--wb-chrome-hairline);
   border-radius: 28px 28px 0 0;
   overflow: visible;
   container-type: inline-size;
