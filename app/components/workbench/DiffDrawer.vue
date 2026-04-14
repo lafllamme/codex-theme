@@ -16,10 +16,17 @@ const diffSections = computed(() => diffStore.resolvedDrawerSections)
 const suspendAccordionMotion = ref(false)
 const openMenuKey = ref<null | 'status'>(null)
 const selectedStatusKey = ref<'unstaged' | 'staged' | 'all' | 'last-round'>('unstaged')
+/** Summary vs diff preview; Review matches Codex default. */
+const activeTab = ref<'summary' | 'review'>('review')
 const statusCounts = {
-  unstaged: 1,
+  unstaged: 2,
   staged: 0,
+  untracked: 0,
 } as const
+
+const summaryGitStatusLine = computed(() =>
+  `${statusCounts.staged} staged, ${statusCounts.unstaged} unstaged, ${statusCounts.untracked} untracked`,
+)
 
 const selectedStatusLabel = computed(() => {
   if (selectedStatusKey.value === 'staged')
@@ -84,7 +91,43 @@ watch(
 
 <template>
   <aside class="diff-drawer relative max-w-full overflow-x-hidden overflow-y-visible border-l border-l-[color:color-mix(in_srgb,var(--wb-divider)_86%,transparent)] rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
-    <header class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]">
+    <div
+      class="relative z-[55] flex shrink-0 items-end justify-start gap-1 border-b border-[color:var(--wb-border-2)] px-2"
+      role="tablist"
+      aria-label="Diff drawer views"
+    >
+      <button
+        type="button"
+        role="tab"
+        :aria-selected="activeTab === 'summary'"
+        class="relative min-h-[30px] inline-flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
+        :class="activeTab === 'summary'
+          ? 'border-[color:var(--wb-text-primary)] text-[color:var(--wb-text-primary)]'
+          : 'border-transparent text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
+        @click="activeTab = 'summary'"
+      >
+        <Icon name="hugeicons:list-start" class="size-[14px] scale-y-[-1] shrink-0 opacity-[0.92]" aria-hidden="true" />
+        <span class="whitespace-nowrap">Summary</span>
+      </button>
+      <button
+        type="button"
+        role="tab"
+        :aria-selected="activeTab === 'review'"
+        class="relative min-h-[30px] inline-flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
+        :class="activeTab === 'review'
+          ? 'border-[color:var(--wb-text-primary)] text-[color:var(--wb-text-primary)]'
+          : 'border-transparent text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
+        @click="activeTab = 'review'"
+      >
+        <Icon name="hugeicons:plus-minus-square-01" class="size-[14px] shrink-0 opacity-[0.92]" aria-hidden="true" />
+        <span class="whitespace-nowrap">Review</span>
+      </button>
+    </div>
+
+    <header
+      v-show="activeTab === 'review'"
+      class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-border-2)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]"
+    >
       <ComposerDropdownMenu
         :open="openMenuKey === 'status'"
         direction="down"
@@ -183,7 +226,41 @@ watch(
         </button>
       </div>
     </header>
+
     <div
+      v-show="activeTab === 'summary'"
+      class="diff-scroll summary-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto px-3 pb-4 pt-5 text-[13px] font-[var(--font-ui)]"
+    >
+      <section class="mb-5">
+        <h3 class="mb-2.5 text-[11px] text-[color:var(--wb-text-muted)] font-semibold tracking-[0.04em] uppercase">
+          Git
+        </h3>
+        <ul class="m-0 list-none p-0 space-y-2.5">
+          <li class="flex items-start gap-2.5 text-[color:var(--wb-text-primary)] leading-[1.45]">
+            <Icon name="ph:pencil-simple" class="mt-[2px] size-[14px] shrink-0 text-[color:var(--wb-text-secondary)]" aria-hidden="true" />
+            <span>{{ summaryGitStatusLine }}</span>
+          </li>
+          <li class="flex items-start gap-2.5 text-[color:var(--wb-text-primary)] leading-[1.45]">
+            <Icon name="ph:github-logo" class="mt-[2px] size-[14px] shrink-0 text-[color:var(--wb-text-secondary)]" aria-hidden="true" />
+            <span>GitHub CLI unavailable</span>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h3 class="mb-2.5 text-[11px] text-[color:var(--wb-text-muted)] font-semibold tracking-[0.04em] uppercase">
+          Sources
+        </h3>
+        <ul class="m-0 list-none p-0 space-y-2.5">
+          <li class="flex items-start gap-2.5 text-[color:var(--wb-text-primary)] leading-[1.45]">
+            <Icon name="ph:globe" class="mt-[2px] size-[14px] shrink-0 text-[color:var(--wb-text-secondary)]" aria-hidden="true" />
+            <span>Web search</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <div
+      v-show="activeTab === 'review'"
       class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto px-2 pt-8 text-[13px] font-[var(--font-code)]"
       :class="showBulkActions ? 'pb-[72px]' : 'pb-2'"
     >
@@ -199,7 +276,7 @@ watch(
       />
     </div>
     <div
-      v-if="showBulkActions"
+      v-if="showBulkActions && activeTab === 'review'"
       class="pointer-events-none absolute bottom-[18px] left-1/2 z-[260] -translate-x-1/2"
     >
       <div class="pointer-events-auto">
