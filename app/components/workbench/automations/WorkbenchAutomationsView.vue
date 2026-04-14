@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useThrottleFn } from '@vueuse/core'
+import { useScroll } from '@vueuse/core'
 import AutomationsSectionBlock from '~/components/workbench/automations/AutomationsSectionBlock.vue'
 import AutomationsToc from '~/components/workbench/automations/AutomationsToc.vue'
 import { automationSections, cardsForSection } from '~/data/workbench-automations-catalog'
@@ -12,27 +12,51 @@ function scrollToSection(id: string) {
   el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function updateActiveFromScroll() {
+/** Near bottom of scroller: pin TOC to last section (short tail never crosses the reading line). */
+const BOTTOM_SLACK_PX = 48
+/** Reading line as fraction of viewport height from top of scrollport (0–1). */
+const READING_LINE_RATIO = 0.45
+
+function sectionTopInScroller(el: HTMLElement, scroller: HTMLElement): number {
+  return el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop
+}
+
+function computeActiveSection() {
   const root = scrollEl.value
   if (!root)
     return
-  const rootTop = root.getBoundingClientRect().top
+
+  const { scrollTop, clientHeight, scrollHeight } = root
+  const last = automationSections.at(-1)
+  if (
+    last
+    && scrollHeight > clientHeight
+    && scrollTop + clientHeight >= scrollHeight - BOTTOM_SLACK_PX
+  ) {
+    activeSectionId.value = last.id
+    return
+  }
+
+  const line = scrollTop + clientHeight * READING_LINE_RATIO
   let best = automationSections[0]?.id ?? ''
   for (const s of automationSections) {
-    const el = document.getElementById(`automation-section-${s.id}`)
+    const el = root.querySelector(`#automation-section-${CSS.escape(s.id)}`) as HTMLElement | null
     if (!el)
       continue
-    const top = el.getBoundingClientRect().top
-    if (top - rootTop <= 72)
+    const top = sectionTopInScroller(el, root)
+    if (top <= line)
       best = s.id
   }
   activeSectionId.value = best
 }
 
-const throttledScroll = useThrottleFn(updateActiveFromScroll, 80)
+useScroll(scrollEl, {
+  throttle: 64,
+  onScroll: computeActiveSection,
+})
 
 onMounted(() => {
-  nextTick(() => updateActiveFromScroll())
+  nextTick(() => computeActiveSection())
 })
 </script>
 
@@ -65,7 +89,6 @@ onMounted(() => {
       <div
         ref="scrollEl"
         class="[-webkit-overflow-scrolling:touch] min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto"
-        @scroll.passive="throttledScroll"
       >
         <AutomationsSectionBlock
           v-for="section in automationSections"
