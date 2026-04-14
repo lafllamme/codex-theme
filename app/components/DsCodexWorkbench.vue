@@ -135,7 +135,6 @@ const topControlSecondaryClass = `${topControlBtnClass} max-[768px]:hidden`
 const sidebarColumnClass = computed(() =>
   [
     'relative z-[42] min-h-0 mr-0 self-stretch flex shrink-0 flex-col overflow-hidden',
-    'min-[1181px]:bg-[var(--wb-bg-sidebar)]',
     'transition-[width] duration-[340ms]',
     wbSidebarEase,
     isSidebarCollapsed.value ? 'w-0' : 'w-[var(--wb-sidebar-width)]',
