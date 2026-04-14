@@ -21,7 +21,7 @@ const isHovered = ref(false)
 
 <template>
   <div class="relative py-0">
-    <div class="flex items-baseline gap-2.5">
+    <div class="flex items-center gap-2.5">
       <span
         v-if="!props.hideDot"
         class="mt-0 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--wb-text-primary)]"
