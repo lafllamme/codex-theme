@@ -267,9 +267,9 @@ async function copyMessage() {
 
 <template>
   <ClientOnly>
-    <div class="flex w-full min-w-0 flex-col gap-1.5">
+    <div class="min-w-0 w-full flex flex-col gap-1.5">
       <div
-        class="w-full min-w-0 max-w-none shrink-0 self-stretch"
+        class="max-w-none min-w-0 w-full shrink-0 self-stretch"
       >
         <DsMessageHeader variant="status" :title="workingTitle" />
       </div>
@@ -279,7 +279,7 @@ async function copyMessage() {
           v-for="(line, i) in demo.statusLines"
           v-show="i < visibleStatusCount"
           :key="`st-${i}`"
-          class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
+          class="m-0 max-w-full min-w-0 w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
         >
           <template v-if="parsedStatusLines[i]">
             <ChatComponentMention
@@ -310,7 +310,7 @@ async function copyMessage() {
 
       <template v-if="showTypewriter">
         <div
-          class="w-full min-w-0 max-w-full whitespace-pre-line text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.5]"
+          class="max-w-full min-w-0 w-full whitespace-pre-line text-[length:var(--wb-chat-message-size)] text-[color:var(--wb-text-primary)] leading-[1.5]"
         >
           <NativeTypewriter
             :content="bodyPlain"
@@ -329,7 +329,7 @@ async function copyMessage() {
 
       <p
         v-if="showThinking && demo.thinkingLabel"
-        class="m-0 w-full min-w-0 max-w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
+        class="m-0 max-w-full min-w-0 w-full text-[length:var(--wb-ui-text-xs)] leading-[1.5]"
       >
         <DsShinyText
           v-if="isThinkingShiny"
@@ -349,10 +349,10 @@ async function copyMessage() {
 
       <template v-if="showTail">
         <template v-for="(block, index) in demo.blocks" :key="blockKey(block, index)">
-          <p v-if="block.type === 'text'" class="m-0 w-full min-w-0 max-w-full whitespace-pre-line leading-[1.5]">
+          <p v-if="block.type === 'text'" class="m-0 max-w-full min-w-0 w-full whitespace-pre-line leading-[1.5]">
             {{ block.text }}
           </p>
-          <div v-else-if="block.type === 'component_mention'" class="w-full min-w-0 max-w-full">
+          <div v-else-if="block.type === 'component_mention'" class="max-w-full min-w-0 w-full">
             <ChatComponentMention :block="block" />
           </div>
           <div v-else-if="block.type === 'file_change_card'" class="mt-3">
@@ -370,9 +370,9 @@ async function copyMessage() {
     </div>
 
     <template #fallback>
-      <div class="w-full min-w-0">
-        <div class="mb-1 w-full min-w-0 px-1">
-          <div class="flex h-8 w-full min-w-0 items-center">
+      <div class="min-w-0 w-full">
+        <div class="mb-1 min-w-0 w-full px-1">
+          <div class="h-8 min-w-0 w-full flex items-center">
             <span class="min-w-0 flex-1 text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] font-normal leading-none">Working for 0s</span>
           </div>
           <div class="h-px w-full bg-[var(--wb-divider)]" />

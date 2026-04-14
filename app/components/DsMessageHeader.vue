@@ -18,11 +18,11 @@ const isCollapsible = computed(() => props.variant === 'collapsible')
 </script>
 
 <template>
-  <div class="mb-1 w-full min-w-0 px-1">
+  <div class="mb-1 min-w-0 w-full px-1">
     <template v-if="isCollapsible">
       <button
         type="button"
-        class="group h-8 w-full inline-flex min-w-0 items-center gap-2 border-none bg-transparent p-0 text-left text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] font-normal leading-none outline-none"
+        class="group h-8 min-w-0 w-full inline-flex items-center gap-2 border-none bg-transparent p-0 text-left text-[length:var(--wb-ui-text-xs)] text-[color:var(--wb-text-muted)] font-normal leading-none outline-none"
         @click="expanded = !expanded"
       >
         <span class="min-w-0 flex-1 truncate">
@@ -43,7 +43,7 @@ const isCollapsible = computed(() => props.variant === 'collapsible')
     </template>
     <div
       v-else
-      class="flex h-8 w-full min-w-0 items-center"
+      class="h-8 min-w-0 w-full flex items-center"
     >
       <span class="min-w-0 flex-1 text-[length:var(--wb-ui-text-xs)] font-normal leading-none">
         <slot name="title">{{ title }}</slot>

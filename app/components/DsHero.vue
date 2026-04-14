@@ -97,9 +97,9 @@ const heroHeadlineBottom = computed(
 
     <div
       v-else-if="variant === 'typo'"
-      class="mx-auto mt-[var(--hero-top-offset)] box-border grid max-w-[1240px] min-h-[calc(100dvh-var(--hero-top-offset))] w-full grid-cols-1 items-start gap-12 px-4 pb-10 pt-24 sm:gap-14 sm:px-6 sm:pt-26 lg:px-8 xl:max-w-[1440px] xl:grid-cols-12 xl:items-center xl:gap-20 xl:px-12 xl:pb-0 xl:pt-28"
+      class="grid grid-cols-1 mx-auto mt-[var(--hero-top-offset)] box-border max-w-[1240px] min-h-[calc(100dvh-var(--hero-top-offset))] w-full items-start gap-12 px-4 pb-10 pt-24 xl:grid-cols-12 xl:max-w-[1440px] xl:items-center sm:gap-14 xl:gap-20 lg:px-8 sm:px-6 xl:px-12 sm:pt-26 xl:pb-0 xl:pt-28"
     >
-      <div class="relative mx-auto min-w-0 w-full max-w-[760px] text-center xl:col-span-7 xl:mx-0 xl:max-w-none xl:text-left">
+      <div class="relative mx-auto max-w-[760px] min-w-0 w-full text-center xl:col-span-7 xl:mx-0 xl:max-w-none xl:text-left">
         <div class="hero-intro hero-delay-1">
           <HyperText
             text="Tokens · Preview · Export"
@@ -143,12 +143,12 @@ const heroHeadlineBottom = computed(
         </div>
       </div>
 
-      <div class="relative mx-auto min-w-0 w-full max-w-[620px] xl:col-span-5 xl:mx-0 xl:max-w-none">
+      <div class="relative mx-auto max-w-[620px] min-w-0 w-full xl:col-span-5 xl:mx-0 xl:max-w-none">
         <div
           class="bg-emerald-500/10 pointer-events-none absolute inset-0 z-0 translate-x-10 rounded-full blur-[80px] -translate-y-10"
         />
         <DsGlassSurface
-          class="hero-ref-card pointer-events-auto relative z-10 mx-auto box-border max-w-[500px] w-full overflow-hidden rounded-[32px] p-10 <md:mb-12 md:p-12 xl:ml-auto xl:mr-0"
+          class="hero-ref-card pointer-events-auto relative z-10 mx-auto box-border max-w-[500px] w-full overflow-hidden rounded-[32px] p-10 <md:mb-12 xl:ml-auto xl:mr-0 md:p-12"
         >
           <div class="mb-10 flex items-center">
             <NativeTypewriter
