@@ -109,11 +109,7 @@ const activeThread = computed(() =>
 )
 const activeThreadTitle = computed(() => activeThread.value?.title ?? 'New Thread')
 const activeThreadRepo = computed(() => activeThread.value?.repo ?? draftThreadRepo.value)
-const sidebarOccupiedWidth = computed(() => (isSidebarCollapsed.value ? 0 : sidebarWidth.value))
 const bodyShiftPx = computed(() => 0)
-const bodyFrameWidthBudget = computed(() => {
-  return `calc(100vw - 28px - ${sidebarOccupiedWidth.value}px)`
-})
 
 const chatLaneDesktopInsetLeft = computed(() => {
   if (!isDiffOpen.value) {
@@ -127,6 +123,55 @@ const chatLaneDesktopInsetLeft = computed(() => {
 })
 
 const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
+
+const wbSidebarEase = 'ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
+const wbSidebarEaseMobile = 'max-[768px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
+
+const topControlBtnClass
+  = 'h-[22px] w-[22px] inline-flex appearance-none items-center justify-center border-none rounded-[5px] bg-transparent p-0 text-[color:var(--wb-text-faint)] shadow-none outline-none transition-[color,background-color] duration-[140ms] ease-in-out hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-secondary)]'
+
+const topControlSecondaryClass = `${topControlBtnClass} max-[768px]:hidden`
+
+const sidebarColumnClass = computed(() =>
+  [
+    'relative z-[42] min-h-0 mr-0 self-stretch flex shrink-0 flex-col overflow-hidden border-r border-solid border-[color:var(--wb-chrome-hairline)]',
+    'transition-[width] duration-[340ms]',
+    wbSidebarEase,
+    isSidebarCollapsed.value ? 'w-0 border-r-0' : 'w-[var(--wb-sidebar-width)]',
+    'max-[1180px]:!w-0 max-[1180px]:!border-r-0',
+  ].join(' '),
+)
+
+const diffColumnClass = computed(() => {
+  const mobileShell = [
+    'max-[768px]:fixed max-[768px]:top-0 max-[768px]:right-2 max-[768px]:bottom-0 max-[768px]:left-auto max-[768px]:z-46',
+    'max-[768px]:ml-0 max-[768px]:w-[min(92vw,460px)] max-[768px]:max-w-[calc(100vw-16px)]',
+    'max-[768px]:rounded-[18px] max-[768px]:border max-[768px]:border-solid max-[768px]:border-[color:var(--wb-border-1)] max-[768px]:bg-[var(--wb-bg-panel)]',
+    'max-[768px]:shadow-[0_18px_40px_rgba(0,0,0,0.28)]',
+    'max-[768px]:transition-[transform,opacity] max-[768px]:duration-[280ms]',
+    wbSidebarEaseMobile,
+  ]
+  if (isDiffOpen.value) {
+    return [
+      'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
+      'min-w-0 flex-[0_0_auto] will-change-[width,opacity] pointer-events-auto opacity-100',
+      'transition-[width,margin-left,opacity] duration-[340ms,340ms,240ms]',
+      wbSidebarEase,
+      'w-[var(--wb-diff-size)] -ml-px',
+      ...mobileShell,
+      'max-[768px]:translate-x-0 max-[768px]:opacity-100',
+    ].join(' ')
+  }
+  return [
+    'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
+    'min-w-0 flex-[0_0_auto] will-change-[width,opacity] pointer-events-none opacity-0',
+    'transition-[width,margin-left,opacity] duration-[340ms,340ms,240ms]',
+    wbSidebarEase,
+    'ml-0 w-0',
+    ...mobileShell,
+    'max-[768px]:translate-x-[104%] max-[768px]:opacity-0',
+  ].join(' ')
+})
 
 const searchSections = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
@@ -179,7 +224,6 @@ const shellStyle = computed(() => ({
   '--wb-chat-bubble-radius': '18px',
   '--wb-sidebar-width': `${sidebarWidth.value}px`,
   '--wb-diff-size': `${diffWidth.value}px`,
-  '--wb-body-frame-width-budget': bodyFrameWidthBudget.value,
   '--wb-body-shift': `${bodyShiftPx.value}px`,
   '--wb-top-chrome-height': '38px',
   '--wb-header-left-safe-area': isSidebarCollapsed.value
@@ -335,7 +379,7 @@ function beginDiffResize(event: MouseEvent) {
     :class="{ 'wb-theme-switching': props.themeSwitching }"
     :style="shellStyle"
   >
-    <div class="wb-control-lane">
+    <div class="pointer-events-auto absolute left-[26px] top-2 z-48 inline-flex items-center gap-4 max-[1180px]:left-2 max-[768px]:left-1.5 max-[768px]:top-1.5 max-[768px]:gap-2">
       <div class="hidden items-center gap-[9px] min-[1181px]:inline-flex">
         <span class="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span class="h-3 w-3 rounded-full bg-[#febc2e]" />
@@ -343,7 +387,8 @@ function beginDiffResize(event: MouseEvent) {
       </div>
       <div class="inline-flex translate-x-[12px] translate-y-[2px] items-center gap-1.5">
         <button
-          class="wb-top-control-btn"
+          type="button"
+          :class="topControlBtnClass"
           aria-label="Toggle Sidebar"
           @click="toggleSidebar"
         >
@@ -361,20 +406,23 @@ function beginDiffResize(event: MouseEvent) {
           </span>
         </button>
         <button
-          class="wb-top-control-btn wb-top-control-secondary"
+          type="button"
+          :class="topControlSecondaryClass"
           aria-label="Back"
         >
           <Icon name="ph:arrow-left-light" class="size-4" />
         </button>
         <button
-          class="wb-top-control-btn wb-top-control-secondary"
+          type="button"
+          :class="topControlSecondaryClass"
           aria-label="Forward"
         >
           <Icon name="ph:arrow-right-light" class="size-4" />
         </button>
         <button
           v-if="isSidebarCollapsed"
-          class="wb-top-control-btn wb-top-control-secondary"
+          type="button"
+          :class="topControlSecondaryClass"
           aria-label="New Thread"
           @click="startNewThread"
         >
@@ -383,7 +431,7 @@ function beginDiffResize(event: MouseEvent) {
       </div>
     </div>
     <section class="absolute inset-0 box-border min-h-0 flex flex-row items-stretch overflow-hidden">
-      <div class="sidebar-column" :class="isSidebarCollapsed ? 'sidebar-column--collapsed' : ''">
+      <div :class="sidebarColumnClass">
         <WorkbenchSidebar
           :threads="threadItems"
           :active-thread-id="activeThreadId"
@@ -400,14 +448,20 @@ function beginDiffResize(event: MouseEvent) {
       </div>
       <div
         v-if="!isSidebarCollapsed"
-        class="sidebar-resize-handle"
+        class="relative z-[43] w-0 flex-shrink-0 bg-transparent before:absolute before:bottom-0 before:top-0 max-[1180px]:hidden before:w-2 before:cursor-col-resize before:content-[''] before:-right-1"
         @mousedown="beginSidebarResize"
       />
 
-      <section class="wb-main-area theme-switch-surface min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden">
-        <div class="wb-header-frame theme-switch-surface min-h-0 min-w-0 w-full flex flex-col">
-          <section class="wb-chat-header-shell theme-switch-surface min-h-0 min-w-0 overflow-hidden bg-[var(--wb-bg-panel)]">
-            <div class="px-[8px] pt-0">
+      <section
+        class="theme-switch-surface relative z-10 min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)] px-0 pt-0.5 max-[1180px]:[--wb-header-left-safe-area:clamp(128px,32vw,168px)] max-[1180px]:[--wb-header-title-shift:0px] max-[768px]:[--wb-header-left-safe-area:clamp(52px,16vw,72px)]"
+      >
+        <div class="theme-switch-surface relative z-24 min-h-0 min-w-0 w-full flex flex-col">
+          <section
+            class="theme-switch-surface min-h-0 min-w-0 w-full overflow-visible border-0 border-b border-[color:var(--wb-chrome-hairline)] rounded-t-[28px] border-solid bg-[var(--wb-bg-panel)]"
+          >
+            <div
+              class="[container-name:wb-chat-header] [container-type:inline-size] mx-auto max-w-[1540px] px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
+            >
               <ChatHeaderBar
                 :title="activeThreadTitle"
                 :repo="activeThreadRepo"
@@ -424,11 +478,19 @@ function beginDiffResize(event: MouseEvent) {
           </section>
         </div>
 
-        <div class="wb-body-frame theme-switch-surface min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-          <div class="wb-body-motion min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden">
-            <section class="wb-chat-body-shell theme-switch-surface min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)]">
-              <div class="workbench-main-row max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
-                <div class="chat-main-column min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
+        <div
+          class="will-change-[width] theme-switch-surface relative z-10 mx-auto box-border max-w-[1540px] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden px-3.5 transition-[width] duration-[340ms] max-[1180px]:px-2.5 max-[768px]:px-1.5"
+          :class="wbSidebarEase"
+        >
+          <div
+            class="backface-hidden min-h-0 min-w-0 w-full flex flex-1 flex-col origin-center translate-x-[var(--wb-body-shift)] overflow-hidden transition-transform duration-[340ms] will-change-transform max-[1180px]:translate-x-0"
+            :class="wbSidebarEase"
+          >
+            <section
+              class="theme-switch-surface min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden rounded-b-[28px] border-none bg-[var(--wb-bg-panel)]"
+            >
+              <div class="max-w-full min-h-0 min-w-0 w-full flex flex-1 flex-row items-stretch overflow-x-hidden">
+                <div class="min-h-0 min-w-0 flex flex-1 basis-0 flex-col">
                   <ChatWindow
                     v-model:selected-model="selectedModel"
                     v-model:selected-thinking="selectedThinking"
@@ -459,13 +521,10 @@ function beginDiffResize(event: MouseEvent) {
                 </div>
                 <div
                   v-if="isDiffOpen"
-                  class="diff-resize-handle"
+                  class="relative z-[44] ml-[-1px] w-0 flex-shrink-0 cursor-col-resize before:absolute before:bottom-0 before:top-0 max-[1180px]:hidden before:w-2 before:cursor-col-resize before:content-[''] before:-right-1"
                   @mousedown="beginDiffResize"
                 />
-                <div
-                  class="diff-column theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden"
-                  :class="isDiffOpen ? 'diff-column--open' : ''"
-                >
+                <div :class="diffColumnClass">
                   <DiffDrawer
                     class="min-h-0 min-w-0 flex-1"
                     :open="isDiffOpen"
@@ -507,7 +566,7 @@ function beginDiffResize(event: MouseEvent) {
       panel-position-class="relative"
       menu-class="w-[min(92vw,640px)]"
       panel-padding-class="p-2"
-      panel-class="pointer-events-auto rounded-[20px] border-[color:color-mix(in_srgb,var(--wb-border-2)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_96%,transparent)] shadow-[0_20px_52px_rgba(0,0,0,0.45)] backdrop-blur-[16px]"
+      panel-class="pointer-events-auto rounded-[20px] border border-solid border-[color:color-mix(in_srgb,var(--wb-border-2)_70%,transparent)] bg-[color:color-mix(in_srgb,var(--wb-bubble-bg)_96%,transparent)] shadow-[0_20px_52px_rgba(0,0,0,0.45)] backdrop-blur-[16px]"
       @close="closeSearchCommand"
     >
       <template #trigger>
@@ -515,7 +574,7 @@ function beginDiffResize(event: MouseEvent) {
       </template>
 
       <div class="grid gap-2">
-        <label class="h-11 flex items-center gap-2 border border-[color:var(--wb-border-2)] rounded-[12px] bg-[var(--wb-bg-panel)] px-3">
+        <label class="h-11 flex items-center gap-2 border border-[color:var(--wb-border-2)] rounded-[12px] border-solid bg-[var(--wb-bg-panel)] px-3">
           <Icon name="ph:magnifying-glass" class="h-[15px] w-[15px] text-[color:var(--wb-text-muted)]" />
           <input
             ref="searchInputRef"
@@ -558,169 +617,7 @@ function beginDiffResize(event: MouseEvent) {
 </template>
 
 <style scoped>
-.sidebar-column {
-  width: var(--wb-sidebar-width);
-  min-height: 0;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  margin-right: 0;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 42;
-  overflow: hidden;
-  transition:
-    width 340ms var(--wb-sidebar-ease),
-    margin-right 340ms var(--wb-sidebar-ease);
-}
-
-.sidebar-resize-handle {
-  position: relative;
-  z-index: 43;
-  width: 0;
-  margin-right: 0;
-  background: transparent;
-}
-
-.sidebar-resize-handle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -4px;
-  bottom: 0;
-  width: 8px;
-  cursor: col-resize;
-}
-
-.sidebar-column--collapsed {
-  width: 0;
-  margin-right: 0;
-}
-
-.wb-main-area {
-  position: relative;
-  z-index: 10;
-  background: var(--wb-bg-panel);
-  padding: 2px 14px 0 14px;
-}
-
-.wb-header-frame {
-  position: relative;
-  z-index: 24;
-  width: min(1540px, 100%);
-  max-width: 1540px;
-  margin-inline: auto;
-}
-
-.wb-chat-header-shell {
-  border: none;
-  border-bottom: 1px solid var(--wb-chrome-hairline);
-  border-radius: 28px 28px 0 0;
-  overflow: visible;
-  container-type: inline-size;
-  container-name: wb-chat-header;
-}
-
-.wb-body-frame {
-  position: relative;
-  z-index: 10;
-  width: min(1540px, var(--wb-body-frame-width-budget, calc(100vw - 28px)));
-  max-width: 1540px;
-  margin-inline: auto;
-  will-change: width;
-  transition: width 340ms var(--wb-sidebar-ease);
-}
-
-.wb-body-motion {
-  transform: translateX(var(--wb-body-shift));
-  will-change: transform;
-  backface-visibility: hidden;
-  transition: transform 340ms var(--wb-sidebar-ease);
-  transform-origin: center;
-}
-
-.wb-chat-body-shell {
-  border: none;
-  border-radius: 0 0 28px 28px;
-}
-
-.wb-control-lane {
-  position: absolute;
-  top: 8px;
-  left: 26px;
-  z-index: 48;
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  pointer-events: auto;
-}
-
-.wb-top-control-btn {
-  height: 22px;
-  width: 22px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  appearance: none;
-  border: none;
-  border-radius: 5px;
-  background: transparent;
-  padding: 0;
-  color: var(--wb-text-faint);
-  outline: none;
-  box-shadow: none;
-  transition:
-    color 140ms ease,
-    background-color 140ms ease;
-}
-
-.wb-top-control-btn:hover {
-  background: var(--wb-hover-bg);
-  color: var(--wb-text-secondary);
-}
-
-.diff-column {
-  width: 0;
-  flex: 0 0 auto;
-  min-width: 0;
-  margin-left: 0;
-  flex-shrink: 0;
-  opacity: 0;
-  will-change: width, opacity;
-  pointer-events: none;
-  transition:
-    width 340ms var(--wb-sidebar-ease),
-    margin-left 340ms var(--wb-sidebar-ease),
-    opacity 240ms ease;
-}
-
-.diff-column--open {
-  width: var(--wb-diff-size);
-  flex: 0 0 auto;
-  margin-left: -1px;
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.diff-resize-handle {
-  position: relative;
-  z-index: 44;
-  width: 0;
-  flex: 0 0 auto;
-  margin-left: -1px;
-  cursor: col-resize;
-}
-
-.diff-resize-handle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -4px;
-  bottom: 0;
-  width: 8px;
-  cursor: col-resize;
-}
-
+/* Theme cross-fade: no single utility for :deep() multi-selectors. */
 .wb-theme-switching .theme-switch-surface,
 .wb-theme-switching :deep(.sidebar),
 .wb-theme-switching :deep(.wb-chat-window),
@@ -738,92 +635,5 @@ function beginDiffResize(event: MouseEvent) {
   transition-property:
     background-color, border-color, box-shadow, color, fill, outline-color, stroke, text-decoration-color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (max-width: 1180px) {
-  .wb-main-area {
-    /*
-      Clear absolutely positioned .wb-control-lane: left 8px + translate 12px + up to four 22px
-      controls with 6px gaps (~132px) + margin before title. Matches collapsed sidebar + new-thread.
-    */
-    --wb-header-left-safe-area: clamp(128px, 32vw, 168px);
-    --wb-header-title-shift: 0px;
-    padding: 2px 10px 0 10px;
-  }
-
-  .wb-header-frame {
-    width: 100%;
-  }
-
-  .wb-body-frame {
-    width: 100%;
-  }
-
-  .wb-body-motion {
-    transform: translateX(0);
-  }
-
-  .wb-control-lane {
-    top: 8px;
-    left: 8px;
-  }
-
-  .sidebar-column {
-    width: 0;
-    margin-right: 0;
-  }
-
-  .sidebar-resize-handle {
-    display: none;
-  }
-
-  .diff-resize-handle {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .wb-main-area {
-    /* .wb-top-control-secondary hidden: sidebar toggle + lane offsets only */
-    --wb-header-left-safe-area: clamp(52px, 16vw, 72px);
-    padding: 2px 6px 0 6px;
-  }
-
-  .wb-control-lane {
-    top: 6px;
-    left: 6px;
-    gap: 8px;
-  }
-
-  .wb-top-control-secondary {
-    display: none;
-  }
-
-  .diff-column {
-    position: fixed;
-    top: 0;
-    right: 8px;
-    bottom: 0;
-    width: min(92vw, 460px);
-    max-width: calc(100vw - 16px);
-    margin-left: 0;
-    border-radius: 18px;
-    border: 1px solid var(--wb-border-1);
-    background: var(--wb-bg-panel);
-    transform: translateX(104%);
-    opacity: 0;
-    z-index: 46;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-    transition:
-      transform 280ms var(--wb-sidebar-ease),
-      opacity 200ms ease;
-  }
-
-  .diff-column--open {
-    width: min(92vw, 460px);
-    margin-left: 0;
-    transform: translateX(0);
-    opacity: 1;
-  }
 }
 </style>

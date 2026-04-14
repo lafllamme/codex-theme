@@ -92,7 +92,7 @@ watch(
 <template>
   <aside class="diff-drawer relative max-w-full overflow-x-hidden overflow-y-visible rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
     <div
-      class="diff-drawer-tablist relative z-[55] flex shrink-0 items-end justify-start gap-0.5 px-3"
+      class="diff-drawer-tablist relative z-[55] flex shrink-0 items-end justify-start gap-0.5 border-0 border-b border-[color:var(--wb-chrome-hairline)] border-solid px-3"
       role="tablist"
       aria-label="Diff drawer views"
     >
@@ -126,7 +126,7 @@ watch(
 
     <header
       v-show="activeTab === 'review'"
-      class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-b border-[color:var(--wb-chrome-hairline)] px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]"
+      class="relative z-50 h-[34px] flex shrink-0 items-center justify-between border-0 border-b border-[color:var(--wb-chrome-hairline)] border-solid px-3 text-[12px] text-[color:color-mix(in_srgb,var(--wb-text-primary)_88%,transparent)]"
     >
       <ComposerDropdownMenu
         :open="openMenuKey === 'status'"
@@ -310,7 +310,9 @@ watch(
   opacity: 0;
   transform: translateX(12px);
   pointer-events: none;
-  border-left: 1px solid var(--wb-chrome-hairline);
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: var(--wb-chrome-hairline);
   transition:
     opacity 220ms ease,
     transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
@@ -323,11 +325,6 @@ watch(
   transform: translateX(0);
   pointer-events: auto;
   border-left-color: color-mix(in srgb, var(--wb-chrome-hairline) 94%, var(--wb-text-primary) 6%);
-}
-
-/* Tab strip hairline; active tab = bottom accent only (no box). */
-.diff-drawer-tablist {
-  border-bottom: 1px solid var(--wb-chrome-hairline);
 }
 
 .diff-drawer-tab {
