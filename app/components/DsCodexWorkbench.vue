@@ -459,7 +459,7 @@ function beginDiffResize(event: MouseEvent) {
             class="theme-switch-surface min-h-0 min-w-0 w-full overflow-visible border-0 border-b border-[color:var(--wb-chrome-hairline)] rounded-t-[28px] border-solid bg-[var(--wb-bg-panel)]"
           >
             <div
-              class="[container-name:wb-chat-header] [container-type:inline-size] mx-auto max-w-[1540px] px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
+              class="[container-name:wb-chat-header] [container-type:inline-size] w-full px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
             >
               <ChatHeaderBar
                 :title="activeThreadTitle"
@@ -478,7 +478,7 @@ function beginDiffResize(event: MouseEvent) {
         </div>
 
         <div
-          class="will-change-[width] theme-switch-surface relative z-10 mx-auto box-border max-w-[1540px] min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden px-3.5 transition-[width] duration-[340ms] max-[1180px]:px-2.5 max-[768px]:px-1.5"
+          class="will-change-[width] theme-switch-surface relative z-10 box-border min-h-0 min-w-0 w-full flex flex-1 flex-col overflow-hidden px-3.5 transition-[width] duration-[340ms] max-[1180px]:px-2.5 max-[768px]:px-1.5"
           :class="wbSidebarEase"
         >
           <div
