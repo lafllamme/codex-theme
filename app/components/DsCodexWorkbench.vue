@@ -73,6 +73,8 @@ const {
   toggleDiff,
 } = useWorkbenchPanels()
 
+const marketplaceStore = useWorkbenchMarketplaceStore()
+
 const defaultThread: ThreadItem = { id: 'thread-1', title: 'Investigate Codex token mismatch', repo: 'codex-theme', time: '50 Min.' }
 
 const threadItems: ThreadItem[] = [
@@ -242,6 +244,7 @@ const shellStyle = computed(() => ({
 }))
 
 function startNewThread(repo?: string) {
+  marketplaceStore.setMainStageView('chat')
   activeThreadId.value = `thread-new-${Date.now()}`
   draftThreadRepo.value = repo ?? activeThreadRepo.value ?? defaultThread.repo
   composeValue.value = ''
@@ -249,6 +252,7 @@ function startNewThread(repo?: string) {
 }
 
 function selectThread(id: string) {
+  marketplaceStore.setMainStageView('chat')
   activeThreadId.value = id
   closeSidebarMobile()
 }

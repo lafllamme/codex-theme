@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerBar from '~/components/workbench/ComposerBar.vue'
 import WorkbenchMainStage from '~/components/workbench/WorkbenchMainStage.vue'
+import { useWorkbenchMarketplaceStore } from '~/stores/workbench-marketplace'
 
 const props = defineProps<{
   activeThreadId: string
@@ -52,6 +53,10 @@ const selectedThinking = defineModel<string>('selectedThinking', { required: tru
 const composeValue = defineModel<string>('composeValue', { required: true })
 const isWorktreeModalOpen = defineModel<boolean>('worktreeModalOpen', { required: true })
 const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true })
+
+const marketplaceStore = useWorkbenchMarketplaceStore()
+const { mainStageView } = storeToRefs(marketplaceStore)
+const showComposer = computed(() => mainStageView.value !== 'marketplace')
 </script>
 
 <template>
@@ -87,7 +92,10 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       :empty-state-repo="emptyStateRepo ?? repo"
     />
 
-    <div class="wb-chat-composer-lane [padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] mb-[10px] mt-2">
+    <div
+      v-if="showComposer"
+      class="wb-chat-composer-lane [padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] mb-[10px] mt-2"
+    >
       <ComposerBar
         v-model:selected-model="selectedModel"
         v-model:selected-thinking="selectedThinking"

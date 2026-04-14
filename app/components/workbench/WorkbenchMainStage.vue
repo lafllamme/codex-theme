@@ -6,7 +6,9 @@ import ChatComponentMention from '~/components/workbench/chat/ChatComponentMenti
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import ChatWorkbenchDemoMessage from '~/components/workbench/chat/ChatWorkbenchDemoMessage.vue'
 import WorkbenchEmptyState from '~/components/workbench/chat/WorkbenchEmptyState.vue'
+import WorkbenchMarketplaceView from '~/components/workbench/marketplace/WorkbenchMarketplaceView.vue'
 import { useDiffStore } from '~/stores/diff'
+import { useWorkbenchMarketplaceStore } from '~/stores/workbench-marketplace'
 import { chatMessageToPlainText } from '~/utils/workbench-chat-plain-text'
 
 const props = defineProps<{
@@ -17,6 +19,7 @@ const props = defineProps<{
 }>()
 
 const diffStore = useDiffStore()
+const marketplaceStore = useWorkbenchMarketplaceStore()
 const copiedMessageId = ref<string | null>(null)
 const { start: startCopiedReset, stop: stopCopiedReset } = useTimeoutFn(() => {
   copiedMessageId.value = null
@@ -78,7 +81,9 @@ async function copyMessage(message: ChatMessage) {
     :class="messages.length > 0 ? 'grid-rows-[1fr]' : 'grid-rows-[minmax(0,1fr)]'"
   >
     <section class="wb-mainstage-scroll relative min-h-0 overflow-x-auto overflow-y-auto border-none bg-[var(--wb-bg-panel)] px-0 py-4">
-      <WorkbenchEmptyState v-if="messages.length === 0" :repo="props.emptyStateRepo" />
+      <WorkbenchMarketplaceView v-if="marketplaceStore.mainStageView === 'marketplace'" />
+
+      <WorkbenchEmptyState v-else-if="messages.length === 0" :repo="props.emptyStateRepo" />
 
       <div
         v-else

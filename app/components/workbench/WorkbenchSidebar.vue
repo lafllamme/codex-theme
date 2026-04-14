@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'
 import CodexNewThreadIcon from '~/components/icons/CodexNewThreadIcon.vue'
+import { useWorkbenchMarketplaceStore } from '~/stores/workbench-marketplace'
 import ComposerDropdownMenu from './chat/ComposerDropdownMenu.vue'
 
 interface ThreadItem {
@@ -29,6 +30,12 @@ const emit = defineEmits<{
   toggleCollapsed: []
 }>()
 const { activeThreadId, collapsed, mobileOpen } = toRefs(props)
+const marketplaceStore = useWorkbenchMarketplaceStore()
+
+function openPlugins() {
+  marketplaceStore.openMarketplace()
+  emit('closeMobile')
+}
 const collapsedRepos = ref<Set<string>>(new Set())
 
 const groupedThreads = computed(() => {
@@ -280,7 +287,11 @@ function afterRepoLeave(el: Element) {
             </span>
           </button>
 
-          <button class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]">
+          <button
+            type="button"
+            class="grid wb-sidebar-nav-row grid-cols-[16px_minmax(0,1fr)] min-h-[36px] w-full items-center gap-[11px] border border-transparent rounded-[12px] bg-transparent px-[10px] text-left transition-colors hover:border-[color:var(--wb-hover-border)] hover:bg-[var(--wb-hover-bg)]"
+            @click="openPlugins"
+          >
             <Icon name="ph:circles-four" class="size-4.5 wb-sidebar-icon" />
             <span class="truncate whitespace-nowrap">Plugins</span>
           </button>
