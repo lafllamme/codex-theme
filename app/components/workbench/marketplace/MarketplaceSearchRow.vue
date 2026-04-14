@@ -22,7 +22,7 @@ const categoryLabel = computed(() =>
 <template>
   <div class="min-w-0 w-full flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-2.5">
     <div
-      class="min-h-[40px] min-w-0 flex flex-1 items-center gap-2 border border-[color:color-mix(in_srgb,var(--wb-border-2)_65%,transparent)] rounded-full bg-[color:color-mix(in_srgb,var(--wb-bg-panel-elevated,var(--wb-bg-panel))_88%,transparent)] px-3.5 py-2 pl-3"
+      class="min-h-[40px] min-w-0 flex flex-1 items-center gap-2 border border-[color:var(--wb-chip-ghost-border)] rounded-full bg-[var(--wb-chip-ghost-bg-hover)] px-3.5 py-2 pl-3 transition-[background-color,border-color] duration-200 focus-within:border-[color:var(--wb-hover-border)] focus-within:bg-[var(--wb-chip-ghost-bg-active)] hover:bg-[var(--wb-chip-ghost-bg-active)]"
     >
       <Icon name="ph:magnifying-glass-bold" class="size-[18px] shrink-0 text-[color:var(--wb-text-muted)]" aria-hidden="true" />
       <input
@@ -49,7 +49,8 @@ const categoryLabel = computed(() =>
         <template #trigger="{ toggle }">
           <button
             type="button"
-            class="h-9 max-w-full min-w-0 inline-flex items-center gap-1.5 border border-[color:color-mix(in_srgb,var(--wb-border-2)_55%,transparent)] rounded-full bg-[color:color-mix(in_srgb,var(--wb-bg-panel-elevated,var(--wb-bg-panel))_90%,transparent)] px-3 py-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+            class="h-9 max-w-full min-w-0 inline-flex items-center gap-1.5 border border-[color:var(--wb-chip-ghost-border)] rounded-full px-3 py-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-[background-color,border-color,color] duration-200 hover:bg-[var(--wb-chip-ghost-bg-active)] hover:text-[color:var(--wb-text-primary)]"
+            :class="openBuiltBy ? 'border-[color:var(--wb-hover-border)] bg-[var(--wb-chip-ghost-bg-active)] text-[color:var(--wb-text-primary)]' : 'bg-[var(--wb-chip-ghost-bg-hover)]'"
             :aria-expanded="openBuiltBy"
             @click="toggle"
           >
@@ -87,7 +88,8 @@ const categoryLabel = computed(() =>
         <template #trigger="{ toggle }">
           <button
             type="button"
-            class="h-9 max-w-full min-w-0 inline-flex items-center gap-1.5 border border-[color:color-mix(in_srgb,var(--wb-border-2)_55%,transparent)] rounded-full bg-[color:color-mix(in_srgb,var(--wb-bg-panel-elevated,var(--wb-bg-panel))_90%,transparent)] px-3 py-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+            class="h-9 max-w-full min-w-0 inline-flex items-center gap-1.5 border border-[color:var(--wb-chip-ghost-border)] rounded-full px-3 py-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-[background-color,border-color,color] duration-200 hover:bg-[var(--wb-chip-ghost-bg-active)] hover:text-[color:var(--wb-text-primary)]"
+            :class="openCategory ? 'border-[color:var(--wb-hover-border)] bg-[var(--wb-chip-ghost-bg-active)] text-[color:var(--wb-text-primary)]' : 'bg-[var(--wb-chip-ghost-bg-hover)]'"
             :aria-expanded="openCategory"
             @click="toggle"
           >
