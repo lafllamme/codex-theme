@@ -327,8 +327,8 @@ watch(
   border-left-color: color-mix(in srgb, var(--wb-chrome-hairline) 94%, var(--wb-text-primary) 6%);
 }
 
-/* Desktop: reveal is driven by parent column width only (match sidebar); no inner slide/fade. */
-@media (min-width: 1181px) {
+/* Split layout: reveal is driven by parent column width only (match sidebar); no inner slide/fade. */
+@media (min-width: 1082px) {
   .diff-drawer {
     opacity: 1;
     transform: none;
@@ -365,30 +365,23 @@ watch(
   pointer-events: none;
 }
 
-@media (max-width: 1180px) {
+/* Overlay: parent column is fixed + sized; aside fills it (open/close motion is on the column). */
+@media (max-width: 1081px) {
   .diff-drawer {
-    position: fixed;
-    top: 0;
-    right: 8px;
-    bottom: 8px;
-    left: 8px;
-    z-index: 42;
-    width: auto;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
     max-width: none;
-    height: auto;
-    opacity: 0;
-    transform: translateX(105%);
+    height: 100%;
+    opacity: 1;
+    transform: none;
     pointer-events: none;
-    transition:
-      opacity 220ms ease,
-      transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
-      border-color 180ms ease;
+    transition: border-color 180ms ease;
+    will-change: auto;
   }
 
   .diff-drawer--open {
-    opacity: 1;
-    width: auto;
-    transform: translateX(0);
     pointer-events: auto;
   }
 }

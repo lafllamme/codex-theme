@@ -125,7 +125,7 @@ const chatLaneDesktopInsetLeft = computed(() => {
 const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
 
 const wbSidebarEase = 'ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
-const wbSidebarEaseMobile = 'max-[768px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
+const wbOverlayEase = 'max-[1081px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
 
 const topControlBtnClass
   = 'h-[22px] w-[22px] inline-flex appearance-none items-center justify-center border-none rounded-[5px] bg-transparent p-0 text-[color:var(--wb-text-faint)] shadow-none outline-none transition-[color,background-color] duration-[140ms] ease-in-out hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-secondary)]'
@@ -144,32 +144,31 @@ const sidebarColumnClass = computed(() =>
 
 const diffColumnClass = computed(() => {
   const mobileShell = [
-    'max-[768px]:fixed max-[768px]:top-0 max-[768px]:right-2 max-[768px]:bottom-0 max-[768px]:left-auto max-[768px]:z-46',
-    'max-[768px]:ml-0 max-[768px]:w-[min(92vw,460px)] max-[768px]:max-w-[calc(100vw-16px)]',
-    'max-[768px]:rounded-[18px] max-[768px]:border max-[768px]:border-solid max-[768px]:border-[color:var(--wb-border-1)] max-[768px]:bg-[var(--wb-bg-panel)]',
-    'max-[768px]:shadow-[0_18px_40px_rgba(0,0,0,0.28)]',
-    'max-[768px]:transition-[transform,opacity] max-[768px]:duration-[280ms]',
-    wbSidebarEaseMobile,
+    'max-[1081px]:fixed max-[1081px]:top-2 max-[1081px]:right-2 max-[1081px]:bottom-2 max-[1081px]:left-auto max-[1081px]:z-46',
+    'max-[1081px]:ml-0 max-[1081px]:w-[min(var(--wb-diff-size),calc(100vw-16px))]',
+    'max-[1081px]:rounded-[18px] max-[1081px]:border max-[1081px]:border-solid max-[1081px]:border-[color:var(--wb-border-1)] max-[1081px]:bg-[var(--wb-bg-panel)]',
+    'max-[1081px]:shadow-[0_18px_40px_rgba(0,0,0,0.28)]',
+    'max-[1081px]:transition-[transform,opacity] max-[1081px]:duration-[280ms]',
+    wbOverlayEase,
   ]
   if (isDiffOpen.value) {
     return [
       'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
-      'min-w-0 flex-[0_0_auto] will-change-[width] pointer-events-auto',
-      'transition-[width] duration-[340ms]',
-      wbSidebarEase,
-      'w-[var(--wb-diff-size)] -ml-px',
+      'min-w-0 flex-[0_0_auto] pointer-events-auto',
+      'min-[1082px]:will-change-[width] min-[1082px]:w-[var(--wb-diff-size)] min-[1082px]:-ml-px',
+      'min-[1082px]:transition-[width] min-[1082px]:duration-[340ms] min-[1082px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]',
+      'max-[1081px]:will-change-[transform,opacity]',
       ...mobileShell,
-      'max-[768px]:translate-x-0 max-[768px]:opacity-100',
+      'max-[1081px]:translate-x-0 max-[1081px]:opacity-100',
     ].join(' ')
   }
   return [
     'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
-    'min-w-0 flex-[0_0_auto] will-change-[width] pointer-events-none',
-    'transition-[width] duration-[340ms]',
-    wbSidebarEase,
-    'ml-0 w-0',
+    'min-w-0 flex-[0_0_auto] pointer-events-none',
+    'min-[1082px]:will-change-[width] min-[1082px]:ml-0 min-[1082px]:w-0',
+    'min-[1082px]:transition-[width] min-[1082px]:duration-[340ms] min-[1082px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]',
     ...mobileShell,
-    'max-[768px]:translate-x-[104%] max-[768px]:opacity-0',
+    'max-[1081px]:translate-x-[104%] max-[1081px]:opacity-0',
   ].join(' ')
 })
 
@@ -521,7 +520,14 @@ function beginDiffResize(event: MouseEvent) {
                 </div>
                 <div
                   v-if="isDiffOpen"
-                  class="relative z-[44] ml-[-1px] w-0 flex-shrink-0 cursor-col-resize before:absolute before:bottom-0 before:top-0 max-[1180px]:hidden before:w-2 before:cursor-col-resize before:content-[''] before:-right-1"
+                  class="relative z-[44] ml-[-1px] hidden w-0 flex-shrink-0 cursor-col-resize before:absolute before:bottom-0 before:top-0 before:w-2 min-[1082px]:flex before:cursor-col-resize before:content-[''] before:-right-1"
+                  @mousedown="beginDiffResize"
+                />
+                <div
+                  v-if="isDiffOpen"
+                  class="pointer-events-auto fixed bottom-2 top-2 z-[47] hidden w-2 cursor-col-resize before:absolute before:inset-y-0 min-[1082px]:hidden before:w-2 max-[1081px]:flex before:content-[''] before:-right-1"
+                  :style="{ left: 'calc(100vw - 8px - var(--wb-diff-size))' }"
+                  aria-hidden="true"
                   @mousedown="beginDiffResize"
                 />
                 <div :class="diffColumnClass">
