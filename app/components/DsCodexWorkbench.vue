@@ -146,7 +146,7 @@ const diffColumnClass = computed(() => {
   const mobileShell = [
     'max-[1081px]:fixed max-[1081px]:top-2 max-[1081px]:right-2 max-[1081px]:bottom-2 max-[1081px]:left-auto max-[1081px]:z-46',
     'max-[1081px]:ml-0 max-[1081px]:w-[min(var(--wb-diff-size),calc(100vw-16px))]',
-    'max-[1081px]:rounded-[18px] max-[1081px]:border max-[1081px]:border-solid max-[1081px]:border-[color:var(--wb-border-1)] max-[1081px]:bg-[var(--wb-bg-panel)]',
+    'max-[1081px]:rounded-none max-[1081px]:border-0 max-[1081px]:bg-[var(--wb-bg-panel)]',
     'max-[1081px]:shadow-[0_18px_40px_rgba(0,0,0,0.28)]',
     'max-[1081px]:transition-[transform,opacity] max-[1081px]:duration-[280ms]',
     wbOverlayEase,
