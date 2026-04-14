@@ -68,12 +68,14 @@ onMounted(() => {
       </h1>
       <p class="m-0 mx-auto max-w-[560px] text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-relaxed">
         Automate work by setting up scheduled threads.
-        <button
-          type="button"
+        <a
+          href="https://developers.openai.com/codex/app/automations"
+          target="_blank"
+          rel="noopener noreferrer"
           class="border-none bg-transparent p-0 text-[color:var(--theme-accent)] underline underline-offset-2 transition-opacity hover:opacity-90"
         >
           Learn more
-        </button>
+        </a>
       </p>
     </header>
 
