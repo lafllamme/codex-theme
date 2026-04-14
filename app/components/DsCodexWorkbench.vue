@@ -134,11 +134,12 @@ const topControlSecondaryClass = `${topControlBtnClass} max-[768px]:hidden`
 
 const sidebarColumnClass = computed(() =>
   [
-    'relative z-[42] min-h-0 mr-0 self-stretch flex shrink-0 flex-col overflow-hidden border-r border-solid border-[color:var(--wb-chrome-hairline)]',
+    'relative z-[42] min-h-0 mr-0 self-stretch flex shrink-0 flex-col overflow-hidden',
+    'min-[1181px]:bg-[var(--wb-bg-sidebar)]',
     'transition-[width] duration-[340ms]',
     wbSidebarEase,
-    isSidebarCollapsed.value ? 'w-0 border-r-0' : 'w-[var(--wb-sidebar-width)]',
-    'max-[1180px]:!w-0 max-[1180px]:!border-r-0',
+    isSidebarCollapsed.value ? 'w-0' : 'w-[var(--wb-sidebar-width)]',
+    'max-[1180px]:!w-0',
   ].join(' '),
 )
 
@@ -453,6 +454,7 @@ function beginDiffResize(event: MouseEvent) {
 
       <section
         class="theme-switch-surface relative z-10 min-h-0 min-w-0 flex flex-1 flex-col overflow-hidden bg-[var(--wb-bg-panel)] px-0 pt-0.5 max-[1180px]:[--wb-header-left-safe-area:clamp(128px,32vw,168px)] max-[1180px]:[--wb-header-title-shift:0px] max-[768px]:[--wb-header-left-safe-area:clamp(52px,16vw,72px)]"
+        :class="!isSidebarCollapsed ? 'min-[1181px]:border-l min-[1181px]:border-solid min-[1181px]:border-[color:var(--wb-border-1)]' : ''"
       >
         <div class="theme-switch-surface relative z-24 min-h-0 min-w-0 w-full flex flex-col">
           <section

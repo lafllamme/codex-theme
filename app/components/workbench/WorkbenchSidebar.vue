@@ -238,7 +238,7 @@ function afterRepoLeave(el: Element) {
 </script>
 
 <template>
-  <div class="relative h-full min-h-0 min-w-0 w-full flex flex-1 flex-col self-stretch">
+  <div class="relative h-full min-h-0 min-w-0 w-full flex flex-1 flex-col self-stretch overflow-hidden">
     <div
       class="pointer-events-none fixed inset-0 z-[39] hidden bg-[rgba(0,0,0,0.38)] opacity-0 transition-opacity duration-180 max-[1180px]:block"
       :class="mobileOpen ? 'max-[1180px]:opacity-100 max-[1180px]:pointer-events-auto' : ''"
@@ -246,7 +246,7 @@ function afterRepoLeave(el: Element) {
     />
 
     <aside
-      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] border border-[color:var(--wb-border-1)] rounded-[var(--wb-r-lg)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:bottom-0 max-[1180px]:left-[8px] max-[1180px]:top-0 max-md:left-[8px] max-[1180px]:z-[40] max-[1180px]:w-[min(92vw,360px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
+      class="[backdrop-filter:var(--wb-sidebar-backdrop-filter)] min-h-0 min-w-0 w-full flex flex-1 flex-col gap-[7px] border border-[color:var(--wb-border-1)] bg-[var(--wb-bg-sidebar)] px-[10px] py-[7px] text-[color:var(--wb-text-primary)] transition-[border-color,background-color,backdrop-filter,transform] duration-180 max-[1180px]:fixed max-[1180px]:bottom-0 max-[1180px]:left-[8px] max-[1180px]:top-0 max-md:left-[8px] max-[1180px]:z-[40] max-[1180px]:w-[min(92vw,360px)] max-md:max-w-[420px] max-md:w-[calc(100vw-16px)] max-[1180px]:overflow-y-auto min-[1181px]:border-r-0 max-[1180px]:rounded-[var(--wb-r-lg)] min-[1181px]:rounded-l-[var(--wb-r-lg)] min-[1181px]:rounded-r-none [&_button]:font-[var(--font-ui)] max-[1180px]:-translate-x-[112%]"
       :class="[
         mobileOpen ? 'max-[1180px]:translate-x-0' : '',
         collapsed
