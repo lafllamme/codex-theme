@@ -154,8 +154,8 @@ const diffColumnClass = computed(() => {
   if (isDiffOpen.value) {
     return [
       'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
-      'min-w-0 flex-[0_0_auto] will-change-[width,opacity] pointer-events-auto opacity-100',
-      'transition-[width,margin-left,opacity] duration-[340ms,340ms,240ms]',
+      'min-w-0 flex-[0_0_auto] will-change-[width] pointer-events-auto',
+      'transition-[width] duration-[340ms]',
       wbSidebarEase,
       'w-[var(--wb-diff-size)] -ml-px',
       ...mobileShell,
@@ -164,8 +164,8 @@ const diffColumnClass = computed(() => {
   }
   return [
     'theme-switch-surface min-h-0 flex shrink-0 flex-col overflow-hidden',
-    'min-w-0 flex-[0_0_auto] will-change-[width,opacity] pointer-events-none opacity-0',
-    'transition-[width,margin-left,opacity] duration-[340ms,340ms,240ms]',
+    'min-w-0 flex-[0_0_auto] will-change-[width] pointer-events-none',
+    'transition-[width] duration-[340ms]',
     wbSidebarEase,
     'ml-0 w-0',
     ...mobileShell,

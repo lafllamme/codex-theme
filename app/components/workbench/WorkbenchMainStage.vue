@@ -13,7 +13,6 @@ const props = defineProps<{
   activeThreadId: string
   messages: ChatMessage[]
   codeThemeId: string
-  isDiffOpen?: boolean
   emptyStateRepo?: string
 }>()
 
@@ -83,8 +82,7 @@ async function copyMessage(message: ChatMessage) {
 
       <div
         v-else
-        class="[transition-timing-function:var(--wb-sidebar-ease)] flex flex-col transform-gpu gap-3 transition-[transform,opacity] duration-220"
-        :class="props.isDiffOpen ? 'opacity-[0.985] translate-x-[-1px]' : 'opacity-100 translate-x-0'"
+        class="flex flex-col transform-gpu gap-3"
       >
         <DsMessageHeader
           v-model:expanded="previousMessageExpanded"

@@ -84,7 +84,6 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
       :active-thread-id="activeThreadId"
       :messages="messages"
       :code-theme-id="codeThemeId"
-      :is-diff-open="isDiffOpen"
       :empty-state-repo="emptyStateRepo ?? repo"
     />
 
@@ -118,8 +117,8 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 .wb-chat-window :deep(main),
 .wb-chat-composer-lane {
   transition:
-    padding-inline-start 260ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
-    padding-inline-end 260ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+    padding-inline-start 340ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    padding-inline-end 340ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
 }
 
 .wb-chat-window--diff-resizing :deep(main),

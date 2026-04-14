@@ -327,6 +327,20 @@ watch(
   border-left-color: color-mix(in srgb, var(--wb-chrome-hairline) 94%, var(--wb-text-primary) 6%);
 }
 
+/* Desktop: reveal is driven by parent column width only (match sidebar); no inner slide/fade. */
+@media (min-width: 1181px) {
+  .diff-drawer {
+    opacity: 1;
+    transform: none;
+    transition: border-color 340ms var(--wb-sidebar-ease, cubic-bezier(0.2, 0.8, 0.2, 1));
+    will-change: auto;
+  }
+
+  .diff-drawer--open {
+    pointer-events: auto;
+  }
+}
+
 .diff-drawer-tab {
   position: relative;
   z-index: 0;
