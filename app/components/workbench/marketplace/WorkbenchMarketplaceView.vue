@@ -2,7 +2,6 @@
 import MarketplacePluginRow from '~/components/workbench/marketplace/MarketplacePluginRow.vue'
 import MarketplaceSearchRow from '~/components/workbench/marketplace/MarketplaceSearchRow.vue'
 import MarketplaceSection from '~/components/workbench/marketplace/MarketplaceSection.vue'
-import MarketplaceToolbar from '~/components/workbench/marketplace/MarketplaceToolbar.vue'
 import { useWorkbenchMarketplaceStore } from '~/stores/workbench-marketplace'
 
 const store = useWorkbenchMarketplaceStore()
@@ -19,9 +18,7 @@ const installLabel = computed(() =>
 </script>
 
 <template>
-  <div class="marketplace-view mx-auto max-w-[1100px] w-full flex flex-col px-4 pb-12 pt-2 md:px-8">
-    <MarketplaceToolbar />
-
+  <div class="marketplace-view mx-auto max-w-[1100px] w-full flex flex-col px-4 pb-12 pt-4 md:px-8">
     <h1
       class="m-0 mb-8 text-center text-[clamp(22px,3.2vw,34px)] text-[color:var(--wb-text-primary)] font-normal leading-tight tracking-[-0.02em]"
     >

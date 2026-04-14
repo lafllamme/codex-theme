@@ -5,42 +5,44 @@ import { useWorkbenchMarketplaceStore } from '~/stores/workbench-marketplace'
 const store = useWorkbenchMarketplaceStore()
 const openCreate = ref(false)
 
-function tabClass(active: boolean) {
+function tabClassHeader(active: boolean) {
   return [
-    'relative border-none bg-transparent px-1 pb-2 text-[length:var(--wb-ui-text)] font-medium outline-none transition-colors',
+    'relative shrink-0 border-none rounded-[8px] bg-transparent px-2 py-0.5 text-[length:var(--wb-ui-text)] outline-none transition-colors',
     active
-      ? 'text-[color:var(--wb-text-primary)]'
-      : 'text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]',
+      ? 'text-[color:var(--wb-text-primary)] font-semibold'
+      : 'text-[color:var(--wb-text-muted)] font-medium hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-secondary)]',
   ].join(' ')
 }
 </script>
 
 <template>
-  <div class="mb-6 min-w-0 w-full flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-    <div class="flex items-end gap-5 border-b border-[color:var(--wb-chrome-hairline)]">
+  <div
+    class="marketplace-toolbar grid grid-cols-[minmax(0,1fr)_auto] min-h-[38px] min-w-0 w-full items-center gap-2 px-0.5"
+  >
+    <div class="min-w-0 flex items-center gap-1">
       <button
         type="button"
-        :class="tabClass(store.marketplaceTab === 'plugins')"
+        :class="tabClassHeader(store.marketplaceTab === 'plugins')"
         @click="store.setMarketplaceTab('plugins')"
       >
         Plugins
       </button>
       <button
         type="button"
-        :class="tabClass(store.marketplaceTab === 'skills')"
+        :class="tabClassHeader(store.marketplaceTab === 'skills')"
         @click="store.setMarketplaceTab('skills')"
       >
         Skills
       </button>
     </div>
 
-    <div class="flex shrink-0 items-center gap-2">
+    <div class="flex shrink-0 items-center gap-1.5">
       <button
         type="button"
-        class="h-8 inline-flex items-center gap-1.5 rounded-[8px] border-none bg-transparent px-2 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+        class="h-7 inline-flex items-center gap-1 rounded-[8px] border-none bg-transparent px-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
       >
-        <Icon name="ph:gear-six" class="size-4" aria-hidden="true" />
-        Manage
+        <Icon name="ph:gear-six" class="size-3.5" aria-hidden="true" />
+        <span class="max-[520px]:hidden">Manage</span>
       </button>
 
       <ComposerDropdownMenu
@@ -56,7 +58,7 @@ function tabClass(active: boolean) {
         <template #trigger="{ toggle }">
           <button
             type="button"
-            class="h-8 inline-flex items-center gap-1 rounded-[8px] border-none bg-transparent px-2 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+            class="h-7 inline-flex items-center gap-0.5 rounded-[8px] border-none bg-transparent px-1.5 text-[length:var(--wb-ui-text-sm)] text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
             :aria-expanded="openCreate"
             @click="toggle"
           >
@@ -86,10 +88,10 @@ function tabClass(active: boolean) {
 
       <button
         type="button"
-        class="size-8 inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
+        class="size-7 inline-flex items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-primary)]"
         aria-label="More actions"
       >
-        <Icon name="ph:dots-three-bold" class="size-5" />
+        <Icon name="ph:dots-three-bold" class="size-[18px]" />
       </button>
     </div>
   </div>

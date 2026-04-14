@@ -7,6 +7,7 @@ import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
 import WorktreeModal from '~/components/workbench/chat/WorktreeModal.vue'
 import ChatWindow from '~/components/workbench/ChatWindow.vue'
 import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
+import MarketplaceToolbar from '~/components/workbench/marketplace/MarketplaceToolbar.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
 import { workbenchMessagesByThread } from '~/data/workbench-chat-mock'
 import { codexWorkbenchCssVars } from '~/utils/codex-workbench-theme'
@@ -475,7 +476,9 @@ function beginDiffResize(event: MouseEvent) {
             <div
               class="[container-name:wb-chat-header] [container-type:inline-size] w-full px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
             >
+              <MarketplaceToolbar v-if="marketplaceStore.mainStageView === 'marketplace'" />
               <ChatHeaderBar
+                v-else
                 :title="activeThreadTitle"
                 :repo="activeThreadRepo"
                 :run-enabled="runEnabled"
@@ -513,12 +516,8 @@ function beginDiffResize(event: MouseEvent) {
                     class="min-h-0 flex-1"
                     :active-thread-id="activeThreadId"
                     :show-header="false"
-                    :title="activeThreadTitle"
                     :repo="activeThreadRepo"
                     :code-theme-id="payload.codeThemeId"
-                    :run-enabled="runEnabled"
-                    :is-terminal-open="isTerminalOpen"
-                    :is-diff-open="isDiffOpen"
                     :is-diff-resizing="isDiffResizing"
                     :chat-lane-desktop-inset-left="chatLaneDesktopInsetLeft"
                     :chat-lane-desktop-inset-right="chatLaneDesktopInsetRight"
@@ -526,10 +525,6 @@ function beginDiffResize(event: MouseEvent) {
                     :thinking-options="thinkingOptions"
                     :messages="activeMessages"
                     :empty-state-repo="activeThreadRepo"
-                    @toggle-run="runEnabled = !runEnabled"
-                    @toggle-terminal="toggleTerminal"
-                    @toggle-diff="toggleDiff"
-                    @open-git-action="openGitActionModal"
                   />
                 </div>
                 <div
