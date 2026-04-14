@@ -144,7 +144,7 @@ watch(
               aria-label="Change scope"
               @click.stop="toggle"
             >
-              <Icon name="ph:corners-in" class="size-[14px] shrink-0" aria-hidden="true" />
+              <Icon name="ph:caret-up-down" class="rotate-45 size-[14px] shrink-0" aria-hidden="true" />
             </button>
             <button
               type="button"
