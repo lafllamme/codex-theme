@@ -466,7 +466,7 @@ function beginDiffResize(event: MouseEvent) {
       >
         <div class="theme-switch-surface relative z-24 min-h-0 min-w-0 w-full flex flex-col">
           <section
-            class="theme-switch-surface min-h-0 min-w-0 w-full overflow-visible border-0 border-b border-[color:var(--wb-chrome-hairline)] rounded-t-[28px] border-solid bg-[var(--wb-bg-panel)]"
+            class="theme-switch-surface min-h-0 min-w-0 w-full overflow-visible border-0 border-b border-[color:var(--wb-chrome-hairline)] rounded-t-[28px] border-solid bg-[var(--wb-bg-panel)] pb-1"
           >
             <div
               class="[container-name:wb-chat-header] [container-type:inline-size] w-full px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
