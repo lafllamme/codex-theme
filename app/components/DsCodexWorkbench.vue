@@ -124,6 +124,17 @@ const chatLaneDesktopInsetLeft = computed(() => {
 
 const chatLaneDesktopInsetRight = computed(() => chatLaneDesktopInsetLeft.value)
 
+/**
+ * Header title/repo inset: driven only by sidebar collapse, not diff — opening the diff drawer must not shift the chat header text.
+ * Chat lane (`chatLaneDesktopInsetLeft`) still reacts to diff for message column width.
+ */
+const headerLeftSafeArea = computed(() => {
+  if (isSidebarCollapsed.value) {
+    return 'max(0px, calc(clamp(260px, 16vw, 420px) - 14px))'
+  }
+  return 'max(0px, calc(clamp(14px, 2vw, 32px) - 14px))'
+})
+
 const wbSidebarEase = 'ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
 const wbOverlayEase = 'max-[1081px]:ease-[var(--wb-sidebar-ease,cubic-bezier(0.2,0.8,0.2,1))]'
 
@@ -225,9 +236,7 @@ const shellStyle = computed(() => ({
   '--wb-diff-size': `${diffWidth.value}px`,
   '--wb-body-shift': `${bodyShiftPx.value}px`,
   '--wb-top-chrome-height': '38px',
-  '--wb-header-left-safe-area': isSidebarCollapsed.value
-    ? 'clamp(244px, 16vw, 320px)'
-    : 'clamp(150px, 10.5vw, 224px)',
+  '--wb-header-left-safe-area': headerLeftSafeArea.value,
   '--wb-header-title-shift': '0px',
   '--wb-sidebar-ease': 'cubic-bezier(0.2, 0.8, 0.2, 1)',
 }))

@@ -150,14 +150,18 @@ onMounted(() => {
       class="chat-header-left min-w-0 w-full flex items-center gap-1 overflow-hidden"
     >
       <div
-        class="chat-header-text-cluster min-h-0 min-w-0 flex flex-1 items-center gap-3 overflow-hidden"
+        class="chat-header-text-cluster min-h-0 min-w-0 flex flex-1 items-center gap-2 overflow-hidden"
       >
-        <strong
-          class="chat-header-title min-h-0 min-w-0 flex-1 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none"
-        >{{ title }}</strong>
-        <span
-          class="chat-header-repo max-w-[42%] min-h-0 min-w-0 flex-none truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-none"
-        >{{ repo }}</span>
+        <div
+          class="chat-header-title-repo max-w-full min-h-0 min-w-0 inline-flex items-baseline gap-1.5 overflow-hidden"
+        >
+          <strong
+            class="chat-header-title max-w-[min(100%,42rem)] min-h-0 min-w-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-semibold leading-none"
+          >{{ title }}</strong>
+          <span
+            class="chat-header-repo max-w-[min(40%,12rem)] min-h-0 shrink-0 truncate text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-muted)] leading-none"
+          >{{ repo }}</span>
+        </div>
       </div>
       <button
         class="chat-header-overflow-btn h-5 w-5 inline-flex shrink-0 appearance-none items-center justify-center rounded-[6px] border-none bg-transparent text-[color:var(--wb-text-secondary)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
