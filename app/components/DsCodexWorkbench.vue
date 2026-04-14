@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CodexThemePayload } from '~/types/codex-theme'
 import { useEventListener } from '@vueuse/core'
+import AutomationsChromeBar from '~/components/workbench/automations/AutomationsChromeBar.vue'
 import ChatHeaderBar from '~/components/workbench/chat/ChatHeaderBar.vue'
 import ComposerDropdownMenu from '~/components/workbench/chat/ComposerDropdownMenu.vue'
 import GitActionModal from '~/components/workbench/chat/GitActionModal.vue'
@@ -477,6 +478,7 @@ function beginDiffResize(event: MouseEvent) {
               class="[container-name:wb-chat-header] [container-type:inline-size] w-full px-3.5 pt-0 max-[1180px]:px-2.5 max-[768px]:px-1.5"
             >
               <MarketplaceToolbar v-if="marketplaceStore.mainStageView === 'marketplace'" />
+              <AutomationsChromeBar v-else-if="marketplaceStore.mainStageView === 'automations'" />
               <ChatHeaderBar
                 v-else
                 :title="activeThreadTitle"

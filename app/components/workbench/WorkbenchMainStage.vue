@@ -2,6 +2,7 @@
 import type { AssistantBlock, ChatMessage } from '~/types/workbench-chat'
 import { useTimeoutFn } from '@vueuse/core'
 import DsMessageHeader from '~/components/DsMessageHeader.vue'
+import WorkbenchAutomationsView from '~/components/workbench/automations/WorkbenchAutomationsView.vue'
 import ChatComponentMention from '~/components/workbench/chat/ChatComponentMention.vue'
 import ChatFileChangeCard from '~/components/workbench/chat/ChatFileChangeCard.vue'
 import ChatWorkbenchDemoMessage from '~/components/workbench/chat/ChatWorkbenchDemoMessage.vue'
@@ -80,8 +81,16 @@ async function copyMessage(message: ChatMessage) {
     class="[padding-inline-end:var(--wb-chat-lane-inset-right,var(--wb-chat-lane-inset))] [padding-inline-start:var(--wb-chat-lane-inset-left,var(--wb-chat-lane-inset))] grid min-h-0 min-w-0 flex-1 gap-2 pb-[8px] pt-[8px]"
     :class="messages.length > 0 ? 'grid-rows-[1fr]' : 'grid-rows-[minmax(0,1fr)]'"
   >
-    <section class="wb-mainstage-scroll relative min-h-0 overflow-x-auto overflow-y-auto border-none bg-[var(--wb-bg-panel)] px-0 py-4">
-      <WorkbenchMarketplaceView v-if="marketplaceStore.mainStageView === 'marketplace'" />
+    <section
+      class="wb-mainstage-scroll relative min-h-0 border-none bg-[var(--wb-bg-panel)] px-0 py-4"
+      :class="marketplaceStore.mainStageView === 'automations' ? 'overflow-hidden' : 'overflow-x-auto overflow-y-auto'"
+    >
+      <WorkbenchAutomationsView
+        v-if="marketplaceStore.mainStageView === 'automations'"
+        class="absolute inset-0 min-h-0 flex flex-col"
+      />
+
+      <WorkbenchMarketplaceView v-else-if="marketplaceStore.mainStageView === 'marketplace'" />
 
       <WorkbenchEmptyState v-else-if="messages.length === 0" :repo="props.emptyStateRepo" />
 

@@ -44,7 +44,9 @@ const _worktreeBranch = defineModel<string>('worktreeBranch', { required: true }
 
 const marketplaceStore = useWorkbenchMarketplaceStore()
 const { mainStageView } = storeToRefs(marketplaceStore)
-const showComposer = computed(() => mainStageView.value !== 'marketplace')
+const showComposer = computed(() =>
+  mainStageView.value !== 'marketplace' && mainStageView.value !== 'automations',
+)
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 import type { MarketplaceKind } from '~/data/workbench-plugins-catalog'
 import { marketplaceCatalog } from '~/data/workbench-plugins-catalog'
 
-export type MainStageView = 'chat' | 'marketplace'
+export type MainStageView = 'chat' | 'marketplace' | 'automations'
 export type MarketplaceTab = 'plugins' | 'skills'
 export type BuiltByFilter = 'all' | 'openai' | 'community'
 
@@ -37,6 +37,10 @@ export const useWorkbenchMarketplaceStore = defineStore('workbench-marketplace',
   function openMarketplace() {
     mainStageView.value = 'marketplace'
     marketplaceTab.value = 'plugins'
+  }
+
+  function openAutomations() {
+    mainStageView.value = 'automations'
   }
 
   function setMarketplaceTab(tab: MarketplaceTab) {
@@ -125,6 +129,7 @@ export const useWorkbenchMarketplaceStore = defineStore('workbench-marketplace',
     installedIds,
     setMainStageView,
     openMarketplace,
+    openAutomations,
     setMarketplaceTab,
     isInstalled,
     toggleInstalled,
