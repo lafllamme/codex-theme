@@ -90,9 +90,9 @@ watch(
 </script>
 
 <template>
-  <aside class="diff-drawer relative max-w-full overflow-x-hidden overflow-y-visible border-l border-l-[color:color-mix(in_srgb,var(--wb-divider)_86%,transparent)] rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
+  <aside class="diff-drawer relative max-w-full overflow-x-hidden overflow-y-visible rounded-none bg-[var(--wb-bg-panel)]" :class="open ? 'diff-drawer--open' : ''">
     <div
-      class="relative z-[55] flex shrink-0 items-end justify-start gap-1 border-b border-[color:var(--wb-border-2)] px-2"
+      class="diff-drawer-tablist relative z-[55] flex shrink-0 items-end justify-start gap-0.5 px-3"
       role="tablist"
       aria-label="Diff drawer views"
     >
@@ -100,23 +100,23 @@ watch(
         type="button"
         role="tab"
         :aria-selected="activeTab === 'summary'"
-        class="relative min-h-[30px] inline-flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
+        class="diff-drawer-tab min-h-[30px] inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
         :class="activeTab === 'summary'
-          ? 'border-[color:var(--wb-text-primary)] text-[color:var(--wb-text-primary)]'
-          : 'border-transparent text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
+          ? 'diff-drawer-tab--active text-[color:var(--wb-text-primary)]'
+          : 'text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
         @click="activeTab = 'summary'"
       >
-        <Icon name="hugeicons:list-start" class="size-[14px] scale-y-[-1] shrink-0 opacity-[0.92]" aria-hidden="true" />
+        <Icon name="hugeicons:list-start" class="size-[14px] shrink-0 scale-y-[-1] opacity-[0.92]" aria-hidden="true" />
         <span class="whitespace-nowrap">Summary</span>
       </button>
       <button
         type="button"
         role="tab"
         :aria-selected="activeTab === 'review'"
-        class="relative min-h-[30px] inline-flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
+        class="diff-drawer-tab min-h-[30px] inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium font-[var(--font-ui)] transition-colors"
         :class="activeTab === 'review'
-          ? 'border-[color:var(--wb-text-primary)] text-[color:var(--wb-text-primary)]'
-          : 'border-transparent text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
+          ? 'diff-drawer-tab--active text-[color:var(--wb-text-primary)]'
+          : 'text-[color:var(--wb-text-muted)] hover:text-[color:var(--wb-text-secondary)]'"
         @click="activeTab = 'review'"
       >
         <Icon name="hugeicons:plus-minus-square-01" class="size-[14px] shrink-0 opacity-[0.92]" aria-hidden="true" />
@@ -137,19 +137,30 @@ watch(
         @close="closeMenus"
       >
         <template #trigger="{ toggle }">
-          <button
-            class="h-7 inline-flex appearance-none items-center gap-2 rounded-full border-none bg-transparent px-3 text-[13px] text-[color:var(--wb-text-primary)] font-medium outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
-            @click.stop="toggle"
-          >
-            <span class="truncate">{{ selectedStatusLabel }}</span>
-            <span
-              v-if="selectedStatusCount > 0"
-              class="h-5 min-w-5 inline-flex items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-medium font-[var(--font-ui)] tabular-nums"
+          <div class="max-w-full min-w-0 inline-flex items-center gap-0.5">
+            <button
+              type="button"
+              class="diff-drawer-corner-btn h-7 w-7 inline-flex shrink-0 appearance-none items-center justify-center rounded-[8px] border-none bg-transparent text-[color:var(--wb-text-muted)] outline-none transition-colors hover:bg-[var(--wb-hover-bg)] hover:text-[color:var(--wb-text-secondary)]"
+              aria-label="Change scope"
+              @click.stop="toggle"
             >
-              {{ selectedStatusCount }}
-            </span>
-            <Icon name="ph:caret-down-bold" class="h-[10px] w-[10px] text-[color:var(--wb-text-secondary)]" />
-          </button>
+              <Icon name="ph:corners-in" class="size-[14px] shrink-0" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              class="diff-drawer-status-trigger h-7 max-w-[min(100%,12rem)] min-w-0 inline-flex appearance-none items-center gap-2 rounded-full border-none bg-transparent pl-1 pr-2 text-[13px] text-[color:var(--wb-text-primary)] font-medium outline-none transition-colors hover:bg-[var(--wb-hover-bg)]"
+              @click.stop="toggle"
+            >
+              <span class="min-w-0 truncate">{{ selectedStatusLabel }}</span>
+              <span
+                v-if="selectedStatusCount > 0"
+                class="h-5 min-w-5 inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--wb-bubble-bg)] px-1.5 text-[11px] text-[color:var(--wb-text-primary)] font-medium font-[var(--font-ui)] tabular-nums"
+              >
+                {{ selectedStatusCount }}
+              </span>
+              <Icon name="ph:caret-up-down" class="size-[12px] shrink-0 text-[color:var(--wb-text-secondary)]" aria-hidden="true" />
+            </button>
+          </div>
         </template>
 
         <div class="grid gap-0.5 text-[13px]">
@@ -261,7 +272,7 @@ watch(
 
     <div
       v-show="activeTab === 'review'"
-      class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto px-2 pt-8 text-[13px] font-[var(--font-code)]"
+      class="diff-scroll relative z-10 min-h-0 min-w-0 flex-1 overflow-x-auto overflow-y-auto px-3 pt-8 text-[13px] font-[var(--font-code)]"
       :class="showBulkActions ? 'pb-[72px]' : 'pb-2'"
     >
       <DrawerChangeCard
@@ -299,6 +310,8 @@ watch(
   opacity: 0;
   transform: translateX(12px);
   pointer-events: none;
+  /* Subtle column edge (Codex-like): mostly border tokens, tiny text tint when open. */
+  border-left: 1px solid var(--wb-border-2);
   transition:
     opacity 220ms ease,
     transform 260ms var(--wb-sidebar-ease, cubic-bezier(0.22, 1, 0.36, 1)),
@@ -310,7 +323,36 @@ watch(
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
-  border-color: var(--wb-border-1);
+  border-left-color: color-mix(in srgb, var(--wb-border-2) 88%, var(--wb-text-primary) 12%);
+}
+
+/* Tab strip hairline; active tab = bottom accent only (no box). */
+.diff-drawer-tablist {
+  border-bottom: 1px solid var(--wb-border-2);
+}
+
+.diff-drawer-tab {
+  position: relative;
+  z-index: 0;
+  margin-bottom: -1px;
+  border: none;
+  background: transparent;
+}
+
+.diff-drawer-tab:hover {
+  background: color-mix(in srgb, var(--wb-hover-bg) 45%, transparent);
+}
+
+.diff-drawer-tab--active::after,
+.diff-drawer-tab[aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--wb-text-primary);
+  pointer-events: none;
 }
 
 @media (max-width: 1180px) {
