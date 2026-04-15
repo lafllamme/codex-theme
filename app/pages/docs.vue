@@ -4,9 +4,9 @@ definePageMeta({
 })
 
 useCodexPageSeo({
-  title: 'Documentation',
+  title: 'Theme JSON docs & install guide',
   description:
-    'How Codex maps theme JSON to UI tokens: installation, quick start, preset sources, and export workflow for OpenAI Codex themes.',
+    'Install Codex Theme Studio, follow the quick start, learn the JSON format, preset sources, and export workflow so your OpenAI Codex themes match the official contract.',
   keywords: ['Codex JSON', 'theme format', 'installation', 'export'],
 })
 

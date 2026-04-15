@@ -6,9 +6,9 @@ definePageMeta({
 })
 
 useCodexPageSeo({
-  title: 'Codex Theme Studio',
+  title: 'Preview & export OpenAI Codex themes',
   description:
-    'Codex Theme Studio: explore 500+ theme variations, refine colors and typography, and export a build-ready theme pack for OpenAI Codex.',
+    'Explore 500+ Codex theme variations, tune colors and fonts, then export a build-ready JSON theme pack for the OpenAI Codex app—free in the browser.',
   keywords: ['theme variations', 'theme pack', 'export theme'],
 })
 

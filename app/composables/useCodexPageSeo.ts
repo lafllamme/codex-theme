@@ -11,6 +11,8 @@ interface CodexPageSeoOptions {
   path?: string
   /** Extra keywords merged with the global Codex list (deduped). */
   keywords?: string[]
+  /** Override default `og:image` alt from runtime config. */
+  ogImageAlt?: string
 }
 
 /**
@@ -24,6 +26,8 @@ export function useCodexPageSeo(options: CodexPageSeoOptions) {
   const siteUrl = String(config.public.siteUrl).replace(RE_TRAILING_SLASH, '')
   const siteName = String(config.public.siteName)
   const ogImage = String(config.public.ogImage)
+  const ogImageWidth = Number(config.public.ogImageWidth) || undefined
+  const ogImageHeight = Number(config.public.ogImageHeight) || undefined
   const githubUrl = String(config.public.githubUrl)
 
   const path = options.path ?? route.path
@@ -33,6 +37,9 @@ export function useCodexPageSeo(options: CodexPageSeoOptions) {
   const documentTitle = options.title === siteName
     ? siteName
     : `${options.title} · ${siteName}`
+
+  const defaultOgImageAlt = String(config.public.ogImageAlt ?? '').trim()
+  const ogImageAlt = options.ogImageAlt ?? (defaultOgImageAlt.length > 0 ? defaultOgImageAlt : documentTitle)
 
   const keywordSet = new Set<string>([...CODEX_THEME_SEO_KEYWORDS])
   if (options.keywords?.length) {
@@ -52,12 +59,16 @@ export function useCodexPageSeo(options: CodexPageSeoOptions) {
     ogType: 'website',
     ogImage,
     ogImageSecureUrl: ogImage,
+    ogImageAlt,
+    ogImageWidth,
+    ogImageHeight,
     ogSiteName: siteName,
     ogLocale: 'en_US',
     twitterCard: 'summary_large_image',
     twitterTitle: documentTitle,
     twitterDescription: options.description,
     twitterImage: ogImage,
+    twitterImageAlt: ogImageAlt,
   })
 
   const structuredData = {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 useCodexPageSeo({
-  title: 'Theme lab',
+  title: 'Legacy theme lab preview (mint UI)',
   description:
-    'Legacy Codex theme lab preview: dark console surfaces and mint accent hierarchy for prototyping.',
+    'Older Codex theme lab preview: dark console surfaces and mint accent hierarchy—use the main theme builder for current workflows.',
 })
 </script>
 
