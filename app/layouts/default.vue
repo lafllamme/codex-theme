@@ -4,7 +4,8 @@ import Dither from '@/components/background/Dither.vue'
 const controls = useDitherControls()
 const ditherReady = useState<boolean>('dither-ready', () => false)
 const route = useRoute()
-const legalStylePaths = new Set(['/docs', '/imprint', '/privacy'])
+/** Solid black, no dither: docs + legal pages */
+const solidBgPaths = new Set(['/docs', '/imprint', '/privacy'])
 
 function normalizedPath(path: string) {
   const p = path.replace(/\/$/, '')
@@ -14,18 +15,19 @@ function normalizedPath(path: string) {
 const scrollableRoute = computed(
   () => {
     const p = normalizedPath(route.path)
-    return p === '/' || legalStylePaths.has(p)
+    return p === '/' || solidBgPaths.has(p)
   },
 )
 const headerRoute = computed(
   () => {
     const p = normalizedPath(route.path)
-    return p === '/' || legalStylePaths.has(p)
+    return p === '/' || solidBgPaths.has(p)
   },
 )
-const docsRoute = computed(() => legalStylePaths.has(normalizedPath(route.path)))
+/** Only docs uses the three-column “frame” behind the pill header; legal pages are full-width and look wrong with side strips. */
+const docsHeaderOverlay = computed(() => normalizedPath(route.path) === '/docs')
 const showAnimatedBackground = computed(
-  () => !legalStylePaths.has(normalizedPath(route.path)),
+  () => !solidBgPaths.has(normalizedPath(route.path)),
 )
 
 function handleDitherReady() {
@@ -83,9 +85,9 @@ function handleDitherReady() {
       <DsHeader class="pointer-events-auto" />
     </div>
 
-    <!-- UX: Let's see if this distracting -->
+    <!-- Docs only: side blacks + clear lane for the glass header (legal pages skip this to avoid corner “dips” vs full-width content). -->
     <div
-      v-if="docsRoute"
+      v-if="docsHeaderOverlay"
       class="pointer-events-none fixed inset-x-0 top-0 z-[19] h-[calc(var(--hero-top-offset)-32px)] bg-pureBlack"
     >
       <div class="absolute inset-x-0 top-10 h-[52px] flex sm:h-[60px]">

@@ -29,7 +29,7 @@ useCodexPageSeo({
           ├─ name: "Codex Theme Studio"
         </p>
         <p class="text-pureBlack/50">
-          ├─ location: "Cologne, Germany"
+          ├─ location: "50737 Cologne, Germany"
         </p>
         <p class="text-pureBlack/50">
           └─ status: "active"
@@ -54,7 +54,8 @@ useCodexPageSeo({
             ## ADDRESS
           </p>
           <p class="text-sm leading-relaxed">
-            Cologne<br>
+            Dogan Teke<br>
+            50737 Cologne<br>
             Germany
           </p>
         </div>
@@ -64,6 +65,13 @@ useCodexPageSeo({
             ## CONTACT
           </p>
           <p class="text-sm">
+            <span class="text-pureWhite/40">email:</span>
+            <a
+              href="mailto:info@doganteke.ai"
+              class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+            >info@doganteke.ai</a>
+          </p>
+          <p class="mt-2 text-sm">
             <span class="text-pureWhite/40">web:</span>
             <a
               :href="githubUrl"
@@ -86,10 +94,10 @@ useCodexPageSeo({
             &gt; operator()
           </p>
           <p class="mb-4 font-geist-700 text-2xl tracking-tight sm:text-3xl">
-            Project maintainers
+            Dogan Teke
           </p>
           <p class="text-xs text-pureWhite/60">
-            "Open-source contributors"
+            Responsible for content (§ 55 Abs. 2 RStV where applicable)
           </p>
         </div>
         <div>
@@ -97,8 +105,8 @@ useCodexPageSeo({
             &gt; liability_notice()
           </p>
           <p class="text-xs leading-relaxed text-pureWhite/80">
-            Responsible for editorial content under applicable local law: the
-            project operators reachable via the contact above.
+            Responsible for editorial content under applicable local law: Dogan
+            Teke, reachable via the contact details above.
           </p>
         </div>
       </div>
