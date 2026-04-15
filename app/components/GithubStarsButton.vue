@@ -11,7 +11,7 @@ interface GithubStarsButtonProps {
 
 const props = withDefaults(defineProps<GithubStarsButtonProps>(), {
   username: 'lafllamme',
-  repo: 'codex-theme',
+  repo: 'codex-themes',
   value: 0,
 })
 

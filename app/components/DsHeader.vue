@@ -85,14 +85,21 @@ onBeforeUnmount(() => {
     </div>
 
     <div
-      class="flex items-center text-pureWhite md:hidden"
+      class="flex items-center gap-3 pr-3 md:hidden"
       :class="shouldAnimate ? 'header-item header-item-delay-2' : ''"
     >
-      <Icon
-        name="ph:list-bold"
-        class="h-[16px] w-[16px]"
-        aria-hidden="true"
-      />
+      <NuxtLink
+        to="/themes"
+        class="font-geist-500 text-[13px] no-underline transition-colors text-pureWhite/70 hover:text-pureWhite"
+      >
+        Themes
+      </NuxtLink>
+      <NuxtLink
+        to="/docs"
+        class="font-geist-500 text-[13px] no-underline transition-colors text-pureWhite/70 hover:text-pureWhite"
+      >
+        Docs
+      </NuxtLink>
     </div>
   </DsGlassSurface>
 </template>
