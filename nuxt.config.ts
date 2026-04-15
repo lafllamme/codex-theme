@@ -19,8 +19,8 @@ export default defineNuxtConfig({
     public: {
       siteUrl,
       siteName: 'Codex Theme Studio',
-      /** Prefer a true 1200×630 file under ~600 KB (e.g. WebP) for WhatsApp; replace asset if validators complain. */
-      ogImage: 'https://i.ibb.co/1tfWb0jq/og-image-1200x630.webp',
+      /** Hosted OG image (1200×630). */
+      ogImage: 'https://i.ibb.co/ynLBMLcj/image.png',
       ogImageAlt:
         'Codex Theme Studio — preview & export OpenAI Codex IDE themes. Open the theme builder or docs.',
       ogImageWidth: 1200,
