@@ -19,7 +19,7 @@ import DocsSectionShell from '~/components/docs/DocsSectionShell.vue'
     </p>
     <p>
       If you have concerns, questions, or notice something that should be corrected, please reach
-      out or message the maintainer. Feedback is welcome.
+      out or message us. Feedback is welcome.
     </p>
   </DocsSectionShell>
 </template>
