@@ -4,14 +4,29 @@ import Dither from '@/components/background/Dither.vue'
 const controls = useDitherControls()
 const ditherReady = useState<boolean>('dither-ready', () => false)
 const route = useRoute()
+const legalStylePaths = new Set(['/docs', '/imprint', '/privacy'])
+
+function normalizedPath(path: string) {
+  const p = path.replace(/\/$/, '')
+  return p === '' ? '/' : p
+}
+
 const scrollableRoute = computed(
-  () => route.path === '/' || route.path === '/docs',
+  () => {
+    const p = normalizedPath(route.path)
+    return p === '/' || legalStylePaths.has(p)
+  },
 )
 const headerRoute = computed(
-  () => route.path === '/' || route.path === '/docs',
+  () => {
+    const p = normalizedPath(route.path)
+    return p === '/' || legalStylePaths.has(p)
+  },
 )
-const docsRoute = computed(() => route.path === '/docs')
-const showAnimatedBackground = computed(() => route.path !== '/docs')
+const docsRoute = computed(() => legalStylePaths.has(normalizedPath(route.path)))
+const showAnimatedBackground = computed(
+  () => !legalStylePaths.has(normalizedPath(route.path)),
+)
 
 function handleDitherReady() {
   ditherReady.value = true

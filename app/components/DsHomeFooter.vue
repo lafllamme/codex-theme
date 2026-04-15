@@ -63,8 +63,22 @@ onMounted(() => {
         </div>
 
         <div
-          class="group max-w-[min(100%,28rem)] inline-flex flex-col items-center text-center md:ml-auto md:items-end md:text-right"
+          class="group max-w-[min(100%,28rem)] inline-flex flex-col items-center gap-3 text-center md:ml-auto md:items-end md:text-right"
         >
+          <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:justify-end">
+            <NuxtLink
+              to="/imprint"
+              class="font-geist-mono-400 text-xs text-pureWhite/50 no-underline transition hover:text-pureWhite"
+            >
+              Imprint
+            </NuxtLink>
+            <NuxtLink
+              to="/privacy"
+              class="font-geist-mono-400 text-xs text-pureWhite/50 no-underline transition hover:text-pureWhite"
+            >
+              Privacy
+            </NuxtLink>
+          </div>
           <p
             class="font-geist-mono-300 text-xs leading-snug tracking-[0.11em] uppercase transition-colors duration-200 text-pureWhite/44 sm:text-[13px] group-hover:text-pureWhite"
           >
