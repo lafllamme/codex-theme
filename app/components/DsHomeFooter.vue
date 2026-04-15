@@ -59,15 +59,6 @@ onMounted(() => {
             >
               <Icon name="ph:x-logo" class="size-6" />
             </a>
-            <a
-              :href="social.github"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex transition-colors text-pureWhite/42 hover:text-pureWhite"
-              aria-label="GitHub repository"
-            >
-              <Icon name="mdi:github" class="size-6" />
-            </a>
           </div>
         </div>
 
@@ -75,12 +66,12 @@ onMounted(() => {
           class="group max-w-[min(100%,28rem)] inline-flex flex-col items-center text-center md:ml-auto md:items-end md:text-right"
         >
           <p
-            class="font-geist-mono-400 text-[10px] leading-snug tracking-[0.12em] uppercase transition-colors duration-200 text-pureWhite/44 group-hover:text-pureWhite"
+            class="font-geist-mono-300 text-xs leading-snug tracking-[0.11em] uppercase transition-colors duration-200 text-pureWhite/44 sm:text-[13px] group-hover:text-pureWhite"
           >
             © {{ year }} Codex Theme Studio
           </p>
           <p
-            class="font-geist-mono-400 mt-1.5 text-[10px] leading-snug tracking-[0.1em] uppercase transition-colors duration-200 text-pureWhite/38 group-hover:text-pureWhite"
+            class="font-geist-mono-300 mt-2 text-xs leading-snug tracking-[0.09em] uppercase transition-colors duration-200 text-pureWhite/38 sm:text-[13px] group-hover:text-pureWhite"
           >
             {{ clientLine }}
           </p>

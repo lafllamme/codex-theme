@@ -175,7 +175,7 @@ onUnmounted(cleanup)
     :href="repoUrl"
     target="_blank"
     rel="noreferrer noopener"
-    class="group font-geist-500 border-white/16 bg-black/58 hover:border-white/24 hover:bg-black/68 absolute right-0 top-0 z-30 inline-flex items-center gap-2 border rounded-[999px] px-2.5 py-1.5 text-[12px] no-underline shadow-[0_12px_28px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-all duration-250 text-pureWhite/88 md:fixed md:right-6 md:top-6 sm:right-0 sm:top-0 sm:gap-2.5 sm:px-3.5 sm:py-2 sm:text-[13px] hover:-translate-y-0.5"
+    class="group font-geist-500 border-white/16 bg-black/58 hover:border-white/24 hover:bg-black/68 absolute right-4 top-0 z-30 inline-flex items-center gap-2 border rounded-[999px] px-2.5 py-1.5 text-[12px] no-underline shadow-[0_12px_28px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-[right,transform] duration-250 text-pureWhite/88 sm:right-6 sm:gap-2.5 sm:px-3.5 sm:py-2 sm:text-[13px] hover:-translate-y-0.5"
     aria-label="Open GitHub repository"
   >
     <Icon name="mdi:github-circle" class="h-5 w-5 transition-colors duration-200 text-pureWhite/80 group-hover:text-pureWhite/95" />
