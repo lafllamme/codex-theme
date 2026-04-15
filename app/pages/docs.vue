@@ -8,10 +8,11 @@ const tocSections = [
   { id: 'installation', label: 'Installation' },
   { id: 'quick-start', label: 'Quick Start' },
   { id: 'codex-json-format', label: 'Codex JSON Format' },
-  { id: 'theme-generation-algorithm', label: 'Theme Generation Algorithm' },
+  { id: 'theme-generation', label: 'Theme Generation' },
   { id: 'preset-sources', label: 'Preset Sources' },
   { id: 'reference', label: 'Reference' },
   { id: 'known-limitations', label: 'Known Limitations' },
+  { id: 'disclaimer', label: 'Disclaimer' },
 ] as const
 </script>
 
@@ -56,6 +57,7 @@ const tocSections = [
         <DocsSectionPresetSources />
         <DocsSectionReference />
         <DocsSectionKnownLimitations />
+        <DocsSectionDisclaimer />
       </div>
     </section>
   </main>

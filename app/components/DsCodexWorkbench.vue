@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CommandPaletteActionId } from '~/data/workbench-command-palette'
 import type { CodexThemePayload } from '~/types/codex-theme'
 import { useEventListener } from '@vueuse/core'
 import AutomationsChromeBar from '~/components/workbench/automations/AutomationsChromeBar.vue'
@@ -11,6 +12,7 @@ import DiffDrawer from '~/components/workbench/DiffDrawer.vue'
 import MarketplaceToolbar from '~/components/workbench/marketplace/MarketplaceToolbar.vue'
 import TerminalDrawer from '~/components/workbench/TerminalDrawer.vue'
 import { workbenchMessagesByThread } from '~/data/workbench-chat-mock'
+import { commandPaletteSectionDefs } from '~/data/workbench-command-palette'
 import { codexWorkbenchCssVars } from '~/utils/codex-workbench-theme'
 import { resolveThemeCodeFont, resolveThemeUiFont } from '~/utils/theme-font-stacks'
 
@@ -187,41 +189,6 @@ const diffColumnClass = computed(() => {
   ].join(' ')
 })
 
-const searchSections = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase()
-  const sections = [
-    {
-      id: 'suggested',
-      title: 'Suggested',
-      items: [
-        { id: 'new-thread', label: 'New Thread', shortcut: '⌘N', icon: 'heroicons-outline:pencil-alt', action: () => startNewThread() },
-        { id: 'open-folder', label: 'Open folder', shortcut: '⌘O', icon: 'ph:folder-open', action: () => openFolderCommand() },
-        { id: 'settings', label: 'Settings', shortcut: '⌘,', icon: 'ph:gear-six', action: () => undefined },
-        { id: 'search-files', label: 'Search files', shortcut: '⌘P', icon: 'ph:magnifying-glass', action: () => undefined },
-      ],
-    },
-    {
-      id: 'thread',
-      title: 'Thread',
-      items: [
-        { id: 'search-chats', label: 'Search chats', shortcut: '⌘G', icon: 'ph:magnifying-glass', action: () => undefined },
-        { id: 'new-quick-chat', label: 'New quick chat', shortcut: '⇧⌘N', icon: 'heroicons-outline:pencil-alt', action: () => startNewThread(activeThreadRepo.value) },
-        { id: 'expand-thread', label: 'Expand thread', shortcut: '⌘]', icon: 'ph:arrows-out-simple', action: () => undefined },
-      ],
-    },
-  ]
-
-  if (!query)
-    return sections
-
-  return sections
-    .map(section => ({
-      ...section,
-      items: section.items.filter(item => item.label.toLowerCase().includes(query)),
-    }))
-    .filter(section => section.items.length > 0)
-})
-
 const shellStyle = computed(() => ({
   ...codexWorkbenchCssVars(props.payload, props.translucentSidebar),
   '--font-ui': resolveThemeUiFont(props.payload.theme.fonts.ui),
@@ -295,6 +262,78 @@ function closeSearchCommand() {
   isSearchCommandOpen.value = false
   searchQuery.value = ''
 }
+
+function goToPreviousThread() {
+  const idx = threadItems.findIndex(t => t.id === activeThreadId.value)
+  if (idx <= 0)
+    return
+  marketplaceStore.setMainStageView('chat')
+  activeThreadId.value = threadItems[idx - 1]!.id
+  closeSidebarMobile()
+}
+
+function goToNextThread() {
+  const idx = threadItems.findIndex(t => t.id === activeThreadId.value)
+  if (idx < 0 || idx >= threadItems.length - 1)
+    return
+  marketplaceStore.setMainStageView('chat')
+  activeThreadId.value = threadItems[idx + 1]!.id
+  closeSidebarMobile()
+}
+
+function commandPaletteItemMatchesQuery(query: string, sectionTitle: string, itemLabel: string) {
+  if (!query)
+    return true
+  if (sectionTitle.toLowerCase().includes(query))
+    return true
+  return itemLabel.toLowerCase().includes(query)
+}
+
+const searchSections = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase()
+
+  const actionRunners = {
+    newChat: () => startNewThread(),
+    openFolder: () => openFolderCommand(),
+    settings: () => {},
+    searchChats: () => {},
+    newQuickChat: () => startNewThread(activeThreadRepo.value),
+    openMiniWindow: () => {},
+    prevChat: () => goToPreviousThread(),
+    nextChat: () => goToNextThread(),
+    find: () => {},
+    back: () => {},
+    forward: () => {},
+    toggleSidebar: () => toggleSidebar(),
+    toggleTerminal: () => toggleTerminal(),
+    toggleDiff: () => toggleDiff(),
+    forceReloadSkills: () => {},
+    goToSkills: () => {
+      marketplaceStore.setMainStageView('marketplace')
+      marketplaceStore.setMarketplaceTab('skills')
+    },
+    mcp: () => {},
+    personality: () => {},
+    manageAutomations: () => marketplaceStore.openAutomations(),
+    logOut: () => {},
+    feedback: () => {},
+  } satisfies Record<CommandPaletteActionId, () => void>
+
+  return commandPaletteSectionDefs
+    .map((section) => {
+      const items = section.items
+        .filter(item => commandPaletteItemMatchesQuery(query, section.title, item.label))
+        .map(item => ({
+          id: item.id,
+          label: item.label,
+          icon: item.icon,
+          shortcut: item.shortcut,
+          action: actionRunners[item.actionKey],
+        }))
+      return { id: section.id, title: section.title, items }
+    })
+    .filter(section => section.items.length > 0)
+})
 
 function executeSearchCommand(action: () => void) {
   action()
@@ -590,19 +629,22 @@ function beginDiffResize(event: MouseEvent) {
         <span class="hidden" />
       </template>
 
-      <div class="grid gap-2">
-        <label class="h-11 flex items-center gap-2 border border-[color:var(--wb-border-2)] rounded-[12px] border-solid bg-[var(--wb-bg-panel)] px-3">
-          <Icon name="ph:magnifying-glass" class="h-[15px] w-[15px] text-[color:var(--wb-text-muted)]" />
+      <div class="grid gap-0">
+        <!-- Flush with panel (no bordered input well) — matches dark command palette -->
+        <div class="min-h-[44px] flex items-center gap-2.5 px-1 pb-2 pt-0.5">
+          <Icon name="ph:magnifying-glass" class="h-[15px] w-[15px] shrink-0 text-[color:var(--wb-text-muted)]" aria-hidden="true" />
           <input
             ref="searchInputRef"
             v-model="searchQuery"
             type="text"
-            placeholder="Search commands"
-            class="min-w-0 w-full border-none bg-transparent p-0 text-[17px] text-[color:var(--wb-text-primary)] font-normal leading-none outline-none placeholder:text-[color:var(--wb-text-muted)]"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Type command or search chats"
+            class="min-w-0 w-full flex-1 border-none bg-transparent p-0 text-[length:var(--wb-ui-text)] text-[color:var(--wb-text-primary)] font-normal leading-snug outline-none placeholder:text-[color:var(--wb-text-muted)]"
           >
-        </label>
+        </div>
 
-        <div class="max-h-[350px] overflow-y-auto">
+        <div class="max-h-[350px] overflow-y-auto pt-0.5">
           <div v-if="searchSections.length === 0" class="px-2 py-5 text-center text-[14px] text-[color:var(--wb-text-muted)]">
             No matching commands
           </div>
@@ -618,11 +660,23 @@ function beginDiffResize(event: MouseEvent) {
               :class="index === 0 && section.id === searchSections[0]?.id ? 'bg-[var(--wb-hover-bg)]' : ''"
               @click="executeSearchCommand(item.action)"
             >
-              <span class="inline-flex items-center gap-2">
-                <Icon :name="item.icon" class="h-[14px] w-[14px] text-[color:var(--wb-text-secondary)]" />
+              <span class="min-w-0 inline-flex items-center gap-2">
+                <span
+                  class="h-[14px] w-[14px] inline-flex shrink-0 items-center justify-center"
+                  aria-hidden="true"
+                >
+                  <Icon
+                    v-if="item.icon"
+                    :name="item.icon"
+                    class="h-[14px] w-[14px] text-[color:var(--wb-text-secondary)]"
+                  />
+                </span>
                 <span class="truncate">{{ item.label }}</span>
               </span>
-              <span v-if="item.shortcut" class="rounded-[8px] bg-[color:var(--wb-hover-bg)] px-1.5 py-[3px] text-[11px] text-[color:var(--wb-text-muted)] font-medium leading-none">
+              <span
+                v-if="item.shortcut"
+                class="inline-flex shrink-0 items-center border border-[color:var(--wb-chip-ghost-border)] rounded-[999px] bg-[var(--wb-chip-ghost-bg)] px-2 py-[2px] text-[11px] text-[color:var(--wb-text-secondary)] font-medium leading-none shadow-[inset_0_0_0_1px_var(--wb-chip-ghost-border)]"
+              >
                 {{ item.shortcut }}
               </span>
             </button>

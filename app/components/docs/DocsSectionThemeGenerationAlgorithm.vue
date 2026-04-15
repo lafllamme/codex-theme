@@ -29,8 +29,8 @@ const stepScripts = {
 
 <template>
   <DocsSectionShell
-    id="theme-generation-algorithm"
-    title="Theme Generation Algorithm"
+    id="theme-generation"
+    title="Theme Generation"
   >
     <div class="relative overflow-hidden">
       <div

@@ -12,4 +12,4 @@ Use these semantic text roles across docs UI to keep hierarchy consistent.
 
 - Prefer semantic tokens over hardcoded text colors.
 - Keep visual card treatments unchanged unless readability requires a local exception.
-- For light cards (for example Step 03 in Theme Generation Algorithm), preserve contrast-safe dark text styles.
+- For light cards (for example Step 03 in Theme Generation), preserve contrast-safe dark text styles.
