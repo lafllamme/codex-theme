@@ -175,12 +175,12 @@ onUnmounted(cleanup)
     :href="repoUrl"
     target="_blank"
     rel="noreferrer noopener"
-    class="group font-geist-500 border-white/16 bg-black/58 hover:border-white/24 hover:bg-black/68 absolute right-4 top-0 z-30 inline-flex items-center gap-2 border rounded-[999px] px-2.5 py-1.5 text-[12px] no-underline shadow-[0_12px_28px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-[right,transform] duration-250 text-pureWhite/88 sm:right-6 sm:gap-2.5 sm:px-3.5 sm:py-2 sm:text-[13px] hover:-translate-y-0.5"
+    class="group font-geist-500 absolute right-4 top-0 z-30 inline-flex items-center gap-2 rounded-full px-2.5 py-1.5 text-[12px] no-underline transition-colors duration-200 text-pureWhite/88 sm:right-6 xl:top-6 sm:gap-2.5 sm:px-3.5 sm:py-2 sm:text-[13px] focus-visible:outline-none focus-visible:text-pureWhite hover:text-pureWhite focus-visible:bg-pureWhite/10 hover:bg-pureWhite/10"
     aria-label="Open GitHub repository"
   >
-    <Icon name="mdi:github-circle" class="h-5 w-5 transition-colors duration-200 text-pureWhite/80 group-hover:text-pureWhite/95" />
+    <Icon name="mdi:github-circle" class="h-5 w-5 transition-colors duration-200 text-pureWhite/65 group-hover:text-pureWhite" />
 
-    <span class="number-wrap font-geist-mono-500 min-w-[7.2ch] justify-center text-center text-[13px] text-pureWhite/92 sm:min-w-[7.8ch] sm:text-[14px]">
+    <span class="number-wrap font-geist-mono-500 min-w-[7.2ch] justify-center text-center text-[13px] transition-colors duration-200 text-pureWhite/65 sm:min-w-[7.8ch] sm:text-[14px] group-hover:text-pureWhite">
       <DsNumberFlow
         class="stars-flow"
         style="--number-flow-char-height: 0.98em;"
@@ -198,7 +198,7 @@ onUnmounted(cleanup)
       <Icon name="ph:star-fill" class="h-4 w-4 text-pureWhite/34" />
       <Icon
         name="ph:star-fill"
-        class="absolute h-4 w-4 transition-colors duration-250 text-pureWhite/90 group-hover:text-pureWhite/95"
+        class="absolute h-4 w-4 transition-colors duration-200 text-pureWhite/90 group-hover:text-pureWhite"
         :style="{
           clipPath: `inset(${100 - starFillProgress}% 0 0 0)`,
           transition: `clip-path ${INTRO_DURATION_MS}ms cubic-bezier(0.22, 1, 0.36, 1), color 250ms ease`,
