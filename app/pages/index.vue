@@ -28,7 +28,7 @@ const controlsEnabled = computed(() => route.query.controls === '1')
       second-cta-text="Go to Docs"
     />
 
-    <GithubStarsButton username="barvian" repo="number-flow" />
+    <GithubStarsButton />
 
     <div class="min-h-px flex-1" aria-hidden="true" />
 

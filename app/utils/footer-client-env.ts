@@ -32,16 +32,22 @@ function shortenBrand(brand: string): string {
     .replace(RE_MS_EDGE, 'Edge')
 }
 
+function formatClientLine(browser: string, version: string, platform: string): string {
+  const p = platform.trim() || '—'
+  if (browser === '—')
+    return `Client: — · PLATFORM: ${p}`
+  const v = version.trim()
+  return v ? `Client: ${browser} ${v} · PLATFORM: ${p}` : `Client: ${browser} · PLATFORM: ${p}`
+}
+
 /**
- * Short footer line: browser + version · platform · status tail.
+ * Footer line: `Client: <browser> <version> · PLATFORM: <platform>`.
  * Uses `navigator.userAgentData` when present; otherwise a small `userAgent` parse.
  * Call only on the client (`onMounted`).
  */
 export function buildFooterClientLine(): string {
-  const tail = 'SYST_LOG: stable'
-
   if (typeof navigator === 'undefined')
-    return `Client: — · — · ${tail}`
+    return 'Client: — · PLATFORM: —'
 
   const uaData = navigator.userAgentData
   if (uaData?.brands?.length) {
@@ -49,7 +55,7 @@ export function buildFooterClientLine(): string {
     const platform = uaData.platform?.trim() || '—'
     if (chosen) {
       const name = shortenBrand(chosen.brand)
-      return `Client: ${name} ${chosen.version} · ${platform} · ${tail}`
+      return formatClientLine(name, chosen.version, platform)
     }
   }
 
@@ -58,19 +64,19 @@ export function buildFooterClientLine(): string {
 
   const edge = ua.match(RE_UA_EDG)
   if (edge)
-    return `Client: Edge ${edge[1]} · ${platform} · ${tail}`
+    return formatClientLine('Edge', edge[1] ?? '', platform)
 
   const fx = ua.match(RE_UA_FIREFOX)
   if (fx)
-    return `Client: Firefox ${fx[1]} · ${platform} · ${tail}`
+    return formatClientLine('Firefox', fx[1] ?? '', platform)
 
   const chrome = ua.match(RE_UA_CHROME)
   if (chrome && !RE_UA_EDG_WORD.test(ua))
-    return `Client: Chrome ${chrome[1]} · ${platform} · ${tail}`
+    return formatClientLine('Chrome', chrome[1] ?? '', platform)
 
   const safariVersion = ua.match(RE_UA_VERSION)
   if (safariVersion && RE_UA_SAFARI_WORD.test(ua) && !chrome)
-    return `Client: Safari ${safariVersion[1]} · ${platform} · ${tail}`
+    return formatClientLine('Safari', safariVersion[1] ?? '', platform)
 
-  return `Client: — · ${platform} · ${tail}`
+  return formatClientLine('—', '', platform)
 }

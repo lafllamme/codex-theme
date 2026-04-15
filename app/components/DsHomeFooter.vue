@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import DsGlassSurface from '@/components/DsGlassSurface.vue'
 import { buildFooterClientLine } from '@/utils/footer-client-env'
 
-const PLACEHOLDER_CLIENT_LINE = 'Client: — · — · SYST_LOG: stable'
+const PLACEHOLDER_CLIENT_LINE = 'Client: — · PLATFORM: —'
 const clientLine = ref(PLACEHOLDER_CLIENT_LINE)
 const year = new Date().getFullYear()
+
+const social = {
+  linkedin: 'https://www.linkedin.com/in/dogan-teke-781147108/',
+  x: 'https://x.com/',
+  github: 'https://github.com/lafllamme/codex-themes',
+} as const
 
 onMounted(() => {
   clientLine.value = buildFooterClientLine()
@@ -16,61 +23,69 @@ onMounted(() => {
     class="relative z-10 mt-auto"
     aria-label="Site"
   >
-    <div
-      class="from-black/82 via-black/48 border-t to-transparent bg-gradient-to-t px-4 py-10 shadow-[0_-18px_50px_-8px_rgba(0,0,0,0.55),0_-6px_28px_rgba(0,0,0,0.38),inset_0_1px_0_rgba(255,255,255,0.09)] backdrop-blur-[20px] border-pureWhite/12 sm:px-6"
+    <DsGlassSurface
+      as="div"
+      tone="soft"
+      class="w-full border-x-0 border-b-0 border-t rounded-none px-4 py-6 shadow-[0_-10px_26px_-12px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-[24px] border-pureWhite/12 sm:px-6"
     >
       <div
-        class="mx-auto max-w-[1240px] flex flex-col items-stretch gap-8 md:flex-row md:items-center md:justify-between"
+        class="mx-auto max-w-[1240px] flex flex-col items-stretch gap-6 md:flex-row md:items-center md:justify-between"
       >
-        <div class="text-center md:text-left">
-          <p class="font-geist-700 text-[13px] text-pureWhite/88">
-            Codex Theme Studio
+        <div
+          class="max-w-md flex flex-col items-center gap-4 text-center md:min-w-[260px] md:items-start md:text-left"
+        >
+          <p
+            class="font-geist-400 text-[15px] leading-relaxed tracking-tight text-pureWhite/58 sm:text-base"
+          >
+            Designed and built in Cologne, Germany<br>
+            <span class="text-pureWhite/48">— Powered by Codex</span>
           </p>
-          <p class="font-geist-400 mt-1 text-[11px] text-pureWhite/45">
-            Theme packs for OpenAI Codex
-          </p>
+          <div class="flex items-center justify-center gap-5 md:justify-start">
+            <a
+              :href="social.linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex transition-colors text-pureWhite/42 hover:text-pureWhite"
+              aria-label="LinkedIn"
+            >
+              <Icon name="mdi:linkedin" class="size-6" />
+            </a>
+            <a
+              :href="social.x"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex transition-colors text-pureWhite/42 hover:text-pureWhite"
+              aria-label="X"
+            >
+              <Icon name="ph:x-logo" class="size-6" />
+            </a>
+            <a
+              :href="social.github"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex transition-colors text-pureWhite/42 hover:text-pureWhite"
+              aria-label="GitHub repository"
+            >
+              <Icon name="mdi:github" class="size-6" />
+            </a>
+          </div>
         </div>
 
-        <nav aria-label="Footer" class="flex justify-center">
-          <ul
-            class="font-geist-500 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[10px] tracking-[0.2em] uppercase text-pureWhite/50"
+        <div
+          class="group max-w-[min(100%,28rem)] inline-flex flex-col items-center text-center md:ml-auto md:items-end md:text-right"
+        >
+          <p
+            class="font-geist-mono-400 text-[10px] leading-snug tracking-[0.12em] uppercase transition-colors duration-200 text-pureWhite/44 group-hover:text-pureWhite"
           >
-            <li>
-              <NuxtLink class="transition-colors hover:text-pureWhite" to="/">
-                Home
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink class="transition-colors hover:text-pureWhite" to="/themes">
-                Theme builder
-              </NuxtLink>
-            </li>
-            <li>
-              <NuxtLink class="transition-colors hover:text-pureWhite" to="/docs">
-                Documentation
-              </NuxtLink>
-            </li>
-            <li>
-              <a
-                class="transition-colors hover:text-pureWhite"
-                href="https://github.com/lafllamme/codex-themes"
-                rel="noopener noreferrer"
-              >GitHub</a>
-            </li>
-          </ul>
-        </nav>
-
-        <div class="text-center md:text-right">
-          <p class="font-geist-mono-500 text-[10px] tracking-[0.16em] uppercase text-pureWhite/40">
             © {{ year }} Codex Theme Studio
           </p>
           <p
-            class="font-geist-mono-500 mt-1 text-[10px] tracking-[0.12em] normal-case text-pureWhite/35"
+            class="font-geist-mono-400 mt-1.5 text-[10px] leading-snug tracking-[0.1em] uppercase transition-colors duration-200 text-pureWhite/38 group-hover:text-pureWhite"
           >
             {{ clientLine }}
           </p>
         </div>
       </div>
-    </div>
+    </DsGlassSurface>
   </footer>
 </template>

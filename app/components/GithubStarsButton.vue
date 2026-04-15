@@ -10,9 +10,9 @@ interface GithubStarsButtonProps {
 }
 
 const props = withDefaults(defineProps<GithubStarsButtonProps>(), {
-  username: 'imskyleen',
-  repo: 'animate-ui',
-  value: 3400,
+  username: 'lafllamme',
+  repo: 'codex-theme',
+  value: 0,
 })
 
 const INTRO_START_DELAY_MS = 60
