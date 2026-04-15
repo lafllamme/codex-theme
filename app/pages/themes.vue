@@ -17,7 +17,7 @@ definePageMeta({
 useCodexPageSeo({
   title: 'Live theme builder & JSON export',
   description:
-    'Use the interactive Codex theme builder: live preview, presets, code and UI fonts, semantic diff colors, and one-click JSON export for your OpenAI Codex IDE setup.',
+    'Use the interactive Codex theme builder: live preview, presets, code and UI fonts, semantic diff colors, and one-click JSON export for your OpenAI Codex setup.',
   keywords: ['theme preview', 'presets', 'JSON export', 'live preview'],
 })
 

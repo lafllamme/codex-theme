@@ -22,7 +22,7 @@ export default defineNuxtConfig({
       /** Hosted OG image (1200×630). */
       ogImage: 'https://i.ibb.co/ynLBMLcj/image.png',
       ogImageAlt:
-        'Codex Theme Studio — preview & export OpenAI Codex IDE themes. Open the theme builder or docs.',
+        'Codex Theme Studio — preview & export themes for OpenAI Codex. Open the theme builder or docs.',
       ogImageWidth: 1200,
       ogImageHeight: 630,
       githubUrl: 'https://github.com/lafllamme/codex-themes',

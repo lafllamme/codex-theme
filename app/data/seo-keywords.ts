@@ -6,7 +6,7 @@ export const CODEX_THEME_SEO_KEYWORDS = [
   'codex theme',
   'codex themes',
   'OpenAI Codex',
-  'Codex IDE',
+  'OpenAI Codex app',
   'theme JSON',
   'codex theme JSON',
   'JSON theme generation',

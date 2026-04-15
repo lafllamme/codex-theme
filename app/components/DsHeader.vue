@@ -69,9 +69,16 @@ onBeforeUnmount(() => {
         Home
       </NuxtLink>
       <NuxtLink
-        to="/docs"
+        to="/themes"
         class="font-geist-500 rounded-full px-[22px] py-2 text-[14.5px] no-underline transition-colors text-pureWhite/65 hover:text-pureWhite hover:bg-pureWhite/5"
         :class="shouldAnimate ? 'header-item header-item-delay-3' : ''"
+      >
+        Themes
+      </NuxtLink>
+      <NuxtLink
+        to="/docs"
+        class="font-geist-500 rounded-full px-[22px] py-2 text-[14.5px] no-underline transition-colors text-pureWhite/65 hover:text-pureWhite hover:bg-pureWhite/5"
+        :class="shouldAnimate ? 'header-item header-item-delay-4' : ''"
       >
         Docs
       </NuxtLink>
@@ -116,6 +123,10 @@ onBeforeUnmount(() => {
 
 .header-item-delay-3 {
   animation-delay: 960ms;
+}
+
+.header-item-delay-4 {
+  animation-delay: 1100ms;
 }
 
 .logo-puff {
@@ -198,6 +209,10 @@ onBeforeUnmount(() => {
 
   .header-item-delay-3 {
     animation-delay: 820ms;
+  }
+
+  .header-item-delay-4 {
+    animation-delay: 940ms;
   }
 }
 

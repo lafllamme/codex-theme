@@ -746,7 +746,7 @@ onBeforeUnmount(() => {
           class="w-full flex items-center justify-center gap-2 border rounded-xl py-3 text-[14px] font-semibold shadow-sm transition-all color-pureWhite bg-pureBlack active:scale-[0.98] hover:bg-sand-2"
           @click="emit('applyExport')"
         >
-          <Icon name="ph:check-bold" class="h-4.5 w-4.5" />
+          <Icon name="ph:magic-wand-bold" class="h-4.5 w-4.5" />
           {{ applyState === 'ok' ? 'Applied!' : 'Apply' }}
         </button>
       </div>
