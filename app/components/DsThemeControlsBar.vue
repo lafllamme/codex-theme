@@ -118,7 +118,9 @@ const morphStyle = computed(() => ({
 <template>
   <div class="theme-controls-anchor">
     <!-- Morphing FAB/Panel container (always visible) -->
-    <div class="fixed bottom-30 right-6 z-50">
+    <div
+      class="theme-controls-fab-anchor fixed z-50"
+    >
       <div
         ref="containerRef"
         class="shadow-black/20 relative overflow-hidden border bg-[#f8f8f8] shadow-2xl transition-all border-pureBlack/10"
@@ -213,6 +215,19 @@ const morphStyle = computed(() => ({
 </template>
 
 <style scoped>
+/* Below md: a bit above the edge (smaller jump vs md than 1rem→7.5rem); md+: clear workbench bottom chrome. */
+.theme-controls-fab-anchor {
+  right: max(1.5rem, env(safe-area-inset-right, 0px));
+  bottom: max(3.25rem, env(safe-area-inset-bottom, 0px));
+}
+
+@media (width >= 768px) {
+  .theme-controls-fab-anchor {
+    right: 1.5rem;
+    bottom: 7.5rem;
+  }
+}
+
 .theme-controls-anchor {
   position: relative;
   width: 0;
