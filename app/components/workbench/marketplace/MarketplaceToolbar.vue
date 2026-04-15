@@ -19,7 +19,7 @@ function tabClassHeader(active: boolean) {
   <div
     class="marketplace-toolbar grid grid-cols-[minmax(0,1fr)_auto] min-h-[38px] min-w-0 w-full items-center gap-2 px-0.5"
   >
-    <div class="marketplace-toolbar-tabs min-w-0 flex min-h-0 items-center gap-1 overflow-hidden">
+    <div class="marketplace-toolbar-tabs min-h-0 min-w-0 flex items-center gap-1 overflow-hidden">
       <button
         type="button"
         :class="tabClassHeader(store.marketplaceTab === 'plugins')"

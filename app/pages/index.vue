@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 useCodexPageSeo({
-  title: 'Preview & export OpenAI Codex themes',
+  title: 'Build, preview, and export theme packs for OpenAI Codex',
   description:
     'Explore 500+ Codex theme variations, tune colors and fonts, then export a build-ready JSON theme pack for the OpenAI Codex app—free in the browser.',
   keywords: ['theme variations', 'theme pack', 'export theme'],
@@ -19,7 +19,7 @@ const controlsEnabled = computed(() => route.query.controls === '1')
 </script>
 
 <template>
-  <main class="relative min-h-full w-full overflow-x-hidden">
+  <main class="relative min-h-full w-full flex flex-col overflow-x-hidden">
     <DsHero
       variant="typo"
       headline="Codex Theme Studio"
@@ -29,6 +29,10 @@ const controlsEnabled = computed(() => route.query.controls === '1')
     />
 
     <GithubStarsButton username="barvian" repo="number-flow" />
+
+    <div class="min-h-px flex-1" aria-hidden="true" />
+
+    <DsHomeFooter />
 
     <button
       v-if="controlsEnabled"
