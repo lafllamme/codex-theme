@@ -1,3 +1,11 @@
+<script setup lang="ts">
+useCodexPageSeo({
+  title: 'Theme lab',
+  description:
+    'Legacy Codex theme lab preview: dark console surfaces and mint accent hierarchy for prototyping.',
+})
+</script>
+
 <template>
   <main class="relative min-h-screen overflow-hidden bg-[#030405] text-[var(--un-preset-radix-slate12)]">
     <div class="[background-image:radial-gradient(circle_at_20%_0%,rgba(13,148,136,0.12),transparent_35%),radial-gradient(circle_at_80%_10%,rgba(18,18,20,0.7),transparent_42%)] pointer-events-none absolute inset-0" />

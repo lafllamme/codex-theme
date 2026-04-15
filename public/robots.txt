@@ -1,2 +1,4 @@
-User-Agent: *
+User-agent: *
 Disallow:
+
+Sitemap: https://codex-theme.pages.dev/sitemap.xml

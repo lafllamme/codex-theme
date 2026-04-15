@@ -1,0 +1,10 @@
+# Codex Theme Studio
+> Build, preview, and export JSON themes for the OpenAI Codex app—colors, fonts, diffs, and presets.
+
+## Pages
+- [Home](https://codex-theme.pages.dev/)
+- [Theme builder](https://codex-theme.pages.dev/themes)
+- [Docs](https://codex-theme.pages.dev/docs)
+
+## Source
+- [codex-themes on GitHub](https://github.com/lafllamme/codex-themes)

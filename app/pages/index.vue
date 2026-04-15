@@ -5,6 +5,13 @@ definePageMeta({
   layout: 'default',
 })
 
+useCodexPageSeo({
+  title: 'Codex Theme Studio',
+  description:
+    'Codex Theme Studio: explore 500+ theme variations, refine colors and typography, and export a build-ready theme pack for OpenAI Codex.',
+  keywords: ['theme variations', 'theme pack', 'export theme'],
+})
+
 const route = useRoute()
 const controls = useDitherControls()
 const controlsOpen = ref(false)

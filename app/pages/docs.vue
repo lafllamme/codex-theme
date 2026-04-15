@@ -3,6 +3,13 @@ definePageMeta({
   layout: 'default',
 })
 
+useCodexPageSeo({
+  title: 'Documentation',
+  description:
+    'How Codex maps theme JSON to UI tokens: installation, quick start, preset sources, and export workflow for OpenAI Codex themes.',
+  keywords: ['Codex JSON', 'theme format', 'installation', 'export'],
+})
+
 const tocSections = [
   { id: 'introduction', label: 'Introduction' },
   { id: 'installation', label: 'Installation' },

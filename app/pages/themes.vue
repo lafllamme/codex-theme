@@ -14,6 +14,13 @@ definePageMeta({
   },
 })
 
+useCodexPageSeo({
+  title: 'Theme builder',
+  description:
+    'Interactive Codex theme builder: live preview, presets, code and UI fonts, diff colors, and JSON export for your OpenAI Codex setup.',
+  keywords: ['theme preview', 'presets', 'JSON export', 'live preview'],
+})
+
 const presetMap: Record<string, CodexThemePayload> = {
   'oscurange': {
     codeThemeId: 'oscurange',
