@@ -68,13 +68,13 @@ onMounted(() => {
           <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:justify-end">
             <NuxtLink
               to="/imprint"
-              class="font-geist-mono-400 text-xs text-pureWhite/50 no-underline transition hover:text-pureWhite"
+              class="font-geist-mono-400 text-xs no-underline transition text-pureWhite/50 hover:text-pureWhite"
             >
               Imprint
             </NuxtLink>
             <NuxtLink
               to="/privacy"
-              class="font-geist-mono-400 text-xs text-pureWhite/50 no-underline transition hover:text-pureWhite"
+              class="font-geist-mono-400 text-xs no-underline transition text-pureWhite/50 hover:text-pureWhite"
             >
               Privacy
             </NuxtLink>

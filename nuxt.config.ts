@@ -1,23 +1,16 @@
-import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
-
-/** Official deploy (Cloudflare Pages). Local dev uses localhost unless `NUXT_PUBLIC_SITE_URL` is set. */
-const PRODUCTION_SITE_URL = 'https://codex-theme.pages.dev'
-
-const siteUrl = process.env.NUXT_PUBLIC_SITE_URL
-  ?? (process.env.NODE_ENV === 'production' ? PRODUCTION_SITE_URL : 'http://localhost:3000')
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
   site: {
-    url: siteUrl,
+    url: '',
   },
 
   runtimeConfig: {
     public: {
-      siteUrl,
+      siteUrl: '',
       siteName: 'Codex Theme Studio',
       /** Hosted OG image (1200×630). */
       ogImage: 'https://i.ibb.co/ynLBMLcj/image.png',
@@ -25,7 +18,8 @@ export default defineNuxtConfig({
         'Codex Theme Studio — preview & export themes for OpenAI Codex. Open the theme builder or docs.',
       ogImageWidth: 1200,
       ogImageHeight: 630,
-      githubUrl: 'https://github.com/lafllamme/codex-themes',
+      githubRepoName: '',
+      githubUrl: '',
     },
   },
 

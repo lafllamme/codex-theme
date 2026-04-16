@@ -3,8 +3,8 @@ definePageMeta({
   layout: 'default',
 })
 
-const config = useRuntimeConfig()
-const githubUrl = computed(() => String(config.public.githubUrl))
+const GMT_OFFSET_REGEX = /GMT([+-]\d{1,2})(?::?(\d{2}))?/
+const PLUS_MINUS_REGEX = /[+-]/
 
 useCodexPageSeo({
   title: 'Privacy policy',
@@ -12,6 +12,65 @@ useCodexPageSeo({
     'Privacy information for Codex Theme Studio: controller, legal bases under GDPR, hosting, fonts, and your rights.',
   keywords: ['privacy', 'GDPR', 'DSGVO', 'data protection', 'Cloudflare', 'GitHub'],
 })
+
+const { data: repoMetadata } = await useAsyncData(
+  'privacy-repo-metadata',
+  () => $fetch<{ updatedAt?: string | null }>('/api/github'),
+  {
+    server: true,
+    default: () => ({}),
+  },
+)
+
+const lastUpdatedBerlinIso = computed(() => {
+  const updatedAt = repoMetadata.value?.updatedAt
+  if (!updatedAt) {
+    return 'unavailable'
+  }
+
+  return formatBerlinIsoDateString(updatedAt)
+})
+
+function formatBerlinIsoDateString(value: string): string {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return 'unavailable'
+  }
+
+  const dateParts = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Europe/Berlin',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(date)
+
+  const timeZoneName = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Berlin',
+    timeZoneName: 'longOffset',
+  })
+    .formatToParts(date)
+    .find(part => part.type === 'timeZoneName')
+    ?.value ?? 'GMT+00:00'
+
+  const offsetMatch = timeZoneName.match(GMT_OFFSET_REGEX)
+  const offsetHoursRaw = offsetMatch?.[1] ?? '+00'
+  const offsetMinutesRaw = offsetMatch?.[2] ?? '00'
+  const offsetSign = offsetHoursRaw.startsWith('-') ? '-' : '+'
+  const offsetHours = offsetHoursRaw.replace(PLUS_MINUS_REGEX, '').padStart(2, '0')
+  const offsetMinutes = offsetMinutesRaw.padStart(2, '0')
+  const offset = `${offsetSign}${offsetHours}:${offsetMinutes}`
+
+  const getPart = (type: Intl.DateTimeFormatPartTypes) =>
+    dateParts.find(part => part.type === type)?.value ?? '00'
+
+  const milliseconds = String(date.getMilliseconds()).padStart(3, '0')
+
+  return `${getPart('year')}-${getPart('month')}-${getPart('day')}T${getPart('hour')}:${getPart('minute')}:${getPart('second')}.${milliseconds}${offset}`
+}
 </script>
 
 <template>
@@ -30,14 +89,14 @@ useCodexPageSeo({
     </p>
 
     <!-- Controller -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## CONTROLLER
       </p>
       <p class="mb-4 text-sm leading-relaxed text-pureWhite/90">
         The controller responsible for this site under GDPR is:
       </p>
-      <div class="border-2 border-pureWhite/20 p-6 text-sm leading-relaxed">
+      <div class="border-2 p-6 text-sm leading-relaxed border-pureWhite/20">
         <p class="font-geist-700 text-pureWhite">
           Dogan Teke
         </p>
@@ -48,7 +107,7 @@ useCodexPageSeo({
           <span class="text-pureWhite/40">General / privacy contact:</span>
           <a
             href="mailto:info@doganteke.ai"
-            class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+            class="decoration-pureWhite/30 ml-1 underline underline-offset-2 transition text-pureWhite hover:opacity-50"
           >info@doganteke.ai</a>
         </p>
         <p class="mt-2 text-xs text-pureWhite/60">
@@ -60,9 +119,9 @@ useCodexPageSeo({
     </section>
 
     <!-- Summary terminal -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
       <div
-        class="mb-8 bg-pureWhite p-6 font-geist-mono-400 text-xs text-pureBlack leading-relaxed"
+        class="font-geist-mono-400 mb-8 p-6 text-xs leading-relaxed text-pureBlack bg-pureWhite"
       >
         <p>&gt; privacy_config::overview</p>
         <p class="text-pureBlack/50">
@@ -79,7 +138,7 @@ useCodexPageSeo({
         </p>
       </div>
 
-      <p class="mb-4 font-geist-700 text-xs text-pureWhite/40">
+      <p class="font-geist-700 mb-4 text-xs text-pureWhite/40">
         ## COOKIES_AND_SIMILAR_TECHNOLOGIES
       </p>
       <p class="mb-6 text-base leading-relaxed text-pureWhite/85">
@@ -93,20 +152,20 @@ useCodexPageSeo({
 
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div>
-          <p class="mb-3 font-geist-700 text-xs text-pureWhite/40">
+          <p class="font-geist-700 mb-3 text-xs text-pureWhite/40">
             &lt;not_used_here&gt;
           </p>
-          <ul class="space-y-1 font-geist-mono-400 text-sm">
+          <ul class="font-geist-mono-400 text-sm space-y-1">
             <li>[ ] marketing / advertising cookies</li>
             <li>[ ] Google Analytics / Meta Pixel</li>
             <li>[ ] remarketing tags</li>
           </ul>
         </div>
         <div>
-          <p class="mb-3 font-geist-700 text-xs text-pureWhite/40">
+          <p class="font-geist-700 mb-3 text-xs text-pureWhite/40">
             &lt;your_rights&gt;
           </p>
-          <ul class="space-y-1 font-geist-mono-400 text-sm">
+          <ul class="font-geist-mono-400 text-sm space-y-1">
             <li>[✓] Arts. 15–22 GDPR rights (see below)</li>
             <li>[✓] Art. 77 GDPR — complaint to a supervisory authority</li>
             <li>[✓] contact: info@doganteke.ai</li>
@@ -116,8 +175,8 @@ useCodexPageSeo({
     </section>
 
     <!-- Processing -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## PROCESSING_ACTIVITIES
       </p>
       <p class="mb-8 text-sm leading-relaxed text-pureWhite/75">
@@ -127,8 +186,8 @@ useCodexPageSeo({
       </p>
 
       <div class="space-y-10">
-        <div class="border-l-2 border-pureWhite/20 pl-6">
-          <p class="mb-2 font-geist-700 text-sm">
+        <div class="border-l-2 pl-6 border-pureWhite/20">
+          <p class="font-geist-700 mb-2 text-sm">
             Website delivery &amp; hosting (Cloudflare Pages)
           </p>
           <p class="text-xs leading-relaxed text-pureWhite/80">
@@ -154,8 +213,8 @@ useCodexPageSeo({
           </p>
         </div>
 
-        <div class="border-l-2 border-pureWhite/20 pl-6">
-          <p class="mb-2 font-geist-700 text-sm">
+        <div class="border-l-2 pl-6 border-pureWhite/20">
+          <p class="font-geist-700 mb-2 text-sm">
             Webfonts (@nuxt/fonts — first-party delivery)
           </p>
           <p class="text-xs leading-relaxed text-pureWhite/80">
@@ -186,8 +245,8 @@ useCodexPageSeo({
           </p>
         </div>
 
-        <div class="border-l-2 border-pureWhite/20 pl-6">
-          <p class="mb-2 font-geist-700 text-sm">
+        <div class="border-l-2 pl-6 border-pureWhite/20">
+          <p class="font-geist-700 mb-2 text-sm">
             GitHub (external; only if you visit or use it)
           </p>
           <p class="text-xs leading-relaxed text-pureWhite/80">
@@ -204,8 +263,8 @@ useCodexPageSeo({
           </p>
         </div>
 
-        <div class="border-l-2 border-pureWhite/20 pl-6">
-          <p class="mb-2 font-geist-700 text-sm">
+        <div class="border-l-2 pl-6 border-pureWhite/20">
+          <p class="font-geist-700 mb-2 text-sm">
             Email contact
           </p>
           <p class="text-xs leading-relaxed text-pureWhite/80">
@@ -223,18 +282,18 @@ useCodexPageSeo({
     </section>
 
     <!-- Rights -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## YOUR_RIGHTS
       </p>
 
       <div
         v-pre
-        class="mb-8 bg-pureWhite p-6 font-geist-mono-400 text-xs text-pureBlack leading-relaxed"
+        class="font-geist-mono-400 mb-8 p-6 text-xs leading-relaxed text-pureBlack bg-pureWhite"
       >
-          <p class="text-pureBlack/50 mb-2">
-        // What contents serves which purpose
-          </p>
+        <p class="mb-2 text-pureBlack/50">
+          // What contents serves which purpose
+        </p>
         <p>&gt; const gdpr_rights = [...]</p>
         <p>gdpr_rights.forEach((right) =&gt; {</p>
         <p class="ml-4 text-pureBlack/50">
@@ -243,7 +302,7 @@ useCodexPageSeo({
         <p class="ml-4 text-pureBlack/50">
           console.log(right.description)
         </p>
-    
+
         <p>})</p>
       </div>
 
@@ -312,8 +371,8 @@ useCodexPageSeo({
     </section>
 
     <!-- Supervisory authority -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## SUPERVISORY_AUTHORITY
       </p>
       <p class="mb-4 text-sm leading-relaxed text-pureWhite/80">
@@ -326,7 +385,7 @@ useCodexPageSeo({
         For the controller’s location in North Rhine-Westphalia (Cologne), the
         competent authority is typically:
       </p>
-      <div class="mt-4 border-2 border-pureWhite/20 p-6 text-sm leading-relaxed">
+      <div class="mt-4 border-2 p-6 text-sm leading-relaxed border-pureWhite/20">
         <p class="font-geist-700">
           Landesbeauftragte für Datenschutz und Informationsfreiheit
           Nordrhein-Westfalen (LDI NRW)
@@ -339,15 +398,15 @@ useCodexPageSeo({
             href="https://www.ldi.nrw.de"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+            class="decoration-pureWhite/30 underline underline-offset-2 transition text-pureWhite hover:opacity-50"
           >www.ldi.nrw.de</a>
         </p>
       </div>
     </section>
 
     <!-- Third parties / no sale -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## NO_SALE_OF_DATA
       </p>
       <p class="text-base leading-relaxed text-pureWhite/85">
@@ -359,11 +418,11 @@ useCodexPageSeo({
     </section>
 
     <!-- Security -->
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## SECURITY
       </p>
-      <div class="space-y-3 border-l-2 border-pureWhite/20 pl-6 text-sm text-pureWhite/85">
+      <div class="border-l-2 pl-6 text-sm text-pureWhite/85 border-pureWhite/20 space-y-3">
         <p>[✓] TLS (HTTPS) when delivered via the configured host</p>
         <p>[✓] Data minimization for the functions described above</p>
         <p>[✓] No behavioral ad networks operated by us on this site</p>
@@ -372,33 +431,11 @@ useCodexPageSeo({
 
     <!-- Changes -->
     <section>
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## CHANGES
       </p>
-      <div class="space-y-3 font-geist-mono-400 text-sm">
-        <div>
-          <span class="text-pureWhite/40">controller:</span> Dogan Teke, 50737
-          Cologne, Germany
-        </div>
-        <div>
-          <span class="text-pureWhite/40">email:</span>
-          <a
-            href="mailto:info@doganteke.ai"
-            class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
-          >info@doganteke.ai</a>
-        </div>
-        <div>
-          <span class="text-pureWhite/40">project:</span>
-          <a
-            :href="githubUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
-          >GitHub</a>
-        </div>
-        <div>
-          <span class="text-pureWhite/40">last_updated:</span> 2026-04-15
-        </div>
+      <div class="font-geist-mono-400 text-sm">
+        <span class="text-pureWhite/40">last_updated:</span> {{ lastUpdatedBerlinIso }}
       </div>
     </section>
   </LegalPageShell>

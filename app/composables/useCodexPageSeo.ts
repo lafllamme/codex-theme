@@ -17,7 +17,7 @@ interface CodexPageSeoOptions {
 
 /**
  * Per-route SEO: title/description, Open Graph, Twitter, canonical, JSON-LD.
- * Uses `runtimeConfig.public`: siteUrl, siteName, ogImage, githubUrl.
+ * Uses `runtimeConfig.public`: siteUrl, siteName, ogImage, githubRepoName, githubUrl.
  */
 export function useCodexPageSeo(options: CodexPageSeoOptions) {
   const config = useRuntimeConfig()
@@ -28,7 +28,8 @@ export function useCodexPageSeo(options: CodexPageSeoOptions) {
   const ogImage = String(config.public.ogImage)
   const ogImageWidth = Number(config.public.ogImageWidth) || undefined
   const ogImageHeight = Number(config.public.ogImageHeight) || undefined
-  const githubUrl = String(config.public.githubUrl)
+  const githubRepoName = String(config.public.githubRepoName ?? '').trim()
+  const githubUrl = String(config.public.githubUrl ?? '').trim() || `https://github.com/${githubRepoName}`
 
   const path = options.path ?? route.path
   const normalizedPath = path === '/' ? '/' : `/${path.replace(RE_LEADING_SLASHES, '').replace(RE_TRAILING_SLASH, '')}`
@@ -85,7 +86,7 @@ export function useCodexPageSeo(options: CodexPageSeoOptions) {
           '@type': 'Organization',
           'name': siteName,
           'url': `${siteUrl}/`,
-          'sameAs': [githubUrl],
+          'sameAs': githubUrl ? [githubUrl] : [],
         },
       },
       {

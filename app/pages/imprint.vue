@@ -4,7 +4,12 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const githubUrl = computed(() => String(config.public.githubUrl))
+const githubUrl = computed(() => {
+  const repoName = String(config.public.githubRepoName ?? '').trim()
+  const explicitUrl = String(config.public.githubUrl ?? '').trim()
+
+  return explicitUrl || `https://github.com/${repoName}`
+})
 
 useCodexPageSeo({
   title: 'Imprint',
@@ -20,9 +25,9 @@ useCodexPageSeo({
     command-line="./imprint"
     subtitle="Legal information"
   >
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
       <div
-        class="mb-8 bg-pureWhite p-6 font-geist-mono-400 text-xs text-pureBlack leading-relaxed"
+        class="font-geist-mono-400 mb-8 p-6 text-xs leading-relaxed text-pureBlack bg-pureWhite"
       >
         <p>&gt; codex_theme_studio::Project</p>
         <p class="text-pureBlack/50">
@@ -38,10 +43,10 @@ useCodexPageSeo({
 
       <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         <div>
-          <p class="mb-3 font-geist-700 text-xs text-pureWhite/40">
+          <p class="font-geist-700 mb-3 text-xs text-pureWhite/40">
             ## PROJECT_NAME
           </p>
-          <p class="mb-2 font-geist-700 text-lg">
+          <p class="font-geist-700 mb-2 text-lg">
             Codex Theme Studio
           </p>
           <p class="text-xs text-pureWhite/60">
@@ -50,7 +55,7 @@ useCodexPageSeo({
         </div>
 
         <div class="border-pureWhite/20 md:border-l-2 md:pl-6">
-          <p class="mb-3 font-geist-700 text-xs text-pureWhite/40">
+          <p class="font-geist-700 mb-3 text-xs text-pureWhite/40">
             ## ADDRESS
           </p>
           <p class="text-sm leading-relaxed">
@@ -61,14 +66,14 @@ useCodexPageSeo({
         </div>
 
         <div class="border-pureWhite/20 md:border-l-2 md:pl-6">
-          <p class="mb-3 font-geist-700 text-xs text-pureWhite/40">
+          <p class="font-geist-700 mb-3 text-xs text-pureWhite/40">
             ## CONTACT
           </p>
           <p class="text-sm">
             <span class="text-pureWhite/40">email:</span>
             <a
               href="mailto:info@doganteke.ai"
-              class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+              class="decoration-pureWhite/30 ml-1 underline underline-offset-2 transition text-pureWhite hover:opacity-50"
             >info@doganteke.ai</a>
           </p>
           <p class="mt-2 text-sm">
@@ -77,15 +82,15 @@ useCodexPageSeo({
               :href="githubUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="ml-1 text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+              class="decoration-pureWhite/30 ml-1 underline underline-offset-2 transition text-pureWhite hover:opacity-50"
             >GitHub repository</a>
           </p>
         </div>
       </div>
     </section>
 
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## RESPONSIBLE_CONTENT
       </p>
       <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -93,7 +98,7 @@ useCodexPageSeo({
           <p class="mb-2 text-sm">
             &gt; operator()
           </p>
-          <p class="mb-4 font-geist-700 text-2xl tracking-tight sm:text-3xl">
+          <p class="font-geist-700 mb-4 text-2xl tracking-tight sm:text-3xl">
             Dogan Teke
           </p>
           <p class="text-xs text-pureWhite/60">
@@ -112,11 +117,11 @@ useCodexPageSeo({
       </div>
     </section>
 
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## REGISTRATION
       </p>
-      <div class="space-y-4 font-geist-mono-400 text-sm">
+      <div class="font-geist-mono-400 text-sm space-y-4">
         <div>
           <span class="text-pureWhite/40">entity:</span> Independent open-source
           project (no commercial register entry required for this notice)
@@ -128,11 +133,11 @@ useCodexPageSeo({
       </div>
     </section>
 
-    <section class="mb-16 border-b-2 border-pureWhite/20 pb-16">
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+    <section class="mb-16 border-b-2 pb-16 border-pureWhite/20">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## LIABILITY_NOTICE
       </p>
-      <div class="border-2 border-pureWhite/20 p-6 text-sm leading-relaxed">
+      <div class="border-2 p-6 text-sm leading-relaxed border-pureWhite/20">
         <p class="mb-4 text-pureWhite/40">
           &lt;!-- The contents of this site are provided with care. --&gt;
         </p>
@@ -162,7 +167,7 @@ useCodexPageSeo({
     </section>
 
     <section>
-      <p class="mb-6 font-geist-700 text-xs text-pureWhite/40">
+      <p class="font-geist-700 mb-6 text-xs text-pureWhite/40">
         ## COPYRIGHT
       </p>
       <p class="text-sm leading-relaxed text-pureWhite/80">
@@ -172,7 +177,7 @@ useCodexPageSeo({
           :href="`${githubUrl}/blob/main/LICENSE`"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+          class="decoration-pureWhite/30 underline underline-offset-2 transition text-pureWhite hover:opacity-50"
         >MIT License</a>.
         You may use, copy, modify, merge, publish, distribute, sublicense,
         and/or sell copies of the software as permitted there; the license

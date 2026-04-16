@@ -14,16 +14,16 @@ const copyrightLine = computed(() => `© ${year} ${siteName.value} — all right
 
 <template>
   <main
-    class="legal-page-shell min-h-full bg-pureBlack font-geist-mono-400 text-pureWhite antialiased"
+    class="legal-page-shell font-geist-mono-400 min-h-full antialiased text-pureWhite bg-pureBlack"
   >
     <header
-      class="border-b-2 border-pureWhite pt-[calc(var(--hero-top-offset)+28px)] sm:pt-[calc(var(--hero-top-offset)+36px)]"
+      class="border-b-2 pt-[calc(var(--hero-top-offset)+28px)] border-pureWhite sm:pt-[calc(var(--hero-top-offset)+36px)]"
     >
       <div class="mx-auto max-w-6xl px-6 py-12 sm:px-8 sm:py-16">
         <div class="mb-8">
           <NuxtLink
             to="/"
-            class="font-geist-700 text-xs text-pureWhite/40 no-underline transition hover:text-pureWhite"
+            class="font-geist-700 text-xs no-underline transition text-pureWhite/40 hover:text-pureWhite"
           >
             &lt; back /&gt;
           </NuxtLink>
@@ -52,16 +52,16 @@ const copyrightLine = computed(() => `© ${year} ${siteName.value} — all right
         <p class="mb-4 text-xs text-pureWhite/40">
           {{ copyrightLine }}
         </p>
-        <div class="flex flex-wrap gap-8 font-geist-700 text-xs">
+        <div class="font-geist-700 flex flex-wrap gap-8 text-xs">
           <NuxtLink
             to="/imprint"
-            class="text-pureWhite no-underline transition hover:opacity-50"
+            class="no-underline transition text-pureWhite hover:opacity-50"
           >
             [imprint]
           </NuxtLink>
           <NuxtLink
             to="/privacy"
-            class="text-pureWhite no-underline transition hover:opacity-50"
+            class="no-underline transition text-pureWhite hover:opacity-50"
           >
             [privacy]
           </NuxtLink>
