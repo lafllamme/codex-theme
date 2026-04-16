@@ -21,10 +21,12 @@ useCodexPageSeo({
     subtitle="Information under Art. 13–14 GDPR (English)"
   >
     <p class="mb-12 text-sm leading-relaxed text-pureWhite/70">
-      This page summarizes how we process personal data in connection with this
-      website. It is provided in English; the legal framework is the EU
-      General Data Protection Regulation (GDPR) / German Bundesdatenschutzgesetz
-      (BDSG) where applicable. It does not replace individual legal advice.
+      This page describes how we process personal data when you use this
+      website — a static site for the Codex Theme Studio open-source project
+      (theme tooling for OpenAI Codex). It is in English; the legal framework is
+      the EU General Data Protection Regulation (GDPR) and, where applicable,
+      German law including the BDSG. It is general information, not personal
+      legal advice.
     </p>
 
     <!-- Controller -->
@@ -50,8 +52,9 @@ useCodexPageSeo({
           >info@doganteke.ai</a>
         </p>
         <p class="mt-2 text-xs text-pureWhite/60">
-          For requests under Art. 15–22 GDPR, please email from the address
-          concerned or describe your case so we can verify and respond.
+          For requests under Art. 15–22 GDPR, use an inbox we can reply to and
+          describe what you need (e.g. access or erasure) so we can find the
+          right data and verify the request.
         </p>
       </div>
     </section>
@@ -80,12 +83,12 @@ useCodexPageSeo({
         ## COOKIES_AND_SIMILAR_TECHNOLOGIES
       </p>
       <p class="mb-6 text-base leading-relaxed text-pureWhite/85">
-        We do not use consent banners for marketing or analytics on this site
-        because we do not deploy advertising or analytics pixels described in
-        the table below. Your browser may still store
-        <strong class="text-pureWhite">essential technical data</strong>
-        (e.g. security-related headers, or data your browser keeps for HTTPS /
-        caching). We do not operate a login area on this static site.
+        We do not set optional marketing or analytics cookies on this site (see
+        the checklist below). Delivery over HTTPS and normal browsing still
+        involve
+        <strong class="text-pureWhite">essential technical processing</strong>
+        (e.g. edge logs, TLS, caching) as described under hosting. There is no
+        login or account area on this static site.
       </p>
 
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -229,16 +232,18 @@ useCodexPageSeo({
         v-pre
         class="mb-8 bg-pureWhite p-6 font-geist-mono-400 text-xs text-pureBlack leading-relaxed"
       >
-        <p>&gt; gdpr_rights.forEach((right) => {</p>
+          <p class="text-pureBlack/50 mb-2">
+        // What contents serves which purpose
+          </p>
+        <p>&gt; const gdpr_rights = [...]</p>
+        <p>gdpr_rights.forEach((right) =&gt; {</p>
         <p class="ml-4 text-pureBlack/50">
           console.log(right.name)
         </p>
         <p class="ml-4 text-pureBlack/50">
           console.log(right.description)
         </p>
-        <p class="ml-4 text-pureBlack/50">
-          contact: info@doganteke.ai
-        </p>
+    
         <p>})</p>
       </div>
 
@@ -346,8 +351,10 @@ useCodexPageSeo({
         ## NO_SALE_OF_DATA
       </p>
       <p class="text-base leading-relaxed text-pureWhite/85">
-        We do not sell personal data. Automated decision-making including
-        profiling under Art. 22 GDPR does not take place on this website.
+        We do not sell personal data (including in the sense of some non-EU
+        privacy laws). Automated decision-making with legal or similarly
+        significant effects under Art. 22 GDPR, including profiling, does not
+        occur on this website.
       </p>
     </section>
 

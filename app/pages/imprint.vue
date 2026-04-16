@@ -136,10 +136,27 @@ useCodexPageSeo({
         <p class="mb-4 text-pureWhite/40">
           &lt;!-- The contents of this site are provided with care. --&gt;
         </p>
-        <p>
-          We cannot guarantee the accuracy, completeness, or timeliness of all
-          content. As a service provider we are responsible for our own content
-          on these pages in accordance with general law.
+        <p class="mb-4">
+          Codex Theme Studio is an independent open-source project. This
+          website is a small, static site about the tooling (e.g. generating
+          themes for OpenAI Codex). Nothing here is a commercial service,
+          professional advice, or a warranty of any kind.
+        </p>
+        <p class="mb-4">
+          We aim to keep information reasonable and up to date, but we do
+          <span class="font-geist-700 text-pureWhite">not</span> guarantee that
+          everything on these pages is complete, accurate, or current. You use
+          the information and any software from the project at your own risk.
+        </p>
+        <p class="mb-4">
+          To the extent permitted by law, we are not liable for damages or
+          losses arising from your use of this site, reliance on its content,
+          or use of the software under the project license — including
+          indirect or consequential losses.
+        </p>
+        <p class="text-xs text-pureWhite/60">
+          External sites (for example GitHub) have their own terms and privacy
+          notices; we do not control their content.
         </p>
       </div>
     </section>
@@ -149,10 +166,21 @@ useCodexPageSeo({
         ## COPYRIGHT
       </p>
       <p class="text-sm leading-relaxed text-pureWhite/80">
-        &lt;copyright&gt; All contents and works on this site are subject to
-        applicable copyright law. Reproduction, editing, distribution, or any
-        use beyond what the license permits may require written permission.
-        &lt;/copyright&gt;
+        The Codex Theme Studio source code and materials we publish with the
+        project are released under the
+        <a
+          :href="`${githubUrl}/blob/main/LICENSE`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-pureWhite underline decoration-pureWhite/30 underline-offset-2 transition hover:opacity-50"
+        >MIT License</a>.
+        You may use, copy, modify, merge, publish, distribute, sublicense,
+        and/or sell copies of the software as permitted there; the license
+        text in the repository is authoritative.
+      </p>
+      <p class="mt-4 text-xs text-pureWhite/60">
+        Third-party components, fonts, or assets may carry their own licenses;
+        see notices in the repository where applicable.
       </p>
     </section>
   </LegalPageShell>
