@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    githubToken: '',
     public: {
       siteUrl: '',
       siteName: 'Codex Theme Studio',
